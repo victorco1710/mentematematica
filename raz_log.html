@@ -1,0 +1,2468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Razonamiento Lógico | Mente Matemática</title>
+
+<!-- ============================================================
+     ESTILOS CSS - Plataforma Educativa Interactiva
+     ============================================================ -->
+<style>
+
+/* === VARIABLES GLOBALES === */
+:root {
+  --navy:        #0d47a1;
+  --blue:        #1565c0;
+  --blue-light:  #1976d2;
+  --blue-pale:   #e3f2fd;
+  --accent:      #ff8f00;
+  --green:       #2e7d32;
+  --green-light: #e8f5e9;
+  --red:         #c62828;
+  --red-light:   #ffebee;
+  --yellow:      #f57f17;
+  --yellow-light:#fff8e1;
+  --purple:      #6a1b9a;
+  --purple-light:#f3e5f5;
+  --teal:        #00695c;
+  --teal-light:  #e0f2f1;
+  --gray-bg:     #eef0f7;
+  --white:       #ffffff;
+  --text-dark:   #0d2060;
+  --text-body:   #37474f;
+  --text-muted:  #78909c;
+  --shadow:      0 2px 14px rgba(13,71,161,0.10);
+  --shadow-hover:0 8px 28px rgba(13,71,161,0.18);
+  --radius:      14px;
+  --sidebar-w:   262px;
+  --header-h:    68px;
+  --tr:          all 0.32s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* === RESET === */
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+  background:var(--gray-bg);
+  color:var(--text-body);
+  min-height:100vh;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.header{
+  position:fixed;top:0;left:0;right:0;
+  height:var(--header-h);
+  background:linear-gradient(135deg,#0a2d6e 0%,#1565c0 55%,#0277bd 100%);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;z-index:1000;
+  box-shadow:0 3px 18px rgba(0,0,0,0.28);
+}
+.header-logo{display:flex;align-items:center;gap:13px;text-decoration:none;}
+.logo-circle{
+  width:46px;height:46px;
+  background:rgba(255,255,255,0.18);
+  border-radius:13px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;
+  border:1.5px solid rgba(255,255,255,0.3);
+  backdrop-filter:blur(8px);
+}
+.logo-texts{display:flex;flex-direction:column;}
+.logo-name{color:#fff;font-size:21px;font-weight:800;letter-spacing:-0.4px;line-height:1.1;}
+.logo-tagline{color:rgba(255,255,255,0.72);font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;}
+.header-right{display:flex;align-items:center;gap:10px;}
+.score-pill{
+  background:rgba(255,255,255,0.16);
+  color:#fff;padding:6px 14px;border-radius:20px;
+  font-size:13px;font-weight:700;
+  display:flex;align-items:center;gap:5px;
+  border:1px solid rgba(255,255,255,0.25);
+}
+.btn-back{
+  background:rgba(255,255,255,0.14);
+  color:#fff;border:1.5px solid rgba(255,255,255,0.38);
+  padding:9px 18px;border-radius:9px;
+  font-size:13px;font-weight:600;
+  cursor:pointer;text-decoration:none;
+  transition:var(--tr);display:flex;align-items:center;gap:6px;
+}
+.btn-back:hover{background:rgba(255,255,255,0.26);transform:translateY(-1px);}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.sidebar{
+  position:fixed;top:var(--header-h);left:0;
+  width:var(--sidebar-w);
+  height:calc(100vh - var(--header-h));
+  background:#fff;
+  overflow-y:auto;z-index:900;
+  box-shadow:2px 0 14px rgba(0,0,0,0.07);
+  padding:12px 0 24px;
+}
+.sidebar::-webkit-scrollbar{width:4px;}
+.sidebar::-webkit-scrollbar-track{background:#f5f5f5;}
+.sidebar::-webkit-scrollbar-thumb{background:#cfd8dc;border-radius:4px;}
+.sb-label{
+  padding:10px 20px 8px;
+  font-size:10.5px;font-weight:700;letter-spacing:1.8px;
+  text-transform:uppercase;color:var(--text-muted);
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 20px;cursor:pointer;
+  transition:var(--tr);
+  border-left:3px solid transparent;
+  color:var(--text-body);font-size:13.5px;font-weight:500;
+  user-select:none;
+}
+.nav-item:hover{background:var(--blue-pale);color:var(--blue);border-left-color:#90caf9;}
+.nav-item.active{background:#dde9fb;color:var(--navy);border-left-color:var(--navy);font-weight:700;}
+.nav-icon{font-size:17px;min-width:22px;text-align:center;}
+.nav-label{line-height:1.3;flex:1;}
+.nav-badge{
+  background:var(--blue);color:#fff;
+  font-size:10px;font-weight:700;
+  padding:2px 7px;border-radius:10px;
+  min-width:22px;text-align:center;
+}
+.nav-divider{height:1px;background:#e8eaf6;margin:8px 16px;}
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+.main{
+  margin-left:var(--sidebar-w);
+  margin-top:var(--header-h);
+  padding:28px 32px 40px;
+  min-height:calc(100vh - var(--header-h));
+}
+.section{display:none;animation:fadeSlide 0.38s ease;}
+.section.active{display:block;}
+@keyframes fadeSlide{
+  from{opacity:0;transform:translateY(18px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* ============================================================
+   SECTION HEADERS
+   ============================================================ */
+.sec-header{
+  background:linear-gradient(135deg,var(--navy),var(--blue));
+  color:#fff;border-radius:var(--radius);
+  padding:24px 28px;margin-bottom:22px;
+  position:relative;overflow:hidden;
+}
+.sec-header::before{
+  content:'';position:absolute;right:-30px;top:-30px;
+  width:130px;height:130px;
+  background:rgba(255,255,255,0.07);
+  border-radius:50%;
+}
+.sec-header::after{
+  content:'';position:absolute;right:40px;bottom:-40px;
+  width:90px;height:90px;
+  background:rgba(255,255,255,0.05);
+  border-radius:50%;
+}
+.sec-header-icon{font-size:36px;margin-bottom:8px;display:block;}
+.sec-header h1{font-size:24px;font-weight:800;margin-bottom:6px;}
+.sec-header p{font-size:14px;opacity:0.88;line-height:1.5;}
+.sec-badge{
+  display:inline-block;
+  background:rgba(255,255,255,0.2);
+  border:1px solid rgba(255,255,255,0.3);
+  border-radius:20px;padding:3px 12px;
+  font-size:11px;font-weight:600;letter-spacing:0.5px;
+  margin-top:10px;
+}
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+.card{
+  background:#fff;border-radius:var(--radius);
+  padding:24px;box-shadow:var(--shadow);
+  margin-bottom:20px;transition:var(--tr);
+}
+.card:hover{box-shadow:var(--shadow-hover);}
+.card-title{
+  font-size:17px;font-weight:800;color:var(--text-dark);
+  margin-bottom:13px;display:flex;align-items:center;gap:8px;
+}
+.card-body{font-size:14.5px;line-height:1.7;color:var(--text-body);}
+
+/* Grid helpers */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:11px 22px;border-radius:9px;
+  font-size:14px;font-weight:700;cursor:pointer;
+  border:none;transition:var(--tr);letter-spacing:0.2px;
+}
+.btn-primary{background:var(--blue);color:#fff;}
+.btn-primary:hover{background:var(--navy);transform:translateY(-2px);box-shadow:0 4px 14px rgba(21,101,192,0.35);}
+.btn-success{background:var(--green);color:#fff;}
+.btn-success:hover{background:#1b5e20;transform:translateY(-2px);}
+.btn-danger{background:var(--red);color:#fff;}
+.btn-warning{background:var(--yellow);color:#fff;}
+.btn-outline{background:transparent;color:var(--blue);border:2px solid var(--blue);}
+.btn-outline:hover{background:var(--blue);color:#fff;}
+.btn-sm{padding:7px 15px;font-size:13px;}
+.btn-lg{padding:14px 30px;font-size:15px;}
+
+/* ============================================================
+   HIGHLIGHT BOXES
+   ============================================================ */
+.highlight{
+  border-radius:10px;padding:16px 18px;margin:14px 0;
+  display:flex;align-items:flex-start;gap:12px;
+  font-size:14px;line-height:1.6;
+}
+.highlight-blue{background:var(--blue-pale);border-left:4px solid var(--blue);}
+.highlight-green{background:var(--green-light);border-left:4px solid var(--green);}
+.highlight-yellow{background:var(--yellow-light);border-left:4px solid var(--yellow);}
+.highlight-red{background:var(--red-light);border-left:4px solid var(--red);}
+.highlight-purple{background:var(--purple-light);border-left:4px solid var(--purple);}
+.highlight-teal{background:var(--teal-light);border-left:4px solid var(--teal);}
+.highlight-icon{font-size:20px;min-width:24px;}
+
+/* ============================================================
+   DEFINITION BOX
+   ============================================================ */
+.def-box{
+  background:linear-gradient(135deg,#e8f0fe,#f0f4ff);
+  border:2px solid #c5cae9;
+  border-radius:12px;padding:22px 24px;
+  margin:16px 0;text-align:center;
+}
+.def-box h2{font-size:26px;font-weight:900;color:var(--navy);margin-bottom:10px;}
+.def-box p{font-size:15px;line-height:1.8;color:var(--text-body);}
+
+/* ============================================================
+   TABLE STYLES
+   ============================================================ */
+.data-table{width:100%;border-collapse:collapse;font-size:14px;}
+.data-table thead tr{background:var(--navy);color:#fff;}
+.data-table th{padding:12px 16px;text-align:left;font-weight:700;font-size:13px;}
+.data-table td{padding:11px 16px;border-bottom:1px solid #e8eaf6;}
+.data-table tbody tr:hover{background:#f5f7ff;}
+.data-table tbody tr:nth-child(even){background:#fafbff;}
+
+/* ============================================================
+   TYPE CARDS (Tipos de Razonamiento)
+   ============================================================ */
+.type-card{
+  background:#fff;border-radius:12px;padding:20px;
+  border:2px solid #e8eaf6;transition:var(--tr);cursor:pointer;
+  text-align:center;
+}
+.type-card:hover{border-color:var(--blue);transform:translateY(-3px);box-shadow:var(--shadow-hover);}
+.type-card .type-icon{font-size:36px;margin-bottom:10px;}
+.type-card h3{font-size:15px;font-weight:800;color:var(--text-dark);margin-bottom:6px;}
+.type-card p{font-size:12.5px;color:var(--text-muted);line-height:1.5;}
+.type-card.deductive{border-top:4px solid #1565c0;}
+.type-card.inductive{border-top:4px solid #2e7d32;}
+.type-card.abductive{border-top:4px solid #f57f17;}
+.type-card.analogical{border-top:4px solid #6a1b9a;}
+
+/* ============================================================
+   COMPONENT STEPS
+   ============================================================ */
+.steps-flow{display:flex;gap:0;margin:16px 0;flex-wrap:wrap;}
+.step-item{
+  flex:1;min-width:140px;
+  background:#f8f9ff;border:2px solid #e3e8ff;
+  border-radius:10px;padding:16px;text-align:center;
+  position:relative;cursor:pointer;transition:var(--tr);
+  margin:4px;
+}
+.step-item:hover,.step-item.active-step{
+  background:var(--blue);color:#fff;
+  border-color:var(--blue);transform:translateY(-3px);
+}
+.step-item:hover .step-icon,.step-item.active-step .step-icon{filter:grayscale(0);}
+.step-icon{font-size:28px;margin-bottom:8px;display:block;}
+.step-title{font-size:12.5px;font-weight:700;margin-bottom:4px;}
+.step-desc{font-size:11px;line-height:1.4;opacity:0.8;}
+.step-num{
+  position:absolute;top:-10px;left:50%;transform:translateX(-50%);
+  background:var(--navy);color:#fff;
+  width:22px;height:22px;border-radius:50%;
+  font-size:11px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* ============================================================
+   INTERACTIVE QUIZ
+   ============================================================ */
+.quiz-container{padding:4px;}
+.quiz-question{
+  background:#f8f9ff;border-radius:10px;
+  padding:18px 20px;margin-bottom:16px;
+  border:2px solid transparent;
+}
+.quiz-question.correct{border-color:var(--green);background:var(--green-light);}
+.quiz-question.wrong{border-color:var(--red);background:var(--red-light);}
+.q-text{font-size:15px;font-weight:700;color:var(--text-dark);margin-bottom:12px;line-height:1.5;}
+.q-num{
+  display:inline-block;
+  background:var(--navy);color:#fff;
+  border-radius:6px;padding:2px 9px;font-size:12px;font-weight:800;
+  margin-bottom:10px;
+}
+.options{display:flex;flex-direction:column;gap:8px;}
+.option-btn{
+  background:#fff;border:2px solid #dde1f0;
+  border-radius:8px;padding:11px 16px;
+  font-size:13.5px;cursor:pointer;text-align:left;
+  transition:var(--tr);color:var(--text-body);
+  display:flex;align-items:center;gap:10px;
+}
+.option-btn:hover{border-color:var(--blue);color:var(--blue);background:#f0f4ff;}
+.option-btn.selected-correct{background:var(--green-light);border-color:var(--green);color:var(--green);}
+.option-btn.selected-wrong{background:var(--red-light);border-color:var(--red);color:var(--red);}
+.option-btn.show-correct{background:var(--green-light);border-color:var(--green);color:var(--green);}
+.option-btn:disabled{cursor:not-allowed;}
+.feedback-msg{
+  font-size:13px;font-weight:700;margin-top:10px;
+  padding:8px 12px;border-radius:7px;
+}
+.fb-ok{background:var(--green-light);color:var(--green);}
+.fb-err{background:var(--red-light);color:var(--red);}
+
+/* ============================================================
+   SCORE DISPLAY
+   ============================================================ */
+.score-display{
+  background:linear-gradient(135deg,var(--navy),var(--blue));
+  color:#fff;border-radius:var(--radius);
+  padding:28px;text-align:center;margin-top:20px;
+}
+.score-big{font-size:68px;font-weight:900;line-height:1;}
+.score-label{font-size:16px;opacity:0.85;margin-top:6px;}
+.score-stars{font-size:34px;margin:10px 0;}
+.score-msg{font-size:18px;font-weight:700;margin-top:8px;}
+
+/* ============================================================
+   PROBLEM CARDS (Aplicación)
+   ============================================================ */
+.problem-card{
+  background:#fff;border-radius:12px;
+  border-left:5px solid var(--blue);
+  padding:20px 22px;margin-bottom:16px;
+  box-shadow:var(--shadow);
+}
+.prob-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:12px;
+}
+.prob-num{
+  background:var(--blue);color:#fff;
+  border-radius:8px;padding:4px 12px;
+  font-size:13px;font-weight:800;
+}
+.prob-level{font-size:12px;color:var(--text-muted);font-weight:600;}
+.prob-text{font-size:14.5px;color:var(--text-dark);font-weight:600;margin-bottom:10px;line-height:1.6;}
+.solution-box{
+  background:linear-gradient(135deg,#e8f5e9,#f1f8e9);
+  border:1.5px solid #a5d6a7;
+  border-radius:9px;padding:14px 16px;
+  margin-top:10px;display:none;
+}
+.solution-box.show{display:block;}
+.sol-label{font-size:11px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.sol-text{font-size:14px;color:#2e7d32;line-height:1.6;}
+
+/* ============================================================
+   EXERCISE GENERATOR
+   ============================================================ */
+.gen-panel{
+  background:linear-gradient(135deg,#f8f9ff,#eef2ff);
+  border:2px dashed #c5cae9;border-radius:12px;
+  padding:24px;text-align:center;margin-bottom:20px;
+}
+.ex-display{
+  background:#fff;border-radius:10px;
+  border:2px solid var(--blue-pale);
+  padding:22px;margin:16px 0;
+  min-height:100px;
+  font-size:15px;color:var(--text-dark);line-height:1.7;
+  text-align:left;
+}
+.ex-answer-input{
+  width:100%;padding:11px 14px;
+  border:2px solid #dde1f0;border-radius:9px;
+  font-size:14px;margin:8px 0;
+  outline:none;transition:var(--tr);
+  font-family:inherit;
+}
+.ex-answer-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(21,101,192,0.12);}
+
+/* ============================================================
+   WORKSHEET GENERATOR
+   ============================================================ */
+.ws-form{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group.full{grid-column:1/-1;}
+.form-label{font-size:13px;font-weight:700;color:var(--text-dark);}
+.form-input,.form-select{
+  padding:10px 14px;border:2px solid #dde1f0;
+  border-radius:9px;font-size:14px;
+  outline:none;transition:var(--tr);font-family:inherit;
+  background:#fff;
+}
+.form-input:focus,.form-select:focus{border-color:var(--blue);}
+.check-group{display:flex;gap:14px;flex-wrap:wrap;margin-top:4px;}
+.check-label{
+  display:flex;align-items:center;gap:7px;
+  cursor:pointer;font-size:14px;font-weight:500;
+  background:#f8f9ff;padding:8px 14px;
+  border-radius:8px;border:2px solid #e3e8ff;
+  transition:var(--tr);
+}
+.check-label:hover{border-color:var(--blue);}
+.check-label input[type=checkbox]{width:16px;height:16px;accent-color:var(--blue);}
+.range-val{
+  text-align:center;font-size:22px;font-weight:800;
+  color:var(--blue);margin:4px 0;
+}
+input[type=range]{width:100%;accent-color:var(--blue);}
+
+/* ============================================================
+   CANVAS CONTAINER
+   ============================================================ */
+.canvas-wrap{
+  border-radius:12px;overflow:hidden;
+  background:#f0f4ff;margin:16px 0;
+}
+canvas{display:block;width:100%;height:auto;}
+
+/* ============================================================
+   GAMIFIED REVIEW
+   ============================================================ */
+.review-card{
+  background:linear-gradient(135deg,#1565c0,#0d47a1);
+  border-radius:var(--radius);padding:24px;
+  color:#fff;margin:20px 0;
+}
+.review-card h3{font-size:17px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.streak-bar{
+  background:rgba(255,255,255,0.18);
+  border-radius:20px;padding:5px 14px;
+  font-size:13px;font-weight:700;
+  display:inline-flex;align-items:center;gap:6px;
+  margin-bottom:12px;
+}
+.flash-card{
+  background:#fff;border-radius:10px;
+  padding:20px;color:var(--text-dark);
+  min-height:110px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;cursor:pointer;
+  transition:var(--tr);
+  font-size:15px;font-weight:600;line-height:1.5;
+}
+.flash-card:hover{transform:scale(1.02);}
+.flash-card.reveal{background:var(--blue-pale);}
+.flash-actions{display:flex;gap:10px;margin-top:12px;justify-content:center;flex-wrap:wrap;}
+
+/* ============================================================
+   VIDEO CARDS
+   ============================================================ */
+.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin:16px 0;}
+.video-card{
+  background:#fff;border-radius:12px;overflow:hidden;
+  box-shadow:var(--shadow);transition:var(--tr);
+}
+.video-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-3px);}
+.video-thumb{
+  height:145px;display:flex;align-items:center;justify-content:center;
+  font-size:52px;position:relative;overflow:hidden;
+}
+.video-thumb.v1{background:linear-gradient(135deg,#1565c0,#0288d1);}
+.video-thumb.v2{background:linear-gradient(135deg,#2e7d32,#00897b);}
+.video-thumb.v3{background:linear-gradient(135deg,#6a1b9a,#8e24aa);}
+.video-thumb.v4{background:linear-gradient(135deg,#e65100,#f57f17);}
+.play-btn{
+  position:absolute;width:50px;height:50px;
+  background:rgba(255,255,255,0.92);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;cursor:pointer;transition:var(--tr);
+}
+.play-btn:hover{transform:scale(1.1);}
+.video-info{padding:14px 16px;}
+.video-title{font-size:14px;font-weight:800;color:var(--text-dark);margin-bottom:5px;line-height:1.3;}
+.video-desc{font-size:12px;color:var(--text-muted);margin-bottom:10px;line-height:1.4;}
+.video-link{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:12.5px;font-weight:700;color:var(--blue);
+  text-decoration:none;padding:6px 14px;
+  background:var(--blue-pale);border-radius:20px;
+  transition:var(--tr);
+}
+.video-link:hover{background:var(--blue);color:#fff;}
+
+/* ============================================================
+   OBJECTIVES
+   ============================================================ */
+.obj-list{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.obj-list li{
+  display:flex;align-items:flex-start;gap:10px;
+  background:#f8f9ff;border-radius:9px;
+  padding:11px 14px;font-size:14px;line-height:1.5;
+  border-left:3px solid var(--blue);
+}
+.obj-icon{font-size:18px;min-width:22px;}
+
+/* ============================================================
+   EXAMPLE ITEMS
+   ============================================================ */
+.example-item{
+  background:#fff;border-radius:10px;
+  border:1.5px solid #e3e8ff;
+  padding:18px 20px;margin-bottom:12px;
+  transition:var(--tr);
+}
+.example-item:hover{border-color:var(--blue);box-shadow:var(--shadow);}
+.ex-title{font-size:13px;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.ex-body{font-size:14.5px;color:var(--text-dark);line-height:1.6;font-weight:500;}
+.ex-answer{font-size:13.5px;color:var(--green);margin-top:8px;font-style:italic;display:none;}
+.ex-answer.show{display:block;}
+
+/* ============================================================
+   SIMULATOR CONTAINERS
+   ============================================================ */
+.sim-box{
+  background:#f4f6ff;border:2px solid #c5cae9;
+  border-radius:12px;padding:22px;margin:16px 0;
+}
+.sim-box h3{font-size:15px;font-weight:800;color:var(--text-dark);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.sim-result{
+  margin-top:14px;padding:14px 16px;
+  border-radius:9px;font-size:14px;font-weight:600;
+  display:none;
+}
+.sim-result.show{display:block;}
+.sim-ok{background:var(--green-light);color:var(--green);}
+.sim-err{background:var(--red-light);color:var(--red);}
+.sim-info{background:var(--blue-pale);color:var(--blue);}
+
+/* ============================================================
+   PROGRESS & LEVEL BADGES
+   ============================================================ */
+.level-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 14px;border-radius:20px;
+  font-size:12px;font-weight:800;letter-spacing:0.3px;
+  margin-bottom:12px;
+}
+.lv-starter{background:#e8f5e9;color:#2e7d32;}
+.lv-medium{background:#fff8e1;color:#f57f17;}
+.lv-advanced{background:#f3e5f5;color:#6a1b9a;}
+
+.progress-bar-wrap{background:#e0e0e0;border-radius:10px;height:10px;margin:6px 0;}
+.progress-bar{height:10px;border-radius:10px;background:linear-gradient(90deg,var(--blue),#42a5f5);transition:width 0.8s ease;}
+
+/* ============================================================
+   STEP BY STEP (Problemas)
+   ============================================================ */
+.steps-list{counter-reset:step-c;list-style:none;display:flex;flex-direction:column;gap:10px;}
+.steps-list li{
+  counter-increment:step-c;
+  display:flex;align-items:flex-start;gap:12px;
+  background:#f8f9ff;border-radius:9px;padding:12px 14px;
+  font-size:14px;line-height:1.5;
+}
+.steps-list li::before{
+  content:counter(step-c);
+  background:var(--blue);color:#fff;
+  width:26px;height:26px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;flex-shrink:0;
+  margin-top:1px;
+}
+
+/* ============================================================
+   PRINT STYLES (Hoja de ejercicios)
+   ============================================================ */
+@media print{
+  .header,.sidebar,.main > *:not(#ws-print-area){display:none!important;}
+  .main{margin:0;padding:0;}
+  #ws-print-area{display:block!important;}
+  body{background:#fff;}
+  #ws-print-area{
+    font-family:'Times New Roman',serif;
+    color:#000;padding:20px;
+    margin:0;
+  }
+  .ws-print-header{text-align:center;border-bottom:2px solid #000;padding-bottom:10px;margin-bottom:20px;}
+  .ws-exercise{border-bottom:1px dashed #888;padding:12px 0;margin-bottom:10px;}
+  .ws-answer-line{border-bottom:1px solid #000;min-height:30px;margin:8px 0;}
+}
+#ws-print-area{display:none;}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{
+  background:#fff;text-align:center;padding:18px;
+  font-size:13px;color:var(--text-muted);
+  border-top:1px solid #e8eaf6;
+  margin-left:var(--sidebar-w);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:900px){
+  .sidebar{width:210px;}
+  .main,.footer{margin-left:210px;}
+  .grid-3{grid-template-columns:1fr 1fr;}
+  .grid-4{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:680px){
+  .sidebar{transform:translateX(-100%);width:240px;}
+  .main{margin-left:0;padding:16px;}
+  footer{margin-left:0;}
+  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}
+  .ws-form{grid-template-columns:1fr;}
+  .header{padding:0 12px;}
+  .logo-name{font-size:17px;}
+}
+
+/* ============================================================
+   MISC UTILITIES
+   ============================================================ */
+.mb-0{margin-bottom:0;}
+.mb-12{margin-bottom:12px;}
+.mt-8{margin-top:8px;}
+.text-center{text-align:center;}
+.flex-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.tag{
+  background:#e3f2fd;color:var(--blue);
+  border-radius:20px;padding:3px 11px;font-size:12px;font-weight:700;
+}
+.sep{height:1px;background:linear-gradient(90deg,transparent,#dde1f0,transparent);margin:20px 0;}
+
+/* Welcome animation */
+.welcome-overlay{
+  position:fixed;inset:0;background:linear-gradient(135deg,#0a2d6e,#1565c0,#0288d1);
+  z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;
+  color:#fff;text-align:center;padding:40px;
+  animation:fadeOut 0.6s ease 3.2s forwards;
+}
+@keyframes fadeOut{to{opacity:0;pointer-events:none;visibility:hidden;}}
+.welcome-overlay h1{font-size:40px;font-weight:900;margin-bottom:12px;animation:popIn 0.7s ease 0.3s both;}
+.welcome-overlay p{font-size:18px;opacity:0.88;animation:popIn 0.7s ease 0.7s both;}
+.welcome-emoji{font-size:80px;animation:bounce 1s infinite 1.2s;}
+@keyframes popIn{from{opacity:0;transform:scale(0.7);}to{opacity:1;transform:scale(1);}}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+
+.notation-chip{
+  display:inline-block;
+  background:#fff;color:var(--navy);
+  border-radius:6px;padding:2px 9px;
+  font-weight:800;font-size:13px;
+  border:2px solid #c5cae9;
+  font-family:'Courier New',monospace;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     SPLASH DE BIENVENIDA (aparece 3 segundos al cargar)
+     ============================================================ -->
+<div class="welcome-overlay" id="welcomeOverlay">
+  <div class="welcome-emoji">🧠</div>
+  <h1>¡Bienvenido/a!</h1>
+  <p>Plataforma de <strong>Razonamiento Lógico</strong><br>Mente Matemática · 2026</p>
+</div>
+
+<!-- ============================================================
+     HEADER PRINCIPAL
+     ============================================================ -->
+<header class="header">
+  <div class="header-logo">
+    <div class="logo-circle">🧠</div>
+    <div class="logo-texts">
+      <div class="logo-name">Mente Matemática</div>
+      <div class="logo-tagline">Plataforma Educativa</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="score-pill" id="globalScore">⭐ Puntos: <span id="totalPts">0</span></div>
+    <a href="temario.html" class="btn-back">← Volver al menú</a>
+  </div>
+</header>
+
+<!-- ============================================================
+     BARRA LATERAL DE NAVEGACIÓN
+     ============================================================ -->
+<nav class="sidebar">
+  <div class="sb-label">Módulos</div>
+
+  <div class="nav-item active" onclick="showSection('sec-intro')" id="nav-sec-intro">
+    <span class="nav-icon">🎬</span>
+    <span class="nav-label">¿Qué aprenderemos?</span>
+    <span class="nav-badge">1</span>
+  </div>
+
+  <div class="nav-item" onclick="showSection('sec-def')" id="nav-sec-def">
+    <span class="nav-icon">📖</span>
+    <span class="nav-label">Definición</span>
+    <span class="nav-badge">2</span>
+  </div>
+
+  <div class="nav-item" onclick="showSection('sec-props')" id="nav-sec-props">
+    <span class="nav-icon">⚙️</span>
+    <span class="nav-label">Propiedades</span>
+    <span class="nav-badge">3</span>
+  </div>
+
+  <div class="nav-item" onclick="showSection('sec-compo')" id="nav-sec-compo">
+    <span class="nav-icon">🔍</span>
+    <span class="nav-label">¿De qué se compone?</span>
+    <span class="nav-badge">4</span>
+  </div>
+
+  <div class="nav-item" onclick="showSection('sec-types')" id="nav-sec-types">
+    <span class="nav-icon">🔀</span>
+    <span class="nav-label">Tipos de Razonamiento</span>
+    <span class="nav-badge">5</span>
+  </div>
+
+  <div class="nav-divider"></div>
+
+  <div class="nav-item" onclick="showSection('sec-prob')" id="nav-sec-prob">
+    <span class="nav-icon">🏆</span>
+    <span class="nav-label">Problemas de Aplicación</span>
+    <span class="nav-badge">6</span>
+  </div>
+
+  <div class="nav-item" onclick="showSection('sec-eval')" id="nav-sec-eval">
+    <span class="nav-icon">📝</span>
+    <span class="nav-label">Evaluación Final</span>
+    <span class="nav-badge">7</span>
+  </div>
+</nav>
+
+<!-- ============================================================
+     CONTENIDO PRINCIPAL
+     ============================================================ -->
+<main class="main">
+
+<!-- ============================================================
+     SECCIÓN 1: ¿Qué aprenderemos?
+     ============================================================ -->
+<section class="section active" id="sec-intro">
+  <div class="sec-header">
+    <span class="sec-header-icon">🎬</span>
+    <h1>¿Qué aprenderemos?</h1>
+    <p>Bienvenido/a a tu viaje por el mundo del Razonamiento Lógico. ¡Prepárate para convertirte en un experto/a en pensar con lógica!</p>
+    <span class="sec-badge">📚 Módulo 1 · Introducción</span>
+  </div>
+
+  <!-- Canvas animado de bienvenida -->
+  <div class="card">
+    <div class="card-title">🧠 El Poder del Razonamiento Lógico</div>
+    <div class="canvas-wrap">
+      <canvas id="canvasIntro" width="800" height="220"></canvas>
+    </div>
+    <div class="highlight highlight-blue">
+      <span class="highlight-icon">💡</span>
+      <div>¿Alguna vez te preguntaste cómo resuelven los detectives los misterios? ¿Cómo los científicos descubren nuevas cosas? ¿O cómo los programadores crean videojuegos increíbles? <strong>¡La respuesta es el RAZONAMIENTO LÓGICO! 🔍</strong></div>
+    </div>
+    <div class="highlight highlight-yellow">
+      <span class="highlight-icon">🚀</span>
+      <div><strong>Aprender a pensar con lógica es el superpoder que nadie te puede quitar.</strong> En este módulo vas a convertirte en un experto/a para resolver problemas usando tu mente.</div>
+    </div>
+  </div>
+
+  <!-- Objetivos de aprendizaje -->
+  <div class="card">
+    <div class="card-title">🎯 Objetivos de Aprendizaje</div>
+    <p style="font-size:14px;color:var(--text-muted);margin-bottom:14px;">Al finalizar este material serás capaz de:</p>
+    <ul class="obj-list">
+      <li><span class="obj-icon">✅</span> <span>Comprender qué es el razonamiento lógico y para qué sirve en la vida cotidiana.</span></li>
+      <li><span class="obj-icon">🔍</span> <span>Identificar y resolver problemas de lógica de diferentes niveles de dificultad.</span></li>
+      <li><span class="obj-icon">🧩</span> <span>Aplicar estrategias de pensamiento ordenado para llegar a conclusiones correctas.</span></li>
+      <li><span class="obj-icon">📊</span> <span>Analizar secuencias, patrones y relaciones entre elementos.</span></li>
+      <li><span class="obj-icon">💡</span> <span>Desarrollar la capacidad de pensar de forma crítica y creativa ante situaciones complejas.</span></li>
+      <li><span class="obj-icon">🏆</span> <span>Demostrar lo aprendido resolviendo un cuestionario de evaluación final.</span></li>
+    </ul>
+  </div>
+
+  <!-- Niveles de estudio -->
+  <div class="card">
+    <div class="card-title">📊 Niveles de Dificultad</div>
+    <div class="grid-3">
+      <div style="text-align:center;background:#e8f5e9;border-radius:10px;padding:18px;">
+        <div style="font-size:36px;">⭐</div>
+        <div style="font-weight:800;color:#2e7d32;font-size:15px;margin:8px 0;">Principiante</div>
+        <div style="font-size:13px;color:var(--text-muted);">Para estudiantes de 9 a 11 años</div>
+      </div>
+      <div style="text-align:center;background:#fff8e1;border-radius:10px;padding:18px;">
+        <div style="font-size:36px;">⭐⭐</div>
+        <div style="font-weight:800;color:#f57f17;font-size:15px;margin:8px 0;">Intermedio</div>
+        <div style="font-size:13px;color:var(--text-muted);">Para estudiantes de 11 a 13 años</div>
+      </div>
+      <div style="text-align:center;background:#f3e5f5;border-radius:10px;padding:18px;">
+        <div style="font-size:36px;">⭐⭐⭐</div>
+        <div style="font-weight:800;color:#6a1b9a;font-size:15px;margin:8px 0;">Avanzado</div>
+        <div style="font-size:13px;color:var(--text-muted);">Para estudiantes de 13 a 15 años</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Videos de apoyo -->
+  <div class="card">
+    <div class="card-title">🎬 Videos de Apoyo</div>
+    <p style="font-size:14px;color:var(--text-muted);margin-bottom:14px;">Refuerza tu aprendizaje con estos recursos audiovisuales sobre Razonamiento Lógico:</p>
+    <div class="video-grid">
+      <div class="video-card">
+        <div class="video-thumb v1">
+          <span>🧠</span>
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="video-info">
+          <div class="video-title">¿Qué es el Razonamiento Lógico?</div>
+          <div class="video-desc">Introducción clara y divertida para estudiantes de primaria y secundaria.</div>
+          <a class="video-link" href="https://www.youtube.com/results?search_query=que+es+el+razonamiento+logico+para+niños" target="_blank">🎬 Ver en YouTube</a>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb v2">
+          <span>🔀</span>
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="video-info">
+          <div class="video-title">Tipos de Razonamiento Lógico</div>
+          <div class="video-desc">Deductivo, inductivo, abductivo y analógico explicados con ejemplos.</div>
+          <a class="video-link" href="https://www.youtube.com/results?search_query=tipos+de+razonamiento+logico+ejemplos" target="_blank">🎬 Ver en YouTube</a>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb v3">
+          <span>🏆</span>
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="video-info">
+          <div class="video-title">Problemas de Lógica Paso a Paso</div>
+          <div class="video-desc">Aprende a resolver problemas lógicos con estrategias claras.</div>
+          <a class="video-link" href="https://www.youtube.com/results?search_query=problemas+de+razonamiento+logico+paso+a+paso" target="_blank">🎬 Ver en YouTube</a>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb v4">
+          <span>🔢</span>
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="video-info">
+          <div class="video-title">Secuencias y Patrones Lógicos</div>
+          <div class="video-desc">Completa series numéricas y de figuras con lógica matemática.</div>
+          <a class="video-link" href="https://www.youtube.com/results?search_query=secuencias+logicas+y+patrones+matematicos" target="_blank">🎬 Ver en YouTube</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECCIÓN 2: DEFINICIÓN
+     ============================================================ -->
+<section class="section" id="sec-def">
+  <div class="sec-header">
+    <span class="sec-header-icon">📖</span>
+    <h1>Definición del Razonamiento Lógico</h1>
+    <p>Comprende qué es el razonamiento lógico, para qué sirve y cómo se aplica en la vida cotidiana.</p>
+    <span class="sec-badge">📚 Módulo 2 · Definición</span>
+  </div>
+
+  <div class="card">
+    <div class="def-box">
+      <div style="font-size:40px;margin-bottom:10px;">🧠</div>
+      <h2>¿Qué es el Razonamiento Lógico?</h2>
+      <p>El razonamiento lógico es la <strong>capacidad de pensar de manera ordenada y coherente</strong> para llegar a conclusiones correctas a partir de información dada.</p>
+      <p style="margin-top:10px;">Es como seguir las reglas de un juego: <em>si conoces las reglas y las aplicas bien, siempre podrás encontrar la respuesta correcta.</em></p>
+    </div>
+  </div>
+
+  <!-- Analogías interactivas -->
+  <div class="card">
+    <div class="card-title">🔍 ¿Para qué sirve el Razonamiento Lógico?</div>
+    <div class="grid-2">
+      <div class="highlight highlight-blue">
+        <span class="highlight-icon">🕵️</span>
+        <div><strong>Como detectives:</strong> usamos pistas para descubrir la verdad sin haberla presenciado directamente.</div>
+      </div>
+      <div class="highlight highlight-green">
+        <span class="highlight-icon">🔬</span>
+        <div><strong>Como científicos:</strong> analizamos datos para llegar a conclusiones verificables y reproducibles.</div>
+      </div>
+      <div class="highlight highlight-yellow">
+        <span class="highlight-icon">💻</span>
+        <div><strong>Como programadores:</strong> diseñamos instrucciones paso a paso que la máquina puede seguir.</div>
+      </div>
+      <div class="highlight highlight-purple">
+        <span class="highlight-icon">🧮</span>
+        <div><strong>Como matemáticos:</strong> construimos demostraciones basándonos en axiomas y reglas claras.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Visualización interactiva -->
+  <div class="card">
+    <div class="card-title">🎮 Visualización Interactiva: ¿Es razonamiento lógico?</div>
+    <p style="font-size:14px;color:var(--text-muted);margin-bottom:14px;">Lee cada situación y decide si involucra razonamiento lógico correcto. Haz clic en tu respuesta:</p>
+    <div id="defQuizArea"></div>
+    <div id="defQuizFeedback" class="sim-result" style="margin-top:10px;"></div>
+  </div>
+
+  <!-- Canvas de definición -->
+  <div class="card">
+    <div class="card-title">📊 Estructura del Razonamiento Lógico</div>
+    <div class="canvas-wrap">
+      <canvas id="canvasDef" width="800" height="240"></canvas>
+    </div>
+    <p style="font-size:13px;color:var(--text-muted);text-align:center;margin-top:8px;">El razonamiento lógico transforma información (premisas) en conclusiones válidas.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECCIÓN 3: PROPIEDADES
+     ============================================================ -->
+<section class="section" id="sec-props">
+  <div class="sec-header">
+    <span class="sec-header-icon">⚙️</span>
+    <h1>Propiedades del Razonamiento Lógico</h1>
+    <p>Descubre las características que hacen que un razonamiento sea válido y correcto.</p>
+    <span class="sec-badge">📚 Módulo 3 · Propiedades</span>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 Las 5 Propiedades Fundamentales</div>
+    <div class="grid-3" style="margin-bottom:10px;">
+      <div class="type-card deductive" onclick="showPropDetail(0)">
+        <div class="type-icon">🔗</div>
+        <h3>Coherencia</h3>
+        <p>Las ideas no se contradicen entre sí dentro del argumento.</p>
+      </div>
+      <div class="type-card inductive" onclick="showPropDetail(1)">
+        <div class="type-icon">✅</div>
+        <h3>Validez</h3>
+        <p>La conclusión se sigue necesariamente de las premisas.</p>
+      </div>
+      <div class="type-card" style="border-top:4px solid #f57f17;" onclick="showPropDetail(2)">
+        <div class="type-icon">🧱</div>
+        <h3>Consistencia</h3>
+        <p>No existen contradicciones internas en el sistema de ideas.</p>
+      </div>
+      <div class="type-card" style="border-top:4px solid #6a1b9a;" onclick="showPropDetail(3)">
+        <div class="type-icon">💎</div>
+        <h3>Claridad</h3>
+        <p>Los términos y conceptos están bien definidos y son comprensibles.</p>
+      </div>
+      <div class="type-card" style="border-top:4px solid #00695c;" onclick="showPropDetail(4)">
+        <div class="type-icon">🎯</div>
+        <h3>Precisión</h3>
+        <p>Los argumentos son exactos, sin ambigüedades ni vaguedades.</p>
+      </div>
+    </div>
+    <div id="propDetail" class="sim-result sim-info" style="display:block;margin-top:14px;">👆 Haz clic en una propiedad para ver su explicación detallada con ejemplos.</div>
+  </div>
+
+  <!-- Simulador de Propiedades -->
+  <div class="card">
+    <div class="card-title">🎮 Simulador: Detecta la Propiedad</div>
+    <div class="sim-box">
+      <h3>🔍 Analiza el siguiente argumento:</h3>
+      <div id="propSimText" class="ex-display" style="background:#fff;min-height:80px;padding:16px;margin:0;"></div>
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;" id="propSimOptions"></div>
+      <div id="propSimResult" class="sim-result"></div>
+    </div>
+    <button class="btn btn-primary" onclick="loadPropSim()">🎲 Nuevo Argumento</button>
+  </div>
+
+  <!-- Repaso Gamificado -->
+  <div class="review-card">
+    <h3>🏅 Repaso Rápido - Propiedades</h3>
+    <div class="streak-bar">🔥 Racha: <span id="propStreak">0</span></div>
+    <div class="flash-card" id="propFlashCard" onclick="revealPropFlash()">
+      <div id="propFlashFront">⬆ Haz clic para comenzar el repaso</div>
+    </div>
+    <div class="flash-actions" id="propFlashActions" style="display:none;">
+      <button class="btn btn-success btn-sm" onclick="nextPropFlash(true)">✅ Lo sabía</button>
+      <button class="btn btn-danger btn-sm" onclick="nextPropFlash(false)">❌ No lo sabía</button>
+    </div>
+    <div style="margin-top:12px;font-size:13px;opacity:0.8;" id="propFlashProgress"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECCIÓN 4: COMPONENTES
+     ============================================================ -->
+<section class="section" id="sec-compo">
+  <div class="sec-header">
+    <span class="sec-header-icon">🔍</span>
+    <h1>¿De qué se compone el Razonamiento Lógico?</h1>
+    <p>Conoce los 5 componentes esenciales del razonamiento lógico y cómo trabajan juntos.</p>
+    <span class="sec-badge">📚 Módulo 4 · Componentes</span>
+  </div>
+
+  <!-- Tabla de componentes -->
+  <div class="card">
+    <div class="card-title">📊 Los 5 Componentes Esenciales</div>
+    <div style="overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Componente</th>
+            <th>¿Qué significa?</th>
+            <th>Ejemplo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>🔍 <strong>Observación</strong></td><td>Mirar y analizar cuidadosamente la información.</td><td>Ver las pistas del problema</td></tr>
+          <tr><td>🧩 <strong>Análisis</strong></td><td>Separar la información en partes más pequeñas.</td><td>Dividir el problema en partes</td></tr>
+          <tr><td>🔗 <strong>Relación</strong></td><td>Conectar ideas para encontrar un patrón.</td><td>Unir las piezas del rompecabezas</td></tr>
+          <tr><td>✅ <strong>Conclusión</strong></td><td>Llegar a una respuesta usando la lógica.</td><td>La solución final razonada</td></tr>
+          <tr><td>🔄 <strong>Verificación</strong></td><td>Comprobar que la respuesta es correcta.</td><td>Revisar si el resultado tiene sentido</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Flujo de componentes -->
+  <div class="card">
+    <div class="card-title">🔄 Flujo del Razonamiento</div>
+    <div class="steps-flow" id="componentsFlow">
+      <div class="step-item" onclick="activateStep(0)">
+        <span class="step-num">1</span>
+        <span class="step-icon">🔍</span>
+        <div class="step-title">Observación</div>
+        <div class="step-desc">Leo y analizo la información</div>
+      </div>
+      <div class="step-item" onclick="activateStep(1)">
+        <span class="step-num">2</span>
+        <span class="step-icon">🧩</span>
+        <div class="step-title">Análisis</div>
+        <div class="step-desc">Separo las partes del problema</div>
+      </div>
+      <div class="step-item" onclick="activateStep(2)">
+        <span class="step-num">3</span>
+        <span class="step-icon">🔗</span>
+        <div class="step-title">Relación</div>
+        <div class="step-desc">Conecto las ideas</div>
+      </div>
+      <div class="step-item" onclick="activateStep(3)">
+        <span class="step-num">4</span>
+        <span class="step-icon">✅</span>
+        <div class="step-title">Conclusión</div>
+        <div class="step-desc">Llego a la respuesta</div>
+      </div>
+      <div class="step-item" onclick="activateStep(4)">
+        <span class="step-num">5</span>
+        <span class="step-icon">🔄</span>
+        <div class="step-title">Verificación</div>
+        <div class="step-desc">Compruebo mi respuesta</div>
+      </div>
+    </div>
+    <div id="stepDetail" class="sim-result sim-info" style="display:block;margin-top:14px;">👆 Haz clic en un paso para ver cómo aplicarlo en un problema real.</div>
+  </div>
+
+  <!-- Simulador paso a paso -->
+  <div class="card">
+    <div class="card-title">🎮 Simulador: Resuelve Paso a Paso</div>
+    <div class="sim-box">
+      <h3>📝 Problema actual:</h3>
+      <div id="compoSimProblem" class="ex-display" style="background:#fff;padding:16px;margin:0 0 12px;"></div>
+      <div id="compoStepList"></div>
+      <button class="btn btn-primary" style="margin-top:12px;" onclick="nextCompoStep()">➡️ Siguiente Paso</button>
+      <button class="btn btn-outline btn-sm" style="margin-left:10px;" onclick="loadCompoSim()">🎲 Nuevo Problema</button>
+    </div>
+  </div>
+
+  <!-- Ejemplos ilustrativos -->
+  <div class="card">
+    <div class="card-title">💡 Ejemplos Ilustrativos</div>
+    <div id="compoExamples"></div>
+  </div>
+
+  <!-- Repaso Gamificado -->
+  <div class="review-card">
+    <h3>🏅 Quiz Rápido - Componentes</h3>
+    <div class="streak-bar">⚡ Puntaje: <span id="compoScore">0</span> / <span id="compoTotal">5</span></div>
+    <div id="compoQuizArea"></div>
+    <button class="btn btn-primary btn-sm" onclick="loadCompoQuiz()" id="compoQuizBtn" style="margin-top:12px;">🎯 Iniciar Quiz</button>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECCIÓN 5: TIPOS DE RAZONAMIENTO
+     ============================================================ -->
+<section class="section" id="sec-types">
+  <div class="sec-header">
+    <span class="sec-header-icon">🔀</span>
+    <h1>Tipos de Razonamiento Lógico</h1>
+    <p>Aprende a distinguir los cuatro tipos principales de razonamiento lógico con ejemplos claros.</p>
+    <span class="sec-badge">📚 Módulo 5 · Tipos</span>
+  </div>
+
+  <!-- Tarjetas de tipos -->
+  <div class="card">
+    <div class="card-title">📊 Los 4 Tipos de Razonamiento</div>
+    <div class="grid-2">
+      <div class="type-card deductive" style="text-align:left;cursor:default;">
+        <div class="type-icon">🔽</div>
+        <h3>Razonamiento Deductivo</h3>
+        <p style="margin:8px 0;font-size:13px;">Partimos de <strong>reglas generales</strong> para llegar a casos particulares.</p>
+        <div class="highlight highlight-blue" style="margin:8px 0;">
+          <span class="highlight-icon">📌</span>
+          <div style="font-size:13px;">Todos los perros son animales → Fido es perro → <strong>Fido es animal.</strong></div>
+        </div>
+        <div class="tag">General → Particular</div>
+      </div>
+      <div class="type-card inductive" style="text-align:left;cursor:default;">
+        <div class="type-icon">🔼</div>
+        <h3>Razonamiento Inductivo</h3>
+        <p style="margin:8px 0;font-size:13px;">Observamos <strong>casos particulares</strong> para llegar a una regla general.</p>
+        <div class="highlight highlight-green" style="margin:8px 0;">
+          <span class="highlight-icon">📌</span>
+          <div style="font-size:13px;">Cada mañana sale el sol → <strong>Probablemente mañana también saldrá.</strong></div>
+        </div>
+        <div class="tag" style="background:#e8f5e9;color:#2e7d32;">Particular → General</div>
+      </div>
+      <div class="type-card" style="border-top:4px solid #f57f17;text-align:left;cursor:default;">
+        <div class="type-icon">🔀</div>
+        <h3>Razonamiento Abductivo</h3>
+        <p style="margin:8px 0;font-size:13px;">Buscamos la <strong>explicación más probable</strong> a lo que observamos.</p>
+        <div class="highlight highlight-yellow" style="margin:8px 0;">
+          <span class="highlight-icon">📌</span>
+          <div style="font-size:13px;">La calle está mojada → <strong>Probablemente llovió.</strong></div>
+        </div>
+        <div class="tag" style="background:#fff8e1;color:#f57f17;">Observación → Hipótesis</div>
+      </div>
+      <div class="type-card analogical" style="text-align:left;cursor:default;">
+        <div class="type-icon">🔁</div>
+        <h3>Razonamiento Analógico</h3>
+        <p style="margin:8px 0;font-size:13px;">Comparamos <strong>situaciones similares</strong> para encontrar soluciones.</p>
+        <div class="highlight highlight-purple" style="margin:8px 0;">
+          <span class="highlight-icon">📌</span>
+          <div style="font-size:13px;">Si 2+2=4, entonces ● + ● = ●● <strong>(misma estructura)</strong></div>
+        </div>
+        <div class="tag" style="background:#f3e5f5;color:#6a1b9a;">Similar → Similar</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6 ejemplos ilustrativos interactivos -->
+  <div class="card">
+    <div class="card-title">💡 6 Ejemplos Ilustrativos Interactivos</div>
+    <div id="typesExamples"></div>
+  </div>
+
+  <!-- Simulador de tipos -->
+  <div class="card">
+    <div class="card-title">🎮 Simulador: ¿Qué tipo de razonamiento es?</div>
+    <div class="sim-box">
+      <h3>🤔 Lee el argumento e identifica su tipo:</h3>
+      <div id="typeSimText" class="ex-display" style="background:#fff;padding:16px;margin:0 0 12px;min-height:80px;"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;" id="typeSimOptions"></div>
+      <div id="typeSimResult" class="sim-result"></div>
+      <button class="btn btn-primary" onclick="loadTypeSim()" style="margin-top:14px;">🎲 Nuevo Ejemplo</button>
+    </div>
+  </div>
+
+  <!-- Repaso Gamificado -->
+  <div class="review-card">
+    <h3>🏅 Desafío: Identifica el Tipo</h3>
+    <div class="streak-bar">🎯 Aciertos: <span id="typeScore">0</span> | ❌ Errores: <span id="typeErrors">0</span></div>
+    <div id="typeQuizArea"></div>
+    <button class="btn btn-primary btn-sm" onclick="startTypeQuiz()" id="typeQuizBtn" style="margin-top:12px;">🚀 Iniciar Desafío</button>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECCIÓN 6: PROBLEMAS DE APLICACIÓN
+     ============================================================ -->
+<section class="section" id="sec-prob">
+  <div class="sec-header">
+    <span class="sec-header-icon">🏆</span>
+    <h1>Problemas de Aplicación</h1>
+    <p>Practica con problemas reales, genera ejercicios aleatorios y crea tu propia hoja de trabajo.</p>
+    <span class="sec-badge">📚 Módulo 6 · Práctica</span>
+  </div>
+
+  <!-- 6 Ejemplos con solución paso a paso -->
+  <div class="card">
+    <div class="card-title">📚 6 Problemas con Solución Paso a Paso</div>
+    <div id="problemsArea"></div>
+  </div>
+
+  <!-- Generador de ejercicios -->
+  <div class="card">
+    <div class="card-title">🎲 Generador de Ejercicios Aleatorios</div>
+    <div class="gen-panel">
+      <div style="font-size:42px;margin-bottom:10px;">🎯</div>
+      <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">Genera un ejercicio aleatorio y ponlo a prueba. Escribe tu respuesta y verifica.</p>
+      <button class="btn btn-primary btn-lg" onclick="generateExercise()">🎲 Generar Ejercicio</button>
+    </div>
+    <div id="exGenArea" style="display:none;">
+      <div id="exGenProblem" class="ex-display"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;" id="exGenOptions"></div>
+      <div id="exGenFeedback" class="sim-result"></div>
+      <button class="btn btn-outline btn-sm" onclick="generateExercise()" style="margin-top:10px;">🔄 Otro ejercicio</button>
+    </div>
+  </div>
+
+  <!-- Generador de hoja de ejercicios -->
+  <div class="card">
+    <div class="card-title">📄 Generador de Hoja de Ejercicios (PDF)</div>
+    <div class="highlight highlight-blue">
+      <span class="highlight-icon">ℹ️</span>
+      <div>Configura los datos y genera tu hoja de ejercicios personalizada para imprimir o guardar como PDF.</div>
+    </div>
+    <div class="ws-form">
+      <div class="form-group">
+        <label class="form-label">🏫 Centro Educativo</label>
+        <input class="form-input" type="text" id="ws-school" placeholder="Ej: Escuela Nacional Modelo">
+      </div>
+      <div class="form-group">
+        <label class="form-label">👨‍🏫 Nombre del Maestro/a</label>
+        <input class="form-input" type="text" id="ws-teacher" placeholder="Ej: Lic. María García">
+      </div>
+      <div class="form-group">
+        <label class="form-label">📚 Curso / Grado</label>
+        <input class="form-input" type="text" id="ws-course" placeholder="Ej: 7mo Grado - Sección A">
+      </div>
+      <div class="form-group">
+        <label class="form-label">📅 Fecha</label>
+        <input class="form-input" type="date" id="ws-date">
+      </div>
+      <div class="form-group full">
+        <label class="form-label">🔢 Cantidad de Ejercicios: <span class="range-val" id="wsQtyVal">10</span></label>
+        <input type="range" id="ws-qty" min="5" max="20" value="10" oninput="document.getElementById('wsQtyVal').textContent=this.value">
+      </div>
+      <div class="form-group full">
+        <label class="form-label">🧩 Tipo de Ejercicios con Agrupadores:</label>
+        <div class="check-group">
+          <label class="check-label"><input type="checkbox" id="ws-par" checked> ( ) Paréntesis</label>
+          <label class="check-label"><input type="checkbox" id="ws-bra"> [ ] Corchetes</label>
+          <label class="check-label"><input type="checkbox" id="ws-cur"> { } Llaves</label>
+          <label class="check-label" style="background:#e8f5e9;border-color:#a5d6a7;">
+            <input type="checkbox" id="ws-all" onchange="toggleAll(this)"> Todos los tipos
+          </label>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="generateWorksheet()">👁️ Previsualizar Hoja</button>
+      <button class="btn btn-success" onclick="printWorksheet()" id="btnPrintWS" style="display:none;">🖨️ Guardar / Imprimir PDF</button>
+    </div>
+    <div id="wsPreview" style="margin-top:16px;display:none;">
+      <div style="border:2px solid #ccc;border-radius:10px;padding:20px;background:#fff;" id="wsPreviewContent"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECCIÓN 7: EVALUACIÓN FINAL
+     ============================================================ -->
+<section class="section" id="sec-eval">
+  <div class="sec-header">
+    <span class="sec-header-icon">📝</span>
+    <h1>Evaluación Final</h1>
+    <p>Demuestra todo lo que has aprendido. 10 preguntas · 1 punto cada una · ¡Tú puedes!</p>
+    <span class="sec-badge">📚 Módulo 7 · Evaluación · 20 minutos</span>
+  </div>
+
+  <div class="card" id="evalIntroCard">
+    <div class="card-title">📋 Instrucciones</div>
+    <div class="highlight highlight-blue">
+      <span class="highlight-icon">📌</span>
+      <div>
+        <strong>Lee cada pregunta con cuidado</strong> y selecciona la respuesta correcta.<br>
+        • Solo hay <strong>UNA</strong> respuesta correcta por pregunta.<br>
+        • Recibirás retroalimentación inmediata en cada pregunta.<br>
+        • Al final verás tu puntaje total con una calificación.<br>
+        • <em>Tiempo sugerido: 20 minutos | Puntaje total: 10 puntos</em>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:16px;">
+      <button class="btn btn-primary btn-lg" onclick="startEval()">🚀 Iniciar Evaluación</button>
+    </div>
+  </div>
+
+  <div id="evalContainer" style="display:none;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+      <div style="font-size:14px;font-weight:700;color:var(--text-dark);">📝 Evaluación Final - Razonamiento Lógico</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="font-size:14px;color:var(--text-muted);">Respondidas: <strong id="evalAnswered">0</strong>/10</div>
+        <div class="progress-bar-wrap" style="width:120px;"><div class="progress-bar" id="evalProgress" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div id="evalQuestionsArea"></div>
+    <div style="text-align:center;margin-top:20px;">
+      <button class="btn btn-primary btn-lg" onclick="submitEval()" id="evalSubmitBtn" disabled>✅ Ver Resultados</button>
+    </div>
+  </div>
+
+  <div id="evalResults" style="display:none;"></div>
+</section>
+
+</main>
+
+<!-- ============================================================
+     PIE DE PÁGINA
+     ============================================================ -->
+<footer>
+  © 2026 MenteMatematica. Todos los derechos reservados VC.
+</footer>
+
+<!-- ============================================================
+     ÁREA DE IMPRESIÓN (Hoja de ejercicios) - invisible en pantalla
+     ============================================================ -->
+<div id="ws-print-area" style="display:none;"></div>
+
+<!-- ============================================================
+     JAVASCRIPT - Lógica completa de la aplicación
+     ============================================================ -->
+<script>
+
+/* ============================================================
+   SISTEMA DE PUNTUACIÓN GLOBAL
+   ============================================================ */
+let totalPoints = 0;
+
+function addPoints(pts) {
+  totalPoints += pts;
+  document.getElementById('totalPts').textContent = totalPoints;
+}
+
+/* ============================================================
+   NAVEGACIÓN DINÁMICA
+   ============================================================ */
+function showSection(id) {
+  // Ocultar todas las secciones
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  // Mostrar la sección seleccionada
+  document.getElementById(id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  // Inicializar canvas o contenido si es necesario
+  initSection(id);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function initSection(id) {
+  switch(id) {
+    case 'sec-intro':   initCanvasIntro(); break;
+    case 'sec-def':     initCanvasDef(); initDefQuiz(); break;
+    case 'sec-props':   loadPropSim(); initPropFlash(); break;
+    case 'sec-compo':   loadCompoSim(); loadCompoExamples(); loadCompoQuiz(); break;
+    case 'sec-types':   loadTypesExamples(); loadTypeSim(); initTypeQuiz(); break;
+    case 'sec-prob':    loadProblems(); break;
+    case 'sec-eval':    break;
+  }
+}
+
+/* ============================================================
+   CANVAS - SECCIÓN 1: Red Neuronal Animada
+   ============================================================ */
+let introAnimId = null;
+
+function initCanvasIntro() {
+  const canvas = document.getElementById('canvasIntro');
+  if (!canvas || canvas.dataset.init) return;
+  canvas.dataset.init = 'true';
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  const nodes = [];
+  for (let i = 0; i < 22; i++) {
+    nodes.push({
+      x: 40 + Math.random() * (W - 80),
+      y: 20 + Math.random() * (H - 40),
+      r: 5 + Math.random() * 8,
+      vx: (Math.random() - 0.5) * 0.8,
+      vy: (Math.random() - 0.5) * 0.8,
+      hue: 210 + Math.random() * 40
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#0a2d6e';
+    ctx.fillRect(0, 0, W, H);
+
+    // Conexiones
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(100,180,255,${(1 - dist/120) * 0.5})`;
+          ctx.lineWidth = 1;
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Nodos
+    nodes.forEach(n => {
+      const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r);
+      grad.addColorStop(0, `hsla(${n.hue},100%,80%,1)`);
+      grad.addColorStop(1, `hsla(${n.hue},100%,50%,0.4)`);
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      n.x += n.vx;
+      n.y += n.vy;
+      if (n.x < n.r || n.x > W - n.r) n.vx *= -1;
+      if (n.y < n.r || n.y > H - n.r) n.vy *= -1;
+    });
+
+    // Texto
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx.font = 'bold 28px Segoe UI, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('🧠 Razonamiento Lógico', W/2, H/2 - 10);
+    ctx.font = '15px Segoe UI, sans-serif';
+    ctx.fillStyle = 'rgba(180,210,255,0.85)';
+    ctx.fillText('Aprende a pensar con lógica · Nivel 9 - 15 años', W/2, H/2 + 20);
+
+    introAnimId = requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+/* ============================================================
+   CANVAS - SECCIÓN 2: Diagrama de Razonamiento
+   ============================================================ */
+function initCanvasDef() {
+  const canvas = document.getElementById('canvasDef');
+  if (!canvas || canvas.dataset.init) return;
+  canvas.dataset.init = 'true';
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  ctx.fillStyle = '#f0f4ff';
+  ctx.fillRect(0, 0, W, H);
+
+  const boxes = [
+    {x:60,  y:90, w:140, h:60, label:'📋 Premisas',    color:'#1565c0', text:'Información conocida'},
+    {x:330, y:90, w:140, h:60, label:'⚙️ Proceso',     color:'#6a1b9a', text:'Aplicar lógica'},
+    {x:600, y:90, w:140, h:60, label:'✅ Conclusión',   color:'#2e7d32', text:'Resultado válido'},
+  ];
+
+  boxes.forEach((b, i) => {
+    // Sombra
+    ctx.shadowColor = 'rgba(0,0,0,0.15)';
+    ctx.shadowBlur = 10;
+    // Caja
+    ctx.fillStyle = b.color;
+    roundRect(ctx, b.x, b.y, b.w, b.h, 10);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    // Texto
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 13px Segoe UI, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(b.label, b.x + b.w/2, b.y + 24);
+    ctx.font = '11px Segoe UI, sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.fillText(b.text, b.x + b.w/2, b.y + 42);
+    // Flecha
+    if (i < 2) {
+      drawArrow(ctx, b.x + b.w + 8, b.y + 30, boxes[i+1].x - 8, b.y + 30);
+    }
+  });
+
+  // Ejemplo debajo
+  ctx.fillStyle = '#37474f';
+  ctx.font = '13px Segoe UI, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('Ejemplo: "Todos los pájaros tienen alas" + "El loro es pájaro"', 60, 185);
+  ctx.fillStyle = '#1565c0';
+  ctx.font = 'bold 13px Segoe UI, sans-serif';
+  ctx.fillText('→ Conclusión: "El loro tiene alas" ✅', 60, 205);
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.lineTo(x+w-r, y);
+  ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h-r);
+  ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  ctx.lineTo(x+r, y+h);
+  ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+  ctx.lineTo(x, y+r);
+  ctx.quadraticCurveTo(x, y, x+r, y);
+  ctx.closePath();
+}
+
+function drawArrow(ctx, x1, y1, x2, y2) {
+  ctx.beginPath();
+  ctx.strokeStyle = '#90a4ae';
+  ctx.lineWidth = 2;
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
+  // Punta
+  ctx.beginPath();
+  ctx.fillStyle = '#90a4ae';
+  ctx.moveTo(x2, y2);
+  ctx.lineTo(x2-10, y2-5);
+  ctx.lineTo(x2-10, y2+5);
+  ctx.closePath();
+  ctx.fill();
+}
+
+/* ============================================================
+   SECCIÓN 2: QUIZ DE DEFINICIÓN
+   ============================================================ */
+const defQuizItems = [
+  {text: '"Todos los triángulos tienen 3 lados. Esta figura tiene 3 lados. Por lo tanto, es un triángulo." — ¿Es razonamiento lógico válido?', answer: false, explain: 'Incorrecto. Aunque la conclusión puede ser cierta, el razonamiento es inválido: no todo lo que tiene 3 lados es necesariamente un triángulo según esas premisas. Es la falacia de afirmar el consecuente.'},
+  {text: '"Todos los mamíferos respiran. El delfín es mamífero. Por lo tanto, el delfín respira." — ¿Es válido?', answer: true, explain: 'Correcto. Es razonamiento deductivo válido: de dos premisas verdaderas se deriva una conclusión necesariamente verdadera.'},
+  {text: '"Hoy me fue mal en el examen porque es lunes." — ¿Es razonamiento lógico?', answer: false, explain: 'No. El día de la semana no es una causa lógica del resultado de un examen. No hay relación causal válida.'},
+  {text: '"He visto 10 cisnes blancos, por lo tanto todos los cisnes son blancos." — ¿Es razonamiento lógico sólido?', answer: false, explain: 'No es sólido. Es inducción débil: observar algunos casos no garantiza una regla universal (existen cisnes negros).'},
+];
+
+let defQuizIdx = 0, defQuizScore = 0;
+
+function initDefQuiz() {
+  defQuizIdx = 0; defQuizScore = 0;
+  renderDefQuiz();
+}
+
+function renderDefQuiz() {
+  const area = document.getElementById('defQuizArea');
+  if (defQuizIdx >= defQuizItems.length) {
+    area.innerHTML = `<div class="highlight highlight-green"><span class="highlight-icon">🎉</span><div><strong>¡Completaste el quiz de definición!</strong> Puntuación: ${defQuizScore}/${defQuizItems.length}<br><button class="btn btn-outline btn-sm" onclick="initDefQuiz()" style="margin-top:8px;">🔄 Repetir</button></div></div>`;
+    return;
+  }
+  const q = defQuizItems[defQuizIdx];
+  area.innerHTML = `
+    <div class="quiz-question" id="dqBox">
+      <div class="q-num">Pregunta ${defQuizIdx+1}/${defQuizItems.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="options">
+        <button class="option-btn" onclick="answerDef(true)">✅ Sí, es válido</button>
+        <button class="option-btn" onclick="answerDef(false)">❌ No es válido / Incorrecto</button>
+      </div>
+      <div id="defFb"></div>
+    </div>
+  `;
+}
+
+function answerDef(ans) {
+  const q = defQuizItems[defQuizIdx];
+  const box = document.getElementById('dqBox');
+  const fb = document.getElementById('defFb');
+  document.querySelectorAll('#defQuizArea .option-btn').forEach(b => b.disabled = true);
+  if (ans === q.answer) {
+    box.classList.add('correct');
+    fb.innerHTML = `<div class="feedback-msg fb-ok">✅ ¡Correcto! ${q.explain}</div>`;
+    defQuizScore++;
+    addPoints(5);
+  } else {
+    box.classList.add('wrong');
+    fb.innerHTML = `<div class="feedback-msg fb-err">❌ Incorrecto. ${q.explain}</div>`;
+  }
+  defQuizIdx++;
+  setTimeout(renderDefQuiz, 2400);
+}
+
+/* ============================================================
+   SECCIÓN 3: SIMULADOR DE PROPIEDADES
+   ============================================================ */
+const propDetails = [
+  {name:'Coherencia', icon:'🔗', color:'#1565c0', ex: 'Un argumento coherente no dice: "Todos los perros son grandes" y luego "Mi perro chihuahua es pequeño" sin resolver la contradicción.', counter:'Ejemplo incoherente: "Estudiar siempre ayuda. Sin embargo, estudiar no sirve de nada."'},
+  {name:'Validez', icon:'✅', color:'#2e7d32', ex: 'Si llueve, la calle se moja. Está lloviendo. → La calle está mojada. (La conclusión se sigue necesariamente)', counter:'Inválido: "Todos los gatos maullan. Mi perro maúlla. Por lo tanto mi perro es gato." ← no válido.'},
+  {name:'Consistencia', icon:'🧱', color:'#f57f17', ex: 'Un sistema consistente: "Las aves tienen alas" + "Los gatos son mamíferos" — no se contradicen.', counter:'Inconsistente: "Figura A es un cuadrado" + "Figura A tiene 3 lados" — ¡imposible!'},
+  {name:'Claridad', icon:'💎', color:'#6a1b9a', ex: 'Claro: "El triángulo equilátero tiene tres lados iguales." (términos bien definidos)', counter:'Poco claro: "Esa cosa grande es bastante diferente a la otra." (¿qué cosa? ¿qué diferente?)'},
+  {name:'Precisión', icon:'🎯', color:'#00695c', ex: 'Preciso: "Si A > B y B > C, entonces A > C." (sin ambigüedades)', counter:'Impreciso: "A es probablemente mayor que B de alguna manera." (vago)'},
+];
+
+const propSimArgs = [
+  {text:'"Todos los insectos tienen 6 patas. La araña tiene 8 patas. La araña no es un insecto."', prop:1, propName:'Validez', explain:'Es un argumento válido: la conclusión se sigue correctamente de las premisas.'},
+  {text:'"El agua es caliente. El agua es fría." — Estas dos afirmaciones sobre el mismo vaso de agua.', prop:2, propName:'Consistencia', explain:'Viola la consistencia: no puede ser caliente y fría al mismo tiempo.'},
+  {text:'"Esa cosa es muy diferente." — Sin especificar qué cosa ni diferente a qué.', prop:3, propName:'Claridad', explain:'Falta claridad: los términos son vagos e indefinidos.'},
+  {text:'"A > B y B > C, entonces A > C."', prop:1, propName:'Validez', explain:'Razonamiento perfectamente válido: la cadena de desigualdades se deduce lógicamente.'},
+  {text:'"Tengo más de 5 pelotas, probablemente muchas pelotas."', prop:4, propName:'Precisión', explain:'Falta precisión: "muchas" es un término ambiguo que no define una cantidad exacta.'},
+];
+
+let propSimCurrent = 0;
+
+function loadPropSim() {
+  propSimCurrent = Math.floor(Math.random() * propSimArgs.length);
+  const item = propSimArgs[propSimCurrent];
+  document.getElementById('propSimText').innerHTML = `<em style="font-style:italic;font-size:15px;">"${item.text}"</em>`;
+  const opts = document.getElementById('propSimOptions');
+  opts.innerHTML = '';
+  propDetails.forEach((p, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.style.flex = '1';
+    btn.style.minWidth = '120px';
+    btn.innerHTML = `${p.icon} ${p.name}`;
+    btn.onclick = () => checkPropSim(i, item, opts);
+    opts.appendChild(btn);
+  });
+  document.getElementById('propSimResult').className = 'sim-result';
+  document.getElementById('propSimResult').style.display = 'none';
+}
+
+function checkPropSim(selected, item, opts) {
+  opts.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+  const res = document.getElementById('propSimResult');
+  if (selected === item.prop) {
+    res.className = 'sim-result show sim-ok';
+    res.textContent = `✅ ¡Correcto! Propiedad: ${item.propName}. ${item.explain}`;
+    addPoints(8);
+  } else {
+    res.className = 'sim-result show sim-err';
+    res.textContent = `❌ No exactamente. La propiedad en juego es: ${item.propName}. ${item.explain}`;
+  }
+}
+
+function showPropDetail(idx) {
+  const p = propDetails[idx];
+  const det = document.getElementById('propDetail');
+  det.className = 'sim-result show sim-info';
+  det.style.background = p.color + '18';
+  det.style.borderLeft = `4px solid ${p.color}`;
+  det.innerHTML = `<strong>${p.icon} ${p.name}:</strong><br>${p.ex}<br><em style="color:var(--red);">⚠️ ${p.counter}</em>`;
+}
+
+/* ============================================================
+   FLASHCARDS - PROPIEDADES
+   ============================================================ */
+const propFlashData = [
+  {q:'¿Qué significa que un argumento sea COHERENTE?', a:'Que las ideas no se contradicen entre sí dentro del argumento.'},
+  {q:'¿Qué es la VALIDEZ en razonamiento lógico?', a:'La conclusión se sigue necesariamente de las premisas dadas.'},
+  {q:'¿Qué es la CONSISTENCIA?', a:'Que no existan contradicciones internas en el conjunto de ideas.'},
+  {q:'¿Qué implica la CLARIDAD en un argumento?', a:'Que todos los términos y conceptos estén bien definidos y sean comprensibles.'},
+  {q:'¿Qué es la PRECISIÓN en el razonamiento?', a:'Que los argumentos sean exactos, sin ambigüedades ni vaguedades.'},
+  {q:'Da un ejemplo de razonamiento VÁLIDO.', a:'"Todos los pájaros vuelan. El cóndor es un pájaro. El cóndor vuela."'},
+  {q:'Da un ejemplo de INCOHERENCIA lógica.', a:'"Siempre llueve en verano. Hoy es verano. Hoy no llueve." (contradice la premisa)'},
+];
+
+let propFlashIdx = 0, propFlashRevealed = false, propStreak = 0;
+
+function initPropFlash() {
+  propFlashIdx = 0; propStreak = 0;
+  document.getElementById('propStreak').textContent = '0';
+  updatePropFlash();
+}
+
+function updatePropFlash() {
+  const fc = document.getElementById('propFlashCard');
+  const data = propFlashData[propFlashIdx % propFlashData.length];
+  fc.classList.remove('reveal');
+  fc.innerHTML = `<div style="font-size:15px;font-weight:700;color:var(--text-dark);">${data.q}</div><div style="font-size:12px;color:var(--text-muted);margin-top:8px;">Haz clic para ver la respuesta</div>`;
+  document.getElementById('propFlashActions').style.display = 'none';
+  propFlashRevealed = false;
+  document.getElementById('propFlashProgress').textContent = `Tarjeta ${(propFlashIdx % propFlashData.length) + 1} de ${propFlashData.length}`;
+}
+
+function revealPropFlash() {
+  if (propFlashRevealed) return;
+  const data = propFlashData[propFlashIdx % propFlashData.length];
+  const fc = document.getElementById('propFlashCard');
+  fc.classList.add('reveal');
+  fc.innerHTML = `<div style="font-size:14px;font-weight:700;color:var(--navy);">💡 ${data.a}</div>`;
+  document.getElementById('propFlashActions').style.display = 'flex';
+  propFlashRevealed = true;
+}
+
+function nextPropFlash(knew) {
+  if (knew) { propStreak++; addPoints(3); } else { propStreak = 0; }
+  document.getElementById('propStreak').textContent = propStreak;
+  propFlashIdx++;
+  updatePropFlash();
+}
+
+/* ============================================================
+   SECCIÓN 4: COMPONENTES - Paso a paso
+   ============================================================ */
+const stepDetails = [
+  {title:'🔍 Observación', detail:'Leo el problema completo con atención. Identifico los datos que me dan y lo que debo encontrar. Ejemplo: En "Ana tiene más pelotas que Beto, y Beto más que Carlos" — observo que hay 3 personas y una relación de orden.'},
+  {title:'🧩 Análisis', detail:'Separo la información en partes. Datos: Ana > Beto, Beto > Carlos. Pregunta: ¿Quién tiene más, Ana o Carlos? Identifico qué tipo de problema es (comparación transitiva).'},
+  {title:'🔗 Relación', detail:'Conecto las ideas: Ana > Beto y Beto > Carlos → por propiedad transitiva: Ana > Carlos. Construyo la cadena: Ana > Beto > Carlos.'},
+  {title:'✅ Conclusión', detail:'Respondo la pregunta: Ana tiene más pelotas que Carlos, porque la cadena muestra Ana > Carlos directamente.'},
+  {title:'🔄 Verificación', detail:'¿Tiene sentido? Sí: si Ana supera a Beto y Beto supera a Carlos, lógicamente Ana supera a Carlos. ✅ La respuesta es correcta.'},
+];
+
+const compoProblems = [
+  {problem: 'Pedro es más alto que Luis. Luis es más alto que María. ¿Quién es el más bajo de los tres?', steps: ['Observo: hay 3 personas y 2 relaciones de altura.','Analizo: Pedro > Luis, Luis > María. Busco el más bajo.','Relaciono: Pedro > Luis > María (cadena de mayor a menor)','Concluyo: María es la más baja.','Verifico: La cadena Pedro > Luis > María confirma que María está al final.']},
+  {problem: 'La serie es: 2, 4, 6, 8, ___. ¿Qué número falta?', steps: ['Observo: una secuencia de 5 números donde falta el último.','Analizo: 4-2=2, 6-4=2, 8-6=2. La diferencia es constante (2).','Relaciono: Es una progresión aritmética con razón 2.','Concluyo: El número que falta es 8+2 = 10.','Verifico: 2,4,6,8,10 — sí, aumenta de 2 en 2. ✅']},
+];
+
+let compoSimIdx = 0, compoStepIdx = 0;
+
+function loadCompoSim() {
+  compoSimIdx = Math.floor(Math.random() * compoProblems.length);
+  compoStepIdx = 0;
+  const p = compoProblems[compoSimIdx];
+  document.getElementById('compoSimProblem').textContent = p.problem;
+  renderCompoSteps();
+}
+
+function renderCompoSteps() {
+  const p = compoProblems[compoSimIdx];
+  const area = document.getElementById('compoStepList');
+  area.innerHTML = '';
+  for (let i = 0; i < compoStepIdx; i++) {
+    const comp = stepDetails[i];
+    const div = document.createElement('div');
+    div.className = 'highlight highlight-blue';
+    div.style.marginBottom = '8px';
+    div.innerHTML = `<span class="highlight-icon">${comp.title.split(' ')[0]}</span><div><strong>${comp.title}:</strong> ${p.steps[i]}</div>`;
+    area.appendChild(div);
+  }
+  if (compoStepIdx >= 5) {
+    const done = document.createElement('div');
+    done.className = 'highlight highlight-green';
+    done.innerHTML = `<span class="highlight-icon">🎉</span><div><strong>¡Problema resuelto!</strong> Has completado los 5 pasos del razonamiento lógico.</div>`;
+    area.appendChild(done);
+    addPoints(15);
+  }
+}
+
+function nextCompoStep() {
+  if (compoStepIdx < 5) {
+    compoStepIdx++;
+    renderCompoSteps();
+    // Activar paso visual
+    activateStep(compoStepIdx - 1);
+  }
+}
+
+function activateStep(idx) {
+  document.querySelectorAll('.step-item').forEach((s, i) => {
+    s.classList.toggle('active-step', i === idx);
+  });
+  if (idx >= 0 && idx < stepDetails.length) {
+    const sd = document.getElementById('stepDetail');
+    sd.className = 'sim-result show sim-info';
+    sd.innerHTML = `<strong>${stepDetails[idx].title}:</strong><br>${stepDetails[idx].detail}`;
+  }
+}
+
+function loadCompoExamples() {
+  const examples = [
+    {num:1, title:'Comparación Transitiva', text:'Ana es mayor que Beto. Beto es mayor que Carlos. ¿Cuál es el orden?', answer:'Orden: Ana > Beto > Carlos. Por la propiedad transitiva.'},
+    {num:2, title:'Razonamiento Deductivo', text:'Todos los reptiles son de sangre fría. La víbora es un reptil. ¿Qué podemos concluir?', answer:'La víbora es de sangre fría. (Conclusión deductiva válida)'},
+    {num:3, title:'Identificación de Patrón', text:'3, 6, 9, 12, ___, 18. ¿Qué número falta?', answer:'Falta el 15. Es una progresión aritmética con razón 3.'},
+  ];
+  const area = document.getElementById('compoExamples');
+  area.innerHTML = examples.map(e => `
+    <div class="example-item">
+      <div class="ex-title">Ejemplo ${e.num}: ${e.title}</div>
+      <div class="ex-body">${e.text}</div>
+      <button class="btn btn-outline btn-sm" style="margin-top:8px;" onclick="this.nextElementSibling.classList.toggle('show');this.textContent=this.nextElementSibling.classList.contains('show')?'🙈 Ocultar respuesta':'👁️ Ver respuesta'">👁️ Ver respuesta</button>
+      <div class="ex-answer">✅ ${e.answer}</div>
+    </div>
+  `).join('');
+}
+
+/* ============================================================
+   QUIZ DE COMPONENTES
+   ============================================================ */
+const compoQuizData = [
+  {q:'¿Cuál es el primer paso del razonamiento lógico?', opts:['Análisis','Observación','Conclusión','Verificación'], correct:1},
+  {q:'El paso "Relación" consiste en:', opts:['Llegar a una respuesta final','Revisar el resultado','Conectar ideas para encontrar un patrón','Separar la información'], correct:2},
+  {q:'¿Para qué sirve la Verificación?', opts:['Crear el problema','Observar los datos','Identificar el tipo de problema','Comprobar que la respuesta es correcta'], correct:3},
+  {q:'Si separo un problema en partes más pequeñas, estoy haciendo:', opts:['Observación','Análisis','Relación','Conclusión'], correct:1},
+  {q:'La Conclusión es:', opts:['El paso más importante antes de analizar','Llegar a una respuesta usando la lógica','Conectar ideas entre sí','Observar los datos iniciales'], correct:1},
+];
+
+let compoScoreV = 0, compoQIdx = 0, compoAnswered = [];
+
+function loadCompoQuiz() {
+  compoScoreV = 0; compoQIdx = 0; compoAnswered = [];
+  document.getElementById('compoScore').textContent = '0';
+  renderCompoQuiz();
+  document.getElementById('compoQuizBtn').style.display = 'none';
+}
+
+function renderCompoQuiz() {
+  const area = document.getElementById('compoQuizArea');
+  if (compoQIdx >= compoQuizData.length) {
+    area.innerHTML = `<div class="highlight highlight-green"><span class="highlight-icon">🏆</span><div><strong>¡Quiz completado!</strong> Obtuviste ${compoScoreV}/${compoQuizData.length} puntos.<br><button class="btn btn-outline btn-sm" onclick="loadCompoQuiz()" style="margin-top:8px;">🔄 Repetir</button></div></div>`;
+    return;
+  }
+  const q = compoQuizData[compoQIdx];
+  area.innerHTML = `
+    <div class="quiz-question" id="cqBox">
+      <div class="q-num">${compoQIdx+1}/${compoQuizData.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">
+        ${q.opts.map((o,i)=>`<button class="option-btn" onclick="answerCompo(${i})">${String.fromCharCode(65+i)}) ${o}</button>`).join('')}
+      </div>
+      <div id="cqFb"></div>
+    </div>
+  `;
+}
+
+function answerCompo(sel) {
+  const q = compoQuizData[compoQIdx];
+  document.querySelectorAll('#cqBox .option-btn').forEach((b,i) => {
+    b.disabled = true;
+    if (i === q.correct) b.classList.add('selected-correct');
+    if (i === sel && sel !== q.correct) b.classList.add('selected-wrong');
+  });
+  const fb = document.getElementById('cqFb');
+  if (sel === q.correct) {
+    document.getElementById('cqBox').classList.add('correct');
+    fb.innerHTML = `<div class="feedback-msg fb-ok">✅ ¡Correcto!</div>`;
+    compoScoreV++;
+    document.getElementById('compoScore').textContent = compoScoreV;
+    addPoints(10);
+  } else {
+    document.getElementById('cqBox').classList.add('wrong');
+    fb.innerHTML = `<div class="feedback-msg fb-err">❌ La respuesta correcta era: ${q.opts[q.correct]}</div>`;
+  }
+  compoQIdx++;
+  setTimeout(renderCompoQuiz, 2000);
+}
+
+/* ============================================================
+   SECCIÓN 5: TIPOS - EJEMPLOS
+   ============================================================ */
+function loadTypesExamples() {
+  const area = document.getElementById('typesExamples');
+  if (area.dataset.loaded) return;
+  area.dataset.loaded = 'true';
+
+  const examples = [
+    {tipo:'Deductivo', icon:'🔽', color:'#1565c0', bg:'#e3f2fd', num:1,
+      problema:'Todos los mamíferos tienen corazón. El perro es un mamífero.',
+      solucion:'Conclusión: El perro tiene corazón. Partimos de una regla general (todos los mamíferos) y aplicamos a un caso particular (el perro).',
+      pasos:['Premisa general: Todos los mamíferos tienen corazón.','Caso particular: El perro es mamífero.','Aplicar la regla al caso: El perro → tiene corazón.']},
+    {tipo:'Deductivo', icon:'🔽', color:'#1565c0', bg:'#e3f2fd', num:2,
+      problema:'Si estudio, apruebo. Estudié.',
+      solucion:'Conclusión: Aprobé. Por la regla condicional (si P entonces Q, P es verdad → Q es verdad).',
+      pasos:['Regla: Si estudio → apruebo.','Dato: Estudié (P es verdad).','Conclusión: Aprobé (Q es verdad).']},
+    {tipo:'Inductivo', icon:'🔼', color:'#2e7d32', bg:'#e8f5e9', num:3,
+      problema:'Los últimos 7 lunes ha llovido.',
+      solucion:'Conclusión probable: El próximo lunes probablemente lloverá. Generalizamos de casos particulares a una regla general.',
+      pasos:['Observación 1: El lunes 1 llovió.','Observación 2-7: Todos los lunes llovió.','Generalización: "Los lunes suele llover."']},
+    {tipo:'Abductivo', icon:'🔀', color:'#f57f17', bg:'#fff8e1', num:4,
+      problema:'Llego a casa y hay agua en el piso.',
+      solucion:'Hipótesis más probable: Hubo una filtración o alguien derramó agua. Es la explicación más simple y probable.',
+      pasos:['Observo: Hay agua en el piso.','Busco la causa más probable.','Hipótesis: Hubo una filtración (explicación más razonable).']},
+    {tipo:'Analógico', icon:'🔁', color:'#6a1b9a', bg:'#f3e5f5', num:5,
+      problema:'En la Tierra hay vida porque tiene agua, atmósfera y temperatura adecuada. El planeta X tiene las mismas condiciones.',
+      solucion:'Conclusión analógica: El planeta X probablemente también tiene vida. Razonamos por similitud estructural.',
+      pasos:['Caso conocido: Tierra (agua + atmósfera + temperatura) → vida.','Caso nuevo: Planeta X (agua + atmósfera + temperatura).','Analogía: Si las condiciones son iguales, el resultado es similar.']},
+    {tipo:'Inductivo', icon:'🔼', color:'#2e7d32', bg:'#e8f5e9', num:6,
+      problema:'En 20 experimentos, el agua siempre hirvió a 100°C al nivel del mar.',
+      solucion:'Conclusión inductiva: El agua hierve a 100°C al nivel del mar. Múltiples observaciones nos llevan a una ley general.',
+      pasos:['Repito el experimento 20 veces.','Observo: Siempre hierve a 100°C al nivel del mar.','Generalizo: Ley del punto de ebullición del agua.']},
+  ];
+
+  area.innerHTML = examples.map(e => `
+    <div style="background:${e.bg};border-radius:12px;border-left:5px solid ${e.color};padding:18px 20px;margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <span style="font-size:20px;">${e.icon}</span>
+        <span style="background:${e.color};color:#fff;border-radius:20px;padding:2px 12px;font-size:12px;font-weight:800;">Razonamiento ${e.tipo}</span>
+        <span style="font-size:12px;color:var(--text-muted);">Ejemplo ${e.num}</span>
+      </div>
+      <div style="font-weight:700;color:var(--text-dark);font-size:14.5px;margin-bottom:8px;">📋 ${e.problema}</div>
+      <ol class="steps-list">
+        ${e.pasos.map(p=>`<li>${p}</li>`).join('')}
+      </ol>
+      <div style="background:rgba(255,255,255,0.7);border-radius:8px;padding:10px 14px;margin-top:10px;font-size:13.5px;font-weight:600;color:${e.color};">
+        ✅ ${e.solucion}
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ============================================================
+   SIMULADOR DE TIPOS
+   ============================================================ */
+const typeSimData = [
+  {text:'"Toda figura con 4 lados iguales es un cuadrado. Esta figura tiene 4 lados iguales. Por lo tanto, es un cuadrado."', tipo:'Deductivo', idx:0},
+  {text:'"He visto 50 cisnes y todos eran blancos. Probablemente todos los cisnes son blancos."', tipo:'Inductivo', idx:1},
+  {text:'"La hoja del árbol está mordida. Probablemente un insecto la comió."', tipo:'Abductivo', idx:2},
+  {text:'"Si el corazón bombea sangre en humanos, en otros vertebrados también debería haber un órgano similar."', tipo:'Analógico', idx:3},
+  {text:'"Cada vez que como chocolate me duele la cabeza. El chocolate probablemente me causa dolor de cabeza."', tipo:'Inductivo', idx:1},
+  {text:'"Todos los círculos tienen el mismo diámetro en todas sus partes. Esta figura es un círculo."', tipo:'Deductivo', idx:0},
+];
+
+const tiposNames = ['Deductivo','Inductivo','Abductivo','Analógico'];
+const tiposColors = ['#1565c0','#2e7d32','#f57f17','#6a1b9a'];
+
+let typeSimCurrent = 0;
+
+function loadTypeSim() {
+  typeSimCurrent = Math.floor(Math.random() * typeSimData.length);
+  const item = typeSimData[typeSimCurrent];
+  document.getElementById('typeSimText').innerHTML = `<em style="font-size:15px;">"${item.text}"</em>`;
+  const opts = document.getElementById('typeSimOptions');
+  opts.innerHTML = '';
+  tiposNames.forEach((t, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.style.flex = '1';
+    btn.style.minWidth = '130px';
+    btn.innerHTML = `${['🔽','🔼','🔀','🔁'][i]} ${t}`;
+    btn.onclick = () => checkTypeSim(i, item, opts);
+    opts.appendChild(btn);
+  });
+  const res = document.getElementById('typeSimResult');
+  res.className = 'sim-result';
+  res.style.display = 'none';
+}
+
+function checkTypeSim(sel, item, opts) {
+  opts.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+  const res = document.getElementById('typeSimResult');
+  if (sel === item.idx) {
+    res.className = 'sim-result show sim-ok';
+    res.textContent = `✅ ¡Correcto! Es razonamiento ${item.tipo}.`;
+    addPoints(10);
+  } else {
+    res.className = 'sim-result show sim-err';
+    res.textContent = `❌ No exactamente. Es razonamiento ${item.tipo}. ${item.text.substring(0,50)}...`;
+  }
+}
+
+/* ============================================================
+   QUIZ DE TIPOS
+   ============================================================ */
+const typeQuizData = [
+  {text:'"Todos los números pares son divisibles por 2. El 8 es par. El 8 es divisible por 2."', correct:0},
+  {text:'"He observado que cuando hay nubes oscuras llueve. Hay nubes oscuras → probablemente lloverá."', correct:1},
+  {text:'"El suelo está mojado. La explicación más probable es que llovió."', correct:2},
+  {text:'"Si la Tierra tiene luna y hay vida, y Marte también podría tener luna, quizás haya vida."', correct:3},
+  {text:'"Todos los estudiantes que estudian aprueban. Sofía estudió. Sofía aprobó."', correct:0},
+];
+
+let typeScoreV = 0, typeErrorsV = 0, typeQIdx = 0;
+
+function initTypeQuiz() {
+  typeScoreV = 0; typeErrorsV = 0; typeQIdx = 0;
+}
+
+function startTypeQuiz() {
+  typeScoreV = 0; typeErrorsV = 0; typeQIdx = 0;
+  document.getElementById('typeScore').textContent = '0';
+  document.getElementById('typeErrors').textContent = '0';
+  document.getElementById('typeQuizBtn').style.display = 'none';
+  renderTypeQuiz();
+}
+
+function renderTypeQuiz() {
+  const area = document.getElementById('typeQuizArea');
+  if (typeQIdx >= typeQuizData.length) {
+    area.innerHTML = `<div class="highlight highlight-green"><span class="highlight-icon">🏆</span><div><strong>¡Desafío completado!</strong> ✅ Aciertos: ${typeScoreV} | ❌ Errores: ${typeErrorsV}<br><button class="btn btn-outline btn-sm" onclick="startTypeQuiz()" style="margin-top:8px;">🔄 Repetir</button></div></div>`;
+    return;
+  }
+  const q = typeQuizData[typeQIdx];
+  area.innerHTML = `
+    <div class="quiz-question" id="tqBox">
+      <div class="q-num">Argumento ${typeQIdx+1}/${typeQuizData.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="options">
+        ${tiposNames.map((t,i)=>`<button class="option-btn" onclick="answerTypeQ(${i})">${['🔽','🔼','🔀','🔁'][i]} ${t}</button>`).join('')}
+      </div>
+      <div id="tqFb"></div>
+    </div>
+  `;
+}
+
+function answerTypeQ(sel) {
+  const q = typeQuizData[typeQIdx];
+  document.querySelectorAll('#tqBox .option-btn').forEach((b,i)=>{
+    b.disabled = true;
+    if(i===q.correct) b.classList.add('selected-correct');
+    if(i===sel&&sel!==q.correct) b.classList.add('selected-wrong');
+  });
+  const fb = document.getElementById('tqFb');
+  if (sel === q.correct) {
+    document.getElementById('tqBox').classList.add('correct');
+    fb.innerHTML = `<div class="feedback-msg fb-ok">✅ ¡Correcto! Es razonamiento ${tiposNames[q.correct]}.</div>`;
+    typeScoreV++;
+    document.getElementById('typeScore').textContent = typeScoreV;
+    addPoints(10);
+  } else {
+    document.getElementById('tqBox').classList.add('wrong');
+    fb.innerHTML = `<div class="feedback-msg fb-err">❌ Era razonamiento ${tiposNames[q.correct]}.</div>`;
+    typeErrorsV++;
+    document.getElementById('typeErrors').textContent = typeErrorsV;
+  }
+  typeQIdx++;
+  setTimeout(renderTypeQuiz, 2200);
+}
+
+/* ============================================================
+   SECCIÓN 6: PROBLEMAS DE APLICACIÓN
+   ============================================================ */
+function loadProblems() {
+  const area = document.getElementById('problemsArea');
+  if (area.dataset.loaded) return;
+  area.dataset.loaded = 'true';
+
+  const problems = [
+    {
+      num:1, level:'⭐ Principiante',
+      text:'En un salón de clases, todos los estudiantes que estudian para el examen obtienen buena nota. Rodrigo obtuvo mala nota. ¿Podemos concluir que Rodrigo no estudió para el examen?',
+      steps:['Premisa general: Todos los que estudian obtienen buena nota.','Dato conocido: Rodrigo obtuvo mala nota.','Contraposición: Si no hay buena nota → no estudió.','Conclusión: Sí, Rodrigo no estudió para el examen.','Verificación: Es lógicamente válido por contraposición.'],
+      answer:'Sí, Rodrigo no estudió. (Contraposición: si no buena nota → no estudió)'
+    },
+    {
+      num:2, level:'⭐ Principiante',
+      text:'Hay una hilera de figuras: círculo, cuadrado, triángulo, círculo, cuadrado, triángulo, círculo, ___. ¿Qué figura sigue?',
+      steps:['Observo: la secuencia es círculo, cuadrado, triángulo repetido.','Análisis: El patrón tiene 3 elementos que se repiten.','Relación: Posición 7 = círculo (inicio del 3er ciclo).','Conclusión: En la posición 8 sigue el cuadrado.','Verificación: ○□△ ○□△ ○□ → sí, el cuadrado.'],
+      answer:'Sigue el cuadrado. El patrón se repite cada 3 figuras: círculo, cuadrado, triángulo.'
+    },
+    {
+      num:3, level:'⭐⭐ Intermedio',
+      text:'Cinco niños se sientan en fila. Andrea está entre Blas y Carlos. Blas está a la izquierda de Andrea. Diana está a la izquierda de Blas. Edgar está a la derecha de Carlos. ¿Cuál es el orden de izquierda a derecha?',
+      steps:['Dato 1: Blas — Andrea — Carlos (Blas izquierda de Andrea).','Dato 2: Diana — Blas — Andrea — Carlos.','Dato 3: Carlos — Edgar (Edgar derecha de Carlos).','Construyo la fila completa.','Orden final: Diana - Blas - Andrea - Carlos - Edgar.'],
+      answer:'Diana - Blas - Andrea - Carlos - Edgar'
+    },
+    {
+      num:4, level:'⭐⭐ Intermedio',
+      text:'En un zoológico hay animales de cuatro patas y de dos patas. En total hay 7 animales y 20 patas. ¿Cuántos hay de cada tipo?',
+      steps:['Sea x = animales de 4 patas, y = animales de 2 patas.','Ecuación 1: x + y = 7 (total animales).','Ecuación 2: 4x + 2y = 20 (total patas).','De ec.1: y = 7-x → 4x + 2(7-x) = 20 → 2x = 6 → x = 3.','Resultado: 3 animales de cuatro patas y 4 de dos patas. Verifico: 3×4 + 4×2 = 12+8 = 20 ✅'],
+      answer:'3 animales de cuatro patas y 4 animales de dos patas.'
+    },
+    {
+      num:5, level:'⭐⭐ Intermedio',
+      text:'Valentina tiene el doble de caramelos que Jorge. Si juntos tienen 24 caramelos, ¿cuántos tiene cada uno?',
+      steps:['Valentina = 2 × Jorge (el doble).','Total: Jorge + Valentina = 24.','Sustituyo: Jorge + 2×Jorge = 24 → 3×Jorge = 24.','Jorge = 8 caramelos.','Valentina = 2×8 = 16. Verifico: 8+16=24 ✅'],
+      answer:'Jorge tiene 8 caramelos y Valentina tiene 16 caramelos.'
+    },
+    {
+      num:6, level:'⭐⭐⭐ Avanzado',
+      text:'Un granjero tiene gallinas y vacas. Cuenta 10 cabezas y 28 patas. ¿Cuántas gallinas y cuántas vacas hay?',
+      steps:['Sea g = gallinas (2 patas), v = vacas (4 patas).','Ecuación de cabezas: g + v = 10.','Ecuación de patas: 2g + 4v = 28.','Despejo g: g = 10-v. Sustituyo: 2(10-v)+4v = 28 → 20+2v = 28 → v = 4.','g = 10-4 = 6. Verifico: 6×2 + 4×4 = 12+16 = 28 ✅'],
+      answer:'6 gallinas y 4 vacas.'
+    },
+  ];
+
+  area.innerHTML = problems.map(p => `
+    <div class="problem-card">
+      <div class="prob-header">
+        <span class="prob-num">Problema ${p.num}</span>
+        <span class="prob-level">${p.level}</span>
+      </div>
+      <div class="prob-text">📋 ${p.text}</div>
+      <button class="btn btn-outline btn-sm" onclick="toggleSolution(this)">👁️ Ver Solución Paso a Paso</button>
+      <div class="solution-box" id="sol${p.num}">
+        <div class="sol-label">✅ Solución</div>
+        <ol class="steps-list" style="margin-bottom:10px;">
+          ${p.steps.map(s=>`<li>${s}</li>`).join('')}
+        </ol>
+        <div style="background:#d4edda;border-radius:8px;padding:10px;font-weight:700;color:#2e7d32;font-size:14px;">🏆 Respuesta: ${p.answer}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleSolution(btn) {
+  const sol = btn.nextElementSibling;
+  sol.classList.toggle('show');
+  btn.textContent = sol.classList.contains('show') ? '🙈 Ocultar Solución' : '👁️ Ver Solución Paso a Paso';
+}
+
+/* ============================================================
+   GENERADOR DE EJERCICIOS ALEATORIOS
+   ============================================================ */
+const exercisePool = [
+  {text:'Ana tiene más libros que Pedro. Pedro tiene más libros que Luis. ¿Quién tiene menos libros?', opts:['Ana','Pedro','Luis','No se puede saber'], correct:2, explain:'Luis es el que menos tiene, porque Ana > Pedro > Luis (propiedad transitiva).'},
+  {text:'Completa la serie: 5, 10, 15, 20, ___', opts:['22','25','30','28'], correct:1, explain:'La serie aumenta de 5 en 5. Siguiente: 20+5=25.'},
+  {text:'Todos los peces viven en el agua. El tiburón es un pez. ¿Dónde vive el tiburón?', opts:['En la tierra','En el aire','En el agua','No se sabe'], correct:2, explain:'Por razonamiento deductivo: todos los peces viven en el agua + tiburón es pez → tiburón vive en agua.'},
+  {text:'¿Qué figura sigue? △ ○ □ △ ○ □ △ ___', opts:['△','○','□','★'], correct:1, explain:'El patrón es △○□ repetido. La 8ª posición corresponde a ○ (círculo).'},
+  {text:'Si A > B > C > D, ¿cuál es el segundo mayor?', opts:['A','B','C','D'], correct:1, explain:'El orden de mayor a menor es A, B, C, D. El segundo mayor es B.'},
+  {text:'Hay 5 mangos y 3 naranjas. Sin mirar, ¿qué fruta es más probable sacar?', opts:['Naranja','Mango','Igual probabilidad','No se puede saber'], correct:1, explain:'Hay más mangos (5) que naranjas (3), entonces es más probable sacar un mango.'},
+  {text:'Completa: 1, 1, 2, 3, 5, 8, ___', opts:['10','11','12','13'], correct:3, explain:'Es la serie de Fibonacci: cada número es la suma de los dos anteriores. 5+8=13.'},
+  {text:'Sofía llegó antes que Marco. Marco llegó antes que Diego. ¿Quién llegó primero?', opts:['Marco','Diego','Sofía','No se sabe'], correct:2, explain:'Sofía > Marco > Diego. Por transitividad, Sofía llegó primero.'},
+  {text:'Todos los cuadrados tienen 4 lados iguales. Esta figura tiene 4 lados desiguales. ¿Es un cuadrado?', opts:['Sí','No','Quizás','No se puede saber'], correct:1, explain:'No. Si todos los cuadrados tienen lados iguales y esta figura tiene lados desiguales, no puede ser cuadrado.'},
+  {text:'Hay 6 bolas rojas y 2 azules. ¿Cuál es la probabilidad de sacar azul?', opts:['1/4','1/3','1/2','2/3'], correct:0, explain:'Probabilidad = 2 azules / (6 rojas + 2 azules) = 2/8 = 1/4.'},
+  {text:'Carlos no es el más alto ni el más bajo de 3 amigos. ¿En qué posición está?', opts:['Primero','Segundo (en el medio)','Tercero','No se puede saber'], correct:1, explain:'Si no es el más alto ni el más bajo, está en el medio (posición 2 de 3).'},
+  {text:'Completa la serie: 3, 6, 12, 24, ___', opts:['36','42','48','52'], correct:2, explain:'Cada número se multiplica por 2. Siguiente: 24×2=48.'},
+  {text:'"Si llueve, me mojo." Está lloviendo. ¿Qué puedo concluir?', opts:['No me mojo','Me mojo','Quizás me mojo','No se puede saber'], correct:1, explain:'Razonamiento deductivo: Si llueve → me mojo. Llueve. Conclusión: me mojo.'},
+  {text:'Elena, Fabio y Gala tienen 5, 7 y 9 años, pero no en ese orden. Elena no tiene 5 ni 9 años. ¿Qué edad tiene Elena?', opts:['5 años','7 años','9 años','No se sabe'], correct:1, explain:'Elena no tiene 5 ni 9, entonces tiene 7 años.'},
+  {text:'Un cuadrado mágico tiene la suma 15 en todas las filas. Si una fila es 2, 7, ___, ¿qué falta?', opts:['4','5','6','8'], correct:2, explain:'2 + 7 + ? = 15. Falta el 6. (15 - 2 - 7 = 6)'},
+];
+
+let currentExercise = null;
+
+function generateExercise() {
+  const pool = exercisePool;
+  currentExercise = pool[Math.floor(Math.random() * pool.length)];
+  document.getElementById('exGenArea').style.display = 'block';
+  document.getElementById('exGenProblem').innerHTML = `<strong>📋 Problema:</strong><br><br>${currentExercise.text}`;
+  const optsDiv = document.getElementById('exGenOptions');
+  optsDiv.innerHTML = '';
+  currentExercise.opts.forEach((o, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.style.flex = '1';
+    btn.style.minWidth = '160px';
+    btn.innerHTML = `${String.fromCharCode(65+i)}) ${o}`;
+    btn.onclick = () => checkExercise(i, optsDiv);
+    optsDiv.appendChild(btn);
+  });
+  document.getElementById('exGenFeedback').className = 'sim-result';
+  document.getElementById('exGenFeedback').style.display = 'none';
+}
+
+function checkExercise(sel, optsDiv) {
+  optsDiv.querySelectorAll('.option-btn').forEach((b,i) => {
+    b.disabled = true;
+    if (i === currentExercise.correct) b.classList.add('selected-correct');
+    if (i === sel && sel !== currentExercise.correct) b.classList.add('selected-wrong');
+  });
+  const fb = document.getElementById('exGenFeedback');
+  if (sel === currentExercise.correct) {
+    fb.className = 'sim-result show sim-ok';
+    fb.innerHTML = `✅ <strong>¡Correcto!</strong> ${currentExercise.explain}`;
+    addPoints(12);
+  } else {
+    fb.className = 'sim-result show sim-err';
+    fb.innerHTML = `❌ Incorrecto. ${currentExercise.explain}`;
+  }
+}
+
+/* ============================================================
+   GENERADOR DE HOJA DE EJERCICIOS
+   ============================================================ */
+function toggleAll(cb) {
+  document.getElementById('ws-par').checked = cb.checked;
+  document.getElementById('ws-bra').checked = cb.checked;
+  document.getElementById('ws-cur').checked = cb.checked;
+}
+
+const wsExercisesByType = {
+  par: [
+    {ex:'Evalúa si el siguiente argumento es válido:\n(Todos los gatos son felinos) y (Michi es gato)\n¿Podemos concluir que Michi es felino?', ans:'Sí, es válido. Razonamiento deductivo con paréntesis que agrupa las premisas.'},
+    {ex:'Completa la serie: (2, 4), (6, 8), (10, ___)', ans:'12. Cada par aumenta en 2.'},
+    {ex:'Si (A > B) y (B > C), ¿cuál es el mayor de los tres?', ans:'A es el mayor.'},
+    {ex:'(Todos los insectos tienen 6 patas) — La mariposa tiene 6 patas. ¿Es la mariposa un insecto?', ans:'No necesariamente (la premisa inversa no es válida). Sería un error lógico afirmarlo.'},
+    {ex:'Resuelve: (5 + 3) × 2 = ___ usando tu razonamiento lógico sobre el orden de operaciones.', ans:'16. Primero se resuelve el paréntesis: 8 × 2 = 16.'},
+    {ex:'(Ana llegó antes que Beto) y (Beto llegó antes que Carlos). ¿Quién llegó primero?', ans:'Ana llegó primero por transitividad.'},
+    {ex:'En el conjunto (2, 4, 6, 8, 10), ¿cuántos elementos son mayores que 5?', ans:'3 elementos: 6, 8 y 10.'},
+    {ex:'(Si llueve) → (el suelo se moja). No llovió. ¿Podemos concluir que el suelo está seco?', ans:'No necesariamente. El suelo puede mojarse por otra razón.'},
+  ],
+  bra: [
+    {ex:'Analiza: [Todos los triángulos tienen 3 lados] → [Esta figura tiene 3 lados] ¿Esta figura es un triángulo?', ans:'No necesariamente. Hay otras figuras con 3 lados que no son triángulos estándar.'},
+    {ex:'Completa: [1, 3, 9, 27, ___]', ans:'81. Cada número se multiplica por 3.'},
+    {ex:'Si [A implica B] y [B implica C], ¿A implica C?', ans:'Sí, por la ley de silogismo hipotético (transitividad de implicaciones).'},
+    {ex:'[5 estudiantes estudian] — [3 aprueban sin estudiar] — Total aprobados: 8. ¿Cuántos estudiantes hay?', ans:'Si 5 estudian y 3 más aprueban sin estudiar, hay al menos 8 estudiantes.'},
+    {ex:'En la serie [100, 50, 25, ___], ¿qué sigue?', ans:'12.5. Cada número se divide entre 2.'},
+    {ex:'[María es más alta que Ana] y [Ana es más alta que Rosa]. Ordena de mayor a menor.', ans:'María > Ana > Rosa.'},
+    {ex:'¿Es posible que [A sea verdadero] y [no-A también sea verdadero] al mismo tiempo?', ans:'No. Esto violaría el principio de no contradicción.'},
+    {ex:'[3 cajas tienen 5 objetos cada una]. ¿Cuántos objetos hay en total?', ans:'15 objetos. 3 × 5 = 15.'},
+  ],
+  cur: [
+    {ex:'Evalúa: {Si el número es par} → {es divisible por 2}. ¿El 14 es divisible por 2?', ans:'Sí. El 14 es par, luego es divisible por 2 (razonamiento deductivo).'},
+    {ex:'Completa el patrón: {△, ○, □, △, ○, ___}', ans:'□ (cuadrado). El patrón es △○□ repetido.'},
+    {ex:'{Todos los mamíferos tienen sangre caliente} — La ballena es mamífero. ¿Qué concluyes?', ans:'La ballena tiene sangre caliente (deductivo).'},
+    {ex:'En el conjunto {2, 5, 8, 11, ___}, ¿qué sigue?', ans:'14. La diferencia entre elementos es 3 (progresión aritmética).'},
+    {ex:'{Ana, Bruno, Carlos} deben sentarse en fila. Ana no es la primera. Carlos es el último. ¿Quién es el primero?', ans:'Bruno es el primero. (Ana no es primera, Carlos es última → Bruno primero, Ana segunda)'},
+    {ex:'¿Cuántos elementos tiene el conjunto {a, e, i, o, u}?', ans:'5 elementos (las vocales).'},
+    {ex:'{Si P es verdadero y Q es verdadero}, ¿"P y Q" es verdadero?', ans:'Sí. La conjunción (P y Q) es verdadera solo cuando ambas proposiciones son verdaderas.'},
+    {ex:'La serie {1, 4, 9, 16, 25, ___} corresponde a los cuadrados perfectos. ¿Cuál sigue?', ans:'36 (6² = 36).'},
+  ],
+};
+
+function generateWorksheet() {
+  const school  = document.getElementById('ws-school').value || 'Centro Educativo';
+  const teacher = document.getElementById('ws-teacher').value || 'Maestro/a';
+  const course  = document.getElementById('ws-course').value || 'Curso';
+  const dateVal = document.getElementById('ws-date').value || new Date().toLocaleDateString('es');
+  const qty     = parseInt(document.getElementById('ws-qty').value);
+  const usePar  = document.getElementById('ws-par').checked;
+  const useBra  = document.getElementById('ws-bra').checked;
+  const useCur  = document.getElementById('ws-cur').checked;
+
+  let pool = [];
+  if (usePar) pool = pool.concat(wsExercisesByType.par);
+  if (useBra) pool = pool.concat(wsExercisesByType.bra);
+  if (useCur) pool = pool.concat(wsExercisesByType.cur);
+  if (pool.length === 0) pool = wsExercisesByType.par;
+
+  // Mezclar pool
+  pool.sort(() => Math.random() - 0.5);
+  const selected = [];
+  for (let i = 0; i < qty; i++) selected.push(pool[i % pool.length]);
+
+  let types = [];
+  if (usePar) types.push('Paréntesis ()');
+  if (useBra) types.push('Corchetes []');
+  if (useCur) types.push('Llaves {}');
+  if (types.length === 0) types.push('Paréntesis ()');
+
+  const preview = document.getElementById('wsPreviewContent');
+  preview.innerHTML = `
+    <div class="ws-print-header" style="text-align:center;border-bottom:2px solid #0d47a1;padding-bottom:12px;margin-bottom:18px;">
+      <div style="font-size:20px;font-weight:900;color:#0d47a1;">🧠 MENTE MATEMÁTICA</div>
+      <div style="font-size:16px;font-weight:700;margin-top:4px;">${school}</div>
+      <div style="font-size:13px;color:#555;margin-top:4px;">Docente: <strong>${teacher}</strong> | Curso: <strong>${course}</strong> | Fecha: <strong>${dateVal}</strong></div>
+      <div style="font-size:14px;font-weight:800;margin-top:8px;color:#0d47a1;">HOJA DE EJERCICIOS — RAZONAMIENTO LÓGICO</div>
+      <div style="font-size:12px;color:#666;margin-top:4px;">Tipo de ejercicios: ${types.join(', ')}</div>
+      <div style="display:flex;gap:20px;justify-content:center;margin-top:10px;font-size:13px;">
+        <span>Nombre: _________________________________</span>
+        <span>Puntuación: _______ / ${qty}</span>
+      </div>
+    </div>
+    <div style="font-size:13px;color:#333;margin-bottom:14px;font-style:italic;">
+      📌 Instrucciones: Lee cuidadosamente cada problema y escribe tu respuesta en el espacio indicado. 
+      Muestra tu razonamiento paso a paso.
+    </div>
+    ${selected.map((ex, i) => `
+      <div class="ws-exercise" style="border-bottom:1px dashed #aaa;padding:12px 0;margin-bottom:8px;">
+        <div style="font-weight:700;font-size:13.5px;margin-bottom:8px;color:#0d47a1;">
+          ${i+1}. ${ex.ex}
+        </div>
+        <div style="font-size:12px;color:#666;margin-bottom:4px;">Desarrollo / Razonamiento:</div>
+        <div class="ws-answer-line" style="border-bottom:1px solid #999;min-height:28px;margin:5px 0;"></div>
+        <div class="ws-answer-line" style="border-bottom:1px solid #999;min-height:28px;margin:5px 0;"></div>
+        <div style="font-size:12px;color:#666;">Respuesta: ___________________________________________</div>
+      </div>
+    `).join('')}
+    <div style="margin-top:20px;border-top:2px solid #0d47a1;padding-top:12px;text-align:center;font-size:12px;color:#666;">
+      © 2026 MenteMatematica — Todos los derechos reservados VC.
+    </div>
+  `;
+  document.getElementById('wsPreview').style.display = 'block';
+  document.getElementById('btnPrintWS').style.display = 'inline-flex';
+}
+
+function printWorksheet() {
+  const content = document.getElementById('wsPreviewContent').innerHTML;
+  const printWin = window.open('','_blank','width=800,height=900');
+  printWin.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Hoja de Ejercicios</title>
+    <style>
+      body{font-family:'Times New Roman',serif;padding:30px;color:#000;background:#fff;}
+      .ws-exercise{border-bottom:1px dashed #888;padding:14px 0;margin-bottom:10px;}
+      .ws-answer-line{border-bottom:1px solid #000;min-height:28px;margin:6px 0;}
+    </style>
+  </head><body>${content}</body></html>`);
+  printWin.document.close();
+  printWin.focus();
+  setTimeout(() => { printWin.print(); }, 400);
+}
+
+/* ============================================================
+   SECCIÓN 7: EVALUACIÓN FINAL
+   ============================================================ */
+const evalQuestions = [
+  {
+    q:'1. Todos los reptiles son animales de sangre fría. La iguana es un reptil. ¿Qué podemos concluir?',
+    opts:['La iguana es de sangre caliente.','No podemos saber nada sobre la iguana.','La iguana es de sangre fría.','La iguana no es un animal.'],
+    correct:2, explain:'Razonamiento deductivo: la regla general aplica al caso particular.'
+  },
+  {
+    q:'2. ¿Cuál es el número que falta en la serie? 5, 10, 20, 40, ___, 160',
+    opts:['60','70','80','100'],
+    correct:2, explain:'Cada número se multiplica por 2. Siguiente: 40×2=80.'
+  },
+  {
+    q:'3. Marta es más alta que Pedro. Pedro es más alto que Luis. ¿Quién es el más bajo?',
+    opts:['Marta','Pedro','Luis','No se puede saber'],
+    correct:2, explain:'Por transitividad: Marta > Pedro > Luis. Luis es el más bajo.'
+  },
+  {
+    q:'4. Si llueve, entonces el suelo se moja. El suelo está mojado. ¿Podemos concluir que llovió?',
+    opts:['Sí, definitivamente llovió.','No necesariamente, puede haber otra razón.','El suelo siempre está mojado.','No hay relación entre la lluvia y el suelo.'],
+    correct:1, explain:'El suelo puede mojarse por otras razones (riego, derrame). No podemos afirmar que llovió con certeza.'
+  },
+  {
+    q:'5. En la secuencia: ▲ ● ■ ▲ ● ■ ▲ ___, ¿qué figura sigue?',
+    opts:['▲ (triángulo)','● (círculo)','■ (cuadrado)','★ (estrella)'],
+    correct:1, explain:'El patrón ▲●■ se repite. La posición 8 corresponde a ● (el segundo elemento del patrón).'
+  },
+  {
+    q:'6. Cuatro estudiantes deben sentarse en fila. Ana no puede ser la primera ni la última. Beto es el último. Carlos es el primero. ¿Dónde se sienta Diana?',
+    opts:['Primera','Segunda','Tercera','Cuarta'],
+    correct:2, explain:'Carlos=1°, Beto=4°. Ana no puede ser 1a ni última → Ana=2a o 3a. Diana ocupa la 3a (o 2a). Con Ana en 2a, Diana en 3a.'
+  },
+  {
+    q:'7. El razonamiento deductivo consiste en:',
+    opts:['Observar varios casos para llegar a una regla general.','Partir de una regla general para llegar a una conclusión específica.','Comparar dos situaciones similares.','Buscar la explicación más probable.'],
+    correct:1, explain:'El razonamiento deductivo va de lo general (reglas/premisas) a lo particular (conclusión).'
+  },
+  {
+    q:'8. En un grupo de 30 estudiantes, 18 juegan fútbol y 15 juegan básquet. Si todos juegan al menos un deporte, ¿cuántos juegan ambos deportes?',
+    opts:['3 estudiantes','33 estudiantes','12 estudiantes','7 estudiantes'],
+    correct:0, explain:'Usando conjuntos: |F∪B| = |F| + |B| - |F∩B| → 30 = 18+15-x → x=3. Juegan ambos: 3.'
+  },
+  {
+    q:'9. Si A implica B, y B implica C, y sabemos que A es verdadero, entonces:',
+    opts:['B es falso','C puede ser verdadero o falso','C es verdadero','A es falso'],
+    correct:2, explain:'Por el silogismo hipotético: A→B→C, y A es verdadero → B es verdadero → C es verdadero.'
+  },
+  {
+    q:'10. En la serie de Fibonacci (1, 1, 2, 3, 5, 8, 13, 21...), ¿cuál es el siguiente número después del 21?',
+    opts:['29','34','42','55'],
+    correct:1, explain:'En Fibonacci, cada número es la suma de los dos anteriores. 13+21=34.'
+  },
+];
+
+let evalAnswers = new Array(10).fill(null);
+let evalStarted = false;
+
+function startEval() {
+  evalAnswers = new Array(10).fill(null);
+  evalStarted = true;
+  document.getElementById('evalIntroCard').style.display = 'none';
+  document.getElementById('evalContainer').style.display = 'block';
+  renderEvalQuestions();
+}
+
+function renderEvalQuestions() {
+  const area = document.getElementById('evalQuestionsArea');
+  area.innerHTML = evalQuestions.map((q, qi) => `
+    <div class="card" id="eq${qi}" style="margin-bottom:16px;">
+      <div class="q-num">Pregunta ${qi+1} de 10</div>
+      <div class="q-text" style="font-size:15px;font-weight:700;color:var(--text-dark);margin:8px 0 12px;">${q.q}</div>
+      <div class="options">
+        ${q.opts.map((o,oi)=>`<button class="option-btn" id="eq${qi}opt${oi}" onclick="selectEvalOpt(${qi},${oi})">${String.fromCharCode(65+oi)}) ${o}</button>`).join('')}
+      </div>
+      <div id="eq${qi}fb"></div>
+    </div>
+  `).join('');
+}
+
+function selectEvalOpt(qi, oi) {
+  if (evalAnswers[qi] !== null) return; // Ya respondida
+  const q = evalQuestions[qi];
+  evalAnswers[qi] = oi;
+
+  // Deshabilitar opciones
+  for (let i = 0; i < q.opts.length; i++) {
+    const btn = document.getElementById(`eq${qi}opt${i}`);
+    btn.disabled = true;
+    if (i === q.correct) btn.classList.add('show-correct');
+    if (i === oi && oi !== q.correct) btn.classList.add('selected-wrong');
+  }
+
+  // Feedback inmediato
+  const fb = document.getElementById(`eq${qi}fb`);
+  const card = document.getElementById(`eq${qi}`);
+  if (oi === q.correct) {
+    card.classList.add('correct');
+    fb.innerHTML = `<div class="feedback-msg fb-ok">✅ ¡Correcto! ${q.explain}</div>`;
+  } else {
+    card.classList.add('wrong');
+    fb.innerHTML = `<div class="feedback-msg fb-err">❌ Incorrecto. ${q.explain}</div>`;
+  }
+
+  // Actualizar progreso
+  const answered = evalAnswers.filter(a => a !== null).length;
+  document.getElementById('evalAnswered').textContent = answered;
+  document.getElementById('evalProgress').style.width = (answered/10*100)+'%';
+
+  // Habilitar botón si todas respondidas
+  if (answered === 10) {
+    document.getElementById('evalSubmitBtn').disabled = false;
+  }
+}
+
+function submitEval() {
+  const score = evalAnswers.reduce((acc, ans, i) => acc + (ans === evalQuestions[i].correct ? 1 : 0), 0);
+  addPoints(score * 20);
+
+  document.getElementById('evalContainer').style.display = 'none';
+
+  const levels = [
+    {min:9, cal:'⭐ Excelente', nivel:'🏆 Maestro Lógico', msg:'¡Eres un genio del razonamiento lógico! 🏆'},
+    {min:7, cal:'⭐ Muy Bueno', nivel:'🌟 Pensador Avanzado', msg:'¡Casi perfecto! Sigue practicando. 🌟'},
+    {min:5, cal:'✅ Bueno', nivel:'💪 En Desarrollo', msg:'¡Vas muy bien! Repasa los módulos. 💪'},
+    {min:3, cal:'📖 Regular', nivel:'📚 Principiante', msg:'¡Sigue intentando! Revisa los ejemplos. 📖'},
+    {min:0, cal:'🚀 Inicio', nivel:'🌱 Inicio del Camino', msg:'¡No te rindas! Vuelve al inicio. 🚀'},
+  ];
+  const lv = levels.find(l => score >= l.min);
+  const stars = '⭐'.repeat(Math.max(1, Math.round(score/2)));
+
+  const resultsDiv = document.getElementById('evalResults');
+  resultsDiv.style.display = 'block';
+  resultsDiv.innerHTML = `
+    <div class="score-display">
+      <div class="score-big">${score}/10</div>
+      <div class="score-stars">${stars}</div>
+      <div class="score-label">${lv.cal} — ${lv.nivel}</div>
+      <div class="score-msg">${lv.msg}</div>
+    </div>
+    <div class="card" style="margin-top:18px;">
+      <div class="card-title">📊 Detalle de Resultados</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px;">
+        ${evalQuestions.map((q,i) => `
+          <div style="text-align:center;padding:10px;border-radius:8px;background:${evalAnswers[i]===q.correct?'var(--green-light)':'var(--red-light)'};border:2px solid ${evalAnswers[i]===q.correct?'var(--green)':'var(--red)'};">
+            <div style="font-size:18px;">${evalAnswers[i]===q.correct?'✅':'❌'}</div>
+            <div style="font-size:12px;font-weight:700;color:${evalAnswers[i]===q.correct?'var(--green)':'var(--red)'};">P${i+1}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="progress-bar-wrap" style="height:16px;"><div class="progress-bar" style="width:${score*10}%"></div></div>
+      <div style="text-align:center;margin-top:8px;font-size:14px;color:var(--text-muted);">Porcentaje: ${score*10}%</div>
+    </div>
+    <div style="text-align:center;margin-top:16px;padding:20px;background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border-radius:var(--radius);">
+      <div style="font-size:28px;">🌟 ¡FELICITACIONES! 🌟</div>
+      <p style="font-size:14px;color:var(--text-muted);margin-top:8px;line-height:1.7;">
+        El razonamiento lógico es como un músculo: cuanto más lo ejercitas, más fuerte se vuelve.<br>
+        <strong>¡Sigue pensando, sigue aprendiendo, sigue creciendo! 🚀🧠✨</strong>
+      </p>
+      <button class="btn btn-primary" onclick="restartEval()" style="margin-top:14px;">🔄 Repetir Evaluación</button>
+    </div>
+  `;
+}
+
+function restartEval() {
+  evalAnswers = new Array(10).fill(null);
+  document.getElementById('evalResults').style.display = 'none';
+  document.getElementById('evalContainer').style.display = 'none';
+  document.getElementById('evalIntroCard').style.display = 'block';
+}
+
+/* ============================================================
+   INICIALIZACIÓN AL CARGAR
+   ============================================================ */
+window.addEventListener('load', () => {
+  // Poner fecha de hoy en el input del worksheet
+  const today = new Date().toISOString().split('T')[0];
+  const wsDate = document.getElementById('ws-date');
+  if (wsDate) wsDate.value = today;
+
+  // Inicializar primera sección
+  initSection('sec-intro');
+
+  // Ocultar overlay de bienvenida después de 3.8 segundos
+  setTimeout(() => {
+    const overlay = document.getElementById('welcomeOverlay');
+    if (overlay) overlay.style.display = 'none';
+  }, 3900);
+});
+
+</script>
+</body>
+</html>

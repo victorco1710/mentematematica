@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Recta Numérica y Valor Absoluto – Mente Matemática</title>
+<!-- ============================================================
+     TEMA 2: LA RECTA NUMÉRICA Y VALOR ABSOLUTO DE UN NÚMERO
+     Diseñado para estudiantes de 9 a 15 años
+     Créditos: Victor Crespo
+     ============================================================ -->
+<style>
+/* ===== CSS VARIABLES ===== */
+:root {
+  --navy: #0d2b55;
+  --blue: #1565c0;
+  --blue-light: #1976d2;
+  --accent: #ff6f00;
+  --accent2: #00b4d8;
+  --success: #2e7d32;
+  --error: #c62828;
+  --bg: #f0f4f8;
+  --card: #ffffff;
+  --sidebar-w: 240px;
+  --text: #1a2a3a;
+  --muted: #5a7085;
+  --shadow: 0 4px 20px rgba(13,43,85,0.10);
+  --radius: 14px;
+  --font-head: 'Georgia', serif;
+  --font-body: 'Segoe UI', Tahoma, sans-serif;
+}
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== HEADER ===== */
+header {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 60%, #0097a7 100%);
+  color: white;
+  padding: 0 28px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 18px rgba(13,43,85,0.35);
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-head);
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.logo-icon {
+  width: 42px; height: 42px;
+  background: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.header-subtitle { font-size: 0.82rem; opacity: 0.80; letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+.btn-volver {
+  background: rgba(255,255,255,0.15);
+  border: 2px solid rgba(255,255,255,0.5);
+  color: white;
+  padding: 8px 18px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+.btn-volver:hover { background: rgba(255,255,255,0.28); border-color: white; }
+
+/* ===== LAYOUT ===== */
+.main-layout {
+  display: flex;
+  flex: 1;
+}
+
+/* ===== SIDEBAR ===== */
+aside {
+  width: var(--sidebar-w);
+  background: white;
+  border-right: 2px solid #dce8f5;
+  position: sticky;
+  top: 70px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
+  padding: 20px 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.sidebar-title {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0 18px 12px;
+  border-bottom: 1px solid #e8f0fc;
+  margin-bottom: 8px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 18px;
+  cursor: pointer;
+  border-left: 4px solid transparent;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+  color: var(--text);
+  border-radius: 0 10px 10px 0;
+  margin-right: 10px;
+}
+.nav-item:hover { background: #e8f0fc; border-left-color: var(--blue-light); }
+.nav-item.active { background: linear-gradient(90deg,#e3f0ff,#f0f7ff); border-left-color: var(--blue); color: var(--blue); font-weight: 700; }
+.nav-icon { font-size: 1.3rem; width: 26px; text-align: center; }
+.nav-label { line-height: 1.3; }
+
+/* ===== CONTENT AREA ===== */
+.content {
+  flex: 1;
+  padding: 30px 32px;
+  overflow-y: auto;
+  min-height: calc(100vh - 70px);
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px 30px;
+  margin-bottom: 24px;
+  animation: fadeIn 0.35s ease;
+}
+@keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+.card-title {
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+  color: var(--navy);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.card-title span { font-size: 1.6rem; }
+
+.section-header {
+  background: linear-gradient(135deg, var(--navy), var(--blue));
+  color: white;
+  border-radius: var(--radius);
+  padding: 22px 28px;
+  margin-bottom: 24px;
+  animation: fadeIn 0.3s ease;
+}
+.section-header h2 { font-size: 1.6rem; font-family: var(--font-head); }
+.section-header p { opacity: 0.85; margin-top: 6px; font-size: 0.95rem; }
+
+/* ===== TYPOGRAPHY ===== */
+p { line-height: 1.75; color: var(--text); margin-bottom: 10px; }
+h3 { color: var(--navy); margin: 16px 0 8px; font-size: 1.15rem; }
+.highlight {
+  background: linear-gradient(135deg, #fff8e1, #fff3cd);
+  border-left: 4px solid var(--accent);
+  padding: 14px 18px;
+  border-radius: 8px;
+  margin: 14px 0;
+  font-size: 0.97rem;
+}
+.definition-box {
+  background: linear-gradient(135deg, #e3f2fd, #e8f5e9);
+  border: 2px solid var(--accent2);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+.formula {
+  font-family: 'Courier New', monospace;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px 18px;
+  font-size: 1.05rem;
+  margin: 10px 0;
+  display: inline-block;
+  color: var(--navy);
+  font-weight: 700;
+}
+
+/* ===== CANVAS ===== */
+canvas { border-radius: 10px; display: block; }
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-block;
+  padding: 10px 22px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.93rem;
+  font-weight: 700;
+  transition: all 0.2s;
+  text-align: center;
+}
+.btn-primary { background: var(--blue); color: white; }
+.btn-primary:hover { background: var(--navy); transform: translateY(-1px); }
+.btn-accent { background: var(--accent); color: white; }
+.btn-accent:hover { background: #e65100; transform: translateY(-1px); }
+.btn-success { background: var(--success); color: white; }
+.btn-secondary { background: #e8f0fe; color: var(--blue); }
+.btn-secondary:hover { background: #c5cae9; }
+.btn-sm { padding: 7px 16px; font-size: 0.85rem; }
+
+/* ===== ACTIVITIES ===== */
+.activity-box {
+  border: 2px solid #bbdefb;
+  border-radius: var(--radius);
+  padding: 22px;
+  margin: 18px 0;
+  background: #f8fbff;
+}
+.activity-box h4 {
+  color: var(--blue);
+  font-size: 1.05rem;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.input-row { display: flex; gap: 10px; align-items: center; margin: 10px 0; flex-wrap: wrap; }
+.num-input {
+  width: 80px; padding: 8px 12px;
+  border: 2px solid #bbdefb; border-radius: 8px;
+  font-size: 1rem; text-align: center;
+  transition: border-color 0.2s;
+}
+.num-input:focus { outline: none; border-color: var(--blue); }
+.feedback {
+  padding: 8px 14px; border-radius: 8px; font-weight: 600;
+  font-size: 0.9rem; margin-top: 8px; display: none;
+}
+.feedback.ok { background: #e8f5e9; color: var(--success); border: 1px solid #a5d6a7; display: block; }
+.feedback.err { background: #ffebee; color: var(--error); border: 1px solid #ef9a9a; display: block; }
+
+/* ===== QUIZ ===== */
+.quiz-q {
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 22px 24px;
+  margin-bottom: 18px;
+  transition: box-shadow 0.2s;
+}
+.quiz-q:hover { box-shadow: 0 6px 24px rgba(13,43,85,0.14); }
+.q-num {
+  background: var(--blue); color: white;
+  width: 30px; height: 30px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.88rem; margin-bottom: 10px;
+}
+.q-text { font-weight: 600; margin-bottom: 14px; font-size: 0.98rem; }
+.options { display: grid; gap: 8px; }
+.option {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px; border-radius: 10px; border: 2px solid #e0e0e0;
+  cursor: pointer; transition: all 0.18s; font-size: 0.93rem;
+}
+.option:hover { border-color: var(--blue); background: #e3f0ff; }
+.option.selected { border-color: var(--blue); background: #e3f0ff; }
+.option.correct { border-color: var(--success); background: #e8f5e9; }
+.option.wrong { border-color: var(--error); background: #ffebee; }
+.q-feedback { font-size: 0.88rem; margin-top: 8px; font-weight: 600; padding: 6px 12px; border-radius: 6px; display: none; }
+.q-feedback.ok { display: block; color: var(--success); background: #e8f5e9; }
+.q-feedback.err { display: block; color: var(--error); background: #ffebee; }
+
+/* ===== SCORE ===== */
+.score-display {
+  text-align: center;
+  padding: 30px;
+  background: linear-gradient(135deg,#e8f5e9,#e3f2fd);
+  border-radius: var(--radius);
+  margin-top: 20px;
+}
+.score-num {
+  font-size: 3.5rem; font-weight: 900; color: var(--navy);
+  font-family: var(--font-head);
+}
+.score-label { color: var(--muted); font-size: 1rem; margin-top: 4px; }
+.score-emoji { font-size: 3rem; margin-bottom: 10px; }
+
+/* ===== VIDEO PLACEHOLDER ===== */
+.video-box {
+  background: linear-gradient(135deg,#0d2b55,#1565c0);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+  color: white;
+  margin: 18px 0;
+}
+.video-box p { color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-top: 8px; }
+.video-play-icon { font-size: 3rem; margin-bottom: 10px; }
+video { width: 100%; border-radius: 10px; background: #000; max-height: 300px; }
+.video-wrapper { border-radius: var(--radius); overflow: hidden; margin: 16px 0; background: #000; }
+
+/* ===== WELCOME ===== */
+.welcome-hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 60%, #0097a7 100%);
+  border-radius: var(--radius);
+  padding: 44px 36px;
+  color: white;
+  text-align: center;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn 0.5s ease;
+}
+.welcome-hero::before {
+  content:'';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.welcome-hero h1 { font-size: 2.2rem; font-family: var(--font-head); margin-bottom: 10px; position: relative; }
+.welcome-hero p { font-size: 1.05rem; opacity: 0.88; position: relative; max-width: 540px; margin: 0 auto 20px; }
+.welcome-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+.welcome-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 22px 20px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 2px solid transparent;
+}
+.welcome-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(13,43,85,0.15); border-color: var(--blue-light); }
+.welcome-card .icon { font-size: 2.4rem; margin-bottom: 10px; }
+.welcome-card h3 { font-size: 0.97rem; color: var(--navy); margin: 0; }
+.welcome-card p { font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
+
+/* ===== NUMBER LINE INTERACTIVE ===== */
+.nl-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+.nl-controls input[type=range] { flex: 1; min-width: 120px; accent-color: var(--blue); }
+.nl-badge {
+  display: inline-block;
+  background: var(--blue); color: white;
+  padding: 5px 14px; border-radius: 20px;
+  font-weight: 700; font-size: 1.05rem;
+  min-width: 50px; text-align: center;
+}
+
+/* ===== TABS ===== */
+.tab-row { display: flex; gap: 6px; margin-bottom: 18px; flex-wrap: wrap; }
+.tab-btn {
+  padding: 8px 18px; border: 2px solid #bbdefb; border-radius: 20px;
+  background: white; cursor: pointer; font-size: 0.88rem; font-weight: 600;
+  color: var(--blue); transition: all 0.18s;
+}
+.tab-btn.active, .tab-btn:hover { background: var(--blue); color: white; border-color: var(--blue); }
+.tab-panel { display: none; animation: fadeIn 0.25s ease; }
+.tab-panel.active { display: block; }
+
+/* ===== SITUATION PROBLEMS ===== */
+.situation-card {
+  background: white; border-radius: var(--radius); border-left: 5px solid var(--accent);
+  padding: 16px 20px; margin: 12px 0; box-shadow: var(--shadow);
+}
+.situation-card p { margin: 0 0 10px; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 720px) {
+  aside { width: 56px; }
+  .nav-label { display: none; }
+  .nav-item { justify-content: center; padding: 12px; margin-right: 0; }
+  .content { padding: 16px; }
+  .welcome-hero h1 { font-size: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">🧮</div>
+    <div>
+      <div>Mente Matemática</div>
+      <div class="header-subtitle">Plataforma Educativa Interactiva</div>
+    </div>
+  </div>
+  <a class="btn-volver" href="temario.html">← Volver al menú</a>
+</header>
+
+<!-- ===== MAIN LAYOUT ===== -->
+<div class="main-layout">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside>
+    <div class="sidebar-title">Módulos</div>
+    <div class="nav-item active" onclick="showSection('welcome')" id="nav-welcome">
+      <span class="nav-icon">🏠</span><span class="nav-label">Bienvenida</span>
+    </div>
+    <div class="nav-item" onclick="showSection('aprender')" id="nav-aprender">
+      <span class="nav-icon">🎯</span><span class="nav-label">¿Qué aprenderemos?</span>
+    </div>
+    <div class="nav-item" onclick="showSection('recta')" id="nav-recta">
+      <span class="nav-icon">📏</span><span class="nav-label">La Recta Numérica</span>
+    </div>
+    <div class="nav-item" onclick="showSection('absoluto')" id="nav-absoluto">
+      <span class="nav-icon">🎯</span><span class="nav-label">Valor Absoluto</span>
+    </div>
+    <div class="nav-item" onclick="showSection('evaluacion')" id="nav-evaluacion">
+      <span class="nav-icon">📝</span><span class="nav-label">Evaluación Final</span>
+    </div>
+  </aside>
+
+  <!-- ===== CONTENT ===== -->
+  <main class="content">
+
+    <!-- ========================= BIENVENIDA ========================= -->
+    <div id="section-welcome" class="section-content">
+      <div class="welcome-hero">
+        <div style="font-size:3.5rem;margin-bottom:12px;">🔢</div>
+        <h1>La Recta Numérica y<br>Valor Absoluto</h1>
+        <p>¡Bienvenido a tu plataforma de aprendizaje matemático! Aquí descubrirás de forma divertida e interactiva cómo funcionan los números en la recta numérica.</p>
+        <button class="btn btn-accent" onclick="showSection('aprender')">¡Comenzar a aprender! →</button>
+      </div>
+      <div class="welcome-grid">
+        <div class="welcome-card" onclick="showSection('aprender')">
+          <div class="icon">🎯</div>
+          <h3>¿Qué aprenderemos?</h3>
+          <p>Objetivos del tema</p>
+        </div>
+        <div class="welcome-card" onclick="showSection('recta')">
+          <div class="icon">📏</div>
+          <h3>La Recta Numérica</h3>
+          <p>Teoría y actividades</p>
+        </div>
+        <div class="welcome-card" onclick="showSection('absoluto')">
+          <div class="icon">📐</div>
+          <h3>Valor Absoluto</h3>
+          <p>Distancia desde el cero</p>
+        </div>
+        <div class="welcome-card" onclick="showSection('evaluacion')">
+          <div class="icon">📝</div>
+          <h3>Evaluación Final</h3>
+          <p>10 preguntas de repaso</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================= ¿QUÉ APRENDEREMOS? ========================= -->
+    <div id="section-aprender" class="section-content" style="display:none">
+      <div class="section-header">
+        <h2>🎯 ¿Qué aprenderemos?</h2>
+        <p>Tema 2 – Matemáticas Básicas</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span>📚</span> Objetivos de Aprendizaje</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:10px;">
+          <div class="definition-box">
+            <h3 style="margin-top:0">📏 La Recta Numérica</h3>
+            <p>Comprenderás qué es la recta numérica, cómo se representa y por qué es infinita en ambas direcciones.</p>
+          </div>
+          <div class="definition-box">
+            <h3 style="margin-top:0">➕➖ Números Enteros</h3>
+            <p>Identificarás los números positivos, negativos y el cero, y sabrás cómo ubicarlos correctamente.</p>
+          </div>
+          <div class="definition-box">
+            <h3 style="margin-top:0">📐 Valor Absoluto</h3>
+            <p>Aprenderás qué es el valor absoluto y cómo calcular la distancia de cualquier número al cero.</p>
+          </div>
+          <div class="definition-box">
+            <h3 style="margin-top:0">🌍 Aplicaciones Reales</h3>
+            <p>Relacionarás estos conceptos con situaciones de la vida cotidiana: temperatura, deudas, profundidad, etc.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span>🗺️</span> Mapa del Tema</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+          <div style="display:flex;align-items:center;gap:14px;padding:14px;background:#f0f7ff;border-radius:10px;border-left:4px solid var(--blue)">
+            <span style="font-size:1.8rem">1️⃣</span>
+            <div><strong>La Recta Numérica</strong><br><span style="color:var(--muted);font-size:0.9rem">Concepto, representación, dirección positiva y negativa</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;padding:14px;background:#f0fff4;border-radius:10px;border-left:4px solid var(--success)">
+            <span style="font-size:1.8rem">2️⃣</span>
+            <div><strong>Valor Absoluto</strong><br><span style="color:var(--muted);font-size:0.9rem">Distancia desde cero, notación |n|, propiedades</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;padding:14px;background:#fff8e1;border-radius:10px;border-left:4px solid var(--accent)">
+            <span style="font-size:1.8rem">3️⃣</span>
+            <div><strong>Actividades y Evaluación</strong><br><span style="color:var(--muted);font-size:0.9rem">Práctica guiada y evaluación con retroalimentación</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="text-align:center">
+        <div class="card-title" style="justify-content:center"><span>🚀</span> ¡Empezamos!</div>
+        <p style="color:var(--muted)">Navega por cada módulo usando el menú de la izquierda.</p>
+        <button class="btn btn-primary" style="margin-top:10px" onclick="showSection('recta')">Ir a la Recta Numérica →</button>
+      </div>
+    </div>
+
+    <!-- ========================= RECTA NUMÉRICA ========================= -->
+    <div id="section-recta" class="section-content" style="display:none">
+      <div class="section-header">
+        <h2>📏 La Recta Numérica</h2>
+        <p>Una línea infinita que representa todos los números enteros</p>
+      </div>
+
+      <!-- TABS -->
+      <div class="tab-row">
+        <button class="tab-btn active" onclick="showTab('recta','teoria')">📖 Teoría</button>
+        <button class="tab-btn" onclick="showTab('recta','visual')">🎮 Visualización</button>
+        <button class="tab-btn" onclick="showTab('recta','act1')">✏️ Actividad 1</button>
+        <button class="tab-btn" onclick="showTab('recta','act2')">✏️ Actividad 2</button>
+      </div>
+
+      <!-- TAB: TEORÍA -->
+      <div id="recta-teoria" class="tab-panel active">
+        <!-- VIDEO -->
+        <div class="video-box">
+          <div class="video-play-icon">🎬</div>
+          <strong style="font-size:1.1rem">Video: Los Números Enteros y la Recta Numérica</strong>
+          <div class="video-wrapper" style="margin-top:14px">
+            <video controls>
+              <source src="vid/rect_num.mp4" type="video/mp4">
+              <p style="color:#ccc;padding:20px">Tu navegador no soporta video HTML5. <br>Ruta del video: <code>/vid/rect_num.mp4</code></p>
+            </video>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span>📏</span> ¿Qué es la Recta Numérica?</div>
+          <p>La <strong>recta numérica</strong> es una línea recta sobre la que se representan todos los números. En el centro se coloca el <strong>cero (0)</strong>, que actúa como punto de referencia.</p>
+          <div class="highlight">
+            💡 <strong>Dato importante:</strong> La recta numérica no tiene fin. Los números positivos y negativos se extienden indefinidamente en ambas direcciones. ¡Es infinita!
+          </div>
+          <h3>¿Cómo se organiza?</h3>
+          <p>A la <strong>derecha</strong> del cero encontramos los <strong>números positivos</strong> (+1, +2, +3, …), que van aumentando. A la <strong>izquierda</strong> del cero se ubican los <strong>números negativos</strong> (−1, −2, −3, …), que van disminuyendo.</p>
+
+          <!-- Static number line illustration -->
+          <canvas id="cnvTeoria" width="600" height="80" style="width:100%;margin-top:16px;background:#f8fbff;border:1px solid #bbdefb"></canvas>
+
+          <h3>Ejemplo práctico</h3>
+          <p>Si tenemos los números <strong>−4, 0 y 5</strong>: colocamos el 0 en el centro, el −4 cuatro unidades a la <em>izquierda</em> y el 5 cinco unidades a la <em>derecha</em>.</p>
+          <div class="definition-box">
+            <strong>Recuerda:</strong> Cuanto más a la <em>derecha</em> esté un número en la recta, <em>mayor</em> es su valor. Cuanto más a la <em>izquierda</em>, <em>menor</em>.
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: VISUALIZACIÓN -->
+      <div id="recta-visual" class="tab-panel">
+        <div class="card">
+          <div class="card-title"><span>🎮</span> Recta Numérica Interactiva</div>
+          <p>Mueve el control deslizante para ubicar un número en la recta numérica.</p>
+          <div class="nl-controls">
+            <span style="font-weight:700;color:var(--muted)">Número:</span>
+            <input type="range" id="sliderRecta" min="-10" max="10" value="3" oninput="updateRectaCanvas()">
+            <span class="nl-badge" id="sliderVal">3</span>
+          </div>
+          <canvas id="cnvRecta" width="600" height="100" style="width:100%;background:#f8fbff;border:1px solid #bbdefb"></canvas>
+          <div id="rectaInfo" style="margin-top:12px;padding:12px;background:#e3f0ff;border-radius:8px;font-size:0.93rem"></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span>🔢</span> Ingresa varios números</div>
+          <p>Escribe números separados por coma (ej: -5, 0, 3, 7) y presiona <strong>Graficar</strong>.</p>
+          <div class="input-row">
+            <input type="text" id="multiNums" placeholder="-5, 0, 3, 7" style="flex:1;padding:9px 14px;border:2px solid #bbdefb;border-radius:8px;font-size:0.97rem">
+            <button class="btn btn-primary" onclick="graficarMulti()">Graficar 📍</button>
+          </div>
+          <canvas id="cnvMulti" width="600" height="100" style="width:100%;background:#f8fbff;border:1px solid #bbdefb;margin-top:8px"></canvas>
+        </div>
+      </div>
+
+      <!-- TAB: ACTIVIDAD 1 -->
+      <div id="recta-act1" class="tab-panel">
+        <div class="card">
+          <div class="card-title"><span>✏️</span> Actividad 1 – Localizar números en la recta</div>
+          <p>Haz clic en la recta numérica para ubicar cada número. Se te pedirá un número a la vez.</p>
+          <div id="act1-instruccion" style="background:#fff8e1;border-radius:8px;padding:12px 16px;margin:14px 0;font-weight:600;color:var(--navy)"></div>
+          <canvas id="cnvAct1" width="600" height="100" style="width:100%;background:#f8fbff;border:1px solid #bbdefb;cursor:crosshair"></canvas>
+          <div id="act1-feedback" class="feedback" style="margin-top:12px"></div>
+          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-secondary btn-sm" onclick="act1Reset()">🔄 Reiniciar</button>
+          </div>
+          <div id="act1-score" style="margin-top:14px;font-size:0.9rem;color:var(--muted)"></div>
+        </div>
+      </div>
+
+      <!-- TAB: ACTIVIDAD 2 -->
+      <div id="recta-act2" class="tab-panel">
+        <div class="card">
+          <div class="card-title"><span>✏️</span> Actividad 2 – Escribe el número que representa</div>
+          <div style="display:flex;flex-direction:column;gap:14px;margin-top:8px">
+            <div class="activity-box">
+              <h4>📍 Situación 1</h4>
+              <p>Un submarino está a 300 metros <strong>bajo</strong> el nivel del mar. ¿Cómo representarías esta profundidad?</p>
+              <div class="input-row">
+                <input type="text" class="num-input" id="sit1" placeholder="?">
+                <button class="btn btn-primary btn-sm" onclick="checkSit('sit1','-300','📍 Correcto: bajo el mar → número negativo −300')">Verificar</button>
+              </div>
+              <div class="feedback" id="fb-sit1"></div>
+            </div>
+            <div class="activity-box">
+              <h4>💰 Situación 2</h4>
+              <p>María tiene una <strong>deuda</strong> de 50 bolivianos. ¿Qué número representa su deuda?</p>
+              <div class="input-row">
+                <input type="text" class="num-input" id="sit2" placeholder="?">
+                <button class="btn btn-primary btn-sm" onclick="checkSit('sit2','-50','💰 Correcto: una deuda es negativa → −50')">Verificar</button>
+              </div>
+              <div class="feedback" id="fb-sit2"></div>
+            </div>
+            <div class="activity-box">
+              <h4>🏆 Situación 3</h4>
+              <p>Juan ganó 15 puntos y luego perdió 20. ¿Cuál es su puntaje total?</p>
+              <div class="input-row">
+                <input type="text" class="num-input" id="sit3" placeholder="?">
+                <button class="btn btn-primary btn-sm" onclick="checkSit('sit3','-5','🏆 Correcto: 15 − 20 = −5')">Verificar</button>
+              </div>
+              <div class="feedback" id="fb-sit3"></div>
+            </div>
+            <div class="activity-box">
+              <h4>🌡️ Situación 4</h4>
+              <p>La temperatura es de 5 grados <strong>bajo</strong> cero. ¿Cómo se representa?</p>
+              <div class="input-row">
+                <input type="text" class="num-input" id="sit4" placeholder="?">
+                <button class="btn btn-primary btn-sm" onclick="checkSit('sit4','-5','🌡️ Correcto: bajo cero → −5')">Verificar</button>
+              </div>
+              <div class="feedback" id="fb-sit4"></div>
+            </div>
+            <div class="activity-box">
+              <h4>✈️ Situación 5</h4>
+              <p>Un avión vuela a 10.000 metros <strong>sobre</strong> el nivel del mar. ¿Qué número representa su altura?</p>
+              <div class="input-row">
+                <input type="text" class="num-input" id="sit5" placeholder="?">
+                <button class="btn btn-primary btn-sm" onclick="checkSit('sit5','10000','✈️ Correcto: sobre el mar → número positivo 10000')">Verificar</button>
+              </div>
+              <div class="feedback" id="fb-sit5"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================= VALOR ABSOLUTO ========================= -->
+    <div id="section-absoluto" class="section-content" style="display:none">
+      <div class="section-header">
+        <h2>📐 Valor Absoluto – Distancia desde el Cero</h2>
+        <p>La distancia de un número al cero, sin importar el signo</p>
+      </div>
+
+      <div class="tab-row">
+        <button class="tab-btn active" onclick="showTab('abs','teoria')">📖 Teoría</button>
+        <button class="tab-btn" onclick="showTab('abs','visual')">🎮 Visualización</button>
+        <button class="tab-btn" onclick="showTab('abs','act1')">✏️ Actividad 1</button>
+        <button class="tab-btn" onclick="showTab('abs','act2')">✏️ Actividad 2</button>
+      </div>
+
+      <!-- TAB TEORIA -->
+      <div id="abs-teoria" class="tab-panel active">
+        <div class="video-box">
+          <div class="video-play-icon">🎬</div>
+          <strong style="font-size:1.1rem">Video: El Valor Absoluto de un Número</strong>
+          <div class="video-wrapper" style="margin-top:14px">
+            <video controls>
+              <source src="vid/val_abs.mp4" type="video/mp4">
+              <p style="color:#ccc;padding:20px">Tu navegador no soporta video HTML5. <br>Ruta del video: <code>/vid/val_abs.mp4</code></p>
+            </video>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span>📐</span> ¿Qué es el Valor Absoluto?</div>
+          <p>El <strong>valor absoluto</strong> de un número entero es su <em>distancia desde el cero</em> en la recta numérica, <strong>sin considerar el signo</strong>.</p>
+          <div class="highlight">
+            🔑 El valor absoluto se escribe entre dos barras verticales: <strong>|n|</strong><br>
+            El resultado <strong>siempre es positivo o cero</strong>, nunca negativo.
+          </div>
+          <h3>Ejemplos</h3>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;margin:10px 0">
+            <div class="formula">|+3| = 3</div>
+            <div class="formula">|−3| = 3</div>
+            <div class="formula">|0| = 0</div>
+            <div class="formula">|−7| = 7</div>
+          </div>
+          <p>Tanto <strong>+3</strong> como <strong>−3</strong> están a 3 unidades del cero, por eso ambos tienen valor absoluto de <strong>3</strong>.</p>
+
+          <canvas id="cnvAbsTeoria" width="600" height="100" style="width:100%;background:#f8fbff;border:1px solid #bbdefb;margin-top:16px"></canvas>
+
+          <div class="definition-box" style="margin-top:16px">
+            <strong>En palabras simples:</strong> El valor absoluto es el número sin su signo (+/−). ¡Es como medir la distancia al cero con una regla!
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB VISUAL -->
+      <div id="abs-visual" class="tab-panel">
+        <div class="card">
+          <div class="card-title"><span>🎮</span> Explorador de Valor Absoluto</div>
+          <p>Mueve el control para ver el valor absoluto visualmente en la recta numérica.</p>
+          <div class="nl-controls">
+            <span style="font-weight:700;color:var(--muted)">Número:</span>
+            <input type="range" id="sliderAbs" min="-10" max="10" value="-6" oninput="updateAbsCanvas()">
+            <span class="nl-badge" id="absVal">-6</span>
+          </div>
+          <canvas id="cnvAbsVis" width="600" height="120" style="width:100%;background:#f8fbff;border:1px solid #bbdefb"></canvas>
+          <div id="absInfo" style="margin-top:12px;padding:14px;background:#e3f0ff;border-radius:8px;font-size:1rem;font-weight:600;text-align:center"></div>
+        </div>
+      </div>
+
+      <!-- TAB ACT1 -->
+      <div id="abs-act1" class="tab-panel">
+        <div class="card">
+          <div class="card-title"><span>✏️</span> Actividad 1 – Calcula el Valor Absoluto</div>
+          <p>Calcula el valor absoluto de cada número y escribe tu respuesta.</p>
+          <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px" id="absAct1Container"></div>
+          <button class="btn btn-success" style="margin-top:16px" onclick="checkAbsAct1()">✅ Verificar todas</button>
+          <div id="abs-act1-result" style="margin-top:14px"></div>
+        </div>
+      </div>
+
+      <!-- TAB ACT2 -->
+      <div id="abs-act2" class="tab-panel">
+        <div class="card">
+          <div class="card-title"><span>✏️</span> Actividad 2 – Ubica y calcula</div>
+          <p>Para cada número, primero escribe su valor absoluto, luego visualiza en la recta.</p>
+          <div style="display:flex;flex-direction:column;gap:14px;margin-top:8px">
+            <div class="activity-box">
+              <h4>📍 Número: −7</h4>
+              <p>¿Cuántas unidades está alejado del cero?</p>
+              <div class="input-row">
+                <span>|−7| =</span>
+                <input type="text" class="num-input" id="abs2a" placeholder="?">
+                <button class="btn btn-primary btn-sm" onclick="checkAbs2('abs2a','7','|-7| = 7 ✔ El −7 está 7 unidades a la izquierda del cero')">Verificar</button>
+              </div>
+              <div class="feedback" id="fb-abs2a"></div>
+            </div>
+            <div class="activity-box">
+              <h4>📍 Número: 8</h4>
+              <div class="input-row">
+                <span>|8| =</span>
+                <input type="text" class="num-input" id="abs2b" placeholder="?">
+                <button class="btn btn-primary btn-sm" onclick="checkAbs2('abs2b','8','|8| = 8 ✔ El 8 está 8 unidades a la derecha del cero')">Verificar</button>
+              </div>
+              <div class="feedback" id="fb-abs2b"></div>
+            </div>
+            <div class="activity-box">
+              <h4>📍 Número: −2</h4>
+              <div class="input-row">
+                <span>|−2| =</span>
+                <input type="text" class="num-input" id="abs2c" placeholder="?">
+                <button class="btn btn-primary btn-sm" onclick="checkAbs2('abs2c','2','|-2| = 2 ✔')">Verificar</button>
+              </div>
+              <div class="feedback" id="fb-abs2c"></div>
+            </div>
+            <div class="activity-box">
+              <h4>📍 Número: 5</h4>
+              <div class="input-row">
+                <span>|5| =</span>
+                <input type="text" class="num-input" id="abs2d" placeholder="?">
+                <button class="btn btn-primary btn-sm" onclick="checkAbs2('abs2d','5','|5| = 5 ✔')">Verificar</button>
+              </div>
+              <div class="feedback" id="fb-abs2d"></div>
+            </div>
+          </div>
+          <div style="margin-top:18px">
+            <canvas id="cnvAct2Abs" width="600" height="100" style="width:100%;background:#f8fbff;border:1px solid #bbdefb"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================= EVALUACIÓN ========================= -->
+    <div id="section-evaluacion" class="section-content" style="display:none">
+      <div class="section-header">
+        <h2>📝 Evaluación Final</h2>
+        <p>10 preguntas de opción múltiple – ¡Demuestra lo que aprendiste!</p>
+      </div>
+      <div id="quiz-container"></div>
+      <div style="text-align:center;margin-top:8px">
+        <button class="btn btn-accent" id="btnCalificar" onclick="calificarQuiz()" style="display:none">🎯 Calificar Evaluación</button>
+      </div>
+      <div id="quiz-resultado"></div>
+      <div style="text-align:center;margin-top:14px">
+        <button class="btn btn-secondary btn-sm" onclick="resetQuiz()">🔄 Intentar de nuevo</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer style="text-align:center;padding:18px;background:var(--navy);color:rgba(255,255,255,0.75);font-size:0.9rem;margin-top:auto">
+  Créditos: <strong style="color:white">Victor Crespo</strong> &nbsp;|&nbsp; Mente Matemática – Plataforma Educativa &nbsp;|&nbsp; Tema 2: La Recta Numérica y Valor Absoluto
+</footer>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+// =========================================================
+// NAVIGATION
+// =========================================================
+function showSection(id) {
+  document.querySelectorAll('.section-content').forEach(s => s.style.display='none');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('section-'+id).style.display='block';
+  const navEl = document.getElementById('nav-'+id);
+  if(navEl) navEl.classList.add('active');
+  // Init canvases on first show
+  if(id==='recta') { drawTeoriaLine(); updateRectaCanvas(); act1Init(); }
+  if(id==='absoluto') { drawAbsTeoria(); updateAbsCanvas(); buildAbsAct1(); drawAct2Abs(); }
+  if(id==='evaluacion') { buildQuiz(); }
+}
+
+function showTab(section, tab) {
+  document.querySelectorAll(`[id^="${section}-"]`).forEach(p => p.classList.remove('active'));
+  document.querySelectorAll(`.tab-btn`).forEach(b => b.classList.remove('active'));
+  document.getElementById(`${section}-${tab}`).classList.add('active');
+  event.target.classList.add('active');
+  // Init canvases
+  setTimeout(()=>{
+    if(section==='recta'&&tab==='visual') updateRectaCanvas();
+    if(section==='recta'&&tab==='act1') act1Init();
+    if(section==='abs'&&tab==='visual') updateAbsCanvas();
+    if(section==='abs'&&tab==='act2') drawAct2Abs();
+  },50);
+}
+
+// =========================================================
+// CANVAS UTILITIES
+// =========================================================
+function drawNumberLine(canvas, highlight=null, extras=[], showAbs=false) {
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const cx = W/2, cy = H/2;
+  const unit = W/24; // 12 steps each side
+
+  // Draw line
+  ctx.strokeStyle = '#1565c0';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath(); ctx.moveTo(20, cy); ctx.lineTo(W-20, cy); ctx.stroke();
+  // Arrows
+  ctx.fillStyle = '#1565c0';
+  [[20,cy,-1],[W-20,cy,1]].forEach(([x,y,d]) => {
+    ctx.beginPath();
+    ctx.moveTo(x,y); ctx.lineTo(x+d*10,y-5); ctx.lineTo(x+d*10,y+5); ctx.fill();
+  });
+
+  // Tick marks
+  for(let n=-10;n<=10;n++) {
+    const x = cx + n*unit;
+    ctx.strokeStyle = '#90a4ae';
+    ctx.lineWidth = n===0 ? 2 : 1;
+    ctx.beginPath(); ctx.moveTo(x, cy-6); ctx.lineTo(x, cy+6); ctx.stroke();
+    ctx.fillStyle = n===0 ? '#1a2a3a' : '#5a7085';
+    ctx.font = n===0 ? 'bold 11px Segoe UI' : '10px Segoe UI';
+    ctx.textAlign='center';
+    ctx.fillText(n===0?'0':(n>0?'+'+n:n), x, cy+18);
+  }
+
+  // Absolute value arc
+  if(showAbs && highlight!==null && highlight!==0) {
+    const xH = cx + highlight*unit;
+    ctx.save();
+    ctx.strokeStyle = '#ff6f00';
+    ctx.lineWidth = 2.5;
+    ctx.setLineDash([5,3]);
+    ctx.beginPath(); ctx.moveTo(cx,cy-22); ctx.lineTo(xH,cy-22); ctx.stroke();
+    ctx.setLineDash([]);
+    // brace ends
+    [[cx,cy-22],[xH,cy-22]].forEach(([x,y])=>{
+      ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x,cy-14); ctx.stroke();
+    });
+    // label
+    ctx.fillStyle='#ff6f00'; ctx.font='bold 11px Segoe UI'; ctx.textAlign='center';
+    ctx.fillText('|'+highlight+'|='+Math.abs(highlight), (cx+xH)/2, cy-26);
+    ctx.restore();
+  }
+
+  // Extra points
+  extras.forEach(n => {
+    if(n<-10||n>10) return;
+    const x = cx + n*unit;
+    ctx.fillStyle = '#00b4d8';
+    ctx.beginPath(); ctx.arc(x,cy,6,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#004d6e'; ctx.font='bold 11px Segoe UI'; ctx.textAlign='center';
+    ctx.fillText(n, x, cy-12);
+  });
+
+  // Highlighted point
+  if(highlight!==null) {
+    if(highlight<-10||highlight>10) return;
+    const x = cx + highlight*unit;
+    ctx.fillStyle = highlight>=0 ? '#1976d2' : '#c62828';
+    ctx.beginPath(); ctx.arc(x,cy,8,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='white'; ctx.font='bold 11px Segoe UI'; ctx.textAlign='center';
+    ctx.fillText(highlight, x, cy+4);
+  }
+}
+
+// =========================================================
+// TEORIA LINE (static)
+// =========================================================
+function drawTeoriaLine() {
+  const cvs = document.getElementById('cnvTeoria');
+  if(!cvs) return;
+  cvs.width = cvs.offsetWidth || 600;
+  drawNumberLine(cvs, null, [-4,0,5]);
+}
+
+// =========================================================
+// INTERACTIVE SLIDER – RECTA
+// =========================================================
+function updateRectaCanvas() {
+  const v = parseInt(document.getElementById('sliderRecta').value);
+  document.getElementById('sliderVal').textContent = (v>0?'+':'')+v;
+  const cvs = document.getElementById('cnvRecta');
+  cvs.width = cvs.offsetWidth||600;
+  drawNumberLine(cvs, v);
+  const info = document.getElementById('rectaInfo');
+  if(v>0) info.innerHTML=`<strong>+${v}</strong> es un número <strong>positivo</strong>. Está <strong>${v} unidades a la derecha</strong> del cero. 👉`;
+  else if(v<0) info.innerHTML=`<strong>${v}</strong> es un número <strong>negativo</strong>. Está <strong>${Math.abs(v)} unidades a la izquierda</strong> del cero. 👈`;
+  else info.innerHTML=`<strong>0</strong> es el origen, el punto de referencia central. ↔`;
+}
+
+// =========================================================
+// MULTI NUMBER PLOT
+// =========================================================
+function graficarMulti() {
+  const raw = document.getElementById('multiNums').value;
+  const nums = raw.split(',').map(s=>parseInt(s.trim())).filter(n=>!isNaN(n));
+  const cvs = document.getElementById('cnvMulti');
+  cvs.width = cvs.offsetWidth||600;
+  drawNumberLine(cvs, null, nums);
+}
+
+// =========================================================
+// ACTIVIDAD 1 – Click on number line
+// =========================================================
+const act1Numbers = [8,-9,5,-1,6,-8,3,-7];
+let act1Index=0, act1Score=0;
+
+function act1Init() {
+  act1Index=0; act1Score=0;
+  updateAct1();
+  const cvs=document.getElementById('cnvAct1');
+  if(!cvs) return;
+  cvs.width=cvs.offsetWidth||600;
+  drawNumberLine(cvs);
+  cvs.onclick = act1Click;
+}
+
+function updateAct1() {
+  const instr=document.getElementById('act1-instruccion');
+  const score=document.getElementById('act1-score');
+  if(act1Index>=act1Numbers.length) {
+    instr.textContent='🎉 ¡Completaste todos los números!';
+    score.textContent=`Resultado: ${act1Score} de ${act1Numbers.length} correctos`;
+    return;
+  }
+  const n=act1Numbers[act1Index];
+  instr.innerHTML=`Ubica el número <strong>${n>0?'+'+n:n}</strong> en la recta numérica. Haz clic en la posición correcta.`;
+  score.textContent=`Progreso: ${act1Index}/${act1Numbers.length} | Aciertos: ${act1Score}`;
+}
+
+function act1Click(e) {
+  if(act1Index>=act1Numbers.length) return;
+  const cvs=document.getElementById('cnvAct1');
+  const rect=cvs.getBoundingClientRect();
+  const cx=cvs.width/2, unit=cvs.width/24;
+  const xClick=(e.clientX-rect.left)*(cvs.width/rect.width);
+  const clicked=Math.round((xClick-cx)/unit);
+  const target=act1Numbers[act1Index];
+  const fb=document.getElementById('act1-feedback');
+  cvs.width=cvs.offsetWidth||600;
+  drawNumberLine(cvs, target);
+  if(clicked===target) {
+    fb.textContent=`✅ ¡Correcto! ${target>0?'+'+target:target} está en la posición ${target>0?target+' unidades a la derecha':Math.abs(target)+' unidades a la izquierda'}.`;
+    fb.className='feedback ok';
+    act1Score++;
+  } else {
+    fb.textContent=`❌ Hiciste clic en ${clicked>0?'+'+clicked:clicked}. El número ${target>0?'+'+target:target} está marcado en rojo.`;
+    fb.className='feedback err';
+  }
+  act1Index++;
+  setTimeout(()=>{ updateAct1(); if(act1Index<act1Numbers.length){cvs.width=cvs.offsetWidth||600;drawNumberLine(cvs);} }, 1400);
+}
+
+function act1Reset() {
+  act1Init();
+  document.getElementById('act1-feedback').className='feedback';
+}
+
+// =========================================================
+// SITUACIONES (Actividad 2 recta)
+// =========================================================
+function checkSit(id, expected, msg) {
+  const val = document.getElementById(id).value.trim().replace(/\s/g,'');
+  const fb = document.getElementById('fb-'+id);
+  // accept both formats: -300 or −300
+  const clean = val.replace('−','-');
+  if(clean===expected||clean===expected.replace('-','−')) {
+    fb.textContent='✅ '+msg; fb.className='feedback ok';
+  } else {
+    fb.textContent=`❌ Incorrecto. Revisa tu respuesta. Pista: la respuesta es ${expected}.`; fb.className='feedback err';
+  }
+}
+
+// =========================================================
+// ABS TEORIA CANVAS
+// =========================================================
+function drawAbsTeoria() {
+  const cvs=document.getElementById('cnvAbsTeoria');
+  if(!cvs) return;
+  cvs.width=cvs.offsetWidth||600;
+  drawNumberLine(cvs, 3, [-3], true);
+}
+
+// =========================================================
+// ABS INTERACTIVE SLIDER
+// =========================================================
+function updateAbsCanvas() {
+  const v=parseInt(document.getElementById('sliderAbs').value);
+  document.getElementById('absVal').textContent=(v>0?'+':'')+v;
+  const cvs=document.getElementById('cnvAbsVis');
+  cvs.width=cvs.offsetWidth||600;
+  drawNumberLine(cvs, v, [], true);
+  const info=document.getElementById('absInfo');
+  info.innerHTML=`|${v>0?'+'+v:v}| = <span style="font-size:1.4rem;color:var(--accent)">${Math.abs(v)}</span>&nbsp; — El número ${v>0?'+'+v:v} está a <strong>${Math.abs(v)} unidades</strong> del cero.`;
+}
+
+// =========================================================
+// ABS ACTIVIDAD 1
+// =========================================================
+const absProblems=[
+  {q:'∣−5∣', a:'5'},{q:'∣8∣', a:'8'},{q:'∣−22∣', a:'22'},
+  {q:'∣0∣', a:'0'},{q:'∣48∣', a:'48'},{q:'∣101∣', a:'101'},{q:'∣−62∣', a:'62'}
+];
+
+function buildAbsAct1() {
+  const container=document.getElementById('absAct1Container');
+  if(!container||container.children.length>0) return;
+  absProblems.forEach((p,i)=>{
+    container.innerHTML+=`
+    <div class="activity-box" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <span style="font-size:1.1rem;font-weight:700;color:var(--navy);min-width:90px">${p.q} =</span>
+      <input type="text" class="num-input" id="abs1-${i}" placeholder="?">
+      <div class="feedback" id="fb1-${i}" style="display:none;margin:0"></div>
+    </div>`;
+  });
+}
+
+function checkAbsAct1() {
+  let correct=0;
+  absProblems.forEach((p,i)=>{
+    const val=document.getElementById('abs1-'+i).value.trim();
+    const fb=document.getElementById('fb1-'+i);
+    if(val===p.a){
+      fb.textContent='✅'; fb.className='feedback ok'; correct++;
+    } else {
+      fb.textContent=`❌ R: ${p.a}`; fb.className='feedback err';
+    }
+  });
+  const res=document.getElementById('abs-act1-result');
+  const pct=Math.round(correct/absProblems.length*100);
+  res.innerHTML=`<div class="score-display"><div class="score-emoji">${pct>=80?'🌟':'😊'}</div><div class="score-num">${correct}/${absProblems.length}</div><div class="score-label">Aciertos – ${pct}%</div></div>`;
+}
+
+// =========================================================
+// ABS ACT 2
+// =========================================================
+function checkAbs2(id, expected, msg) {
+  const val=document.getElementById(id).value.trim();
+  const fb=document.getElementById('fb-'+id);
+  if(val===expected){ fb.textContent='✅ '+msg; fb.className='feedback ok'; }
+  else { fb.textContent=`❌ Revisa. La respuesta es ${expected}.`; fb.className='feedback err'; }
+  drawAct2Abs();
+}
+
+function drawAct2Abs() {
+  const nums=[-7,8,-2,5];
+  const cvs=document.getElementById('cnvAct2Abs');
+  if(!cvs) return;
+  cvs.width=cvs.offsetWidth||600;
+  drawNumberLine(cvs,null,nums);
+}
+
+// =========================================================
+// QUIZ / EVALUACIÓN
+// =========================================================
+const quizData=[
+  { q:'¿Cuál es la función principal de la recta numérica?',
+    opts:['Representar solo números positivos.','Visualizar la relación entre los números enteros.','Mostrar solo números negativos.','Calcular el valor absoluto de los números.'],
+    ans:1 },
+  { q:'¿Dónde se ubica el cero en la recta numérica?',
+    opts:['Al inicio de la recta.','Al final de la recta.','En el centro de la recta.','No tiene una posición fija.'],
+    ans:2 },
+  { q:'¿En qué dirección aumentan los números positivos en la recta numérica?',
+    opts:['Hacia la izquierda.','Hacia la derecha.','Hacia arriba.','Hacia abajo.'],
+    ans:1 },
+  { q:'¿Qué significa el valor absoluto de un número?',
+    opts:['La distancia del número al cero sin considerar el signo.','El signo del número.','El número opuesto.','La mitad del número.'],
+    ans:0 },
+  { q:'¿Cuál de los siguientes números es mayor: −3 o 2?',
+    opts:['−3','2','Ambos son iguales.','No se puede determinar.'],
+    ans:1 },
+  { q:'Si nos movemos dos unidades a la izquierda del cero en la recta numérica, ¿en qué número estamos?',
+    opts:['2','−2','0','1'],
+    ans:1 },
+  { q:'¿Cuál es el valor absoluto de −5?',
+    opts:['−5','5','0','10'],
+    ans:1 },
+  { q:'¿La recta numérica tiene un límite?',
+    opts:['Sí, solo hasta el número más grande.','Sí, solo hasta el número más pequeño.','No, se extiende infinitamente en ambas direcciones.','Depende de la escala.'],
+    ans:2 },
+  { q:'¿Cuál de las siguientes afirmaciones es FALSA?',
+    opts:['Los números negativos están a la izquierda del cero.','El valor absoluto de un número siempre es positivo.','Cuanto más a la derecha está un número en la recta, menor es su valor.','El cero es el punto de referencia en la recta numérica.'],
+    ans:2 },
+  { q:'¿Para qué sirve la recta numérica en la vida cotidiana?',
+    opts:['Solo para resolver problemas matemáticos.','Para visualizar y comparar números.','Para medir objetos muy pequeños.','No tiene ninguna utilidad práctica.'],
+    ans:1 }
+];
+
+let quizBuilt=false;
+let userAnswers=new Array(10).fill(null);
+
+function buildQuiz() {
+  if(quizBuilt) return;
+  quizBuilt=true;
+  userAnswers=new Array(10).fill(null);
+  const container=document.getElementById('quiz-container');
+  container.innerHTML='';
+  quizData.forEach((q,qi)=>{
+    const div=document.createElement('div');
+    div.className='quiz-q';
+    div.innerHTML=`
+      <div class="q-num">${qi+1}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options" id="opts-${qi}">
+        ${q.opts.map((o,oi)=>`
+          <div class="option" id="opt-${qi}-${oi}" onclick="selectOption(${qi},${oi})">
+            <span style="font-weight:700;color:var(--blue);min-width:20px">${['A','B','C','D'][oi]})</span> ${o}
+          </div>`).join('')}
+      </div>
+      <div class="q-feedback" id="qfb-${qi}"></div>
+    `;
+    container.appendChild(div);
+  });
+  document.getElementById('btnCalificar').style.display='inline-block';
+  document.getElementById('quiz-resultado').innerHTML='';
+}
+
+function selectOption(qi, oi) {
+  userAnswers[qi]=oi;
+  document.querySelectorAll(`#opts-${qi} .option`).forEach(o=>o.classList.remove('selected'));
+  document.getElementById(`opt-${qi}-${oi}`).classList.add('selected');
+}
+
+function calificarQuiz() {
+  let score=0;
+  quizData.forEach((q,qi)=>{
+    const ua=userAnswers[qi];
+    const fb=document.getElementById('qfb-'+qi);
+    for(let oi=0;oi<4;oi++){
+      const opt=document.getElementById(`opt-${qi}-${oi}`);
+      opt.onclick=null;
+      opt.classList.remove('selected','correct','wrong');
+    }
+    if(ua===null){
+      fb.textContent='⚠️ No respondiste esta pregunta.'; fb.className='q-feedback err';
+      document.getElementById(`opt-${qi}-${q.ans}`).classList.add('correct');
+    } else if(ua===q.ans){
+      document.getElementById(`opt-${qi}-${ua}`).classList.add('correct');
+      fb.textContent='✅ ¡Correcto!'; fb.className='q-feedback ok';
+      score++;
+    } else {
+      document.getElementById(`opt-${qi}-${ua}`).classList.add('wrong');
+      document.getElementById(`opt-${qi}-${q.ans}`).classList.add('correct');
+      fb.textContent=`❌ Incorrecto. La respuesta correcta es ${['A','B','C','D'][q.ans]}).`; fb.className='q-feedback err';
+    }
+  });
+
+  const pct=Math.round(score/10*100);
+  let emoji='😊', msg='¡Sigue practicando!';
+  if(pct>=90){emoji='🌟';msg='¡Excelente! ¡Eres un experto!';}
+  else if(pct>=70){emoji='👍';msg='¡Muy bien! Casi lo dominas.';}
+  else if(pct>=50){emoji='😊';msg='¡Bien! Repasa un poco más.';}
+  else {emoji='📚';msg='¡No te rindas! Repasa el material.';}
+
+  document.getElementById('quiz-resultado').innerHTML=`
+    <div class="score-display">
+      <div class="score-emoji">${emoji}</div>
+      <div class="score-num">${score}/10</div>
+      <div class="score-label">${pct}% – ${msg}</div>
+    </div>`;
+  document.getElementById('btnCalificar').style.display='none';
+  window.scrollTo({top:document.getElementById('quiz-resultado').offsetTop-80,behavior:'smooth'});
+}
+
+function resetQuiz() {
+  quizBuilt=false;
+  userAnswers=new Array(10).fill(null);
+  document.getElementById('quiz-resultado').innerHTML='';
+  buildQuiz();
+}
+
+// =========================================================
+// INIT
+// =========================================================
+window.addEventListener('load', ()=>{
+  showSection('welcome');
+  // draw welcome screens
+  setTimeout(()=>{
+    // draw teoria when switching
+  },200);
+});
+window.addEventListener('resize', ()=>{
+  const active=document.querySelector('.section-content:not([style*="none"])');
+  if(!active) return;
+  if(active.id==='section-recta'){ drawTeoriaLine(); updateRectaCanvas(); }
+  if(active.id==='section-absoluto'){ drawAbsTeoria(); updateAbsCanvas(); drawAct2Abs(); }
+});
+</script>
+</body>
+</html>

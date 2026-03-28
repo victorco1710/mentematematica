@@ -1,0 +1,2165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- ============================================================
+     CALCULO MENTAL - SUMA CON REDONDEO
+     Plataforma Educativa Interactiva | MenteMatemática
+     © 2026 MenteMatemática. Todos los derechos reservados VC.
+     ============================================================ -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cálculo Mental – Suma con Redondeo | MenteMatemática</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<!-- ============================================================
+     CSS GLOBAL Y VARIABLES DE COLOR
+     ============================================================ -->
+<style>
+  /* --- Variables de color (Paleta académica Okich-inspired) --- */
+  :root {
+    --navy:       #0d2b55;
+    --navy-mid:   #1a3f7a;
+    --blue:       #1e6fdc;
+    --blue-light: #4a9eff;
+    --teal:       #00b4a6;
+    --amber:      #f59e0b;
+    --amber-glow: #fbbf24;
+    --orange:     #f97316;
+    --green:      #22c55e;
+    --red:        #ef4444;
+    --purple:     #8b5cf6;
+    --bg:         #f0f4fa;
+    --sidebar-w:  270px;
+    --header-h:   72px;
+    --card-r:     16px;
+    --shadow:     0 4px 24px rgba(13,43,85,.12);
+    --shadow-lg:  0 8px 40px rgba(13,43,85,.18);
+    --trans:      all .35s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* --- Reset & base --- */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: #1e293b;
+    min-height: 100vh;
+    cursor: none; /* custom cursor */
+    overflow-x: hidden;
+  }
+
+  /* ============================================================
+     CURSOR PERSONALIZADO (Luminosidad Okich con delay)
+     ============================================================ */
+  #cursor-dot {
+    position: fixed; top: 0; left: 0; z-index: 99999;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--amber);
+    pointer-events: none;
+    transform: translate(-50%,-50%);
+    transition: transform .1s ease;
+    box-shadow: 0 0 10px var(--amber-glow), 0 0 20px var(--amber);
+  }
+  #cursor-glow {
+    position: fixed; top: 0; left: 0; z-index: 99998;
+    width: 80px; height: 80px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(251,191,36,.35) 0%, rgba(249,115,22,.18) 40%, transparent 70%);
+    pointer-events: none;
+    transform: translate(-50%,-50%);
+    transition: transform .55s cubic-bezier(.25,.46,.45,.94), opacity .4s;
+    filter: blur(6px);
+  }
+
+  /* ============================================================
+     HEADER
+     ============================================================ */
+  header {
+    position: fixed; top: 0; left: 0; right: 0; height: var(--header-h);
+    z-index: 1000;
+    background: linear-gradient(110deg, var(--navy) 0%, var(--navy-mid) 50%, #234d9b 100%);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 28px 0 24px;
+    box-shadow: 0 2px 20px rgba(0,0,0,.35);
+  }
+  .logo-wrap {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .logo-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--amber), var(--orange));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; font-weight: 900; color: #fff;
+    box-shadow: 0 4px 12px rgba(249,115,22,.5);
+    animation: logoFloat 3s ease-in-out infinite;
+  }
+  @keyframes logoFloat {
+    0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);}
+  }
+  .logo-text { color: #fff; }
+  .logo-text strong { display: block; font-family: 'Poppins', sans-serif; font-size: 1.25rem; font-weight: 800; letter-spacing: -.3px; }
+  .logo-text span { font-size: .72rem; opacity: .75; letter-spacing: .5px; text-transform: uppercase; }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .badge-subject {
+    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25);
+    color: #fff; padding: 6px 14px; border-radius: 20px;
+    font-size: .78rem; font-weight: 700; letter-spacing: .3px;
+  }
+  .btn-back {
+    background: linear-gradient(135deg, var(--amber), var(--orange));
+    color: #fff; border: none; padding: 9px 18px; border-radius: 10px;
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: .82rem;
+    cursor: none; transition: var(--trans); white-space: nowrap;
+    box-shadow: 0 3px 10px rgba(249,115,22,.4);
+    text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-back:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(249,115,22,.55); }
+
+  /* ============================================================
+     LAYOUT: SIDEBAR + MAIN
+     ============================================================ */
+  .app-body {
+    display: flex;
+    margin-top: var(--header-h);
+    min-height: calc(100vh - var(--header-h));
+  }
+
+  /* --- Sidebar --- */
+  .sidebar {
+    position: fixed; top: var(--header-h); left: 0;
+    width: var(--sidebar-w); height: calc(100vh - var(--header-h));
+    background: #fff;
+    box-shadow: 2px 0 20px rgba(13,43,85,.09);
+    overflow-y: auto; overflow-x: hidden;
+    z-index: 900;
+    display: flex; flex-direction: column;
+    padding-bottom: 24px;
+  }
+  .sidebar::-webkit-scrollbar { width: 5px; }
+  .sidebar::-webkit-scrollbar-thumb { background: #d1d9ea; border-radius: 3px; }
+
+  .sidebar-header {
+    padding: 18px 20px 12px;
+    border-bottom: 1px solid #e8edf5;
+    background: linear-gradient(135deg, #f8faff, #eef2fd);
+  }
+  .sidebar-header h3 {
+    font-family: 'Poppins', sans-serif; font-size: .82rem; font-weight: 700;
+    color: var(--navy); text-transform: uppercase; letter-spacing: .8px;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .progress-bar-wrap { margin-top: 10px; }
+  .progress-label { font-size: .72rem; color: #64748b; margin-bottom: 5px; display: flex; justify-content: space-between; }
+  .progress-bar { height: 7px; background: #e2e8f0; border-radius: 4px; overflow: hidden; }
+  .progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--blue), var(--teal));
+    border-radius: 4px; transition: width .5s ease; width: 0%;
+  }
+
+  .nav-section-label {
+    font-size: .68rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 1px; color: #94a3b8; padding: 14px 20px 5px;
+  }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 11px;
+    padding: 11px 20px; cursor: none;
+    transition: var(--trans); position: relative;
+    border-left: 3px solid transparent;
+    text-decoration: none; color: #374151;
+  }
+  .nav-item:hover { background: #f0f6ff; color: var(--blue); }
+  .nav-item.active {
+    background: linear-gradient(90deg, #eff6ff, #f0fdfa);
+    color: var(--navy); border-left-color: var(--blue);
+    font-weight: 700;
+  }
+  .nav-item.active::after {
+    content: '';
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--blue);
+  }
+  .nav-icon {
+    width: 34px; height: 34px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; flex-shrink: 0;
+  }
+  .nav-text { font-size: .83rem; line-height: 1.3; }
+  .nav-text small { display: block; font-size: .7rem; opacity: .65; font-weight: 400; }
+
+  /* nav icon colors */
+  .ic-welcome { background: linear-gradient(135deg,#fff7ed,#fef3c7); }
+  .ic-learn   { background: linear-gradient(135deg,#eff6ff,#dbeafe); }
+  .ic-c1      { background: linear-gradient(135deg,#f0fdf4,#dcfce7); }
+  .ic-c2      { background: linear-gradient(135deg,#fdf4ff,#f3e8ff); }
+  .ic-c3      { background: linear-gradient(135deg,#fff1f2,#ffe4e6); }
+  .ic-prac    { background: linear-gradient(135deg,#f0fdfa,#ccfbf1); }
+  .ic-eval    { background: linear-gradient(135deg,#fff7ed,#ffedd5); }
+
+  /* --- Main content --- */
+  .main-content {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    padding: 36px 36px 36px;
+    max-width: calc(100% - var(--sidebar-w));
+  }
+
+  /* ============================================================
+     CARDS Y ELEMENTOS COMUNES
+     ============================================================ */
+  .section-page { display: none; animation: fadeUp .45s ease; }
+  .section-page.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .page-title {
+    font-family: 'Poppins', sans-serif; font-size: 1.85rem; font-weight: 800;
+    color: var(--navy); margin-bottom: 6px; line-height: 1.2;
+  }
+  .page-subtitle {
+    font-size: .95rem; color: #64748b; margin-bottom: 28px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .page-subtitle::before {
+    content: ''; display: inline-block; width: 40px; height: 3px;
+    background: linear-gradient(90deg, var(--blue), var(--teal));
+    border-radius: 2px;
+  }
+
+  .card {
+    background: #fff; border-radius: var(--card-r);
+    box-shadow: var(--shadow); padding: 28px;
+    margin-bottom: 24px; transition: var(--trans);
+  }
+  .card:hover { box-shadow: var(--shadow-lg); }
+  .card-title {
+    font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 700;
+    color: var(--navy); margin-bottom: 14px;
+    display: flex; align-items: center; gap: 9px;
+  }
+  .card-title .icon { font-size: 1.3rem; }
+
+  /* Highlight boxes */
+  .highlight-box {
+    border-radius: 12px; padding: 18px 22px; margin: 14px 0;
+  }
+  .hb-blue  { background: #eff6ff; border-left: 4px solid var(--blue); }
+  .hb-green { background: #f0fdf4; border-left: 4px solid var(--green); }
+  .hb-amber { background: #fffbeb; border-left: 4px solid var(--amber); }
+  .hb-purple{ background: #faf5ff; border-left: 4px solid var(--purple); }
+  .hb-teal  { background: #f0fdfa; border-left: 4px solid var(--teal); }
+
+  /* Steps grid */
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap: 16px; margin: 18px 0;
+  }
+  .step-card {
+    background: linear-gradient(135deg,#f8faff,#eff6ff);
+    border-radius: 12px; padding: 18px 16px; text-align: center;
+    border: 1px solid #dbeafe; transition: var(--trans);
+    position: relative; overflow: hidden;
+  }
+  .step-card::before {
+    content: attr(data-step);
+    position: absolute; top: -10px; right: -10px;
+    font-size: 4rem; font-weight: 900; color: rgba(30,111,220,.06);
+    line-height: 1; pointer-events: none;
+  }
+  .step-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(30,111,220,.15); }
+  .step-num {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--teal));
+    color: #fff; font-weight: 800; font-size: 1rem;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;
+    box-shadow: 0 4px 10px rgba(30,111,220,.35);
+  }
+  .step-card h4 { font-size: .9rem; font-weight: 800; color: var(--navy); margin-bottom: 5px; }
+  .step-card p  { font-size: .8rem; color: #475569; line-height: 1.4; }
+
+  /* Example cards */
+  .example-grid {
+    display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+    gap: 14px; margin: 16px 0;
+  }
+  .example-card {
+    background: #fff; border-radius: 12px; padding: 16px 18px;
+    border: 1.5px solid #e2e8f0; transition: var(--trans);
+    position: relative; overflow: hidden;
+  }
+  .example-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--blue), var(--teal));
+  }
+  .example-card:hover { border-color: var(--blue-light); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(30,111,220,.1); }
+  .ex-problem { font-size: 1.1rem; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+  .ex-steps   { font-size: .82rem; color: #475569; line-height: 1.7; }
+  .ex-steps .arrow { color: var(--blue); font-weight: 700; }
+  .ex-result  { margin-top: 8px; font-size: 1rem; font-weight: 800; color: var(--green); background: #f0fdf4; padding: 5px 10px; border-radius: 8px; display: inline-block; }
+
+  /* Video container */
+  .video-wrap {
+    background: #000; border-radius: 14px; overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,.3); margin: 18px 0;
+    aspect-ratio: 16/9;
+  }
+  .video-wrap video {
+    width: 100%; height: 100%; display: block;
+  }
+  .video-placeholder {
+    width: 100%; aspect-ratio: 16/9;
+    background: linear-gradient(135deg, #0d2b55, #1a3f7a);
+    border-radius: 14px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 12px;
+    color: rgba(255,255,255,.7); font-size: .9rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,.25); margin: 18px 0;
+  }
+  .video-placeholder .play-btn {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: rgba(255,255,255,.15); border: 2px solid rgba(255,255,255,.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+  }
+
+  /* Canvas */
+  canvas {
+    display: block; border-radius: 12px;
+    max-width: 100%;
+  }
+  .canvas-wrap {
+    background: #fff; border-radius: 14px; padding: 20px;
+    border: 1.5px solid #e2e8f0; margin: 16px 0;
+    box-shadow: var(--shadow);
+  }
+  .canvas-title {
+    font-size: .85rem; font-weight: 700; color: var(--navy);
+    margin-bottom: 12px; display: flex; align-items: center; gap: 7px;
+  }
+
+  /* ============================================================
+     SECCIÓN BIENVENIDA
+     ============================================================ */
+  .welcome-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a5bb8 50%, #234d9b 100%);
+    border-radius: 20px; padding: 48px 40px; color: #fff; text-align: center;
+    position: relative; overflow: hidden; margin-bottom: 28px;
+  }
+  .welcome-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .welcome-emoji { font-size: 4rem; display: block; margin-bottom: 16px; animation: bounce 2s ease-in-out infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  .welcome-hero h1 { font-family: 'Poppins',sans-serif; font-size: 2.2rem; font-weight: 800; margin-bottom: 10px; }
+  .welcome-hero p { font-size: 1.05rem; opacity: .88; max-width: 580px; margin: 0 auto 24px; line-height: 1.6; }
+  .welcome-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: linear-gradient(135deg, var(--amber), var(--orange));
+    color: #fff; padding: 12px 26px; border-radius: 12px;
+    font-weight: 800; font-size: .95rem; cursor: none; border: none;
+    box-shadow: 0 4px 16px rgba(249,115,22,.45); transition: var(--trans);
+  }
+  .welcome-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(249,115,22,.55); }
+
+  .objectives-grid {
+    display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+    gap: 16px; margin: 20px 0;
+  }
+  .obj-card {
+    background: linear-gradient(135deg,#f8faff,#eff6ff);
+    border-radius: 14px; padding: 20px 18px; text-align: center;
+    border: 1.5px solid #dbeafe; transition: var(--trans);
+  }
+  .obj-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(30,111,220,.12); }
+  .obj-card .obj-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+  .obj-card h4 { font-size: .9rem; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+  .obj-card p  { font-size: .78rem; color: #475569; line-height: 1.4; }
+
+  /* ============================================================
+     ACTIVIDADES INTERACTIVAS
+     ============================================================ */
+  .activity-card {
+    background: #fff; border-radius: 16px; padding: 24px;
+    box-shadow: var(--shadow); margin-bottom: 20px;
+    border: 1.5px solid #e8edf5;
+  }
+  .activity-title {
+    font-family: 'Poppins',sans-serif; font-size: 1rem; font-weight: 700;
+    color: var(--navy); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .act-problem {
+    font-size: 1.4rem; font-weight: 900; color: var(--navy);
+    text-align: center; padding: 16px; background: #f8faff;
+    border-radius: 10px; margin-bottom: 16px;
+  }
+  .act-input {
+    width: 100%; padding: 12px 16px; border-radius: 10px;
+    border: 2px solid #e2e8f0; font-family: 'Nunito',sans-serif;
+    font-size: 1.05rem; font-weight: 700; text-align: center; outline: none;
+    transition: var(--trans);
+  }
+  .act-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(30,111,220,.15); }
+  .act-input.correct { border-color: var(--green); background: #f0fdf4; color: var(--green); }
+  .act-input.wrong   { border-color: var(--red);   background: #fff1f2; color: var(--red); }
+
+  .btn-check {
+    width: 100%; padding: 11px; border-radius: 10px; border: none;
+    background: linear-gradient(135deg, var(--blue), var(--teal));
+    color: #fff; font-family: 'Nunito',sans-serif; font-weight: 800;
+    font-size: .95rem; cursor: none; margin-top: 10px; transition: var(--trans);
+    box-shadow: 0 4px 14px rgba(30,111,220,.3);
+  }
+  .btn-check:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(30,111,220,.4); }
+
+  .feedback-box {
+    border-radius: 10px; padding: 12px 16px; margin-top: 12px;
+    font-weight: 700; font-size: .9rem; display: none;
+    align-items: center; gap: 9px; line-height: 1.4;
+  }
+  .feedback-box.correct { background: #f0fdf4; color: #16a34a; display: flex; border: 1.5px solid #bbf7d0; }
+  .feedback-box.wrong   { background: #fff1f2; color: #dc2626; display: flex; border: 1.5px solid #fecaca; }
+  .feedback-box.hint    { background: #fffbeb; color: #92400e; display: flex; border: 1.5px solid #fde68a; }
+
+  /* Interactive number line canvas */
+  #numberLineCanvas, #decomposCanvas, #multiDigitCanvas { cursor: none; }
+
+  /* ============================================================
+     SECCIÓN PRÁCTICA
+     ============================================================ */
+  .practice-header {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 14px; margin-bottom: 24px;
+  }
+  .score-badge {
+    background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+    color: #fff; padding: 10px 20px; border-radius: 12px;
+    font-weight: 800; font-size: 1rem;
+    box-shadow: 0 4px 14px rgba(13,43,85,.3);
+  }
+  .timer-ring {
+    position: relative; width: 74px; height: 74px;
+  }
+  .timer-ring svg { transform: rotate(-90deg); }
+  .timer-ring .timer-num {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    font-size: 1.3rem; font-weight: 900; color: var(--navy);
+  }
+  .practice-problem-card {
+    background: linear-gradient(135deg, #eff6ff, #f0fdfa);
+    border-radius: 18px; padding: 36px; text-align: center;
+    border: 2px solid #bfdbfe; margin-bottom: 24px;
+  }
+  .prac-equation {
+    font-family: 'Poppins',sans-serif; font-size: 2.5rem; font-weight: 900;
+    color: var(--navy); margin-bottom: 20px; letter-spacing: -1px;
+  }
+  .prac-equation span { color: var(--blue); }
+  .options-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; max-width: 420px; margin: 0 auto;
+  }
+  .opt-btn {
+    padding: 14px; border-radius: 12px; border: 2px solid #e2e8f0;
+    background: #fff; font-family: 'Nunito',sans-serif; font-weight: 800;
+    font-size: 1.1rem; cursor: none; transition: var(--trans); color: var(--navy);
+  }
+  .opt-btn:hover { border-color: var(--blue); background: #eff6ff; transform: scale(1.03); }
+  .opt-btn.correct { background: #f0fdf4; border-color: var(--green); color: var(--green); }
+  .opt-btn.wrong   { background: #fff1f2; border-color: var(--red);   color: var(--red); }
+  .opt-btn:disabled { cursor: not-allowed; opacity: .8; }
+
+  .prac-result-card {
+    background: #fff; border-radius: 16px; padding: 32px; text-align: center;
+    box-shadow: var(--shadow-lg);
+  }
+  .result-score-big {
+    font-family: 'Poppins',sans-serif; font-size: 3.5rem; font-weight: 900;
+    background: linear-gradient(135deg, var(--blue), var(--teal));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin: 16px 0;
+  }
+
+  /* ============================================================
+     SECCIÓN EVALUACIÓN
+     ============================================================ */
+  .eval-progress {
+    display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px;
+  }
+  .eval-dot {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: #e2e8f0; display: flex; align-items: center; justify-content: center;
+    font-size: .7rem; font-weight: 800; color: #94a3b8; transition: var(--trans);
+  }
+  .eval-dot.answered { background: var(--blue); color: #fff; }
+  .eval-dot.correct  { background: var(--green); color: #fff; }
+  .eval-dot.wrong    { background: var(--red); color: #fff; }
+  .eval-dot.current  { background: var(--amber); color: #fff; box-shadow: 0 0 0 3px rgba(245,158,11,.3); }
+
+  .eval-question-card {
+    background: #fff; border-radius: 16px; padding: 28px;
+    box-shadow: var(--shadow); margin-bottom: 20px;
+  }
+  .eval-q-num {
+    font-size: .78rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: .8px; color: var(--blue); margin-bottom: 8px;
+  }
+  .eval-q-text {
+    font-size: 1.15rem; font-weight: 700; color: var(--navy);
+    margin-bottom: 20px; line-height: 1.4;
+  }
+  .eval-options {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .eval-opt {
+    padding: 13px 16px; border-radius: 11px; border: 2px solid #e2e8f0;
+    background: #f8faff; cursor: none; transition: var(--trans);
+    font-family: 'Nunito',sans-serif; font-weight: 700; font-size: .92rem;
+    text-align: left; color: #334155; display: flex; align-items: center; gap: 10px;
+  }
+  .eval-opt .opt-letter {
+    width: 28px; height: 28px; border-radius: 7px;
+    background: #e2e8f0; display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: .78rem; flex-shrink: 0; transition: var(--trans);
+  }
+  .eval-opt:hover { border-color: var(--blue-light); background: #eff6ff; }
+  .eval-opt:hover .opt-letter { background: var(--blue); color: #fff; }
+  .eval-opt.selected { border-color: var(--blue); background: #eff6ff; }
+  .eval-opt.selected .opt-letter { background: var(--blue); color: #fff; }
+  .eval-opt.correct { border-color: var(--green); background: #f0fdf4; }
+  .eval-opt.correct .opt-letter { background: var(--green); color: #fff; }
+  .eval-opt.wrong   { border-color: var(--red); background: #fff1f2; }
+  .eval-opt.wrong   .opt-letter { background: var(--red); color: #fff; }
+  .eval-opt:disabled { cursor: not-allowed; }
+
+  .eval-feedback {
+    margin-top: 12px; padding: 12px 16px; border-radius: 10px;
+    font-size: .88rem; font-weight: 700; display: none;
+  }
+  .eval-feedback.show { display: block; }
+  .eval-feedback.ok { background: #f0fdf4; color: #16a34a; border: 1.5px solid #bbf7d0; }
+  .eval-feedback.fail { background: #fff1f2; color: #dc2626; border: 1.5px solid #fecaca; }
+
+  .btn-next {
+    margin-top: 16px; padding: 12px 28px; border-radius: 11px; border: none;
+    background: linear-gradient(135deg, var(--blue), var(--teal));
+    color: #fff; font-family: 'Nunito',sans-serif; font-weight: 800;
+    font-size: .95rem; cursor: none; transition: var(--trans);
+    box-shadow: 0 4px 14px rgba(30,111,220,.3);
+  }
+  .btn-next:hover { transform: translateY(-2px); box-shadow: 0 7px 20px rgba(30,111,220,.45); }
+
+  .final-result {
+    background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+    border-radius: 20px; padding: 40px; text-align: center; color: #fff;
+  }
+  .final-grade {
+    font-family: 'Poppins',sans-serif; font-size: 4rem; font-weight: 900;
+    margin: 16px 0;
+    background: linear-gradient(135deg, var(--amber), var(--orange));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stars { font-size: 2rem; margin: 12px 0; display: block; }
+  .final-msg { font-size: 1.1rem; opacity: .9; margin-bottom: 20px; }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  footer {
+    margin-left: var(--sidebar-w);
+    background: var(--navy);
+    color: rgba(255,255,255,.6);
+    text-align: center; padding: 20px;
+    font-size: .8rem; letter-spacing: .3px;
+  }
+  footer strong { color: rgba(255,255,255,.9); }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 768px) {
+    :root { --sidebar-w: 0px; }
+    .sidebar { transform: translateX(-270px); width: 270px; transition: transform .3s; }
+    .sidebar.open { transform: translateX(0); --sidebar-w: 270px; }
+    .main-content { margin-left: 0; max-width: 100%; padding: 20px 16px; }
+    footer { margin-left: 0; }
+    .prac-equation { font-size: 1.8rem; }
+    .eval-options { grid-template-columns: 1fr; }
+    .welcome-hero h1 { font-size: 1.5rem; }
+    .welcome-hero { padding: 28px 20px; }
+  }
+
+  /* Utilities */
+  .flex-center { display:flex; align-items:center; justify-content:center; }
+  .mt-10 { margin-top: 10px; }
+  .mt-16 { margin-top: 16px; }
+  .text-sm { font-size: .85rem; }
+  .text-muted { color: #64748b; }
+  .fw-700 { font-weight: 700; }
+  .btn-retry {
+    padding: 9px 20px; border-radius: 10px; border: none;
+    background: linear-gradient(135deg,var(--amber),var(--orange));
+    color: #fff; font-family: 'Nunito',sans-serif; font-weight: 800;
+    font-size: .88rem; cursor: none; transition: var(--trans);
+    box-shadow: 0 4px 12px rgba(249,115,22,.3); margin-top: 12px;
+  }
+  .btn-retry:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(249,115,22,.45); }
+</style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     CURSOR PERSONALIZADO
+     ============================================================ -->
+<div id="cursor-dot"></div>
+<div id="cursor-glow"></div>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">∑</div>
+    <div class="logo-text">
+      <strong>MenteMatemática</strong>
+      <span>Plataforma Educativa</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="badge-subject">📐 Cálculo Mental</div>
+    <a href="temario.html" class="btn-back">🏠 Volver al menú</a>
+  </div>
+</header>
+
+<!-- ============================================================
+     SIDEBAR DE NAVEGACIÓN
+     ============================================================ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h3>📚 Módulos de aprendizaje</h3>
+    <div class="progress-bar-wrap">
+      <div class="progress-label">
+        <span>Tu progreso</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+    </div>
+  </div>
+
+  <div class="nav-section-label">Introducción</div>
+  <a class="nav-item active" data-section="welcome" onclick="showSection('welcome')">
+    <div class="nav-icon ic-welcome">👋</div>
+    <div class="nav-text">Bienvenida<small>Inicio del recorrido</small></div>
+  </a>
+  <a class="nav-item" data-section="learn" onclick="showSection('learn')">
+    <div class="nav-icon ic-learn">🎬</div>
+    <div class="nav-text">¿Qué aprenderemos?<small>Objetivos del tema</small></div>
+  </a>
+
+  <div class="nav-section-label">Contenido</div>
+  <a class="nav-item" data-section="c1" onclick="showSection('c1')">
+    <div class="nav-icon ic-c1">🧠</div>
+    <div class="nav-text">1. El Método<small>Manipulación y redondeo</small></div>
+  </a>
+  <a class="nav-item" data-section="c2" onclick="showSection('c2')">
+    <div class="nav-icon ic-c2">🔢</div>
+    <div class="nav-text">2. Suma 2 Dígitos<small>Descomposición paso a paso</small></div>
+  </a>
+  <a class="nav-item" data-section="c3" onclick="showSection('c3')">
+    <div class="nav-icon ic-c3">🏗️</div>
+    <div class="nav-text">3. Suma 3 y 4 Dígitos<small>Descomposición completa</small></div>
+  </a>
+
+  <div class="nav-section-label">Evaluación</div>
+  <a class="nav-item" data-section="practice" onclick="showSection('practice')">
+    <div class="nav-icon ic-prac">⚡</div>
+    <div class="nav-text">4. Práctica<small>Contra el reloj</small></div>
+  </a>
+  <a class="nav-item" data-section="eval" onclick="showSection('eval')">
+    <div class="nav-icon ic-eval">📝</div>
+    <div class="nav-text">5. Evaluación Final<small>10 preguntas</small></div>
+  </a>
+</aside>
+
+<!-- ============================================================
+     CONTENIDO PRINCIPAL
+     ============================================================ -->
+<main class="main-content">
+
+  <!-- ==========================================
+       SECCIÓN 0: BIENVENIDA
+       ========================================== -->
+  <section class="section-page active" id="sec-welcome">
+
+    <div class="welcome-hero">
+      <span class="welcome-emoji">🚀</span>
+      <h1>¡Hola, Genio/a de las Matemáticas!</h1>
+      <p>¿Alguna vez has deseado sumar números grandes tan rápido como una calculadora? 
+         ¡Hoy aprenderás el <strong>"truco secreto"</strong> de los expertos! 
+         No se trata de sufrir, sino de <strong>jugar con los números</strong>.</p>
+      <button class="welcome-cta" onclick="showSection('learn')">
+        ¡Empezar aventura! →
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🌟</span>¿De qué trata este tema?</div>
+      <p style="line-height:1.7; color:#475569; margin-bottom:16px;">
+        Imagina que los números son piezas de construcción que puedes 
+        <strong>desarmar y volver a armar</strong> a tu antojo para que sean más fáciles de manejar. 
+        Eso es exactamente lo que haremos hoy: aprender a <strong>redondear y compensar</strong> 
+        para hacer sumas mentales rapidísimas. ¡Prepárate para sorprender a todos! 🎉
+      </p>
+      <div class="objectives-grid">
+        <div class="obj-card">
+          <span class="obj-icon">🎯</span>
+          <h4>Transformar números</h4>
+          <p>Convertir números difíciles en "amigables" terminados en 0</p>
+        </div>
+        <div class="obj-card">
+          <span class="obj-icon">⚡</span>
+          <h4>Velocidad mental</h4>
+          <p>Calcular 2, 3 y 4 dígitos sin usar calculadora</p>
+        </div>
+        <div class="obj-card">
+          <span class="obj-icon">🧩</span>
+          <h4>Agilidad mental</h4>
+          <p>Resolver problemas cotidianos de forma eficiente</p>
+        </div>
+        <div class="obj-card">
+          <span class="obj-icon">🏆</span>
+          <h4>Evaluar tu progreso</h4>
+          <p>Practica y demuestra lo que has aprendido</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🗺️</span>Recorrido de aprendizaje</div>
+      <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+        <span style="background:#eff6ff;border:1.5px solid #bfdbfe;padding:7px 14px;border-radius:20px;font-size:.82rem;font-weight:700;color:var(--navy)">🎬 ¿Qué aprenderemos?</span>
+        <span style="color:#94a3b8">→</span>
+        <span style="background:#f0fdf4;border:1.5px solid #bbf7d0;padding:7px 14px;border-radius:20px;font-size:.82rem;font-weight:700;color:#166534">🧠 El Método</span>
+        <span style="color:#94a3b8">→</span>
+        <span style="background:#faf5ff;border:1.5px solid #e9d5ff;padding:7px 14px;border-radius:20px;font-size:.82rem;font-weight:700;color:#6b21a8">🔢 2 Dígitos</span>
+        <span style="color:#94a3b8">→</span>
+        <span style="background:#fff1f2;border:1.5px solid #fecaca;padding:7px 14px;border-radius:20px;font-size:.82rem;font-weight:700;color:#991b1b">🏗️ 3-4 Dígitos</span>
+        <span style="color:#94a3b8">→</span>
+        <span style="background:#f0fdfa;border:1.5px solid #a7f3d0;padding:7px 14px;border-radius:20px;font-size:.82rem;font-weight:700;color:#065f46">⚡ Práctica</span>
+        <span style="color:#94a3b8">→</span>
+        <span style="background:#fffbeb;border:1.5px solid #fde68a;padding:7px 14px;border-radius:20px;font-size:.82rem;font-weight:700;color:#92400e">📝 Evaluación</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ==========================================
+       SECCIÓN 1: ¿QUÉ APRENDEREMOS?
+       ========================================== -->
+  <section class="section-page" id="sec-learn">
+    <h1 class="page-title">🎬 ¿Qué aprenderemos?</h1>
+    <p class="page-subtitle">Objetivos del tema — Cálculo Mental con Redondeo</p>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🎯</span>Objetivo General</div>
+      <div class="highlight-box hb-blue">
+        <strong>Aprenderás y aplicarás la técnica de redondeo y compensación</strong> 
+        para realizar sumas de varias cifras de forma mental y eficiente, 
+        desarrollando habilidades de cálculo ágil para la vida diaria.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">✅</span>¿Qué lograrás hoy?</div>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin-top:10px;">
+        <div class="highlight-box hb-green" style="margin:0">
+          <div style="font-size:1.3rem;margin-bottom:6px;">🔄</div>
+          <strong>Transformar números difíciles</strong><br>
+          <span style="font-size:.85rem;color:#475569;">Convertir números en "amigables" terminados en 0 (como 20, 50, 100 o 1000)</span>
+        </div>
+        <div class="highlight-box hb-amber" style="margin:0">
+          <div style="font-size:1.3rem;margin-bottom:6px;">🧮</div>
+          <strong>Cálculos de 2, 3 y 4 dígitos</strong><br>
+          <span style="font-size:.85rem;color:#475569;">Sin calculadora, usando solo tu mente</span>
+        </div>
+        <div class="highlight-box hb-purple" style="margin:0">
+          <div style="font-size:1.3rem;margin-bottom:6px;">🚀</div>
+          <strong>Agilidad mental</strong><br>
+          <span style="font-size:.85rem;color:#475569;">Resolver problemas cotidianos de forma veloz y precisa</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">💡</span>¿Cómo funciona la técnica?</div>
+      <p style="color:#475569;line-height:1.7;margin-bottom:16px;">
+        La técnica de <strong>redondeo y compensación</strong> se basa en un principio simple:
+        es más fácil sumar con números "redondos". Por eso:
+      </p>
+      <div class="canvas-wrap">
+        <div class="canvas-title">📊 Visualización: de número difícil a número amigable</div>
+        <canvas id="introCanvas" width="600" height="120"></canvas>
+      </div>
+      <div class="highlight-box hb-teal" style="margin-top:14px;">
+        <strong>La regla de oro:</strong> Si <em>añades</em> para redondear → después <em>quitas</em> la misma cantidad.
+        Si <em>quitas</em> para redondear → después <em>añades</em>. ¡Siempre equilibras la balanza! ⚖️
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:20px;">
+      <button class="welcome-cta" onclick="showSection('c1')">
+        ¡Ver el Método! 🧠 →
+      </button>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECCIÓN 2: CONCEPTO - EL MÉTODO
+       ========================================== -->
+  <section class="section-page" id="sec-c1">
+    <h1 class="page-title">🧠 El Método de la Manipulación</h1>
+    <p class="page-subtitle">Concepto fundamental del redondeo y compensación</p>
+
+    <!-- VIDEO -->
+    <div class="card">
+      <div class="card-title"><span class="icon">🎬</span>Video Explicativo</div>
+      <video class="video-wrap" style="display:block;width:100%;aspect-ratio:16/9;border-radius:14px;" controls>
+        <source src="vid/sumxred .mp4" type="video/mp4">
+        <div class="video-placeholder">
+          <div class="play-btn">▶</div>
+          <strong>Video: Suma con Redondeo</strong>
+          <span>Asegúrate de que el archivo vid/sumxred.mp4 esté disponible</span>
+        </div>
+      </video>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📖</span>¿En qué consiste?</div>
+      <p style="color:#475569;line-height:1.8;margin-bottom:16px;">
+        La técnica consiste en <strong>modificar una de las cantidades</strong> para convertirla en un 
+        número redondo (como 20, 80, 100 o 1000) que sea más fácil de sumar, y luego 
+        <strong>compensar la diferencia</strong> para obtener el resultado correcto.
+      </p>
+      <div class="steps-grid">
+        <div class="step-card" data-step="1">
+          <div class="step-num">1</div>
+          <h4>👁️ Observar</h4>
+          <p>Identifica el número que esté más cerca de una decena o centena redonda.</p>
+        </div>
+        <div class="step-card" data-step="2">
+          <div class="step-num">2</div>
+          <h4>✏️ Modificar</h4>
+          <p>Suma mentalmente lo necesario para redondear ese número.</p>
+        </div>
+        <div class="step-card" data-step="3">
+          <div class="step-num">3</div>
+          <h4>➕ Operar</h4>
+          <p>Realiza la suma con el nuevo número amigable.</p>
+        </div>
+        <div class="step-card" data-step="4">
+          <div class="step-num">4</div>
+          <h4>⚖️ Compensar</h4>
+          <p>Si añadiste antes, ahora quita. Si quitaste, ahora añade. ¡Siempre equilibras!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CANVAS INTERACTIVO DEL MÉTODO -->
+    <div class="card">
+      <div class="card-title"><span class="icon">🎨</span>Visualización Interactiva del Método</div>
+      <div class="canvas-wrap">
+        <div class="canvas-title">⚖️ Demostración: 38 + 47 con redondeo</div>
+        <canvas id="methodCanvas" width="650" height="200"></canvas>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+        <button class="btn-check" style="width:auto;padding:9px 20px;" onclick="animateMethod()">▶ Animar paso a paso</button>
+        <button class="btn-retry" onclick="resetMethod()">🔄 Reiniciar</button>
+      </div>
+    </div>
+
+    <!-- EJEMPLO INTERACTIVO -->
+    <div class="card">
+      <div class="card-title"><span class="icon">🔍</span>Ejemplo Guiado Interactivo</div>
+      <p style="color:#475569;margin-bottom:16px;">Selecciona un ejemplo y observa cómo se aplica el método:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;" id="methodExampleBtns">
+        <button class="opt-btn" style="padding:9px 16px;font-size:.85rem;" onclick="showMethodExample(0)">18 + 34</button>
+        <button class="opt-btn" style="padding:9px 16px;font-size:.85rem;" onclick="showMethodExample(1)">77 + 64</button>
+        <button class="opt-btn" style="padding:9px 16px;font-size:.85rem;" onclick="showMethodExample(2)">49 + 25</button>
+        <button class="opt-btn" style="padding:9px 16px;font-size:.85rem;" onclick="showMethodExample(3)">99 + 48</button>
+      </div>
+      <div id="methodExDetail" class="highlight-box hb-blue" style="display:none;"></div>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-top:4px;">
+      <button class="welcome-cta" onclick="showSection('c2')">Siguiente: Suma 2 Dígitos 🔢 →</button>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECCIÓN 3: SUMA 2 DÍGITOS
+       ========================================== -->
+  <section class="section-page" id="sec-c2">
+    <h1 class="page-title">🔢 Suma de 2 Dígitos</h1>
+    <p class="page-subtitle">Descomposición paso a paso con redondeo</p>
+
+    <!-- VIDEO -->
+    <div class="card">
+      <div class="card-title"><span class="icon">🎬</span>Video Explicativo</div>
+      <video style="display:block;width:100%;aspect-ratio:16/9;border-radius:14px;" controls>
+        <source src="vid/2sumxred .mp4" type="video/mp4">
+        Tu navegador no soporta video HTML5.
+      </video>
+    </div>
+
+    <!-- EJEMPLOS -->
+    <div class="card">
+      <div class="card-title"><span class="icon">📋</span>Ejemplos Resueltos — Redondeo del primer sumando</div>
+      <p style="color:#475569;margin-bottom:16px;">Observa cómo redondeamos el número más cercano a la decena y compensamos:</p>
+      <div class="example-grid">
+        <div class="example-card">
+          <div class="ex-problem">18 + 34</div>
+          <div class="ex-steps">
+            18 ≈ 20 (añadimos 2)<br>
+            <span class="arrow">→</span> (20 - 2) + 34<br>
+            <span class="arrow">→</span> 20 + 34 = 54<br>
+            <span class="arrow">→</span> 54 - 2 = <strong>52</strong>
+          </div>
+          <span class="ex-result">✅ 52</span>
+        </div>
+        <div class="example-card">
+          <div class="ex-problem">77 + 64</div>
+          <div class="ex-steps">
+            77 ≈ 80 (añadimos 3)<br>
+            <span class="arrow">→</span> (80 - 3) + 64<br>
+            <span class="arrow">→</span> 80 + 64 = 144<br>
+            <span class="arrow">→</span> 144 - 3 = <strong>141</strong>
+          </div>
+          <span class="ex-result">✅ 141</span>
+        </div>
+        <div class="example-card">
+          <div class="ex-problem">49 + 25</div>
+          <div class="ex-steps">
+            49 ≈ 50 (añadimos 1)<br>
+            <span class="arrow">→</span> (50 - 1) + 25<br>
+            <span class="arrow">→</span> 50 + 25 = 75<br>
+            <span class="arrow">→</span> 75 - 1 = <strong>74</strong>
+          </div>
+          <span class="ex-result">✅ 74</span>
+        </div>
+        <div class="example-card">
+          <div class="ex-problem">38 + 47</div>
+          <div class="ex-steps">
+            38 ≈ 40 (añadimos 2)<br>
+            <span class="arrow">→</span> (40 - 2) + 47<br>
+            <span class="arrow">→</span> 40 + 47 = 87<br>
+            <span class="arrow">→</span> 87 - 2 = <strong>85</strong>
+          </div>
+          <span class="ex-result">✅ 85</span>
+        </div>
+        <div class="example-card">
+          <div class="ex-problem">17 + 55</div>
+          <div class="ex-steps">
+            17 ≈ 20 (añadimos 3)<br>
+            <span class="arrow">→</span> (20 - 3) + 55<br>
+            <span class="arrow">→</span> 20 + 55 = 75<br>
+            <span class="arrow">→</span> 75 - 3 = <strong>72</strong>
+          </div>
+          <span class="ex-result">✅ 72</span>
+        </div>
+        <div class="example-card">
+          <div class="ex-problem">44 + 28</div>
+          <div class="ex-steps">
+            28 ≈ 30 (añadimos 2)<br>
+            <span class="arrow">→</span> 44 + (30 - 2)<br>
+            <span class="arrow">→</span> 44 + 30 = 74<br>
+            <span class="arrow">→</span> 74 - 2 = <strong>72</strong>
+          </div>
+          <span class="ex-result">✅ 72</span>
+        </div>
+        <div class="example-card">
+          <div class="ex-problem">63 + 29</div>
+          <div class="ex-steps">
+            29 ≈ 30 (añadimos 1)<br>
+            <span class="arrow">→</span> 63 + (30 - 1)<br>
+            <span class="arrow">→</span> 63 + 30 = 93<br>
+            <span class="arrow">→</span> 93 - 1 = <strong>92</strong>
+          </div>
+          <span class="ex-result">✅ 92</span>
+        </div>
+        <div class="example-card">
+          <div class="ex-problem">56 + 37</div>
+          <div class="ex-steps">
+            37 ≈ 40 (añadimos 3)<br>
+            <span class="arrow">→</span> 56 + (40 - 3)<br>
+            <span class="arrow">→</span> 56 + 40 = 96<br>
+            <span class="arrow">→</span> 96 - 3 = <strong>93</strong>
+          </div>
+          <span class="ex-result">✅ 93</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISUALIZACIÓN CON CANVAS -->
+    <div class="card">
+      <div class="card-title"><span class="icon">📊</span>Línea Numérica Interactiva</div>
+      <div class="canvas-wrap">
+        <div class="canvas-title">🔢 Visualiza el salto de redondeo</div>
+        <canvas id="numberLineCanvas" width="620" height="130"></canvas>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px;">
+        <label style="font-size:.85rem;font-weight:700;color:var(--navy);">Número a redondear:</label>
+        <input type="number" id="nlInput" value="38" min="1" max="99" 
+          style="width:70px;padding:7px;border:2px solid #e2e8f0;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:700;text-align:center;outline:none;"
+          oninput="drawNumberLine()">
+        <span style="font-size:.85rem;color:#64748b;">+ ? = decena más cercana</span>
+      </div>
+    </div>
+
+    <!-- ACTIVIDADES INTERACTIVAS 2 DÍGITOS -->
+    <div class="card">
+      <div class="card-title"><span class="icon">🎯</span>Actividades Interactivas — 2 Dígitos</div>
+      <p style="color:#475569;margin-bottom:18px;">Resuelve usando la técnica de redondeo y compensación:</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;">
+
+        <!-- Act 1 -->
+        <div class="activity-card">
+          <div class="activity-title">🧮 Actividad 1</div>
+          <div class="act-problem">29 + 46 = ?</div>
+          <div class="highlight-box hb-amber" style="font-size:.8rem;margin-bottom:12px;">
+            💡 Pista: 29 ≈ 30 (suma 1) → 30 + 46 = 76 → 76 - 1 = ?
+          </div>
+          <input class="act-input" id="a2-1" type="number" placeholder="Tu respuesta…">
+          <button class="btn-check" onclick="checkActivity('a2-1', 75, 'a2-1-fb', '29 ≈ 30 (+1) → 30+46=76 → 76-1 = 75 ✅')">✔ Verificar</button>
+          <div class="feedback-box" id="a2-1-fb"></div>
+        </div>
+
+        <!-- Act 2 -->
+        <div class="activity-card">
+          <div class="activity-title">🧮 Actividad 2</div>
+          <div class="act-problem">57 + 38 = ?</div>
+          <div class="highlight-box hb-amber" style="font-size:.8rem;margin-bottom:12px;">
+            💡 Pista: 38 ≈ 40 (suma 2) → 57 + 40 = 97 → 97 - 2 = ?
+          </div>
+          <input class="act-input" id="a2-2" type="number" placeholder="Tu respuesta…">
+          <button class="btn-check" onclick="checkActivity('a2-2', 95, 'a2-2-fb', '38 ≈ 40 (+2) → 57+40=97 → 97-2 = 95 ✅')">✔ Verificar</button>
+          <div class="feedback-box" id="a2-2-fb"></div>
+        </div>
+
+        <!-- Act 3 -->
+        <div class="activity-card">
+          <div class="activity-title">🧮 Actividad 3</div>
+          <div class="act-problem">19 + 84 = ?</div>
+          <div class="highlight-box hb-amber" style="font-size:.8rem;margin-bottom:12px;">
+            💡 Pista: 19 ≈ 20 (suma 1) → 20 + 84 = 104 → 104 - 1 = ?
+          </div>
+          <input class="act-input" id="a2-3" type="number" placeholder="Tu respuesta…">
+          <button class="btn-check" onclick="checkActivity('a2-3', 103, 'a2-3-fb', '19 ≈ 20 (+1) → 20+84=104 → 104-1 = 103 ✅')">✔ Verificar</button>
+          <div class="feedback-box" id="a2-3-fb"></div>
+        </div>
+
+        <!-- Act 4 -->
+        <div class="activity-card">
+          <div class="activity-title">🧮 Actividad 4</div>
+          <div class="act-problem">68 + 25 = ?</div>
+          <div class="highlight-box hb-amber" style="font-size:.8rem;margin-bottom:12px;">
+            💡 Pista: 68 ≈ 70 (suma 2) → 70 + 25 = 95 → 95 - 2 = ?
+          </div>
+          <input class="act-input" id="a2-4" type="number" placeholder="Tu respuesta…">
+          <button class="btn-check" onclick="checkActivity('a2-4', 93, 'a2-4-fb', '68 ≈ 70 (+2) → 70+25=95 → 95-2 = 93 ✅')">✔ Verificar</button>
+          <div class="feedback-box" id="a2-4-fb"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-top:4px;">
+      <button class="welcome-cta" onclick="showSection('c3')">Siguiente: 3 y 4 Dígitos 🏗️ →</button>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECCIÓN 4: SUMA 3 Y 4 DÍGITOS
+       ========================================== -->
+  <section class="section-page" id="sec-c3">
+    <h1 class="page-title">🏗️ Suma de 3 y 4 Dígitos</h1>
+    <p class="page-subtitle">Descomposición completa con centenas y millares</p>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">💡</span>¿Cómo aplicamos el método?</div>
+      <div class="highlight-box hb-blue">
+        El mismo principio aplica: buscamos el número más cercano a una 
+        <strong>centena redonda (100, 200, 500, 1000…)</strong> y compensamos. 
+        Con números grandes, ¡la técnica es aún más poderosa!
+      </div>
+    </div>
+
+    <!-- EJEMPLOS 3 DÍGITOS -->
+    <div class="card">
+      <div class="card-title"><span class="icon">📋</span>Ejemplos Resueltos — 3 y 4 Dígitos</div>
+      <div class="example-grid">
+        <div class="example-card">
+          <div class="ex-problem">796 + 537</div>
+          <div class="ex-steps">
+            796 ≈ 800 (añadimos 4)<br>
+            <span class="arrow">→</span> (800 - 4) + 537<br>
+            <span class="arrow">→</span> 800 + 537 = 1337<br>
+            <span class="arrow">→</span> 1337 - 4 = <strong>1333</strong>
+          </div>
+          <span class="ex-result">✅ 1333</span>
+        </div>
+        <div class="example-card">
+          <div class="ex-problem">998 + 450</div>
+          <div class="ex-steps">
+            998 ≈ 1000 (añadimos 2)<br>
+            <span class="arrow">→</span> (1000 - 2) + 450<br>
+            <span class="arrow">→</span> 1000 + 450 = 1450<br>
+            <span class="arrow">→</span> 1450 - 2 = <strong>1448</strong>
+          </div>
+          <span class="ex-result">✅ 1448</span>
+        </div>
+        <div class="example-card">
+          <div class="ex-problem">2495 + 1100</div>
+          <div class="ex-steps">
+            2495 ≈ 2500 (añadimos 5)<br>
+            <span class="arrow">→</span> (2500 - 5) + 1100<br>
+            <span class="arrow">→</span> 2500 + 1100 = 3600<br>
+            <span class="arrow">→</span> 3600 - 5 = <strong>3595</strong>
+          </div>
+          <span class="ex-result">✅ 3595</span>
+        </div>
+        <div class="example-card">
+          <div class="ex-problem">490 + 320</div>
+          <div class="ex-steps">
+            490 ≈ 500 (añadimos 10)<br>
+            <span class="arrow">→</span> (500 - 10) + 320<br>
+            <span class="arrow">→</span> 500 + 320 = 820<br>
+            <span class="arrow">→</span> 820 - 10 = <strong>810</strong>
+          </div>
+          <span class="ex-result">✅ 810</span>
+        </div>
+        <div class="example-card">
+          <div class="ex-problem">5997 + 2000</div>
+          <div class="ex-steps">
+            5997 ≈ 6000 (añadimos 3)<br>
+            <span class="arrow">→</span> (6000 - 3) + 2000<br>
+            <span class="arrow">→</span> 6000 + 2000 = 8000<br>
+            <span class="arrow">→</span> 8000 - 3 = <strong>7997</strong>
+          </div>
+          <span class="ex-result">✅ 7997</span>
+        </div>
+        <div class="example-card">
+          <div class="ex-problem">880 + 125</div>
+          <div class="ex-steps">
+            880 ≈ 900 (añadimos 20)<br>
+            <span class="arrow">→</span> (900 - 20) + 125<br>
+            <span class="arrow">→</span> 900 + 125 = 1025<br>
+            <span class="arrow">→</span> 1025 - 20 = <strong>1005</strong>
+          </div>
+          <span class="ex-result">✅ 1005</span>
+        </div>
+        <div class="example-card">
+          <div class="ex-problem">399 + 601</div>
+          <div class="ex-steps">
+            399 ≈ 400 (añadimos 1)<br>
+            <span class="arrow">→</span> (400 - 1) + 601<br>
+            <span class="arrow">→</span> 400 + 601 = 1001<br>
+            <span class="arrow">→</span> 1001 - 1 = <strong>1000</strong>
+          </div>
+          <span class="ex-result">✅ 1000</span>
+        </div>
+        <div class="example-card">
+          <div class="ex-problem">1498 + 755</div>
+          <div class="ex-steps">
+            1498 ≈ 1500 (añadimos 2)<br>
+            <span class="arrow">→</span> (1500 - 2) + 755<br>
+            <span class="arrow">→</span> 1500 + 755 = 2255<br>
+            <span class="arrow">→</span> 2255 - 2 = <strong>2253</strong>
+          </div>
+          <span class="ex-result">✅ 2253</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CANVAS DE DESCOMPOSICIÓN -->
+    <div class="card">
+      <div class="card-title"><span class="icon">📊</span>Visualización: Bloques de Valor Posicional</div>
+      <div class="canvas-wrap">
+        <div class="canvas-title">🏗️ Descomposición visual de 796 + 537</div>
+        <canvas id="multiDigitCanvas" width="640" height="180"></canvas>
+      </div>
+      <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn-check" style="width:auto;padding:9px 20px;" onclick="drawMultiDigit(796,537)">796 + 537</button>
+        <button class="btn-check" style="width:auto;padding:9px 20px;" onclick="drawMultiDigit(998,450)">998 + 450</button>
+        <button class="btn-check" style="width:auto;padding:9px 20px;" onclick="drawMultiDigit(399,601)">399 + 601</button>
+        <button class="btn-retry" onclick="drawMultiDigit(2495,1100)">2495 + 1100</button>
+      </div>
+    </div>
+
+    <!-- ACTIVIDADES 3-4 DÍGITOS -->
+    <div class="card">
+      <div class="card-title"><span class="icon">🎯</span>Actividades Interactivas — 3 y 4 Dígitos</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;">
+
+        <div class="activity-card">
+          <div class="activity-title">🧮 Actividad A</div>
+          <div class="act-problem">399 + 150 = ?</div>
+          <div class="highlight-box hb-amber" style="font-size:.8rem;margin-bottom:12px;">
+            💡 Pista: 399 ≈ 400 (+1) → 400+150=550 → 550-1 = ?
+          </div>
+          <input class="act-input" id="a3-1" type="number" placeholder="Tu respuesta…">
+          <button class="btn-check" onclick="checkActivity('a3-1', 549, 'a3-1-fb', '399 ≈ 400 (+1) → 400+150=550 → 550-1 = 549 ✅')">✔ Verificar</button>
+          <div class="feedback-box" id="a3-1-fb"></div>
+        </div>
+
+        <div class="activity-card">
+          <div class="activity-title">🧮 Actividad B</div>
+          <div class="act-problem">795 + 210 = ?</div>
+          <div class="highlight-box hb-amber" style="font-size:.8rem;margin-bottom:12px;">
+            💡 Pista: 795 ≈ 800 (+5) → 800+210=1010 → 1010-5 = ?
+          </div>
+          <input class="act-input" id="a3-2" type="number" placeholder="Tu respuesta…">
+          <button class="btn-check" onclick="checkActivity('a3-2', 1005, 'a3-2-fb', '795 ≈ 800 (+5) → 800+210=1010 → 1010-5 = 1005 ✅')">✔ Verificar</button>
+          <div class="feedback-box" id="a3-2-fb"></div>
+        </div>
+
+        <div class="activity-card">
+          <div class="activity-title">🧮 Actividad C</div>
+          <div class="act-problem">99 + 99 = ?</div>
+          <div class="highlight-box hb-amber" style="font-size:.8rem;margin-bottom:12px;">
+            💡 Pista: 99 ≈ 100 (+1) → 100+99=199 → 199-1 = ? (o 100+100=200 → 200-2)
+          </div>
+          <input class="act-input" id="a3-3" type="number" placeholder="Tu respuesta…">
+          <button class="btn-check" onclick="checkActivity('a3-3', 198, 'a3-3-fb', '99 ≈ 100 (+1) → 100+99=199 → 199-1 = 198 ✅')">✔ Verificar</button>
+          <div class="feedback-box" id="a3-3-fb"></div>
+        </div>
+
+        <div class="activity-card">
+          <div class="activity-title">🧮 Actividad D</div>
+          <div class="act-problem">180 + 345 = ?</div>
+          <div class="highlight-box hb-amber" style="font-size:.8rem;margin-bottom:12px;">
+            💡 Pista: 180 ≈ 200 (+20) → 200+345=545 → 545-20 = ?
+          </div>
+          <input class="act-input" id="a3-4" type="number" placeholder="Tu respuesta…">
+          <button class="btn-check" onclick="checkActivity('a3-4', 525, 'a3-4-fb', '180 ≈ 200 (+20) → 200+345=545 → 545-20 = 525 ✅')">✔ Verificar</button>
+          <div class="feedback-box" id="a3-4-fb"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-top:4px;">
+      <button class="welcome-cta" onclick="showSection('practice')">¡A Practicar! ⚡ →</button>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECCIÓN 5: PRÁCTICA CRONOMETRADA
+       ========================================== -->
+  <section class="section-page" id="sec-practice">
+    <h1 class="page-title">⚡ Práctica Cronometrada</h1>
+    <p class="page-subtitle">10 problemas — 15 segundos por problema — ¡Suma con redondeo!</p>
+
+    <div id="pracStart">
+      <div class="card" style="text-align:center;padding:40px;">
+        <div style="font-size:3rem;margin-bottom:16px;">⏱️</div>
+        <h2 style="font-family:'Poppins',sans-serif;font-size:1.5rem;color:var(--navy);margin-bottom:12px;">¿Listo para el desafío?</h2>
+        <p style="color:#64748b;max-width:400px;margin:0 auto 24px;line-height:1.6;">
+          Tendrás <strong>15 segundos</strong> por problema. Elige la respuesta correcta usando la técnica de redondeo. ¡Puntuación acumulativa!
+        </p>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+          <div class="highlight-box hb-blue" style="text-align:center;margin:0;">
+            <strong style="font-size:1.5rem;color:var(--blue)">10</strong><br><span style="font-size:.78rem;">Problemas</span>
+          </div>
+          <div class="highlight-box hb-amber" style="text-align:center;margin:0;">
+            <strong style="font-size:1.5rem;color:var(--amber)">15s</strong><br><span style="font-size:.78rem;">Por pregunta</span>
+          </div>
+          <div class="highlight-box hb-green" style="text-align:center;margin:0;">
+            <strong style="font-size:1.5rem;color:var(--green)">100</strong><br><span style="font-size:.78rem;">Puntos max</span>
+          </div>
+        </div>
+        <button class="welcome-cta" style="margin-top:24px;" onclick="startPractice()">▶ Comenzar</button>
+      </div>
+    </div>
+
+    <div id="pracGame" style="display:none;">
+      <div class="practice-header">
+        <div class="score-badge">🏆 Puntaje: <span id="pracScore">0</span> / 100</div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:.85rem;font-weight:700;color:#64748b;">Pregunta <span id="pracQNum">1</span>/10</span>
+          <div class="timer-ring">
+            <svg width="74" height="74" viewBox="0 0 74 74">
+              <circle cx="37" cy="37" r="32" fill="none" stroke="#e2e8f0" stroke-width="7"/>
+              <circle id="timerCircle" cx="37" cy="37" r="32" fill="none" stroke="#1e6fdc" stroke-width="7"
+                stroke-dasharray="201" stroke-dashoffset="0" stroke-linecap="round"/>
+            </svg>
+            <div class="timer-num" id="timerNum">15</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="practice-problem-card">
+        <div class="prac-equation" id="pracEquation">? + ? = ?</div>
+        <div class="options-grid" id="pracOptions"></div>
+      </div>
+
+      <div class="feedback-box" id="pracFeedback" style="margin-bottom:16px;"></div>
+    </div>
+
+    <div id="pracResult" style="display:none;">
+      <div class="prac-result-card">
+        <div style="font-size:2.5rem;margin-bottom:10px;" id="resultEmoji">🎉</div>
+        <h2 style="font-family:'Poppins',sans-serif;font-size:1.6rem;color:var(--navy);">¡Práctica completada!</h2>
+        <div class="result-score-big" id="pracFinalScore">0/100</div>
+        <p style="color:#475569;margin-bottom:20px;" id="pracFinalMsg">¡Buen trabajo!</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <button class="welcome-cta" onclick="startPractice()">🔄 Intentar de nuevo</button>
+          <button class="btn-retry" onclick="showSection('eval')">📝 Ir a Evaluación →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECCIÓN 6: EVALUACIÓN FINAL
+       ========================================== -->
+  <section class="section-page" id="sec-eval">
+    <h1 class="page-title">📝 Evaluación Final</h1>
+    <p class="page-subtitle">10 preguntas de opción múltiple — Cálculo mental con redondeo</p>
+
+    <div id="evalStart">
+      <div class="card" style="text-align:center;padding:40px;">
+        <div style="font-size:3rem;margin-bottom:16px;">📋</div>
+        <h2 style="font-family:'Poppins',sans-serif;font-size:1.5rem;color:var(--navy);margin-bottom:12px;">Evaluación de Cálculo Mental</h2>
+        <p style="color:#64748b;max-width:480px;margin:0 auto 20px;line-height:1.6;">
+          Selecciona la respuesta correcta para cada pregunta. 
+          Recibirás retroalimentación inmediata. ¡Demuestra lo que aprendiste!
+        </p>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+          <div class="highlight-box hb-blue" style="text-align:center;margin:0;">
+            <strong style="font-size:1.5rem;color:var(--blue)">10</strong><br><span style="font-size:.78rem;">Preguntas</span>
+          </div>
+          <div class="highlight-box hb-purple" style="text-align:center;margin:0;">
+            <strong style="font-size:1.5rem;color:var(--purple)">A/B/C/D</strong><br><span style="font-size:.78rem;">4 opciones</span>
+          </div>
+          <div class="highlight-box hb-green" style="text-align:center;margin:0;">
+            <strong style="font-size:1.5rem;color:var(--green)">10</strong><br><span style="font-size:.78rem;">Pts por pregunta</span>
+          </div>
+        </div>
+        <button class="welcome-cta" style="margin-top:24px;" onclick="startEval()">▶ Comenzar Evaluación</button>
+      </div>
+    </div>
+
+    <div id="evalGame" style="display:none;">
+      <div class="eval-progress" id="evalDots"></div>
+
+      <div class="eval-question-card" id="evalQCard">
+        <div class="eval-q-num" id="evalQNum">Pregunta 1 de 10</div>
+        <div class="eval-q-text" id="evalQText"></div>
+        <div class="eval-options" id="evalOpts"></div>
+        <div class="eval-feedback" id="evalFeedback"></div>
+        <button class="btn-next" id="btnNext" style="display:none;" onclick="nextEvalQ()">Siguiente →</button>
+      </div>
+    </div>
+
+    <div id="evalResult" style="display:none;">
+      <div class="final-result">
+        <div style="font-size:2rem;margin-bottom:8px;">🏅 Resultados de la Evaluación</div>
+        <div class="final-grade" id="finalGrade">0/100</div>
+        <span class="stars" id="finalStars">⭐</span>
+        <p class="final-msg" id="finalMsg">¡Buen trabajo!</p>
+        <div style="background:rgba(255,255,255,.1);border-radius:12px;padding:16px;margin:16px auto;max-width:340px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+            <span>✅ Correctas:</span><strong id="finalCorrect">0</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;">
+            <span>❌ Incorrectas:</span><strong id="finalWrong">0</strong>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <button class="welcome-cta" onclick="startEval()">🔄 Repetir evaluación</button>
+          <button class="btn-retry" onclick="showSection('welcome')">🏠 Ir al inicio</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <strong>© 2026 MenteMatemática</strong>. Todos los derechos reservados <strong>VC</strong>.
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+/* ============================================================
+   1. CURSOR PERSONALIZADO (Efecto Okich con delay)
+   ============================================================ */
+const dot  = document.getElementById('cursor-dot');
+const glow = document.getElementById('cursor-glow');
+let mouseX = 0, mouseY = 0;
+let glowX  = 0, glowY  = 0;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  dot.style.transform = `translate(${mouseX - 5}px, ${mouseY - 5}px)`;
+});
+
+// Glow sigue con delay (lerp)
+function animateCursor() {
+  glowX += (mouseX - glowX) * 0.12;
+  glowY += (mouseY - glowY) * 0.12;
+  glow.style.transform = `translate(${glowX - 40}px, ${glowY - 40}px)`;
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+// Cambiar tamaño en hover sobre elementos clickables
+document.querySelectorAll('button, a, input, .nav-item').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    dot.style.transform  += ' scale(1.6)';
+    glow.style.width  = '120px';
+    glow.style.height = '120px';
+  });
+  el.addEventListener('mouseleave', () => {
+    glow.style.width  = '80px';
+    glow.style.height = '80px';
+  });
+});
+
+/* ============================================================
+   2. NAVEGACIÓN DINÁMICA
+   ============================================================ */
+let visitedSections = new Set(['welcome']);
+
+function showSection(id) {
+  // Ocultar todas las secciones
+  document.querySelectorAll('.section-page').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  // Mostrar la seleccionada
+  const sec = document.getElementById('sec-' + id);
+  if (sec) { sec.classList.add('active'); }
+
+  // Activar nav item
+  const navItem = document.querySelector(`[data-section="${id}"]`);
+  if (navItem) navItem.classList.add('active');
+
+  // Actualizar progreso
+  visitedSections.add(id);
+  const sections = ['welcome','learn','c1','c2','c3','practice','eval'];
+  const pct = Math.round((visitedSections.size / sections.length) * 100);
+  document.getElementById('progFill').style.width = pct + '%';
+  document.getElementById('prog-pct').textContent = pct + '%';
+
+  // Scroll al top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Inicializar canvas según sección
+  setTimeout(() => {
+    if (id === 'learn') drawIntroCanvas();
+    if (id === 'c1')    { drawMethodCanvas(0); }
+    if (id === 'c2')    drawNumberLine();
+    if (id === 'c3')    drawMultiDigit(796, 537);
+  }, 100);
+}
+
+/* ============================================================
+   3. CANVAS — INTRODUCCIÓN (sección ¿Qué aprenderemos?)
+   ============================================================ */
+function drawIntroCanvas() {
+  const canvas = document.getElementById('introCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const items = [
+    { num: 38, round: 40, diff: 2, color: '#1e6fdc' },
+    { num: 77, round: 80, diff: 3, color: '#00b4a6' },
+    { num: 99, round: 100, diff: 1, color: '#8b5cf6' },
+    { num: 197, round: 200, diff: 3, color: '#f59e0b' },
+  ];
+
+  const bw = W / items.length;
+  items.forEach((item, i) => {
+    const x = i * bw + bw / 2;
+    const cy = H / 2;
+
+    // Número original
+    ctx.fillStyle = item.color;
+    ctx.font = 'bold 20px Poppins, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(item.num, x - 28, cy - 12);
+
+    // Flecha
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '18px sans-serif';
+    ctx.fillText('→', x, cy - 12);
+
+    // Número redondeado
+    ctx.fillStyle = '#22c55e';
+    ctx.font = 'bold 20px Poppins, sans-serif';
+    ctx.fillText(item.round, x + 28, cy - 12);
+
+    // Diferencia
+    ctx.fillStyle = '#ef4444';
+    ctx.font = 'bold 11px Nunito, sans-serif';
+    ctx.fillText(`(+${item.diff})`, x, cy + 10);
+
+    // Label
+    ctx.fillStyle = '#64748b';
+    ctx.font = '10px Nunito, sans-serif';
+    ctx.fillText('número', x - 28, cy + 25);
+    ctx.fillText('amigable ✓', x + 28, cy + 25);
+  });
+}
+
+/* ============================================================
+   4. CANVAS — MÉTODO (sección 1)
+   ============================================================ */
+let methodStep = -1;
+let methodAnim;
+
+const methodData = {
+  a: 38, b: 47, round: 40, diff: 2, result: 85
+};
+
+function drawMethodCanvas(step) {
+  const canvas = document.getElementById('methodCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const colors = ['#1e6fdc','#00b4a6','#8b5cf6','#22c55e'];
+  const labels = [
+    { emoji:'1', text:'Observar', sub:'38 está cerca de 40', x: 80 },
+    { emoji:'2', text:'Modificar', sub:'38 ≈ 40 (añadimos 2)', x: 220 },
+    { emoji:'3', text:'Operar', sub:'40 + 47 = 87', x: 380 },
+    { emoji:'4', text:'Compensar', sub:'87 − 2 = 85 ✅', x: 540 },
+  ];
+
+  labels.forEach((l, i) => {
+    const active = (step >= i);
+    const alpha = active ? 1 : 0.25;
+    ctx.globalAlpha = alpha;
+
+    // Circle
+    ctx.fillStyle = colors[i];
+    ctx.beginPath(); ctx.arc(l.x, 55, 28, 0, Math.PI * 2); ctx.fill();
+
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 18px Poppins, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(i+1, l.x, 62);
+
+    ctx.fillStyle = '#0d2b55';
+    ctx.font = 'bold 14px Nunito, sans-serif';
+    ctx.fillText(l.text, l.x, 105);
+
+    ctx.fillStyle = '#475569';
+    ctx.font = '12px Nunito, sans-serif';
+    ctx.fillText(l.sub, l.x, 122);
+
+    // Arrow between steps
+    if (i < labels.length - 1) {
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '22px sans-serif';
+      ctx.fillText('→', l.x + 70, 60);
+    }
+  });
+  ctx.globalAlpha = 1;
+}
+
+function animateMethod() {
+  methodStep = -1;
+  clearInterval(methodAnim);
+  methodAnim = setInterval(() => {
+    methodStep++;
+    drawMethodCanvas(methodStep);
+    if (methodStep >= 3) clearInterval(methodAnim);
+  }, 700);
+}
+
+function resetMethod() {
+  clearInterval(methodAnim);
+  methodStep = -1;
+  drawMethodCanvas(-1);
+}
+
+/* ============================================================
+   5. EJEMPLOS GUIADOS DEL MÉTODO
+   ============================================================ */
+const methodExamples = [
+  { eq:'18 + 34 = 52', steps:['18 está cerca de 20 (le falta 2)', '18 → 20 (sumamos 2)', '20 + 34 = 54', '54 − 2 = <strong>52</strong> ✅'] },
+  { eq:'77 + 64 = 141', steps:['77 está cerca de 80 (le falta 3)', '77 → 80 (sumamos 3)', '80 + 64 = 144', '144 − 3 = <strong>141</strong> ✅'] },
+  { eq:'49 + 25 = 74', steps:['49 está cerca de 50 (le falta 1)', '49 → 50 (sumamos 1)', '50 + 25 = 75', '75 − 1 = <strong>74</strong> ✅'] },
+  { eq:'99 + 48 = 147', steps:['99 está cerca de 100 (le falta 1)', '99 → 100 (sumamos 1)', '100 + 48 = 148', '148 − 1 = <strong>147</strong> ✅'] },
+];
+
+function showMethodExample(i) {
+  const d = document.getElementById('methodExDetail');
+  const ex = methodExamples[i];
+  d.style.display = 'block';
+  d.innerHTML = `
+    <strong style="font-size:1rem;color:var(--navy);">🧮 ${ex.eq}</strong>
+    <ol style="margin-top:10px;padding-left:20px;line-height:2.2;">
+      ${ex.steps.map((s,j) => `<li style="font-size:.88rem;color:#334155;"><span style="font-weight:800;color:var(--blue);">Paso ${j+1}:</span> ${s}</li>`).join('')}
+    </ol>`;
+  document.querySelectorAll('#methodExampleBtns .opt-btn').forEach((b,j) => {
+    b.classList.toggle('correct', j===i);
+  });
+}
+
+/* ============================================================
+   6. CANVAS — LÍNEA NUMÉRICA (sección 2)
+   ============================================================ */
+function drawNumberLine() {
+  const canvas = document.getElementById('numberLineCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const rawInput = document.getElementById('nlInput');
+  let num = rawInput ? parseInt(rawInput.value) : 38;
+  if (isNaN(num) || num < 1) num = 1;
+  if (num > 99) num = 99;
+
+  const roundTo = n => Math.ceil(n / 10) * 10;
+  const rounded = roundTo(num);
+  const diff = rounded - num;
+
+  const min = Math.max(0, num - 5);
+  const max = rounded + 5;
+  const range = max - min;
+
+  const pad = 40;
+  const lineW = W - pad * 2;
+  const cy = 70;
+
+  const toX = val => pad + ((val - min) / range) * lineW;
+
+  // Line
+  ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(pad, cy); ctx.lineTo(W - pad, cy); ctx.stroke();
+
+  // Ticks
+  for (let v = min; v <= max; v++) {
+    if (v % 10 === 0 || v === num) {
+      const x = toX(v);
+      ctx.strokeStyle = v % 10 === 0 ? '#475569' : '#94a3b8';
+      ctx.lineWidth = v % 10 === 0 ? 2.5 : 1.5;
+      ctx.beginPath(); ctx.moveTo(x, cy - 8); ctx.lineTo(x, cy + 8); ctx.stroke();
+      if (v % 10 === 0 || v === num) {
+        ctx.fillStyle = '#475569';
+        ctx.font = '12px Nunito, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(v, x, cy + 22);
+      }
+    }
+  }
+
+  // Arc from num to rounded
+  const x1 = toX(num), x2 = toX(rounded);
+  ctx.strokeStyle = '#1e6fdc'; ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.arc((x1+x2)/2, cy, (x2-x1)/2, Math.PI, 0); ctx.stroke();
+
+  // Dot for num
+  ctx.fillStyle = '#1e6fdc';
+  ctx.beginPath(); ctx.arc(x1, cy, 9, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 9px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText(num, x1, cy + 3);
+
+  // Dot for rounded
+  ctx.fillStyle = '#22c55e';
+  ctx.beginPath(); ctx.arc(x2, cy, 9, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.fillText(rounded, x2, cy + 3);
+
+  // Label
+  ctx.fillStyle = '#1e6fdc';
+  ctx.font = 'bold 13px Nunito, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(`+${diff}`, (x1+x2)/2, cy - 22);
+
+  // Info
+  ctx.fillStyle = '#475569';
+  ctx.font = '12px Nunito, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText(`${num} + ${diff} = ${rounded}  →  Número amigable ✓`, pad, H - 12);
+}
+
+/* ============================================================
+   7. CANVAS — MULTI-DÍGITO (sección 3)
+   ============================================================ */
+function drawMultiDigit(a, b) {
+  const canvas = document.getElementById('multiDigitCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const roundUp = n => {
+    if (n < 100) return Math.ceil(n/10)*10;
+    if (n < 1000) return Math.ceil(n/100)*100;
+    return Math.ceil(n/1000)*1000;
+  };
+
+  const r = roundUp(a);
+  const diff = r - a;
+  const temp = r + b;
+  const result = temp - diff;
+
+  const steps = [
+    { label: `Número original: ${a}`, color: '#1e6fdc', val: a },
+    { label: `Redondeado: ${r} (+${diff})`, color: '#00b4a6', val: r },
+    { label: `${r} + ${b} = ${temp}`, color: '#8b5cf6', val: temp },
+    { label: `${temp} − ${diff} = ${result} ✅`, color: '#22c55e', val: result },
+  ];
+
+  const maxVal = Math.max(...steps.map(s=>s.val));
+  const barMaxH = 120;
+  const bw = (W - 60) / steps.length;
+
+  steps.forEach((s, i) => {
+    const x = 30 + i * bw;
+    const barH = Math.max(20, (s.val / maxVal) * barMaxH);
+    const barY = H - 40 - barH;
+
+    // Bar gradient
+    const grad = ctx.createLinearGradient(0, barY, 0, barY + barH);
+    grad.addColorStop(0, s.color);
+    grad.addColorStop(1, s.color + '88');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.roundRect(x + 8, barY, bw - 20, barH, 6);
+    ctx.fill();
+
+    // Value on bar
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 13px Poppins, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(s.val.toLocaleString(), x + bw/2, barY + 18);
+
+    // Label
+    ctx.fillStyle = '#334155';
+    ctx.font = '10px Nunito, sans-serif';
+    ctx.textAlign = 'center';
+    const words = s.label.split(': ');
+    ctx.fillText(words[0], x + bw/2, H - 22);
+    if (words[1]) ctx.fillText(words[1], x + bw/2, H - 10);
+  });
+}
+
+/* ============================================================
+   8. ACTIVIDADES — VERIFICAR RESPUESTA
+   ============================================================ */
+function checkActivity(inputId, correct, fbId, explanation) {
+  const input = document.getElementById(inputId);
+  const fb    = document.getElementById(fbId);
+  const val   = parseInt(input.value);
+
+  if (isNaN(val)) {
+    fb.className = 'feedback-box hint';
+    fb.innerHTML = '⚠️ Por favor ingresa un número.';
+    fb.style.display = 'flex';
+    return;
+  }
+
+  if (val === correct) {
+    input.className = 'act-input correct';
+    fb.className = 'feedback-box correct';
+    fb.innerHTML = `✅ ¡Excelente! <span style="margin-left:6px;">${explanation}</span>`;
+  } else {
+    input.className = 'act-input wrong';
+    fb.className = 'feedback-box wrong';
+    fb.innerHTML = `❌ Incorrecto. La respuesta es <strong>${correct}</strong>. ${explanation}`;
+    setTimeout(() => {
+      const retryBtn = document.createElement('button');
+      retryBtn.className = 'btn-retry'; retryBtn.style.marginTop = '8px';
+      retryBtn.textContent = '🔄 Reintentar';
+      retryBtn.onclick = () => {
+        input.value = '';
+        input.className = 'act-input';
+        fb.style.display = 'none';
+        input.focus();
+      };
+      if (!fb.querySelector('.btn-retry')) fb.appendChild(retryBtn);
+    }, 200);
+  }
+  fb.style.display = 'flex';
+  fb.style.flexDirection = 'column';
+}
+
+/* ============================================================
+   9. PRÁCTICA CRONOMETRADA
+   ============================================================ */
+// Banco de problemas (random)
+function genProblems() {
+  const pool = [
+    { a:29, b:46, ans:75 }, { a:57, b:38, ans:95 }, { a:19, b:84, ans:103 },
+    { a:68, b:25, ans:93 }, { a:87, b:44, ans:131 }, { a:48, b:48, ans:96 },
+    { a:99, b:99, ans:198 }, { a:38, b:47, ans:85 }, { a:77, b:64, ans:141 },
+    { a:49, b:25, ans:74 }, { a:399, b:150, ans:549 }, { a:795, b:210, ans:1005 },
+    { a:180, b:345, ans:525 }, { a:998, b:450, ans:1448 }, { a:490, b:320, ans:810 },
+    { a:63, b:29, ans:92 }, { a:56, b:37, ans:93 }, { a:17, b:55, ans:72 },
+    { a:44, b:28, ans:72 }, { a:18, b:34, ans:52 },
+  ];
+  // Shuffle
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool.slice(0, 10);
+}
+
+let pracProblems = [];
+let pracIndex = 0;
+let pracScore = 0;
+let pracTimer = null;
+let pracTimeLeft = 15;
+const TOTAL_DASH = 201;
+
+function startPractice() {
+  pracProblems = genProblems();
+  pracIndex = 0; pracScore = 0;
+  document.getElementById('pracStart').style.display = 'none';
+  document.getElementById('pracResult').style.display = 'none';
+  document.getElementById('pracGame').style.display = 'block';
+  document.getElementById('pracScore').textContent = 0;
+  showPracQ();
+}
+
+function showPracQ() {
+  if (pracIndex >= pracProblems.length) { endPractice(); return; }
+  const q = pracProblems[pracIndex];
+  document.getElementById('pracQNum').textContent = pracIndex + 1;
+  document.getElementById('pracEquation').innerHTML =
+    `<span>${q.a}</span> + <span>${q.b}</span> = <span style="color:var(--teal)">?</span>`;
+  document.getElementById('pracFeedback').style.display = 'none';
+  document.getElementById('pracFeedback').className = 'feedback-box';
+
+  // Generate options
+  const opts = generateOptions(q.ans);
+  const optContainer = document.getElementById('pracOptions');
+  optContainer.innerHTML = '';
+  opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = opt;
+    btn.onclick = () => selectPracOpt(btn, opt, q.ans, opts);
+    optContainer.appendChild(btn);
+  });
+
+  // Timer
+  clearInterval(pracTimer);
+  pracTimeLeft = 15;
+  updateTimer(pracTimeLeft);
+  pracTimer = setInterval(() => {
+    pracTimeLeft--;
+    updateTimer(pracTimeLeft);
+    if (pracTimeLeft <= 0) {
+      clearInterval(pracTimer);
+      timeOutPrac(q.ans);
+    }
+  }, 1000);
+}
+
+function generateOptions(correct) {
+  const opts = new Set([correct]);
+  const diffs = [correct - 10, correct + 10, correct - 1, correct + 1, correct - 5, correct + 5, correct - 2, correct + 2];
+  for (const d of diffs) { if (opts.size < 4 && d > 0) opts.add(d); }
+  while (opts.size < 4) opts.add(correct + Math.floor(Math.random()*20+3));
+  const arr = Array.from(opts);
+  for (let i = arr.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+  return arr.slice(0,4);
+}
+
+function updateTimer(t) {
+  document.getElementById('timerNum').textContent = t;
+  const offset = TOTAL_DASH * (1 - t/15);
+  document.getElementById('timerCircle').style.strokeDashoffset = offset;
+  document.getElementById('timerCircle').style.stroke =
+    t > 8 ? '#1e6fdc' : t > 4 ? '#f59e0b' : '#ef4444';
+}
+
+function selectPracOpt(btn, val, correct, opts) {
+  clearInterval(pracTimer);
+  document.querySelectorAll('#pracOptions .opt-btn').forEach(b => b.disabled = true);
+  const fb = document.getElementById('pracFeedback');
+  if (val === correct) {
+    btn.classList.add('correct');
+    pracScore += 10;
+    document.getElementById('pracScore').textContent = pracScore;
+    fb.className = 'feedback-box correct';
+    fb.innerHTML = `✅ ¡Correcto! <strong>${correct}</strong>`;
+    fb.style.display = 'flex';
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('#pracOptions .opt-btn').forEach(b => {
+      if (parseInt(b.textContent) === correct) b.classList.add('correct');
+    });
+    fb.className = 'feedback-box wrong';
+    fb.innerHTML = `❌ Incorrecto. La respuesta era <strong>${correct}</strong>`;
+    fb.style.display = 'flex';
+  }
+  pracIndex++;
+  setTimeout(showPracQ, 1500);
+}
+
+function timeOutPrac(correct) {
+  document.querySelectorAll('#pracOptions .opt-btn').forEach(b => {
+    b.disabled = true;
+    if (parseInt(b.textContent) === correct) b.classList.add('correct');
+  });
+  const fb = document.getElementById('pracFeedback');
+  fb.className = 'feedback-box wrong';
+  fb.innerHTML = `⏰ ¡Tiempo! La respuesta era <strong>${correct}</strong>`;
+  fb.style.display = 'flex';
+  pracIndex++;
+  setTimeout(showPracQ, 1800);
+}
+
+function endPractice() {
+  clearInterval(pracTimer);
+  document.getElementById('pracGame').style.display = 'none';
+  document.getElementById('pracResult').style.display = 'block';
+  document.getElementById('pracFinalScore').textContent = pracScore + '/100';
+  let emoji, msg;
+  if (pracScore === 100)    { emoji='🏆'; msg='¡PERFECTO! ¡Eres un genio del cálculo mental!'; }
+  else if (pracScore >= 80) { emoji='🎉'; msg='¡Excelente! Dominas muy bien la técnica de redondeo.'; }
+  else if (pracScore >= 60) { emoji='😊'; msg='¡Muy bien! Sigue practicando para dominar el redondeo.'; }
+  else if (pracScore >= 40) { emoji='💪'; msg='¡Buen intento! Repasa los ejemplos y vuelve a practicar.'; }
+  else                       { emoji='📚'; msg='Necesitas más práctica. Revisa las secciones del método.'; }
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('pracFinalMsg').textContent = msg;
+}
+
+/* ============================================================
+   10. EVALUACIÓN FINAL
+   ============================================================ */
+const evalQuestions = [
+  {
+    q: '¿Cuánto es 39 + 45?',
+    opts: ['a) 74', 'b) 84', 'c) 85', 'd) 79'],
+    correct: 1,
+    explanation: '39 ≈ 40 (+1) → 40+45=85 → 85-1 = 84'
+  },
+  {
+    q: '¿Cuál es el resultado de 88 + 29?',
+    opts: ['a) 59', 'b) 60', 'c) 61', 'd) 117'],
+    correct: 3,
+    explanation: '29 ≈ 30 (+1) → 88+30=118 → 118-1 = 117'
+  },
+  {
+    q: 'Si redondeas 197 para sumar 197 + 50, ¿qué operación mental es más fácil?',
+    opts: ['a) 200+50-3', 'b) 190+50+7', 'c) 200+50+3', 'd) 197+3'],
+    correct: 0,
+    explanation: '197 ≈ 200 (+3) → 200+50=250 → 250-3 = 247'
+  },
+  {
+    q: 'Resuelve mentalmente: 145 + 99.',
+    opts: ['a) 245', 'b) 244', 'c) 246', 'd) 234'],
+    correct: 1,
+    explanation: '99 ≈ 100 (+1) → 145+100=245 → 245-1 = 244'
+  },
+  {
+    q: 'Calcula: 560 + 398.',
+    opts: ['a) 160', 'b) 164', 'c) 162', 'd) 958'],
+    correct: 3,
+    explanation: '398 ≈ 400 (+2) → 560+400=960 → 960-2 = 958'
+  },
+  {
+    q: '¿Cuánto es 18 + 18 + 18?',
+    opts: ['a) 54', 'b) 56', 'c) 52', 'd) 60'],
+    correct: 0,
+    explanation: '18×3 = 54. También: 18 ≈ 20 → 20×3=60 → 60-6=54'
+  },
+  {
+    q: 'Resuelve: 1250 + 995.',
+    opts: ['a) 2250', 'b) 2245', 'c) 2255', 'd) 2240'],
+    correct: 1,
+    explanation: '995 ≈ 1000 (+5) → 1250+1000=2250 → 2250-5 = 2245'
+  },
+  {
+    q: 'Si tengo 75 y le sumo 38, mentalmente puedo hacer:',
+    opts: ['a) 75+40-2', 'b) 75-40+2', 'c) 70-30+5', 'd) 80-38'],
+    correct: 0,
+    explanation: '38 ≈ 40 (+2) → 75+40=115 → 115-2 = 113'
+  },
+  {
+    q: 'Resultado de 499 + 499:',
+    opts: ['a) 1000', 'b) 999', 'c) 998', 'd) 997'],
+    correct: 2,
+    explanation: '499 ≈ 500 (+1) → 500+499=999 → 999-1 = 998'
+  },
+  {
+    q: '¿Cuánto es 1005 + 997?',
+    opts: ['a) 8', 'b) 12', 'c) 5', 'd) 2002'],
+    correct: 3,
+    explanation: '997 ≈ 1000 (+3) → 1005+1000=2005 → 2005-3 = 2002'
+  }
+];
+
+let evalIndex = 0;
+let evalCorrect = 0;
+let evalAnswered = false;
+
+function startEval() {
+  evalIndex = 0; evalCorrect = 0;
+  document.getElementById('evalStart').style.display = 'none';
+  document.getElementById('evalResult').style.display = 'none';
+  document.getElementById('evalGame').style.display = 'block';
+  buildEvalDots();
+  showEvalQ();
+}
+
+function buildEvalDots() {
+  const container = document.getElementById('evalDots');
+  container.innerHTML = '';
+  evalQuestions.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'eval-dot';
+    d.textContent = i + 1;
+    d.id = 'edot-' + i;
+    container.appendChild(d);
+  });
+}
+
+function showEvalQ() {
+  if (evalIndex >= evalQuestions.length) { showEvalResult(); return; }
+  evalAnswered = false;
+  const q = evalQuestions[evalIndex];
+
+  // Update dots
+  document.querySelectorAll('.eval-dot').forEach((d,i) => {
+    d.classList.remove('current','answered');
+    if (i < evalIndex) d.classList.add('answered');
+    if (i === evalIndex) d.classList.add('current');
+  });
+
+  document.getElementById('evalQNum').textContent = `Pregunta ${evalIndex+1} de ${evalQuestions.length}`;
+  document.getElementById('evalQText').textContent = q.q;
+
+  const optsContainer = document.getElementById('evalOpts');
+  optsContainer.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'eval-opt';
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span> ${opt}`;
+    btn.onclick = () => selectEvalOpt(btn, i, q.correct, q.explanation, letters);
+    optsContainer.appendChild(btn);
+  });
+
+  const fb = document.getElementById('evalFeedback');
+  fb.className = 'eval-feedback'; fb.innerHTML = '';
+  document.getElementById('btnNext').style.display = 'none';
+}
+
+function selectEvalOpt(btn, idx, correct, explanation, letters) {
+  if (evalAnswered) return;
+  evalAnswered = true;
+
+  document.querySelectorAll('#evalOpts .eval-opt').forEach(b => b.disabled = true);
+
+  const fb = document.getElementById('evalFeedback');
+  const dot = document.getElementById('edot-' + evalIndex);
+
+  if (idx === correct) {
+    btn.classList.add('correct');
+    evalCorrect++;
+    fb.className = 'eval-feedback ok show';
+    fb.innerHTML = `✅ ¡Correcto! ${explanation}`;
+    dot.classList.add('correct');
+    dot.classList.remove('current');
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('#evalOpts .eval-opt')[correct].classList.add('correct');
+    fb.className = 'eval-feedback fail show';
+    fb.innerHTML = `❌ Incorrecto. La respuesta correcta es <strong>${letters[correct]}</strong>. ${explanation}`;
+    dot.classList.add('wrong');
+    dot.classList.remove('current');
+  }
+  document.getElementById('btnNext').style.display = 'inline-flex';
+}
+
+function nextEvalQ() {
+  evalIndex++;
+  showEvalQ();
+}
+
+function showEvalResult() {
+  document.getElementById('evalGame').style.display = 'none';
+  document.getElementById('evalResult').style.display = 'block';
+  const score = evalCorrect * 10;
+  document.getElementById('finalGrade').textContent = score + '/100';
+  document.getElementById('finalCorrect').textContent = evalCorrect;
+  document.getElementById('finalWrong').textContent = 10 - evalCorrect;
+
+  let stars, msg;
+  if (score === 100)    { stars='⭐⭐⭐⭐⭐'; msg='¡PERFECTO! ¡Eres un maestro del cálculo mental! 🏆'; }
+  else if (score >= 80) { stars='⭐⭐⭐⭐'; msg='¡Excelente resultado! Dominas muy bien el redondeo.'; }
+  else if (score >= 60) { stars='⭐⭐⭐'; msg='¡Buen trabajo! Sigue practicando para llegar al 100%.'; }
+  else if (score >= 40) { stars='⭐⭐'; msg='Vas por buen camino. Repasa los ejemplos y vuelve a intentarlo.'; }
+  else                   { stars='⭐'; msg='Necesitas repasar el método. ¡Tú puedes lograrlo!'; }
+
+  document.getElementById('finalStars').textContent = stars;
+  document.getElementById('finalMsg').textContent = msg;
+}
+
+/* ============================================================
+   11. INICIALIZACIÓN AL CARGAR
+   ============================================================ */
+window.addEventListener('load', () => {
+  // Mostrar bienvenida por defecto
+  showSection('welcome');
+
+  // Mensaje de bienvenida flash
+  setTimeout(() => {
+    const banner = document.createElement('div');
+    banner.style.cssText = `
+      position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+      background:linear-gradient(135deg,#0d2b55,#1a3f7a);color:#fff;
+      padding:14px 24px;border-radius:14px;font-weight:700;font-size:.9rem;
+      box-shadow:0 8px 30px rgba(13,43,85,.45);z-index:9999;
+      animation:slideUp .4s ease;display:flex;align-items:center;gap:10px;
+      border:1px solid rgba(255,255,255,.15);
+    `;
+    banner.innerHTML = '👋 ¡Bienvenido/a a MenteMatemática! Haz clic en los módulos para navegar.';
+    document.body.appendChild(banner);
+    setTimeout(() => {
+      banner.style.transition = 'opacity .5s, transform .5s';
+      banner.style.opacity = '0'; banner.style.transform = 'translateX(-50%) translateY(20px)';
+      setTimeout(() => banner.remove(), 600);
+    }, 4000);
+  }, 800);
+
+  // Add style for welcome banner animation
+  const style = document.createElement('style');
+  style.textContent = '@keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(30px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}';
+  document.head.appendChild(style);
+});
+</script>
+</body>
+</html>

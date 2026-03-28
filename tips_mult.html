@@ -1,0 +1,2453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- ============================================================
+     MENTE MATEMÁTICA - Tips de Multiplicación
+     Plataforma educativa interactiva para estudiantes 9-15 años
+     © 2026 MenteMatematicaI. Todos los derechos reservados VC.
+     ============================================================ -->
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mente Matemática – Tips de Multiplicación</title>
+
+<!-- ============================================================
+     CSS - ESTILOS GLOBALES Y COMPONENTES
+     ============================================================ -->
+<style>
+  /* === VARIABLES DE COLOR Y DISEÑO === */
+  :root {
+    --navy:       #0d2b5e;
+    --navy-dark:  #07193a;
+    --navy-mid:   #1a4080;
+    --blue:       #2563eb;
+    --blue-light: #3b82f6;
+    --sky:        #e0eeff;
+    --accent:     #f59e0b;
+    --accent2:    #10b981;
+    --accent3:    #ef4444;
+    --white:      #ffffff;
+    --gray-bg:    #f1f5fb;
+    --gray-200:   #e5e7eb;
+    --gray-400:   #9ca3af;
+    --gray-700:   #374151;
+    --gray-900:   #111827;
+    --sidebar-w:  260px;
+    --header-h:   70px;
+    --radius:     14px;
+    --shadow:     0 4px 20px rgba(13,43,94,.10);
+    --shadow-sm:  0 2px 8px rgba(13,43,94,.08);
+    --transition: .35s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* === RESET === */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--gray-bg);
+    color: var(--gray-900);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* === ENCABEZADO SUPERIOR === */
+  #site-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--header-h);
+    background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-mid) 60%, #1e5fa8 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px 0 calc(var(--sidebar-w) + 28px);
+    z-index: 100;
+    box-shadow: 0 3px 16px rgba(0,0,0,.35);
+  }
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo-icon {
+    width: 42px; height: 42px;
+    background: linear-gradient(135deg, var(--accent) 0%, #f97316 100%);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 2px 8px rgba(245,158,11,.4);
+  }
+  .logo-text {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -.3px;
+  }
+  .logo-text span { color: var(--accent); }
+  .header-subtitle {
+    font-size: .75rem;
+    color: rgba(255,255,255,.65);
+    font-weight: 400;
+    margin-top: 1px;
+  }
+  .btn-back {
+    background: rgba(255,255,255,.12);
+    border: 1.5px solid rgba(255,255,255,.3);
+    color: var(--white);
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: .85rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background var(--transition), transform var(--transition);
+  }
+  .btn-back:hover {
+    background: rgba(255,255,255,.22);
+    transform: translateY(-1px);
+  }
+
+  /* === BARRA LATERAL === */
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--white);
+    border-right: 1px solid var(--gray-200);
+    display: flex;
+    flex-direction: column;
+    z-index: 110;
+    box-shadow: 2px 0 12px rgba(0,0,0,.07);
+    overflow-y: auto;
+  }
+  .sidebar-brand {
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    background: linear-gradient(135deg, var(--navy-dark), var(--navy-mid));
+    flex-shrink: 0;
+  }
+  .sidebar-brand-text {
+    color: var(--white);
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: -.2px;
+  }
+  .sidebar-brand-text span { color: var(--accent); }
+  .sidebar-section-label {
+    font-size: .7rem;
+    font-weight: 700;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    padding: 18px 20px 8px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 20px;
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition);
+    border-left: 3px solid transparent;
+    color: var(--gray-700);
+    font-size: .9rem;
+    font-weight: 500;
+    user-select: none;
+  }
+  .nav-item:hover { background: var(--sky); color: var(--blue); }
+  .nav-item.active {
+    background: #dbeafe;
+    border-left-color: var(--blue);
+    color: var(--blue);
+    font-weight: 700;
+  }
+  .nav-icon {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+    transition: background var(--transition);
+  }
+  .nav-item:not(.active) .nav-icon { background: var(--gray-bg); }
+  .nav-item.active .nav-icon { background: #bfdbfe; }
+  .nav-item:hover .nav-icon { background: #dbeafe; }
+  .sidebar-progress {
+    margin: 20px 16px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    border-radius: var(--radius);
+    border: 1px solid #bae6fd;
+  }
+  .progress-label {
+    font-size: .75rem;
+    color: #0369a1;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .progress-bar {
+    height: 7px;
+    background: #bae6fd;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue), var(--blue-light));
+    border-radius: 99px;
+    transition: width .6s ease;
+  }
+
+  /* === CONTENIDO PRINCIPAL === */
+  #main-content {
+    margin-left: var(--sidebar-w);
+    margin-top: var(--header-h);
+    flex: 1;
+    padding: 36px 40px;
+    min-height: calc(100vh - var(--header-h));
+  }
+
+  /* === TARJETAS === */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    animation: fadeUp .4s ease both;
+  }
+  .card-sm { padding: 20px 24px; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* === SECTION TITLE === */
+  .section-hero {
+    background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-mid) 100%);
+    border-radius: var(--radius);
+    padding: 36px 40px;
+    margin-bottom: 28px;
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp .4s ease both;
+  }
+  .section-hero::before {
+    content: '';
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.06);
+  }
+  .section-hero::after {
+    content: '';
+    position: absolute;
+    right: 60px; bottom: -60px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.04);
+  }
+  .hero-eyebrow {
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .hero-title {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .hero-desc {
+    font-size: .95rem;
+    color: rgba(255,255,255,.78);
+    max-width: 560px;
+    line-height: 1.65;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.2);
+    color: var(--white);
+    border-radius: 99px;
+    padding: 4px 14px;
+    font-size: .78rem;
+    font-weight: 600;
+    margin-top: 16px;
+  }
+
+  /* === GRID LAYOUTS === */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+  /* === BADGE CHIPS === */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 99px;
+    font-size: .8rem;
+    font-weight: 600;
+  }
+  .chip-blue  { background: #dbeafe; color: #1d4ed8; }
+  .chip-green { background: #d1fae5; color: #065f46; }
+  .chip-amber { background: #fef3c7; color: #92400e; }
+  .chip-red   { background: #fee2e2; color: #991b1b; }
+  .chip-purple{ background: #ede9fe; color: #5b21b6; }
+
+  /* === TIP CARD === */
+  .tip-card {
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .tip-card-blue   { background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 1px solid #bfdbfe; }
+  .tip-card-green  { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1px solid #bbf7d0; }
+  .tip-card-amber  { background: linear-gradient(135deg, #fffbeb, #fef3c7); border: 1px solid #fde68a; }
+  .tip-card-purple { background: linear-gradient(135deg, #faf5ff, #ede9fe); border: 1px solid #ddd6fe; }
+  .tip-number {
+    position: absolute;
+    right: 18px; top: 14px;
+    font-size: 4rem;
+    font-weight: 900;
+    opacity: .07;
+    color: #1d4ed8;
+    line-height: 1;
+  }
+  .tip-label {
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #6366f1;
+    margin-bottom: 6px;
+  }
+  .tip-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 8px;
+  }
+  .tip-body {
+    font-size: .9rem;
+    color: var(--gray-700);
+    line-height: 1.65;
+  }
+
+  /* === EXAMPLE BOX === */
+  .example-box {
+    background: var(--gray-bg);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 14px;
+    border-left: 4px solid var(--blue);
+  }
+  .example-box h4 {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--blue);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .example-box p { font-size: .9rem; color: var(--gray-700); line-height: 1.6; }
+  .highlight-num {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--blue), #1d4ed8);
+    color: var(--white);
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 1rem;
+    margin: 0 2px;
+  }
+
+  /* === STEP BOX === */
+  .steps {
+    counter-reset: step;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 14px;
+  }
+  .step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .step-num {
+    counter-increment: step;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), #1d4ed8);
+    color: var(--white);
+    font-weight: 700;
+    font-size: .85rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-text {
+    font-size: .9rem;
+    color: var(--gray-700);
+    line-height: 1.6;
+    padding-top: 4px;
+  }
+  .step-text strong { color: var(--gray-900); }
+
+  /* === VIDEO CONTAINER === */
+  .video-wrapper {
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 18px 0;
+    box-shadow: var(--shadow);
+    aspect-ratio: 16/9;
+    position: relative;
+  }
+  .video-wrapper video {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .video-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0d2b5e, #1e40af);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: var(--white);
+    font-size: 1rem;
+    text-align: center;
+    padding: 20px;
+  }
+  .video-play-icon {
+    width: 70px; height: 70px;
+    background: rgba(255,255,255,.15);
+    border: 3px solid rgba(255,255,255,.4);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    margin-bottom: 6px;
+  }
+
+  /* === ACTIVIDAD INTERACTIVA === */
+  .quiz-container { margin-top: 20px; }
+  .quiz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .quiz-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--gray-900);
+  }
+  .score-badge {
+    background: linear-gradient(135deg, var(--accent), #f97316);
+    color: var(--white);
+    padding: 6px 16px;
+    border-radius: 99px;
+    font-weight: 700;
+    font-size: .9rem;
+    box-shadow: 0 2px 8px rgba(245,158,11,.3);
+  }
+  .question-card {
+    background: linear-gradient(135deg, #f8faff, #f1f5ff);
+    border: 2px solid #e0e7ff;
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+  }
+  .question-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .answer-input {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .answer-input input[type="number"] {
+    width: 130px;
+    padding: 12px 14px;
+    border: 2px solid var(--gray-200);
+    border-radius: 10px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-align: center;
+    color: var(--gray-900);
+    transition: border-color var(--transition), box-shadow var(--transition);
+    outline: none;
+  }
+  .answer-input input:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+  }
+  .btn {
+    padding: 11px 24px;
+    border-radius: 9px;
+    font-size: .9rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--blue), #1d4ed8);
+    color: var(--white);
+    box-shadow: 0 3px 10px rgba(37,99,235,.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(37,99,235,.35); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-green {
+    background: linear-gradient(135deg, var(--accent2), #059669);
+    color: var(--white);
+    box-shadow: 0 3px 10px rgba(16,185,129,.3);
+  }
+  .btn-green:hover { transform: translateY(-2px); }
+  .btn-amber {
+    background: linear-gradient(135deg, var(--accent), #f97316);
+    color: var(--white);
+    box-shadow: 0 3px 10px rgba(245,158,11,.3);
+  }
+  .btn-amber:hover { transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent;
+    border: 2px solid var(--blue);
+    color: var(--blue);
+  }
+  .btn-outline:hover { background: var(--sky); }
+  .feedback-box {
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-top: 14px;
+    font-size: .9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: fadeUp .3s ease both;
+  }
+  .feedback-correct { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
+  .feedback-wrong   { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+
+  /* === OPTIONS GRID (MCQ) === */
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .option-btn {
+    padding: 13px 16px;
+    border: 2px solid var(--gray-200);
+    border-radius: 10px;
+    background: var(--white);
+    cursor: pointer;
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    transition: all var(--transition);
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--blue);
+    background: var(--sky);
+    color: var(--blue);
+  }
+  .option-btn.correct {
+    border-color: #10b981;
+    background: #d1fae5;
+    color: #065f46;
+  }
+  .option-btn.wrong {
+    border-color: #ef4444;
+    background: #fee2e2;
+    color: #991b1b;
+  }
+  .option-letter {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--gray-bg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .8rem;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .option-btn.correct .option-letter { background: #10b981; color: var(--white); }
+  .option-btn.wrong   .option-letter { background: #ef4444; color: var(--white); }
+
+  /* === EVALUACION === */
+  .eval-progress {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+  .eval-dot {
+    width: 28px; height: 7px;
+    border-radius: 99px;
+    background: var(--gray-200);
+    transition: background .4s;
+  }
+  .eval-dot.done    { background: #10b981; }
+  .eval-dot.active  { background: var(--blue); }
+  .eval-dot.wrong   { background: #ef4444; }
+  .question-counter {
+    font-size: .78rem;
+    color: var(--gray-400);
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .result-card {
+    text-align: center;
+    padding: 50px 30px;
+    animation: fadeUp .5s ease both;
+  }
+  .result-emoji { font-size: 4rem; margin-bottom: 16px; display: block; }
+  .result-score {
+    font-size: 4.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .result-label {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 12px;
+  }
+  .result-msg { font-size: 1rem; color: var(--gray-700); max-width: 400px; margin: 0 auto 24px; line-height: 1.6; }
+  .stars { font-size: 2.5rem; letter-spacing: 4px; margin: 12px 0; }
+
+  /* === CANVAS === */
+  canvas {
+    display: block;
+    border-radius: 10px;
+    background: var(--white);
+  }
+  .canvas-wrapper {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1.5px solid var(--gray-200);
+    box-shadow: var(--shadow-sm);
+    margin: 14px 0;
+  }
+  .canvas-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+    justify-content: center;
+  }
+
+  /* === TABLE === */
+  .data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    margin-top: 14px;
+  }
+  .data-table th {
+    background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+    color: var(--white);
+    font-size: .82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    padding: 12px 16px;
+    text-align: left;
+  }
+  .data-table td {
+    padding: 11px 16px;
+    font-size: .92rem;
+    border-bottom: 1px solid var(--gray-200);
+    color: var(--gray-700);
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:nth-child(even) td { background: #f8faff; }
+  .data-table .num { font-weight: 700; color: var(--navy); font-size: 1rem; }
+
+  /* === WELCOME SCREEN === */
+  #welcome-overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, var(--navy-dark) 0%, #1a4080 60%, #1e5fa8 100%);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    animation: welcomeFadeIn .5s ease both;
+  }
+  @keyframes welcomeFadeIn { from { opacity:0; } to { opacity:1; } }
+  .welcome-card {
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 52px 60px;
+    text-align: center;
+    max-width: 580px;
+    animation: welcomeScale .6s .2s ease both;
+  }
+  @keyframes welcomeScale {
+    from { opacity:0; transform: scale(.92); }
+    to   { opacity:1; transform: scale(1); }
+  }
+  .welcome-logo { font-size: 5rem; margin-bottom: 20px; display: block; }
+  .welcome-brand {
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: -1px;
+    margin-bottom: 6px;
+  }
+  .welcome-brand span { color: var(--accent); }
+  .welcome-sub {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,.7);
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+  .btn-start {
+    background: linear-gradient(135deg, var(--accent), #f97316);
+    color: var(--white);
+    border: none;
+    padding: 16px 42px;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 6px 24px rgba(245,158,11,.4);
+    transition: all .3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .btn-start:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(245,158,11,.5); }
+  .floating-shapes {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .shape {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,.04);
+    animation: floatShape linear infinite;
+  }
+  @keyframes floatShape {
+    0%   { transform: translateY(0) rotate(0); }
+    50%  { transform: translateY(-30px) rotate(180deg); }
+    100% { transform: translateY(0) rotate(360deg); }
+  }
+  .welcome-chips {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+  .welcome-chip {
+    background: rgba(255,255,255,.12);
+    color: rgba(255,255,255,.85);
+    padding: 5px 14px;
+    border-radius: 99px;
+    font-size: .8rem;
+    font-weight: 600;
+    border: 1px solid rgba(255,255,255,.18);
+  }
+
+  /* === OBJECTIVE CARDS === */
+  .obj-card {
+    display: flex;
+    gap: 16px;
+    padding: 18px 20px;
+    background: var(--white);
+    border-radius: 12px;
+    border: 1.5px solid var(--gray-200);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+  .obj-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+  .obj-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .obj-icon-blue   { background: #dbeafe; }
+  .obj-icon-green  { background: #d1fae5; }
+  .obj-icon-amber  { background: #fef3c7; }
+  .obj-icon-purple { background: #ede9fe; }
+  .obj-body h4 { font-size: .95rem; font-weight: 700; color: var(--gray-900); margin-bottom: 4px; }
+  .obj-body p  { font-size: .83rem; color: var(--gray-400); line-height: 1.5; }
+
+  /* === TRICK DEMO (interactive) === */
+  .trick-demo {
+    background: linear-gradient(135deg, #f8faff, #f1f5ff);
+    border: 2px solid #c7d7fd;
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-top: 16px;
+  }
+  .trick-demo h4 {
+    font-size: .85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--blue);
+    font-weight: 800;
+    margin-bottom: 14px;
+  }
+  .trick-inputs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 14px;
+  }
+  .trick-inputs input {
+    width: 80px;
+    padding: 10px 8px;
+    border: 2px solid var(--gray-200);
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-align: center;
+    color: var(--navy);
+    outline: none;
+    transition: border-color var(--transition);
+  }
+  .trick-inputs input:focus { border-color: var(--blue); }
+  .trick-inputs .op { font-size: 1.4rem; font-weight: 700; color: var(--blue-light); }
+  .trick-result {
+    margin-top: 14px;
+    padding: 16px;
+    background: var(--white);
+    border-radius: 10px;
+    font-size: 1rem;
+    color: var(--gray-700);
+    line-height: 1.7;
+    display: none;
+    animation: fadeUp .3s ease both;
+  }
+  .trick-result.show { display: block; }
+  .big-result {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--navy);
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  /* === GAMIFIED PRACTICE === */
+  .game-area {
+    background: linear-gradient(135deg, #0d2b5e, #1a4080);
+    border-radius: 14px;
+    padding: 28px 30px;
+    color: var(--white);
+    margin-top: 20px;
+  }
+  .game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+  }
+  .game-title { font-size: 1.1rem; font-weight: 700; }
+  .game-stats { display: flex; gap: 16px; }
+  .game-stat {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 10px;
+    padding: 6px 14px;
+    text-align: center;
+    min-width: 70px;
+  }
+  .game-stat-val { font-size: 1.2rem; font-weight: 800; color: var(--accent); }
+  .game-stat-lbl { font-size: .7rem; color: rgba(255,255,255,.6); }
+  .game-question {
+    text-align: center;
+    padding: 28px 20px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px;
+    margin-bottom: 18px;
+  }
+  .game-question p {
+    font-size: .85rem;
+    color: rgba(255,255,255,.6);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .game-q-text {
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: var(--white);
+  }
+  .game-opts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .game-opt {
+    padding: 14px;
+    border: 2px solid rgba(255,255,255,.2);
+    border-radius: 10px;
+    background: rgba(255,255,255,.06);
+    color: var(--white);
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .25s;
+    text-align: center;
+  }
+  .game-opt:hover:not(:disabled) {
+    background: rgba(255,255,255,.14);
+    border-color: rgba(255,255,255,.5);
+    transform: scale(1.03);
+  }
+  .game-opt.g-correct { background: rgba(16,185,129,.3); border-color: #10b981; }
+  .game-opt.g-wrong   { background: rgba(239,68,68,.25);  border-color: #ef4444; }
+  .game-feedback {
+    text-align: center;
+    margin-top: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    min-height: 26px;
+    color: rgba(255,255,255,.85);
+  }
+
+  /* === FOOTER === */
+  #site-footer {
+    margin-left: var(--sidebar-w);
+    background: var(--white);
+    border-top: 1px solid var(--gray-200);
+    padding: 20px;
+    text-align: center;
+    color: var(--gray-400);
+    font-size: .82rem;
+  }
+
+  /* === PAGE TRANSITION === */
+  .page { display: none; }
+  .page.active { display: block; animation: fadeUp .38s ease both; }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 820px) {
+    :root { --sidebar-w: 220px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    #main-content { padding: 20px; }
+    .hero-title { font-size: 1.5rem; }
+    .options-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    #sidebar { transform: translateX(-100%); transition: transform .3s; }
+    #sidebar.open { transform: translateX(0); }
+    #main-content { margin-left: 0; padding: 16px; }
+    #site-header { padding: 0 16px; }
+    #site-footer { margin-left: 0; }
+    .game-opts { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     PANTALLA DE BIENVENIDA
+     ============================================================ -->
+<div id="welcome-overlay">
+  <div class="floating-shapes" aria-hidden="true">
+    <div class="shape" style="width:120px;height:120px;top:10%;left:8%;animation-duration:12s;"></div>
+    <div class="shape" style="width:80px;height:80px;top:70%;left:5%;animation-duration:9s;animation-delay:-3s;"></div>
+    <div class="shape" style="width:180px;height:180px;top:20%;right:6%;animation-duration:15s;animation-delay:-6s;"></div>
+    <div class="shape" style="width:60px;height:60px;bottom:15%;right:12%;animation-duration:8s;animation-delay:-2s;"></div>
+    <div class="shape" style="width:100px;height:100px;bottom:30%;left:40%;animation-duration:11s;animation-delay:-4s;"></div>
+  </div>
+  <div class="welcome-card">
+    <span class="welcome-logo">🧮</span>
+    <div class="welcome-brand">Mente <span>Matemática</span></div>
+    <p class="welcome-sub">
+      ¡Bienvenido/a! Aquí aprenderás <strong style="color:var(--accent)">trucos y tips</strong> para hacer multiplicaciones en segundos,<br>¡más rápido que una calculadora! 🚀
+    </p>
+    <div class="welcome-chips">
+      <span class="welcome-chip">👩‍🎓 9 a 15 años</span>
+      <span class="welcome-chip">🎮 Aprendizaje interactivo</span>
+      <span class="welcome-chip">⚡ Cálculo mental</span>
+    </div>
+    <button class="btn-start" onclick="closeWelcome()">
+      ¡Comenzar ahora! <span>→</span>
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================
+     ENCABEZADO SUPERIOR
+     ============================================================ -->
+<header id="site-header">
+  <div class="header-logo">
+    <div class="logo-icon">🧮</div>
+    <div>
+      <div class="logo-text">Mente <span>Matemática</span></div>
+      <div class="header-subtitle">Plataforma educativa de Matemáticas</div>
+    </div>
+  </div>
+  <a href="temario.html" class="btn-back">← Volver al menú</a>
+</header>
+
+<!-- ============================================================
+     BARRA LATERAL (SIDEBAR)
+     ============================================================ -->
+<nav id="sidebar">
+  <div class="sidebar-brand">
+    <div class="sidebar-brand-text">Mente <span>Matemática</span></div>
+  </div>
+
+  <div class="sidebar-section-label">Módulos</div>
+
+  <div class="nav-item active" data-page="intro" onclick="goTo('intro',this)">
+    <div class="nav-icon">🎬</div>
+    <span>¿Qué aprenderemos?</span>
+  </div>
+
+  <div class="nav-item" data-page="zeros" onclick="goTo('zeros',this)">
+    <div class="nav-icon">🔟</div>
+    <span>Multiplicación con Ceros</span>
+  </div>
+
+  <div class="nav-item" data-page="tips" onclick="goTo('tips',this)">
+    <div class="nav-icon">✨</div>
+    <span>Tips de Multiplicación</span>
+  </div>
+
+  <div class="nav-item" data-page="eval" onclick="goTo('eval',this)">
+    <div class="nav-icon">📝</div>
+    <span>Evaluación Final</span>
+  </div>
+
+  <!-- Progress indicator -->
+  <div style="flex:1;"></div>
+  <div class="sidebar-progress">
+    <div class="progress-label">
+      <span>📊 Tu progreso</span>
+      <span id="prog-pct">0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     CONTENIDO PRINCIPAL
+     ============================================================ -->
+<main id="main-content">
+
+  <!-- ========================================================
+       PÁGINA 1 – ¿QUÉ APRENDEREMOS?
+       ======================================================== -->
+  <section id="page-intro" class="page active">
+
+    <div class="section-hero">
+      <div class="hero-eyebrow">🎬 Introducción</div>
+      <h1 class="hero-title">¡Aprende a multiplicar<br>como un campeón! 🏆</h1>
+      <p class="hero-desc">
+        En este curso descubrirás atajos matemáticos fascinantes que te permitirán resolver multiplicaciones específicas <strong>en un segundo</strong>, sin calculadora y sin escribir el proceso paso a paso.
+      </p>
+      <span class="hero-badge">🎯 Cálculo mental acelerado • Para 9 a 15 años</span>
+    </div>
+
+    <!-- Objetivo -->
+    <div class="card">
+      <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:6px;color:var(--navy);">🎯 Objetivo del curso</h2>
+      <p style="color:var(--gray-700);line-height:1.7;margin-bottom:18px;">
+        Enseñarte <strong>trucos de cálculo mental</strong> para resolver multiplicaciones específicas de forma <em>instantánea</em>, sin necesidad de escribir el proceso completo. Desarrollarás agilidad matemática y confianza en tus habilidades numéricas.
+      </p>
+      <div class="grid-2" style="gap:14px;">
+        <div class="obj-card">
+          <div class="obj-icon obj-icon-blue">🧠</div>
+          <div class="obj-body">
+            <h4>Comprensión conceptual</h4>
+            <p>Entiende el porqué detrás de cada truco matemático</p>
+          </div>
+        </div>
+        <div class="obj-card">
+          <div class="obj-icon obj-icon-green">⚡</div>
+          <div class="obj-body">
+            <h4>Velocidad mental</h4>
+            <p>Resuelve multiplicaciones en segundos con patrones</p>
+          </div>
+        </div>
+        <div class="obj-card">
+          <div class="obj-icon obj-icon-amber">🎮</div>
+          <div class="obj-body">
+            <h4>Práctica gamificada</h4>
+            <p>Aprende jugando con actividades interactivas</p>
+          </div>
+        </div>
+        <div class="obj-card">
+          <div class="obj-icon obj-icon-purple">🏅</div>
+          <div class="obj-body">
+            <h4>Evaluación final</h4>
+            <p>Demuestra tus conocimientos con 10 preguntas</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenido del curso -->
+    <div class="card">
+      <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:18px;color:var(--navy);">📚 ¿Qué aprenderemos?</h2>
+      <div class="tip-card tip-card-blue" style="margin-bottom:14px;">
+        <div class="tip-number">1</div>
+        <div class="tip-label">Módulo 1</div>
+        <div class="tip-title">🔟 Multiplicación seguida de ceros</div>
+        <div class="tip-body">Aprenderás a multiplicar cualquier número por 10, 100 o 1000 de forma inmediata, comprendiendo el patrón de los ceros.</div>
+        <div style="margin-top:12px;">
+          <span class="chip chip-blue">× 10</span>
+          <span class="chip chip-blue">× 100</span>
+          <span class="chip chip-blue">× 1000</span>
+        </div>
+      </div>
+      <div class="tip-card tip-card-green" style="margin-bottom:14px;">
+        <div class="tip-number">2</div>
+        <div class="tip-label">Módulo 2</div>
+        <div class="tip-title">✨ Tips de multiplicación</div>
+        <div class="tip-body">Tres trucos poderosos: multiplicar por 11, elevar al cuadrado números terminados en 5, y multiplicar números con la misma decena cuyas unidades suman 10.</div>
+        <div style="margin-top:12px;">
+          <span class="chip chip-green">× 11</span>
+          <span class="chip chip-green">_5 × _5</span>
+          <span class="chip chip-green">Misma decena</span>
+        </div>
+      </div>
+      <div class="tip-card tip-card-amber">
+        <div class="tip-number">3</div>
+        <div class="tip-label">Módulo 3</div>
+        <div class="tip-title">📝 Evaluación Final</div>
+        <div class="tip-body">Pon a prueba todo lo aprendido con 10 preguntas de opción múltiple. Recibe retroalimentación inmediata y una calificación final.</div>
+        <div style="margin-top:12px;">
+          <span class="chip chip-amber">10 preguntas</span>
+          <span class="chip chip-amber">Retroalimentación inmediata</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Canvas de visualización introductoria -->
+    <div class="card">
+      <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:8px;color:var(--navy);">🎲 Visualización: El poder de los patrones</h2>
+      <p style="color:var(--gray-400);font-size:.88rem;margin-bottom:14px;">Observa cómo los números se multiplican por potencias de 10. Haz clic en "Animar" para verlo en acción.</p>
+      <div class="canvas-wrapper">
+        <canvas id="canvasIntro" width="700" height="200"></canvas>
+        <div class="canvas-controls">
+          <button class="btn btn-primary" onclick="animateIntroCanvas()">▶ Animar</button>
+          <button class="btn btn-outline" onclick="resetIntroCanvas()">⟳ Reiniciar</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:10px;">
+      <button class="btn btn-primary" style="font-size:1rem;padding:14px 36px;" onclick="goTo('zeros',document.querySelector('[data-page=zeros]'))">
+        Comenzar el Módulo 1 →
+      </button>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       PÁGINA 2 – MULTIPLICACIÓN CON CEROS
+       ======================================================== -->
+  <section id="page-zeros" class="page">
+
+    <div class="section-hero">
+      <div class="hero-eyebrow">🔟 Módulo 1</div>
+      <h1 class="hero-title">Multiplicación seguida<br>de ceros</h1>
+      <p class="hero-desc">
+        Cuando multiplicas cualquier número por 10, 100 o 1000, solo necesitas agregar ceros al final. ¡Es así de sencillo!
+      </p>
+    </div>
+
+    <!-- Video -->
+    <div class="card">
+      <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:6px;color:var(--navy);">🎬 Video explicativo</h2>
+      <p style="color:var(--gray-400);font-size:.85rem;margin-bottom:14px;">Observa atentamente el video para comprender el concepto.</p>
+      <div class="video-wrapper">
+        <video controls preload="metadata" id="videoZeros">
+          <source src="/vid/mult_cer.mp4" type="video/mp4"/>
+          <!-- Fallback si no se encuentra el video -->
+          <div class="video-placeholder">
+            <div class="video-play-icon">▶</div>
+            <div>
+              <strong style="font-size:1.1rem;">Video: Multiplicación con ceros</strong>
+              <p style="color:rgba(255,255,255,.6);font-size:.85rem;margin-top:6px;">Archivo: /vid/mult_cer.mp4</p>
+              <p style="color:rgba(255,255,255,.5);font-size:.78rem;margin-top:4px;">Asegúrate de que el archivo de video esté en la ruta correcta.</p>
+            </div>
+          </div>
+        </video>
+      </div>
+    </div>
+
+    <!-- Explicación -->
+    <div class="card">
+      <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:14px;color:var(--navy);">💡 ¿Cómo funciona?</h2>
+      <div class="tip-card tip-card-blue">
+        <div class="tip-label">Regla fundamental</div>
+        <div class="tip-title">El truco de los ceros</div>
+        <div class="tip-body">
+          Al multiplicar un número por <strong>10, 100, 1000</strong> (o cualquier potencia de 10), simplemente <strong>añades tantos ceros al final</strong> del número como ceros tenga el multiplicador.
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">Identifica cuántos ceros tiene el número por el que multiplicas (<strong>10 → 1 cero, 100 → 2 ceros, 1000 → 3 ceros</strong>).</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">Toma el número original (<em>por ejemplo, 56</em>) y añade esa cantidad de ceros al final.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">¡Listo! El resultado es inmediato. No necesitas hacer ninguna operación adicional.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla de ejemplos -->
+    <div class="card">
+      <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:14px;color:var(--navy);">📊 Tabla de ejemplos</h2>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Multiplicación</th>
+            <th>Ceros a agregar</th>
+            <th>Resultado</th>
+            <th>¿Cómo?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>5 × 10</td><td><span class="chip chip-blue">1 cero</span></td><td class="num">50</td><td>5 → 5<strong>0</strong></td></tr>
+          <tr><td>9 × 10</td><td><span class="chip chip-blue">1 cero</span></td><td class="num">90</td><td>9 → 9<strong>0</strong></td></tr>
+          <tr><td>87 × 10</td><td><span class="chip chip-blue">1 cero</span></td><td class="num">870</td><td>87 → 87<strong>0</strong></td></tr>
+          <tr><td>56 × 100</td><td><span class="chip chip-green">2 ceros</span></td><td class="num">5 600</td><td>56 → 56<strong>00</strong></td></tr>
+          <tr><td>9 × 100</td><td><span class="chip chip-green">2 ceros</span></td><td class="num">900</td><td>9 → 9<strong>00</strong></td></tr>
+          <tr><td>45 × 100</td><td><span class="chip chip-green">2 ceros</span></td><td class="num">4 500</td><td>45 → 45<strong>00</strong></td></tr>
+          <tr><td>34 × 1000</td><td><span class="chip chip-amber">3 ceros</span></td><td class="num">34 000</td><td>34 → 34<strong>000</strong></td></tr>
+          <tr><td>2 × 1000</td><td><span class="chip chip-amber">3 ceros</span></td><td class="num">2 000</td><td>2 → 2<strong>000</strong></td></tr>
+          <tr><td>36 × 1000</td><td><span class="chip chip-amber">3 ceros</span></td><td class="num">36 000</td><td>36 → 36<strong>000</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Canvas interactivo -->
+    <div class="card">
+      <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:8px;color:var(--navy);">🎨 Visualización interactiva</h2>
+      <p style="color:var(--gray-400);font-size:.85rem;margin-bottom:14px;">Ingresa un número y elige el multiplicador para ver cómo se agregan los ceros.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;align-items:center;">
+        <input type="number" id="zerosNum" value="25" min="1" max="999" style="width:100px;padding:10px;border:2px solid var(--gray-200);border-radius:8px;font-size:1.1rem;font-weight:700;text-align:center;outline:none;" oninput="drawZerosCanvas()"/>
+        <span style="font-size:1.4rem;font-weight:700;color:var(--blue-light);">×</span>
+        <select id="zerosMult" onchange="drawZerosCanvas()" style="padding:10px 14px;border:2px solid var(--gray-200);border-radius:8px;font-size:1rem;font-weight:700;color:var(--navy);outline:none;cursor:pointer;">
+          <option value="10">10</option>
+          <option value="100">100</option>
+          <option value="1000">1000</option>
+        </select>
+        <span style="font-size:1.4rem;font-weight:700;color:var(--blue-light);">=</span>
+        <span id="zerosResult" style="font-size:1.8rem;font-weight:900;color:var(--navy);">250</span>
+      </div>
+      <div class="canvas-wrapper">
+        <canvas id="canvasZeros" width="680" height="160"></canvas>
+      </div>
+    </div>
+
+    <!-- Juego gamificado -->
+    <div class="card">
+      <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:4px;color:var(--navy);">🎮 ¡Practica y gana puntos!</h2>
+      <p style="color:var(--gray-400);font-size:.85rem;margin-bottom:0;">Responde correctamente para acumular puntos. ¡Demuestra tu velocidad mental!</p>
+      <div class="game-area">
+        <div class="game-header">
+          <div class="game-title">⚡ Desafío de Ceros</div>
+          <div class="game-stats">
+            <div class="game-stat">
+              <div class="game-stat-val" id="g0-score">0</div>
+              <div class="game-stat-lbl">Puntos</div>
+            </div>
+            <div class="game-stat">
+              <div class="game-stat-val" id="g0-streak">0</div>
+              <div class="game-stat-lbl">Racha</div>
+            </div>
+          </div>
+        </div>
+        <div class="game-question">
+          <p>¿Cuánto es?</p>
+          <div class="game-q-text" id="g0-q">— × — = ?</div>
+        </div>
+        <div class="game-opts" id="g0-opts"></div>
+        <div class="game-feedback" id="g0-feedback"></div>
+        <div style="text-align:center;margin-top:18px;">
+          <button class="btn btn-amber" onclick="newZeroGame()">🎲 Nueva pregunta</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:10px;">
+      <button class="btn btn-primary" style="font-size:1rem;padding:14px 36px;" onclick="goTo('tips',document.querySelector('[data-page=tips]'))">
+        Ir al Módulo 2 →
+      </button>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       PÁGINA 3 – TIPS DE MULTIPLICACIÓN
+       ======================================================== -->
+  <section id="page-tips" class="page">
+
+    <div class="section-hero">
+      <div class="hero-eyebrow">✨ Módulo 2</div>
+      <h1 class="hero-title">Tips de Multiplicación</h1>
+      <p class="hero-desc">
+        Tres trucos poderosos que te permitirán resolver multiplicaciones especiales en segundos. ¡Sorprende a todos con tu velocidad!
+      </p>
+    </div>
+
+    <!-- Video -->
+    <div class="card">
+      <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:6px;color:var(--navy);">🎬 Video explicativo</h2>
+      <p style="color:var(--gray-400);font-size:.85rem;margin-bottom:14px;">Mira el video completo antes de explorar los trucos.</p>
+      <div class="video-wrapper">
+        <video controls preload="metadata" id="videoTips">
+          <source src="/vid/tips_mult_.mp4" type="video/mp4"/>
+          <div class="video-placeholder">
+            <div class="video-play-icon">▶</div>
+            <div>
+              <strong style="font-size:1.1rem;">Video: Tips de Multiplicación</strong>
+              <p style="color:rgba(255,255,255,.6);font-size:.85rem;margin-top:6px;">Archivo: /vid/tips_mult_.mp4</p>
+              <p style="color:rgba(255,255,255,.5);font-size:.78rem;margin-top:4px;">Asegúrate de que el archivo de video esté en la ruta correcta.</p>
+            </div>
+          </div>
+        </video>
+      </div>
+    </div>
+
+    <!-- TRUCO 1: × 11 -->
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <div style="width:44px;height:44px;background:linear-gradient(135deg,#2563eb,#1d4ed8);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:900;color:#fff;flex-shrink:0;">1</div>
+        <div>
+          <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--blue);margin-bottom:2px;">Truco</div>
+          <h2 style="font-size:1.2rem;font-weight:800;color:var(--navy);">Multiplicar cualquier número por 11</h2>
+        </div>
+      </div>
+
+      <div class="tip-card tip-card-blue">
+        <div class="tip-label">La regla mágica del 11</div>
+        <div class="tip-body">
+          Para multiplicar un número de dos dígitos por 11:<br>
+          <strong>Separa las dos cifras y coloca su suma en el centro.</strong><br><br>
+          🔹 Si la suma es ≤ 9: coloca el resultado directamente.<br>
+          🔹 Si la suma es ≥ 10: coloca la unidad en el centro y suma 1 al primer dígito.
+        </div>
+      </div>
+
+      <div class="grid-2" style="gap:14px;margin-top:14px;">
+        <div class="example-box">
+          <h4>Ejemplo 1 – 23 × 11</h4>
+          <div class="steps" style="margin-top:8px;">
+            <div class="step"><div class="step-num">1</div><div class="step-text">Separa: <strong>2</strong> y <strong>3</strong></div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-text">Suma: 2 + 3 = <strong>5</strong></div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-text">Coloca en el centro: <span class="highlight-num">253</span></div></div>
+          </div>
+        </div>
+        <div class="example-box" style="border-left-color:#f59e0b;">
+          <h4 style="color:#b45309;">Ejemplo 2 – 66 × 11 (suma ≥ 10)</h4>
+          <div class="steps" style="margin-top:8px;">
+            <div class="step"><div class="step-num">1</div><div class="step-text">Separa: <strong>6</strong> y <strong>6</strong></div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-text">Suma: 6 + 6 = <strong>12</strong></div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-text">Centro = 2, el primer 6 se convierte en 7: <span class="highlight-num">726</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Más ejemplos ilustrativos -->
+      <div style="margin-top:16px;">
+        <div style="font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gray-400);margin-bottom:10px;">📋 Más ejemplos</div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Multiplicación</th><th>Dígitos</th><th>Suma central</th><th>Resultado</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>14 × 11</td><td>1 | 4</td><td>1+4 = 5</td><td class="num">154</td></tr>
+            <tr><td>32 × 11</td><td>3 | 2</td><td>3+2 = 5</td><td class="num">352</td></tr>
+            <tr><td>45 × 11</td><td>4 | 5</td><td>4+5 = 9</td><td class="num">495</td></tr>
+            <tr><td>57 × 11</td><td>5 | 7</td><td>5+7 = 12 ⚠️</td><td class="num">627</td></tr>
+            <tr><td>85 × 11</td><td>8 | 5</td><td>8+5 = 13 ⚠️</td><td class="num">935</td></tr>
+            <tr><td>99 × 11</td><td>9 | 9</td><td>9+9 = 18 ⚠️</td><td class="num">1089</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Canvas interactivo del truco 11 -->
+      <div style="margin-top:18px;">
+        <div class="canvas-wrapper">
+          <canvas id="canvas11" width="680" height="180"></canvas>
+        </div>
+      </div>
+
+      <!-- Demo interactiva -->
+      <div class="trick-demo">
+        <h4>🔧 Prueba tú mismo</h4>
+        <div class="trick-inputs">
+          <input type="number" id="t11-num" value="23" min="10" max="99" placeholder="ej: 23"/>
+          <span class="op">×</span>
+          <input type="number" value="11" disabled style="width:60px;background:#f1f5fb;color:#6366f1;"/>
+          <span class="op">=</span>
+          <button class="btn btn-primary" onclick="calcTrick11()">Calcular</button>
+        </div>
+        <div class="trick-result" id="res11">
+          <div style="font-size:.9rem;color:var(--gray-700);line-height:1.8;" id="res11-steps"></div>
+          <div class="big-result" id="res11-val"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRUCO 2: _5 × _5 -->
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <div style="width:44px;height:44px;background:linear-gradient(135deg,#10b981,#059669);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:900;color:#fff;flex-shrink:0;">2</div>
+        <div>
+          <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#059669;margin-bottom:2px;">Truco</div>
+          <h2 style="font-size:1.2rem;font-weight:800;color:var(--navy);">Elevar al cuadrado números terminados en 5</h2>
+        </div>
+      </div>
+
+      <div class="tip-card tip-card-green">
+        <div class="tip-label">La regla del cuadrado en 5</div>
+        <div class="tip-body">
+          Para multiplicar un número de dos dígitos que termina en 5 por sí mismo (x²):<br>
+          <strong>1.</strong> Toma el primer dígito (decena).<br>
+          <strong>2.</strong> Multiplícalo por el número siguiente (decena + 1).<br>
+          <strong>3.</strong> Añade "<strong>25</strong>" al final del resultado.
+        </div>
+      </div>
+
+      <div class="grid-2" style="gap:14px;margin-top:14px;">
+        <div class="example-box" style="border-left-color:#10b981;">
+          <h4 style="color:#059669;">Ejemplo 1 – 35 × 35</h4>
+          <div class="steps" style="margin-top:8px;">
+            <div class="step"><div class="step-num" style="background:linear-gradient(135deg,#10b981,#059669);">1</div><div class="step-text">Decena: <strong>3</strong></div></div>
+            <div class="step"><div class="step-num" style="background:linear-gradient(135deg,#10b981,#059669);">2</div><div class="step-text">Siguiente número: <strong>4</strong>, entonces 3 × 4 = <strong>12</strong></div></div>
+            <div class="step"><div class="step-num" style="background:linear-gradient(135deg,#10b981,#059669);">3</div><div class="step-text">Añade "25": <span class="highlight-num" style="background:linear-gradient(135deg,#10b981,#059669);">1225</span></div></div>
+          </div>
+        </div>
+        <div class="example-box" style="border-left-color:#10b981;">
+          <h4 style="color:#059669;">Ejemplo 2 – 65 × 65</h4>
+          <div class="steps" style="margin-top:8px;">
+            <div class="step"><div class="step-num" style="background:linear-gradient(135deg,#10b981,#059669);">1</div><div class="step-text">Decena: <strong>6</strong></div></div>
+            <div class="step"><div class="step-num" style="background:linear-gradient(135deg,#10b981,#059669);">2</div><div class="step-text">Siguiente número: <strong>7</strong>, entonces 6 × 7 = <strong>42</strong></div></div>
+            <div class="step"><div class="step-num" style="background:linear-gradient(135deg,#10b981,#059669);">3</div><div class="step-text">Añade "25": <span class="highlight-num" style="background:linear-gradient(135deg,#10b981,#059669);">4225</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Más ejemplos -->
+      <div style="margin-top:16px;">
+        <div style="font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gray-400);margin-bottom:10px;">📋 Más ejemplos</div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Operación</th><th>Decena × (decena+1)</th><th>Resultado</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>25 × 25</td><td>2 × 3 = 6</td><td class="num">625</td></tr>
+            <tr><td>35 × 35</td><td>3 × 4 = 12</td><td class="num">1 225</td></tr>
+            <tr><td>45 × 45</td><td>4 × 5 = 20</td><td class="num">2 025</td></tr>
+            <tr><td>55 × 55</td><td>5 × 6 = 30</td><td class="num">3 025</td></tr>
+            <tr><td>75 × 75</td><td>7 × 8 = 56</td><td class="num">5 625</td></tr>
+            <tr><td>95 × 95</td><td>9 × 10 = 90</td><td class="num">9 025</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Canvas truco 2 -->
+      <div style="margin-top:18px;">
+        <div class="canvas-wrapper">
+          <canvas id="canvas25" width="680" height="160"></canvas>
+        </div>
+      </div>
+
+      <!-- Demo interactiva -->
+      <div class="trick-demo" style="border-color:#bbf7d0;">
+        <h4 style="color:#059669;">🔧 Prueba tú mismo</h4>
+        <div class="trick-inputs">
+          <select id="t25-num" style="padding:10px 14px;border:2px solid var(--gray-200);border-radius:8px;font-size:1.1rem;font-weight:700;color:var(--navy);cursor:pointer;">
+            <option value="15">15</option>
+            <option value="25" selected>25</option>
+            <option value="35">35</option>
+            <option value="45">45</option>
+            <option value="55">55</option>
+            <option value="65">65</option>
+            <option value="75">75</option>
+            <option value="85">85</option>
+            <option value="95">95</option>
+          </select>
+          <span class="op">×</span>
+          <span id="t25-num2" style="font-size:1.1rem;font-weight:700;color:var(--navy);">25</span>
+          <span class="op">=</span>
+          <button class="btn btn-green" onclick="calcTrick25()">Calcular</button>
+        </div>
+        <div class="trick-result" id="res25">
+          <div style="font-size:.9rem;color:var(--gray-700);line-height:1.8;" id="res25-steps"></div>
+          <div class="big-result" id="res25-val" style="color:#059669;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRUCO 3: Misma decena, unidades suman 10 -->
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <div style="width:44px;height:44px;background:linear-gradient(135deg,#f59e0b,#f97316);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:900;color:#fff;flex-shrink:0;">3</div>
+        <div>
+          <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#d97706;margin-bottom:2px;">Truco</div>
+          <h2 style="font-size:1.2rem;font-weight:800;color:var(--navy);">Misma decena, unidades que suman 10</h2>
+        </div>
+      </div>
+
+      <div class="tip-card tip-card-amber">
+        <div class="tip-label">La regla de la misma decena</div>
+        <div class="tip-body">
+          Cuando dos números comparten la misma decena y sus unidades suman 10:<br>
+          <strong>1.</strong> Multiplica la decena por la decena siguiente (decena + 1).<br>
+          <strong>2.</strong> Multiplica las unidades entre sí.<br>
+          <strong>3.</strong> Une los dos resultados (si el producto de unidades es de 1 dígito, agrega un "0" delante).
+        </div>
+      </div>
+
+      <div class="grid-2" style="gap:14px;margin-top:14px;">
+        <div class="example-box" style="border-left-color:#f59e0b;">
+          <h4 style="color:#b45309;">Ejemplo 1 – 52 × 58</h4>
+          <div class="steps" style="margin-top:8px;">
+            <div class="step"><div class="step-num" style="background:linear-gradient(135deg,#f59e0b,#f97316);">1</div><div class="step-text">Decena: 5 × 6 = <strong>30</strong></div></div>
+            <div class="step"><div class="step-num" style="background:linear-gradient(135deg,#f59e0b,#f97316);">2</div><div class="step-text">Unidades: 2 × 8 = <strong>16</strong></div></div>
+            <div class="step"><div class="step-num" style="background:linear-gradient(135deg,#f59e0b,#f97316);">3</div><div class="step-text">Resultado: 30 | 16 → <span class="highlight-num" style="background:linear-gradient(135deg,#f59e0b,#f97316);">3016</span></div></div>
+          </div>
+        </div>
+        <div class="example-box" style="border-left-color:#f59e0b;">
+          <h4 style="color:#b45309;">Ejemplo 2 – 41 × 49 (unidades: 1 dígito)</h4>
+          <div class="steps" style="margin-top:8px;">
+            <div class="step"><div class="step-num" style="background:linear-gradient(135deg,#f59e0b,#f97316);">1</div><div class="step-text">Decena: 4 × 5 = <strong>20</strong></div></div>
+            <div class="step"><div class="step-num" style="background:linear-gradient(135deg,#f59e0b,#f97316);">2</div><div class="step-text">Unidades: 1 × 9 = <strong>09</strong> ⚠️ (agregar cero)</div></div>
+            <div class="step"><div class="step-num" style="background:linear-gradient(135deg,#f59e0b,#f97316);">3</div><div class="step-text">Resultado: 20 | 09 → <span class="highlight-num" style="background:linear-gradient(135deg,#f59e0b,#f97316);">2009</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Más ejemplos -->
+      <div style="margin-top:16px;">
+        <div style="font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gray-400);margin-bottom:10px;">📋 Más ejemplos</div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Multiplicación</th><th>Decena × (D+1)</th><th>Unidades</th><th>Resultado</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>52 × 58</td><td>5 × 6 = 30</td><td>2 × 8 = 16</td><td class="num">3 016</td></tr>
+            <tr><td>41 × 49</td><td>4 × 5 = 20</td><td>1 × 9 = 09</td><td class="num">2 009</td></tr>
+            <tr><td>96 × 94</td><td>9 × 10 = 90</td><td>6 × 4 = 24</td><td class="num">9 024</td></tr>
+            <tr><td>73 × 77</td><td>7 × 8 = 56</td><td>3 × 7 = 21</td><td class="num">5 621</td></tr>
+            <tr><td>82 × 88</td><td>8 × 9 = 72</td><td>2 × 8 = 16</td><td class="num">7 216</td></tr>
+            <tr><td>31 × 39</td><td>3 × 4 = 12</td><td>1 × 9 = 09</td><td class="num">1 209</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Canvas truco 3 -->
+      <div style="margin-top:18px;">
+        <div class="canvas-wrapper">
+          <canvas id="canvas3" width="680" height="160"></canvas>
+        </div>
+      </div>
+
+      <!-- Demo interactiva -->
+      <div class="trick-demo" style="border-color:#fde68a;">
+        <h4 style="color:#b45309;">🔧 Prueba tú mismo</h4>
+        <div style="font-size:.82rem;color:var(--gray-400);margin-bottom:10px;text-align:center;">Ingresa dos números con misma decena cuyas unidades sumen 10</div>
+        <div class="trick-inputs">
+          <input type="number" id="t3-n1" value="52" min="11" max="99" style="width:80px;"/>
+          <span class="op">×</span>
+          <input type="number" id="t3-n2" value="58" min="11" max="99" style="width:80px;"/>
+          <span class="op">=</span>
+          <button class="btn btn-amber" onclick="calcTrick3()">Calcular</button>
+        </div>
+        <div class="trick-result" id="res3">
+          <div style="font-size:.9rem;color:var(--gray-700);line-height:1.8;" id="res3-steps"></div>
+          <div class="big-result" id="res3-val" style="color:#d97706;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actividad interactiva -->
+    <div class="card">
+      <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:4px;color:var(--navy);">🎯 Actividad: Identifica el truco correcto</h2>
+      <p style="color:var(--gray-400);font-size:.85rem;margin-bottom:18px;">Lee la operación, escoge qué truco usar y resuelve.</p>
+      <div class="quiz-container">
+        <div class="quiz-header">
+          <div class="quiz-title">Ejercicio de práctica</div>
+          <div class="score-badge" id="tips-score-badge">✨ Puntos: 0</div>
+        </div>
+        <div class="question-card" id="tips-qcard">
+          <div class="question-text" id="tips-qtext">Cargando pregunta...</div>
+          <div class="options-grid" id="tips-opts"></div>
+          <div id="tips-feedback"></div>
+        </div>
+        <div style="text-align:center;">
+          <button class="btn btn-primary" onclick="nextTipsQuestion()">Siguiente pregunta →</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:10px;">
+      <button class="btn btn-primary" style="font-size:1rem;padding:14px 36px;" onclick="goTo('eval',document.querySelector('[data-page=eval]'))">
+        Ir a la Evaluación Final →
+      </button>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       PÁGINA 4 – EVALUACIÓN FINAL
+       ======================================================== -->
+  <section id="page-eval" class="page">
+
+    <div class="section-hero">
+      <div class="hero-eyebrow">📝 Evaluación Final</div>
+      <h1 class="hero-title">¡Demuestra lo que sabes! 🏆</h1>
+      <p class="hero-desc">
+        Responde las 10 preguntas de opción múltiple. Recibirás retroalimentación inmediata y un puntaje final.
+      </p>
+    </div>
+
+    <!-- Test en curso -->
+    <div class="card" id="eval-test-area">
+      <div class="eval-progress" id="eval-dots"></div>
+      <div class="question-counter" id="eval-counter">Pregunta 1 de 10</div>
+      <div class="question-card">
+        <div class="question-text" id="eval-qtext"></div>
+        <div class="options-grid" id="eval-opts"></div>
+        <div id="eval-feedback"></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:4px;">
+        <button class="btn btn-primary" id="eval-next-btn" onclick="nextEvalQuestion()" disabled>Siguiente →</button>
+      </div>
+    </div>
+
+    <!-- Resultados (ocultos hasta terminar) -->
+    <div class="card" id="eval-result-area" style="display:none;">
+      <div class="result-card">
+        <span class="result-emoji" id="res-emoji">🏆</span>
+        <div class="result-score" id="res-score">0/10</div>
+        <div class="stars" id="res-stars">⭐⭐⭐⭐⭐</div>
+        <div class="result-label" id="res-label">¡Excelente!</div>
+        <div class="result-msg" id="res-msg">¡Perfecto! Dominaste todos los tips de multiplicación.</div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:10px;">
+          <button class="btn btn-primary" onclick="restartEval()">🔄 Repetir evaluación</button>
+          <button class="btn btn-outline" onclick="goTo('intro',document.querySelector('[data-page=intro]'))">🏠 Volver al inicio</button>
+        </div>
+      </div>
+      <!-- Resumen de respuestas -->
+      <div style="margin-top:24px;" id="eval-summary"></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     PIE DE PÁGINA
+     ============================================================ -->
+<footer id="site-footer">
+  <p>© 2026 MenteMatematicaI. Todos los derechos reservados VC.</p>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT – TODA LA LÓGICA INTERACTIVA
+     ============================================================ -->
+<script>
+/* =============================================================
+   UTILIDADES GENERALES
+   ============================================================= */
+
+// Progreso global
+let visited = new Set(['intro']);
+function updateProgress() {
+  const total = 4; // intro, zeros, tips, eval
+  const pct = Math.round((visited.size / total) * 100);
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('prog-fill').style.width = pct + '%';
+}
+
+/* =============================================================
+   BIENVENIDA
+   ============================================================= */
+function closeWelcome() {
+  const overlay = document.getElementById('welcome-overlay');
+  overlay.style.transition = 'opacity .5s, transform .5s';
+  overlay.style.opacity = '0';
+  overlay.style.transform = 'scale(1.04)';
+  setTimeout(() => overlay.remove(), 500);
+}
+
+/* =============================================================
+   NAVEGACIÓN DINÁMICA
+   ============================================================= */
+function goTo(pageId, navEl) {
+  // Ocultar páginas activas
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  // Mostrar página destino
+  document.getElementById('page-' + pageId).classList.add('active');
+  if (navEl) navEl.classList.add('active');
+  // Registrar visita
+  visited.add(pageId);
+  updateProgress();
+  // Scroll arriba
+  document.getElementById('main-content').scrollTo({ top: 0, behavior: 'smooth' });
+  // Inicializar canvas si es necesario
+  if (pageId === 'intro')  { initIntroCanvas(); }
+  if (pageId === 'zeros')  { initZerosCanvas(); newZeroGame(); }
+  if (pageId === 'tips')   { initTipsCanvases(); initTipsActivity(); updateT25num(); }
+  if (pageId === 'eval')   { initEval(); }
+}
+
+/* =============================================================
+   CANVAS INTRO – Animación de potencias de 10
+   ============================================================= */
+function initIntroCanvas() {
+  const c = document.getElementById('canvasIntro');
+  const ctx = c.getContext('2d');
+  drawIntroStatic(ctx, c.width, c.height, false);
+}
+
+function drawIntroStatic(ctx, w, h, animated) {
+  ctx.clearRect(0, 0, w, h);
+  const examples = [
+    { n: '7', mult: '× 10', res: '70',   color: '#2563eb' },
+    { n: '12', mult: '× 100', res: '1200', color: '#10b981' },
+    { n: '5', mult: '× 1000', res: '5000', color: '#f59e0b' },
+  ];
+  const colW = w / 3;
+  examples.forEach((ex, i) => {
+    const x = i * colW + colW / 2;
+    const y = h / 2;
+    // Box
+    ctx.fillStyle = ex.color + '18';
+    roundRect(ctx, i * colW + 10, 10, colW - 20, h - 20, 14);
+    ctx.fill();
+    ctx.strokeStyle = ex.color + '55';
+    ctx.lineWidth = 1.5;
+    roundRect(ctx, i * colW + 10, 10, colW - 20, h - 20, 14);
+    ctx.stroke();
+    // Text
+    ctx.fillStyle = ex.color;
+    ctx.font = 'bold 15px Segoe UI';
+    ctx.textAlign = 'center';
+    ctx.fillText(ex.n + ' ' + ex.mult, x, y - 22);
+    ctx.font = 'bold 11px Segoe UI';
+    ctx.fillStyle = '#64748b';
+    ctx.fillText('= ', x, y + 2);
+    ctx.fillStyle = ex.color;
+    ctx.font = 'bold 26px Segoe UI';
+    ctx.fillText(ex.res, x, y + 30);
+  });
+}
+
+let introAnimFrame = null;
+let introPhase = 0;
+function animateIntroCanvas() {
+  cancelAnimationFrame(introAnimFrame);
+  introPhase = 0;
+  const c = document.getElementById('canvasIntro');
+  const ctx = c.getContext('2d');
+  const examples = [
+    { n: '7', mult: '× 10', res: '70',   color: '#2563eb' },
+    { n: '12', mult: '× 100', res: '1200', color: '#10b981' },
+    { n: '5', mult: '× 1000', res: '5000', color: '#f59e0b' },
+  ];
+  let frame = 0;
+  function tick() {
+    frame++;
+    ctx.clearRect(0, 0, c.width, c.height);
+    const colW = c.width / 3;
+    examples.forEach((ex, i) => {
+      const delay = i * 30;
+      const progress = Math.max(0, Math.min(1, (frame - delay) / 40));
+      const x = i * colW + colW / 2;
+      const h = c.height;
+      // Box pulse
+      ctx.fillStyle = ex.color + Math.round(progress * 0x28).toString(16).padStart(2,'0');
+      roundRect(ctx, i * colW + 10, 10, colW - 20, h - 20, 14);
+      ctx.fill();
+      ctx.strokeStyle = ex.color + '88';
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, i * colW + 10, 10, colW - 20, h - 20, 14);
+      ctx.stroke();
+      // Slide in text
+      const alpha = Math.min(1, progress * 1.5);
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = ex.color;
+      ctx.font = 'bold 15px Segoe UI';
+      ctx.textAlign = 'center';
+      ctx.fillText(ex.n + ' ' + ex.mult, x, h / 2 - 22);
+      ctx.fillStyle = '#64748b';
+      ctx.font = 'bold 11px Segoe UI';
+      ctx.fillText('=', x, h / 2 + 2);
+      ctx.fillStyle = ex.color;
+      ctx.font = 'bold 26px Segoe UI';
+      if (progress > 0.7) ctx.fillText(ex.res, x, h / 2 + 30);
+      ctx.globalAlpha = 1;
+    });
+    if (frame < 150) introAnimFrame = requestAnimationFrame(tick);
+  }
+  tick();
+}
+
+function resetIntroCanvas() {
+  cancelAnimationFrame(introAnimFrame);
+  initIntroCanvas();
+}
+
+/* helper roundRect */
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+/* =============================================================
+   CANVAS ZEROS
+   ============================================================= */
+function initZerosCanvas() {
+  drawZerosCanvas();
+}
+
+function drawZerosCanvas() {
+  const num = parseInt(document.getElementById('zerosNum').value) || 25;
+  const mult = parseInt(document.getElementById('zerosMult').value);
+  const result = num * mult;
+  document.getElementById('zerosResult').textContent = result.toLocaleString();
+
+  const c = document.getElementById('canvasZeros');
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+
+  const numStr = String(num);
+  const zeros = String(mult).length - 1;
+  const resultStr = String(result);
+
+  const cx = c.width / 2;
+  const cy = c.height / 2;
+
+  // Background
+  const grad = ctx.createLinearGradient(0, 0, c.width, 0);
+  grad.addColorStop(0, '#f0f9ff');
+  grad.addColorStop(1, '#e0f2fe');
+  ctx.fillStyle = grad;
+  roundRect(ctx, 10, 10, c.width - 20, c.height - 20, 12);
+  ctx.fill();
+
+  // Display: num × mult = result
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#0d2b5e';
+  ctx.font = 'bold 22px Segoe UI';
+  ctx.fillText(numStr + ' × ' + mult + ' =', cx, cy - 20);
+
+  // Result with highlighted zeros
+  const baseNum = numStr;
+  const zeroStr = '0'.repeat(zeros);
+  const totalW = ctx.measureText(baseNum + zeroStr).width;
+  const startX = cx - totalW / 2;
+
+  ctx.font = 'bold 38px Segoe UI';
+  ctx.fillStyle = '#0d2b5e';
+  const bw = ctx.measureText(baseNum).width;
+  ctx.fillText(baseNum, startX + bw / 2, cy + 28);
+
+  ctx.fillStyle = '#2563eb';
+  ctx.font = 'bold 38px Segoe UI';
+  for (let i = 0; i < zeros; i++) {
+    const prevW = ctx.measureText(baseNum + '0'.repeat(i)).width;
+    const zw = ctx.measureText('0').width;
+    ctx.fillText('0', startX + prevW + zw / 2, cy + 28);
+  }
+
+  // Arrow annotation
+  ctx.strokeStyle = '#2563eb';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([4, 3]);
+  ctx.beginPath();
+  const rx = startX + bw;
+  ctx.moveTo(rx, cy + 10);
+  ctx.lineTo(rx, cy - 50);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#2563eb';
+  ctx.font = '13px Segoe UI';
+  ctx.textAlign = 'center';
+  ctx.fillText('+ ' + zeros + ' cero' + (zeros>1?'s':''), rx + 30, cy - 55);
+}
+
+/* =============================================================
+   JUEGO GAMIFICADO – MÓDULO CEROS
+   ============================================================= */
+let g0Score = 0, g0Streak = 0, g0Answered = false;
+
+function newZeroGame() {
+  g0Answered = false;
+  const bases = [3,5,7,9,12,15,20,25,34,45,56,87,99,123,200,350];
+  const mults = [10, 100, 1000];
+  const b = bases[Math.floor(Math.random() * bases.length)];
+  const m = mults[Math.floor(Math.random() * mults.length)];
+  const correct = b * m;
+  document.getElementById('g0-q').textContent = b + ' × ' + m + ' = ?';
+
+  // Generate options
+  let opts = [correct];
+  while (opts.length < 4) {
+    const fake = b * m * (Math.random() < .5 ? 10 : .1) || (correct + (Math.floor(Math.random()*5)+1)*10);
+    const candidates = [
+      correct * 10, Math.floor(correct / 10),
+      correct + m, correct - m,
+      b + parseInt(String(m).replace(/0/g,'')) * 10
+    ];
+    const pick = candidates[Math.floor(Math.random() * candidates.length)];
+    if (!opts.includes(pick) && pick > 0) opts.push(pick);
+  }
+  opts = shuffleArr(opts).slice(0,4);
+  if (!opts.includes(correct)) opts[0] = correct;
+  opts = shuffleArr(opts);
+
+  const container = document.getElementById('g0-opts');
+  container.innerHTML = '';
+  opts.forEach(o => {
+    const btn = document.createElement('button');
+    btn.className = 'game-opt';
+    btn.textContent = o.toLocaleString();
+    btn.onclick = () => checkZeroAnswer(o, correct, btn);
+    container.appendChild(btn);
+  });
+  document.getElementById('g0-feedback').textContent = '';
+}
+
+function checkZeroAnswer(chosen, correct, btn) {
+  if (g0Answered) return;
+  g0Answered = true;
+  const opts = document.querySelectorAll('.game-opt');
+  opts.forEach(b => { b.disabled = true; if (parseInt(b.textContent.replace(/\D/g,'')) === correct) b.classList.add('g-correct'); });
+  const fb = document.getElementById('g0-feedback');
+  if (chosen === correct) {
+    btn.classList.add('g-correct');
+    g0Score += 10; g0Streak++;
+    fb.textContent = '✅ ¡Correcto! +10 puntos 🎉';
+  } else {
+    btn.classList.add('g-wrong');
+    g0Streak = 0;
+    fb.textContent = '❌ Incorrecto. La respuesta correcta es ' + correct.toLocaleString();
+  }
+  document.getElementById('g0-score').textContent = g0Score;
+  document.getElementById('g0-streak').textContent = g0Streak;
+}
+
+/* =============================================================
+   CANVAS TRUCOS – MÓDULO 2
+   ============================================================= */
+function initTipsCanvases() {
+  drawCanvas11();
+  drawCanvas25();
+  drawCanvas3();
+}
+
+function drawCanvas11() {
+  const c = document.getElementById('canvas11');
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+  drawTrickVisual(ctx, c.width, c.height, '× 11', [
+    { label: '23 × 11', steps: ['2 | 3', '2+3=5', '= 253'], color: '#2563eb' },
+    { label: '45 × 11', steps: ['4 | 5', '4+5=9', '= 495'], color: '#7c3aed' },
+    { label: '57 × 11', steps: ['5 | 7', '5+7=12⚠️', '= 627'], color: '#0891b2' },
+  ]);
+}
+
+function drawCanvas25() {
+  const c = document.getElementById('canvas25');
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+  drawTrickVisual(ctx, c.width, c.height, '_5 × _5', [
+    { label: '25 × 25', steps: ['2×3=6', '+25', '= 625'], color: '#10b981' },
+    { label: '35 × 35', steps: ['3×4=12', '+25', '= 1225'], color: '#059669' },
+    { label: '65 × 65', steps: ['6×7=42', '+25', '= 4225'], color: '#0d9488' },
+  ]);
+}
+
+function drawCanvas3() {
+  const c = document.getElementById('canvas3');
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+  drawTrickVisual(ctx, c.width, c.height, 'Misma decena', [
+    { label: '52 × 58', steps: ['5×6=30', '2×8=16', '= 3016'], color: '#f59e0b' },
+    { label: '41 × 49', steps: ['4×5=20', '1×9=09', '= 2009'], color: '#f97316' },
+    { label: '96 × 94', steps: ['9×10=90', '6×4=24', '= 9024'], color: '#dc2626' },
+  ]);
+}
+
+function drawTrickVisual(ctx, w, h, title, cards) {
+  const colW = w / 3;
+  cards.forEach((card, i) => {
+    const x0 = i * colW;
+    // BG
+    ctx.fillStyle = card.color + '15';
+    roundRect(ctx, x0 + 8, 8, colW - 16, h - 16, 12);
+    ctx.fill();
+    ctx.strokeStyle = card.color + '50';
+    ctx.lineWidth = 1.5;
+    roundRect(ctx, x0 + 8, 8, colW - 16, h - 16, 12);
+    ctx.stroke();
+    // Title
+    ctx.fillStyle = card.color;
+    ctx.font = 'bold 14px Segoe UI';
+    ctx.textAlign = 'center';
+    ctx.fillText(card.label, x0 + colW / 2, 32);
+    // Steps
+    ctx.font = '12px Segoe UI';
+    ctx.fillStyle = '#374151';
+    card.steps.forEach((s, j) => {
+      ctx.fillText(s, x0 + colW / 2, 60 + j * 28);
+    });
+  });
+}
+
+/* =============================================================
+   DEMOS INTERACTIVAS – TRUCOS
+   ============================================================= */
+
+// Truco 1 × 11
+function calcTrick11() {
+  const n = parseInt(document.getElementById('t11-num').value);
+  if (isNaN(n) || n < 10 || n > 99) { alert('Ingresa un número de 2 dígitos (10-99)'); return; }
+  const d1 = Math.floor(n / 10);
+  const d2 = n % 10;
+  const suma = d1 + d2;
+  let result, stepsHtml;
+  if (suma <= 9) {
+    result = d1 * 100 + suma * 10 + d2;
+    stepsHtml = `Dígitos: <b>${d1}</b> y <b>${d2}</b><br>Suma: ${d1} + ${d2} = <b>${suma}</b><br>Colocar en el centro → <b>${d1}${suma}${d2}</b>`;
+  } else {
+    const centro = suma % 10;
+    const carry = Math.floor(suma / 10);
+    result = (d1 + carry) * 100 + centro * 10 + d2;
+    stepsHtml = `Dígitos: <b>${d1}</b> y <b>${d2}</b><br>Suma: ${d1}+${d2} = <b>${suma}</b> (≥10, se lleva 1)<br>Centro = ${centro}, primer dígito = ${d1}+${carry} = <b>${d1+carry}</b>`;
+  }
+  document.getElementById('res11-steps').innerHTML = stepsHtml;
+  document.getElementById('res11-val').textContent = result.toLocaleString();
+  const res = document.getElementById('res11');
+  res.classList.add('show');
+}
+
+// Truco 2 _5 × _5
+function updateT25num() {
+  const v = document.getElementById('t25-num').value;
+  document.getElementById('t25-num2').textContent = v;
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const sel = document.getElementById('t25-num');
+  if (sel) sel.addEventListener('change', updateT25num);
+});
+
+function calcTrick25() {
+  const n = parseInt(document.getElementById('t25-num').value);
+  const dec = Math.floor(n / 10);
+  const prod = dec * (dec + 1);
+  const result = prod * 100 + 25;
+  document.getElementById('res25-steps').innerHTML =
+    `Decena: <b>${dec}</b><br>${dec} × ${dec+1} = <b>${prod}</b><br>Añadir "25" al final → <b>${prod}25</b>`;
+  document.getElementById('res25-val').textContent = result.toLocaleString();
+  document.getElementById('res25').classList.add('show');
+}
+
+// Truco 3 misma decena
+function calcTrick3() {
+  const n1 = parseInt(document.getElementById('t3-n1').value);
+  const n2 = parseInt(document.getElementById('t3-n2').value);
+  const d1 = Math.floor(n1 / 10);
+  const d2 = Math.floor(n2 / 10);
+  const u1 = n1 % 10;
+  const u2 = n2 % 10;
+  const res3el = document.getElementById('res3');
+  if (d1 !== d2) {
+    document.getElementById('res3-steps').innerHTML = '⚠️ Los números deben tener la <b>misma decena</b>.';
+    document.getElementById('res3-val').textContent = '';
+    res3el.classList.add('show');
+    return;
+  }
+  if (u1 + u2 !== 10) {
+    document.getElementById('res3-steps').innerHTML = `⚠️ Las unidades ${u1} + ${u2} = ${u1+u2}, <b>deben sumar 10</b>.`;
+    document.getElementById('res3-val').textContent = '';
+    res3el.classList.add('show');
+    return;
+  }
+  const part1 = d1 * (d1 + 1);
+  const part2 = u1 * u2;
+  const result = n1 * n2;
+  const part2str = String(part2).padStart(2, '0');
+  document.getElementById('res3-steps').innerHTML =
+    `Decena: ${d1} × ${d1+1} = <b>${part1}</b><br>Unidades: ${u1} × ${u2} = <b>${part2str}</b><br>Resultado: ${part1} | ${part2str} = <b>${part1}${part2str}</b>`;
+  document.getElementById('res3-val').textContent = result.toLocaleString();
+  res3el.classList.add('show');
+}
+
+/* =============================================================
+   ACTIVIDAD TIPS – IDENTIFY THE TRICK
+   ============================================================= */
+const tipsQuestions = [
+  { q: '¿Qué truco usarías para calcular 34 × 11?', opts: ['× 11: sumar dígitos al centro','_5×_5: multiplicar decena por siguiente','Misma decena: separar y multiplicar','Añadir ceros'], correct: 0, feedback: '34 × 11 = 3(3+4)4 = 374' },
+  { q: '¿Qué truco usarías para 75 × 75?', opts: ['× 11','_5×_5: 7×8 + 25 = 5625','Misma decena','Añadir ceros'], correct: 1, feedback: '7×8=56, añade 25 → 5625' },
+  { q: '¿Qué truco usarías para 63 × 67?', opts: ['× 11','_5×_5','Misma decena (6): 6×7=42, 3×7=21 → 4221','Añadir ceros'], correct: 2, feedback: 'Misma decena 6, unidades 3+7=10 → 6×7=42, 3×7=21 → 4221' },
+  { q: 'Calcula: 23 × 11', opts: ['233','253','243','263'], correct: 1, feedback: '2 | 2+3=5 | 3 → 253' },
+  { q: 'Calcula: 45 × 45', opts: ['2025','2125','1925','2225'], correct: 0, feedback: '4×5=20, +25 → 2025' },
+  { q: 'Calcula: 82 × 88', opts: ['7016','7216','7116','7316'], correct: 1, feedback: '8×9=72, 2×8=16 → 7216' },
+  { q: 'Calcula: 57 × 11', opts: ['517','627','527','617'], correct: 1, feedback: '5+7=12 (≥10), centro=2, primer dígito=6 → 627' },
+  { q: 'Calcula: 55 × 55', opts: ['3025','3125','2925','3225'], correct: 0, feedback: '5×6=30, +25 → 3025' },
+  { q: '¿Cuánto es 96 × 94?', opts: ['8924','9024','8824','9124'], correct: 1, feedback: '9×10=90, 6×4=24 → 9024' },
+  { q: '¿Cuánto es 11 × 11?', opts: ['111','121','101','131'], correct: 1, feedback: '1 | 1+1=2 | 1 → 121' },
+];
+
+let tipsIdx = 0;
+let tipsScore = 0;
+let tipsAnswered = false;
+
+function initTipsActivity() {
+  tipsIdx = 0; tipsScore = 0; tipsAnswered = false;
+  renderTipsQuestion();
+}
+
+function renderTipsQuestion() {
+  tipsAnswered = false;
+  const q = tipsQuestions[tipsIdx % tipsQuestions.length];
+  document.getElementById('tips-qtext').textContent = q.q;
+  document.getElementById('tips-feedback').innerHTML = '';
+  const container = document.getElementById('tips-opts');
+  container.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span> ${opt}`;
+    btn.onclick = () => checkTipsAnswer(i, q.correct, q.feedback);
+    container.appendChild(btn);
+  });
+}
+
+function checkTipsAnswer(chosen, correct, feedback) {
+  if (tipsAnswered) return;
+  tipsAnswered = true;
+  const btns = document.querySelectorAll('#tips-opts .option-btn');
+  btns.forEach((b, i) => {
+    b.disabled = true;
+    if (i === correct) b.classList.add('correct');
+    else if (i === chosen) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('tips-feedback');
+  if (chosen === correct) {
+    tipsScore += 10;
+    fb.innerHTML = `<div class="feedback-box feedback-correct">✅ ¡Correcto! ${feedback}</div>`;
+  } else {
+    fb.innerHTML = `<div class="feedback-box feedback-wrong">❌ No es correcto. ${feedback}</div>`;
+  }
+  document.getElementById('tips-score-badge').textContent = '✨ Puntos: ' + tipsScore;
+}
+
+function nextTipsQuestion() {
+  tipsIdx++;
+  renderTipsQuestion();
+}
+
+/* =============================================================
+   EVALUACIÓN FINAL – 10 PREGUNTAS
+   ============================================================= */
+const evalQuestions = [
+  {
+    q: '¿Cuánto es 5 × 10?',
+    opts: ['5','50','500','15'],
+    correct: 1,
+    exp: 'Al multiplicar por 10 se agrega 1 cero: 5 → 50.'
+  },
+  {
+    q: '¿Cuánto es 34 × 1000?',
+    opts: ['3 400','340','34 000','340 000'],
+    correct: 2,
+    exp: 'Al multiplicar por 1000 se agregan 3 ceros: 34 → 34 000.'
+  },
+  {
+    q: '¿Cuánto es 23 × 11?',
+    opts: ['233','253','243','263'],
+    correct: 1,
+    exp: 'Truco × 11: 2 | 2+3=5 | 3 → 253.'
+  },
+  {
+    q: '¿Cuánto es 66 × 11?',
+    opts: ['616','726','686','736'],
+    correct: 1,
+    exp: '6+6=12 (≥10) → centro=2, primer dígito=7: 726.'
+  },
+  {
+    q: '¿Cuánto es 35 × 35?',
+    opts: ['1 225','1 125','1 325','1 425'],
+    correct: 0,
+    exp: 'Truco _5×_5: 3×4=12, +25 → 1225.'
+  },
+  {
+    q: '¿Cuánto es 25 × 25?',
+    opts: ['525','625','725','425'],
+    correct: 1,
+    exp: '2×3=6, añade 25 → 625.'
+  },
+  {
+    q: '¿Cuánto es 52 × 58?',
+    opts: ['3 016','3 106','3 026','3 116'],
+    correct: 0,
+    exp: 'Misma decena: 5×6=30, 2×8=16 → 3016.'
+  },
+  {
+    q: '¿Cuánto es 41 × 49?',
+    opts: ['1 909','2 009','1 809','2 109'],
+    correct: 1,
+    exp: '4×5=20, 1×9=09 → 2009.'
+  },
+  {
+    q: '¿Cuánto es 87 × 10?',
+    opts: ['870','780','807','700'],
+    correct: 0,
+    exp: 'Agregar 1 cero: 87 → 870.'
+  },
+  {
+    q: '¿Cuánto es 45 × 100?',
+    opts: ['450','45 000','4 500','4 050'],
+    correct: 2,
+    exp: 'Agregar 2 ceros: 45 → 4 500.'
+  },
+];
+
+let evalIdx = 0;
+let evalAnswers = []; // true/false per question
+let evalAnswered = false;
+
+function initEval() {
+  evalIdx = 0;
+  evalAnswers = [];
+  evalAnswered = false;
+  document.getElementById('eval-test-area').style.display = '';
+  document.getElementById('eval-result-area').style.display = 'none';
+  renderEvalDots();
+  renderEvalQuestion();
+}
+
+function renderEvalDots() {
+  const container = document.getElementById('eval-dots');
+  container.innerHTML = '';
+  evalQuestions.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'eval-dot' +
+      (i < evalIdx ? (evalAnswers[i] ? ' done' : ' wrong') : (i === evalIdx ? ' active' : ''));
+    container.appendChild(dot);
+  });
+}
+
+function renderEvalQuestion() {
+  evalAnswered = false;
+  document.getElementById('eval-next-btn').disabled = true;
+  const q = evalQuestions[evalIdx];
+  document.getElementById('eval-counter').textContent = `Pregunta ${evalIdx + 1} de ${evalQuestions.length}`;
+  document.getElementById('eval-qtext').textContent = q.q;
+  document.getElementById('eval-feedback').innerHTML = '';
+  const container = document.getElementById('eval-opts');
+  container.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span> ${opt}`;
+    btn.onclick = () => checkEvalAnswer(i, q.correct, q.exp);
+    container.appendChild(btn);
+  });
+}
+
+function checkEvalAnswer(chosen, correct, explanation) {
+  if (evalAnswered) return;
+  evalAnswered = true;
+  const isCorrect = chosen === correct;
+  evalAnswers[evalIdx] = isCorrect;
+  const btns = document.querySelectorAll('#eval-opts .option-btn');
+  btns.forEach((b, i) => {
+    b.disabled = true;
+    if (i === correct) b.classList.add('correct');
+    else if (i === chosen && !isCorrect) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('eval-feedback');
+  if (isCorrect) {
+    fb.innerHTML = `<div class="feedback-box feedback-correct">✅ ¡Correcto! ${explanation}</div>`;
+  } else {
+    fb.innerHTML = `<div class="feedback-box feedback-wrong">❌ Incorrecto. ${explanation}</div>`;
+  }
+  document.getElementById('eval-next-btn').disabled = false;
+  renderEvalDots();
+}
+
+function nextEvalQuestion() {
+  evalIdx++;
+  if (evalIdx >= evalQuestions.length) {
+    showEvalResults();
+    return;
+  }
+  renderEvalDots();
+  renderEvalQuestion();
+}
+
+function showEvalResults() {
+  document.getElementById('eval-test-area').style.display = 'none';
+  const resultArea = document.getElementById('eval-result-area');
+  resultArea.style.display = '';
+  const score = evalAnswers.filter(Boolean).length;
+  const pct = score / evalQuestions.length;
+
+  document.getElementById('res-score').textContent = score + '/10';
+
+  let emoji, stars, label, msg;
+  if (pct === 1)        { emoji='🏆'; stars='⭐⭐⭐⭐⭐'; label='¡Perfecto!'; msg='Dominas completamente los tips de multiplicación. ¡Eres un genio matemático!'; }
+  else if (pct >= .8)   { emoji='🥇'; stars='⭐⭐⭐⭐'; label='¡Excelente!'; msg='Muy bien hecho. Tienes un dominio sólido de los trucos de multiplicación.'; }
+  else if (pct >= .6)   { emoji='🥈'; stars='⭐⭐⭐'; label='¡Bien!'; msg='Buen resultado. Repasa los trucos en los que fallaste para mejorar.'; }
+  else if (pct >= .4)   { emoji='🥉'; stars='⭐⭐'; label='Puedes mejorar'; msg='Sigue practicando. Vuelve a revisar los módulos y vuelve a intentarlo.'; }
+  else                  { emoji='💪'; stars='⭐'; label='¡Sigue intentándolo!'; msg='No te rindas. Repasa los módulos con calma y practica más. ¡Tú puedes!'; }
+
+  document.getElementById('res-emoji').textContent = emoji;
+  document.getElementById('res-stars').textContent = stars;
+  document.getElementById('res-label').textContent = label;
+  document.getElementById('res-msg').textContent = msg;
+
+  // Summary table
+  let summaryHTML = `<h3 style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:14px;">📋 Resumen de respuestas</h3>
+    <table class="data-table"><thead><tr><th>#</th><th>Pregunta</th><th>Resultado</th></tr></thead><tbody>`;
+  evalQuestions.forEach((q, i) => {
+    const ok = evalAnswers[i];
+    summaryHTML += `<tr>
+      <td>${i+1}</td>
+      <td style="font-size:.85rem;">${q.q}</td>
+      <td><span class="chip ${ok ? 'chip-green' : 'chip-red'}">${ok ? '✅ Correcto' : '❌ Incorrecto'}</span></td>
+    </tr>`;
+  });
+  summaryHTML += '</tbody></table>';
+  document.getElementById('eval-summary').innerHTML = summaryHTML;
+
+  // Mark eval as fully visited
+  visited.add('eval');
+  updateProgress();
+}
+
+function restartEval() {
+  initEval();
+}
+
+/* =============================================================
+   UTILIDADES
+   ============================================================= */
+function shuffleArr(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* =============================================================
+   INICIALIZACIÓN
+   ============================================================= */
+window.addEventListener('DOMContentLoaded', () => {
+  updateProgress();
+  initIntroCanvas();
+  // Sync selector for truco 25
+  const sel = document.getElementById('t25-num');
+  if (sel) sel.addEventListener('change', () => {
+    document.getElementById('t25-num2').textContent = sel.value;
+  });
+  // Handle video error gracefully
+  ['videoZeros','videoTips'].forEach(id => {
+    const v = document.getElementById(id);
+    if (v) {
+      v.addEventListener('error', () => {
+        const w = v.closest('.video-wrapper');
+        if (w) {
+          const src = v.querySelector('source').src;
+          const filename = src.split('/').pop();
+          w.innerHTML = `<div class="video-placeholder">
+            <div class="video-play-icon">▶</div>
+            <div>
+              <strong style="font-size:1.1rem;">Video: ${filename}</strong>
+              <p style="color:rgba(255,255,255,.6);font-size:.85rem;margin-top:6px;">Coloca el archivo en la ruta: ${src}</p>
+              <p style="color:rgba(255,255,255,.5);font-size:.78rem;margin-top:4px;">El video se mostrará automáticamente cuando esté disponible.</p>
+            </div>
+          </div>`;
+        }
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>

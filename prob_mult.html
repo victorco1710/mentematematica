@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- ============================================================
+     MENTE MATEMÁTICA - TEMA 14: MULTIPLICACIÓN APLICADA A PROBLEMAS
+     Plataforma educativa interactiva para estudiantes de 9-15 años
+     © 2026 MenteMatematica. Todos los derechos reservados VC.
+     ============================================================ -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mente Matemática – Tema 14: Multiplicación Aplicada a Problemas</title>
+
+<!-- ============================================================
+     CSS STYLES
+     ============================================================ -->
+<style>
+  /* ---- Variables de color y tipografía ---- */
+  :root {
+    --navy:       #0d2a4e;
+    --navy-mid:   #1a4480;
+    --blue:       #2563eb;
+    --blue-light: #3b82f6;
+    --accent:     #f59e0b;
+    --accent2:    #10b981;
+    --accent3:    #ef4444;
+    --accent4:    #8b5cf6;
+    --sidebar-w:  260px;
+    --header-h:   70px;
+    --bg:         #f1f5f9;
+    --card:       #ffffff;
+    --text:       #1e293b;
+    --text-soft:  #64748b;
+    --radius:     14px;
+    --shadow:     0 4px 20px rgba(0,0,0,.08);
+    --font-head:  'Segoe UI', 'Trebuchet MS', sans-serif;
+    --font-body:  'Segoe UI', Calibri, sans-serif;
+  }
+
+  /* ---- Reset y base ---- */
+  *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ============================================================
+     HEADER
+     ============================================================ */
+  header {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    height: var(--header-h);
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, var(--blue) 100%);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 28px;
+    box-shadow: 0 2px 16px rgba(0,0,0,.3);
+  }
+  .logo {
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none;
+  }
+  .logo-icon {
+    width:44px; height:44px;
+    background: var(--accent);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight:900; color: var(--navy);
+    box-shadow: 0 2px 8px rgba(245,158,11,.5);
+  }
+  .logo-text { color:#fff; font-family: var(--font-head); }
+  .logo-text span { font-size:20px; font-weight:700; letter-spacing:.4px; display:block; line-height:1.1; }
+  .logo-text small { font-size:11px; opacity:.75; letter-spacing:.8px; text-transform:uppercase; }
+
+  .header-right { display:flex; align-items:center; gap:12px; }
+  .header-badge {
+    background: rgba(255,255,255,.15);
+    color:#fff;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size:13px;
+    font-weight:600;
+    backdrop-filter: blur(4px);
+    border:1px solid rgba(255,255,255,.2);
+  }
+  .btn-menu {
+    background: var(--accent);
+    color: var(--navy);
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-weight:700;
+    font-size:13px;
+    text-decoration:none;
+    transition: .2s;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(245,158,11,.4);
+  }
+  .btn-menu:hover { background:#fbbf24; transform:translateY(-1px); }
+
+  /* ============================================================
+     SIDEBAR
+     ============================================================ */
+  .sidebar {
+    position: fixed;
+    top: var(--header-h);
+    left: 0;
+    width: var(--sidebar-w);
+    height: calc(100vh - var(--header-h));
+    background: #fff;
+    border-right: 1px solid #e2e8f0;
+    overflow-y: auto;
+    z-index:90;
+    padding: 20px 0 30px;
+    box-shadow: 2px 0 12px rgba(0,0,0,.06);
+  }
+  .sidebar-title {
+    padding: 0 20px 12px;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
+    color: var(--text-soft);
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom:8px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 20px;
+    cursor: pointer;
+    font-size:14px;
+    font-weight:500;
+    color: var(--text-soft);
+    border-left: 3px solid transparent;
+    transition: all .2s;
+    user-select:none;
+  }
+  .nav-item:hover {
+    background: #f8fafc;
+    color: var(--blue);
+  }
+  .nav-item.active {
+    background: #eff6ff;
+    color: var(--blue);
+    border-left-color: var(--blue);
+    font-weight:700;
+  }
+  .nav-icon { font-size:18px; flex-shrink:0; width:24px; text-align:center; }
+  .nav-label { flex:1; line-height:1.3; }
+  .nav-badge {
+    background: var(--blue);
+    color:#fff;
+    border-radius:10px;
+    font-size:10px;
+    font-weight:700;
+    padding:2px 7px;
+  }
+
+  /* ============================================================
+     MAIN CONTENT
+     ============================================================ */
+  main {
+    margin-left: var(--sidebar-w);
+    margin-top: var(--header-h);
+    padding: 30px 32px 50px;
+    flex:1;
+    min-height: calc(100vh - var(--header-h));
+  }
+
+  /* ---- Sección / módulo ---- */
+  .module { display:none; animation: fadeIn .35s ease; }
+  .module.active { display:block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+
+  /* ---- Títulos de módulo ---- */
+  .mod-title {
+    font-family: var(--font-head);
+    font-size:26px; font-weight:800;
+    color: var(--navy);
+    margin-bottom:6px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .mod-subtitle {
+    font-size:15px; color: var(--text-soft);
+    margin-bottom:26px;
+    padding-bottom:18px;
+    border-bottom:2px solid #e2e8f0;
+  }
+
+  /* ---- Tarjetas ---- */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px 28px;
+    margin-bottom:20px;
+  }
+  .card-title {
+    font-size:17px; font-weight:700;
+    color: var(--navy);
+    margin-bottom:14px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .card-title .icon { font-size:20px; }
+
+  /* ---- Grid de tarjetas ---- */
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  @media(max-width:900px){ .grid-2,.grid-3{ grid-template-columns:1fr; } }
+
+  /* ---- Highlight boxes ---- */
+  .highlight {
+    border-radius:10px; padding:16px 20px; margin-bottom:14px;
+    border-left:4px solid;
+  }
+  .hl-blue  { background:#eff6ff; border-color:var(--blue); }
+  .hl-amber { background:#fffbeb; border-color:var(--accent); }
+  .hl-green { background:#f0fdf4; border-color:var(--accent2); }
+  .hl-red   { background:#fef2f2; border-color:var(--accent3); }
+  .hl-purple{ background:#f5f3ff; border-color:var(--accent4); }
+
+  /* ---- Pasos numerados ---- */
+  .steps { list-style:none; counter-reset:step; }
+  .steps li {
+    counter-increment:step;
+    display:flex; gap:14px; align-items:flex-start;
+    padding:10px 0;
+    border-bottom:1px solid #f1f5f9;
+  }
+  .steps li:last-child{border:none;}
+  .steps li::before {
+    content:counter(step);
+    min-width:32px; height:32px;
+    background: var(--navy);
+    color:#fff;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:14px; flex-shrink:0;
+  }
+  .steps li .step-body { flex:1; }
+  .steps li strong { color: var(--navy); display:block; margin-bottom:2px; }
+
+  /* ---- Ejemplos ---- */
+  .ejemplo-box {
+    background: linear-gradient(135deg,#f0f9ff,#e0f2fe);
+    border-radius:10px;
+    padding:18px 22px;
+    margin-bottom:16px;
+    border:1px solid #bae6fd;
+    position:relative;
+    overflow:hidden;
+  }
+  .ejemplo-box::before {
+    content:'';
+    position:absolute; top:0; left:0;
+    width:4px; height:100%;
+    background: var(--blue-light);
+  }
+  .ejemplo-box .enunciado {
+    font-size:15px; color: var(--text);
+    margin-bottom:10px; line-height:1.5;
+  }
+  .ejemplo-box .op {
+    font-size:20px; font-weight:800;
+    color: var(--navy);
+    font-family: monospace;
+  }
+  .ejemplo-box .res {
+    display:inline-block;
+    background: var(--blue);
+    color:#fff;
+    padding:3px 12px; border-radius:6px;
+    font-weight:700; font-size:15px;
+    margin-top:6px;
+  }
+
+  /* ---- Canvas wrapper ---- */
+  .canvas-wrap {
+    background:#fff;
+    border-radius:10px;
+    border:1px solid #e2e8f0;
+    overflow:hidden;
+    margin-bottom:14px;
+    text-align:center;
+    padding:10px;
+  }
+  canvas { border-radius:6px; display:block; margin:0 auto; }
+
+  /* ---- Actividades ---- */
+  .activity-card {
+    background:#fff;
+    border-radius:10px;
+    border:1px solid #e2e8f0;
+    padding:18px 22px;
+    margin-bottom:16px;
+    transition:.2s;
+  }
+  .activity-card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1);}
+  .activity-card .q-text {
+    font-size:15px; color:var(--text);
+    margin-bottom:12px; line-height:1.5;
+  }
+  .activity-card .input-row {
+    display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  }
+  .activity-card input[type=number] {
+    width:110px;
+    padding:9px 12px;
+    border:2px solid #e2e8f0;
+    border-radius:8px;
+    font-size:16px; font-weight:700;
+    color: var(--navy);
+    transition:.2s;
+  }
+  .activity-card input[type=number]:focus {
+    outline:none; border-color:var(--blue);
+    box-shadow:0 0 0 3px rgba(37,99,235,.12);
+  }
+  .btn-check {
+    padding:9px 20px;
+    background: var(--blue);
+    color:#fff;
+    border:none; border-radius:8px;
+    font-size:14px; font-weight:700;
+    cursor:pointer; transition:.2s;
+  }
+  .btn-check:hover{ background: var(--navy); transform:translateY(-1px); }
+  .feedback {
+    display:none; margin-top:10px;
+    padding:10px 14px;
+    border-radius:8px;
+    font-weight:600; font-size:14px;
+  }
+  .feedback.correct { background:#f0fdf4; color:#166534; display:block; }
+  .feedback.wrong   { background:#fef2f2; color:#991b1b; display:block; }
+
+  /* ---- Nivel badges ---- */
+  .nivel-badge {
+    display:inline-block;
+    padding:4px 14px; border-radius:20px;
+    font-size:12px; font-weight:700;
+    letter-spacing:.5px; margin-bottom:18px;
+  }
+  .nivel-basico    { background:#d1fae5; color:#065f46; }
+  .nivel-medio     { background:#fef3c7; color:#92400e; }
+  .nivel-avanzado  { background:#fee2e2; color:#991b1b; }
+  .nivel-desafio   { background:#ede9fe; color:#5b21b6; }
+
+  /* ---- Evaluación ---- */
+  .quiz-q {
+    background:#fff;
+    border-radius:10px;
+    border:1px solid #e2e8f0;
+    padding:20px 24px;
+    margin-bottom:16px;
+    transition:.2s;
+  }
+  .quiz-q .q-num {
+    font-size:12px; font-weight:700;
+    color: var(--text-soft);
+    text-transform:uppercase; letter-spacing:.8px;
+    margin-bottom:8px;
+  }
+  .quiz-q .q-text {
+    font-size:16px; color: var(--text);
+    font-weight:600; margin-bottom:14px;
+  }
+  .options { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  @media(max-width:600px){ .options{ grid-template-columns:1fr; } }
+  .opt-btn {
+    padding:10px 16px;
+    background:#f8fafc;
+    border:2px solid #e2e8f0;
+    border-radius:8px;
+    text-align:left;
+    cursor:pointer;
+    font-size:14px; font-weight:500;
+    color:var(--text);
+    transition:.2s;
+    position:relative;
+  }
+  .opt-btn:hover:not(:disabled){ background:#eff6ff; border-color:var(--blue-light); }
+  .opt-btn.selected-correct { background:#f0fdf4; border-color:#22c55e; color:#166534; font-weight:700; }
+  .opt-btn.selected-wrong   { background:#fef2f2; border-color:#ef4444; color:#991b1b; }
+  .opt-btn.show-correct     { background:#f0fdf4; border-color:#22c55e; color:#166534; font-weight:700; }
+  .opt-btn:disabled{ cursor:default; }
+  .q-feedback { margin-top:10px; font-size:13px; font-weight:600; display:none; }
+  .q-feedback.show{ display:block; }
+
+  /* ---- Score display ---- */
+  .score-wrap {
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    color:#fff;
+    border-radius: var(--radius);
+    padding:30px; text-align:center;
+    display:none;
+  }
+  .score-wrap.visible{ display:block; animation:fadeIn .4s; }
+  .score-big { font-size:64px; font-weight:900; line-height:1; }
+  .score-label{ font-size:18px; opacity:.85; margin-bottom:4px; }
+  .score-msg  { font-size:20px; font-weight:700; margin-top:14px; }
+
+  /* ---- Bienvenida ---- */
+  .welcome-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+    border-radius:18px;
+    color:#fff;
+    padding:44px 44px;
+    margin-bottom:24px;
+    position:relative; overflow:hidden;
+  }
+  .welcome-hero::after {
+    content:'✕';
+    position:absolute; right:-20px; top:-20px;
+    font-size:200px; opacity:.04; font-weight:900;
+  }
+  .welcome-hero h1{ font-size:32px; font-weight:900; margin-bottom:8px; line-height:1.2; }
+  .welcome-hero p { font-size:16px; opacity:.9; line-height:1.6; max-width:600px; margin-bottom:22px; }
+  .welcome-chips { display:flex; flex-wrap:wrap; gap:10px; }
+  .chip {
+    background:rgba(255,255,255,.18);
+    padding:7px 16px; border-radius:20px;
+    font-size:13px; font-weight:600;
+    border:1px solid rgba(255,255,255,.25);
+    backdrop-filter:blur(4px);
+  }
+  .start-btn {
+    margin-top:22px;
+    background:var(--accent);
+    color:var(--navy);
+    padding:13px 28px;
+    border:none; border-radius:10px;
+    font-size:15px; font-weight:800;
+    cursor:pointer; transition:.2s;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .start-btn:hover{ background:#fbbf24; transform:translateY(-2px); box-shadow:0 6px 20px rgba(245,158,11,.4); }
+
+  /* ---- Stats welcome ---- */
+  .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px; }
+  @media(max-width:700px){ .stats-row{ grid-template-columns:1fr 1fr; } }
+  .stat-card {
+    background:#fff;
+    border-radius:12px;
+    padding:20px;
+    text-align:center;
+    box-shadow: var(--shadow);
+    border-top:4px solid;
+  }
+  .stat-card:nth-child(1){ border-color:var(--blue); }
+  .stat-card:nth-child(2){ border-color:var(--accent); }
+  .stat-card:nth-child(3){ border-color:var(--accent2); }
+  .stat-card:nth-child(4){ border-color:var(--accent4); }
+  .stat-icon { font-size:28px; margin-bottom:6px; }
+  .stat-num { font-size:28px; font-weight:900; color:var(--navy); }
+  .stat-desc{ font-size:12px; color:var(--text-soft); }
+
+  /* ---- Table ---- */
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th { background:var(--navy); color:#fff; padding:10px 14px; text-align:left; }
+  td { padding:9px 14px; border-bottom:1px solid #f1f5f9; }
+  tr:hover td{ background:#f8fafc; }
+
+  /* ---- Progress bar ---- */
+  .prog-bar-wrap{ background:#e2e8f0; border-radius:99px; height:10px; margin-bottom:20px; overflow:hidden; }
+  .prog-bar{ height:100%; border-radius:99px; background:linear-gradient(90deg,var(--blue),var(--accent)); transition:width .5s; }
+
+  /* ---- Btn primario general ---- */
+  .btn-primary {
+    background:var(--blue);
+    color:#fff;
+    padding:11px 24px; border:none;
+    border-radius:9px; font-size:15px;
+    font-weight:700; cursor:pointer; transition:.2s;
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  .btn-primary:hover{ background:var(--navy); transform:translateY(-1px); }
+
+  /* ---- Footer ---- */
+  footer {
+    margin-left: var(--sidebar-w);
+    text-align:center;
+    padding:20px;
+    font-size:13px;
+    color: var(--text-soft);
+    border-top:1px solid #e2e8f0;
+    background:#fff;
+  }
+
+  /* ---- Scrollbar ---- */
+  ::-webkit-scrollbar{ width:6px; }
+  ::-webkit-scrollbar-track{ background:transparent; }
+  ::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:99px; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header>
+  <a class="logo" href="#">
+    <div class="logo-icon">M²</div>
+    <div class="logo-text">
+      <span>Mente Matemática</span>
+      <small>Plataforma Educativa</small>
+    </div>
+  </a>
+  <div class="header-right">
+    <span class="header-badge">📘 Tema 14</span>
+    <a class="btn-menu" href="temario.html">← Volver al menú</a>
+  </div>
+</header>
+
+<!-- ============================================================
+     SIDEBAR NAVIGATION
+     ============================================================ -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-title">Módulos de aprendizaje</div>
+
+  <div class="nav-item active" data-mod="bienvenida">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-label">Bienvenida</span>
+  </div>
+  <div class="nav-item" data-mod="objetivo">
+    <span class="nav-icon">🎯</span>
+    <span class="nav-label">Objetivo de aprendizaje</span>
+  </div>
+  <div class="nav-item" data-mod="concepto">
+    <span class="nav-icon">📖</span>
+    <span class="nav-label">1. Concepto clave</span>
+  </div>
+  <div class="nav-item" data-mod="pasos">
+    <span class="nav-icon">🔢</span>
+    <span class="nav-label">2. Pasos para resolver</span>
+  </div>
+  <div class="nav-item" data-mod="ejemplos">
+    <span class="nav-icon">🏗️</span>
+    <span class="nav-label">3. Ejemplos guiados</span>
+  </div>
+  <div class="nav-item" data-mod="estrategias">
+    <span class="nav-icon">🧠</span>
+    <span class="nav-label">4. Estrategias útiles</span>
+  </div>
+  <div class="nav-item" data-mod="actividades">
+    <span class="nav-icon">✏️</span>
+    <span class="nav-label">5. Actividades prácticas</span>
+    <span class="nav-badge">3</span>
+  </div>
+  <div class="nav-item" data-mod="evaluacion">
+    <span class="nav-icon">📝</span>
+    <span class="nav-label">6. Evaluación final</span>
+  </div>
+</nav>
+
+<!-- ============================================================
+     MAIN CONTENT
+     ============================================================ -->
+<main>
+
+  <!-- ===========================================================
+       MÓDULO 0: BIENVENIDA
+       =========================================================== -->
+  <section class="module active" id="mod-bienvenida">
+    <div class="welcome-hero">
+      <h1>🎉 ¡Bienvenido a Mente Matemática!</h1>
+      <p>Estás a punto de dominar la <strong>multiplicación aplicada a problemas reales</strong>. A través de ejemplos, actividades y retos, aprenderás paso a paso de manera divertida e interactiva.</p>
+      <div class="welcome-chips">
+        <span class="chip">📘 Lección 14</span>
+        <span class="chip">🎯 Números de 1, 2 y 3 cifras</span>
+        <span class="chip">🕐 ~45 minutos</span>
+        <span class="chip">⭐ 3 niveles</span>
+      </div>
+      <button class="start-btn" onclick="goModule('objetivo')">¡Comenzar! →</button>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-num">6</div><div class="stat-desc">Módulos de estudio</div></div>
+      <div class="stat-card"><div class="stat-icon">✏️</div><div class="stat-num">15</div><div class="stat-desc">Actividades prácticas</div></div>
+      <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-num">10</div><div class="stat-desc">Preguntas de evaluación</div></div>
+      <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-num">3</div><div class="stat-desc">Niveles de dificultad</div></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="icon">📺</span>Video de introducción recomendado</div>
+        <p style="font-size:14px;color:var(--text-soft);margin-bottom:14px;">Mira este video antes de comenzar para entender mejor la multiplicación:</p>
+        <a href="https://www.youtube.com/results?search_query=multiplicacion+aplicada+a+problemas+primaria" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#ef4444;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;">
+          ▶ Ver en YouTube
+        </a>
+        <p style="font-size:12px;color:var(--text-soft);margin-top:10px;">🔗 Busca: "Multiplicación aplicada a problemas"</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">🗺️</span>Mapa de aprendizaje</div>
+        <canvas id="canvasMap" width="320" height="180"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================================================
+       MÓDULO 1: OBJETIVO DE APRENDIZAJE
+       =========================================================== -->
+  <section class="module" id="mod-objetivo">
+    <div class="mod-title">🎯 Objetivo de aprendizaje</div>
+    <div class="mod-subtitle">¿Qué aprenderás en esta lección?</div>
+
+    <div class="card">
+      <div class="highlight hl-blue" style="margin-bottom:0;">
+        <p style="font-size:16px;font-weight:600;color:var(--navy);">
+          🎯 Desarrollar la capacidad de resolver problemas de multiplicación utilizando números de <strong>1, 2 y 3 cifras</strong>, aplicando estrategias adecuadas según el nivel de dificultad.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="card" style="text-align:center;border-top:4px solid var(--blue);">
+        <div style="font-size:36px;margin-bottom:8px;">🧮</div>
+        <h3 style="color:var(--navy);margin-bottom:6px;">Comprender</h3>
+        <p style="font-size:13px;color:var(--text-soft);">Entender qué es la multiplicación y cuándo usarla</p>
+      </div>
+      <div class="card" style="text-align:center;border-top:4px solid var(--accent);">
+        <div style="font-size:36px;margin-bottom:8px;">📋</div>
+        <h3 style="color:var(--navy);margin-bottom:6px;">Aplicar pasos</h3>
+        <p style="font-size:13px;color:var(--text-soft);">Seguir una metodología clara para resolver problemas</p>
+      </div>
+      <div class="card" style="text-align:center;border-top:4px solid var(--accent2);">
+        <div style="font-size:36px;margin-bottom:8px;">🏆</div>
+        <h3 style="color:var(--navy);margin-bottom:6px;">Resolver</h3>
+        <p style="font-size:13px;color:var(--text-soft);">Dominar los tres niveles: básico, intermedio y avanzado</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📊</span>¿Qué lograrás al terminar esta lección?</div>
+      <table>
+        <thead><tr><th>Nivel</th><th>Tipo de números</th><th>Habilidad esperada</th></tr></thead>
+        <tbody>
+          <tr><td>🟢 Básico</td><td>1 cifra</td><td>Resolver problemas simples de grupos iguales</td></tr>
+          <tr><td>🟡 Intermedio</td><td>2 cifras</td><td>Multiplicar con dos factores de 2 cifras</td></tr>
+          <tr><td>🔴 Avanzado</td><td>3 cifras</td><td>Resolver situaciones complejas de producción y organización</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="text-align:right;">
+      <button class="btn-primary" onclick="goModule('concepto')">Continuar → Concepto clave</button>
+    </div>
+  </section>
+
+  <!-- ===========================================================
+       MÓDULO 2: CONCEPTO CLAVE
+       =========================================================== -->
+  <section class="module" id="mod-concepto">
+    <div class="mod-title">📖 1. Concepto clave</div>
+    <div class="mod-subtitle">¿Qué es la multiplicación?</div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">💡</span>Definición</div>
+      <div class="highlight hl-blue">
+        <p style="font-size:16px;line-height:1.7;">La <strong>multiplicación</strong> es una operación matemática que consiste en <strong>sumar un número varias veces</strong>. También se interpreta como la formación de <strong>grupos iguales</strong>, <strong>repetición</strong> o <strong>combinación de cantidades</strong>.</p>
+      </div>
+      <div class="highlight hl-amber" style="margin-top:12px;">
+        <p style="font-size:16px;"><strong>👉 Ejemplo básico:</strong> 4 × 3 = 4 + 4 + 4 = <strong>12</strong></p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="icon">🧩</span>Tres interpretaciones</div>
+        <div class="highlight hl-blue"><strong>👥 Grupos iguales:</strong><br>5 cajas con 3 lápices = 5 × 3 = 15</div>
+        <div class="highlight hl-green"><strong>🔁 Repetición:</strong><br>Correr 4 km por día, 7 días = 4 × 7 = 28 km</div>
+        <div class="highlight hl-purple"><strong>🔗 Combinación:</strong><br>3 colores × 4 tallas = 12 combinaciones</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">🎨</span>Visualización interactiva</div>
+        <div class="canvas-wrap">
+          <canvas id="canvasConcepto" width="300" height="200"></canvas>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+          <label style="font-size:13px;font-weight:600;">Grupos:</label>
+          <input type="range" id="sliderA" min="1" max="8" value="4" style="flex:1;">
+          <span id="valA" style="font-weight:700;color:var(--navy);">4</span>
+          <label style="font-size:13px;font-weight:600;">Por grupo:</label>
+          <input type="range" id="sliderB" min="1" max="8" value="3" style="flex:1;">
+          <span id="valB" style="font-weight:700;color:var(--navy);">3</span>
+        </div>
+        <p id="resultConcepto" style="font-size:20px;font-weight:900;color:var(--navy);text-align:center;margin-top:10px;"></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📌</span>Partes de la multiplicación</div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;padding:20px 0;">
+        <div style="text-align:center;background:#eff6ff;padding:16px 24px;border-radius:12px;border:2px solid var(--blue-light);">
+          <div style="font-size:32px;font-weight:900;color:var(--blue);">5</div>
+          <div style="font-size:12px;color:var(--text-soft);font-weight:600;">MULTIPLICANDO</div>
+        </div>
+        <div style="font-size:36px;color:var(--navy);font-weight:900;">×</div>
+        <div style="text-align:center;background:#fef3c7;padding:16px 24px;border-radius:12px;border:2px solid var(--accent);">
+          <div style="font-size:32px;font-weight:900;color:#92400e;">3</div>
+          <div style="font-size:12px;color:var(--text-soft);font-weight:600;">MULTIPLICADOR</div>
+        </div>
+        <div style="font-size:36px;color:var(--navy);font-weight:900;">=</div>
+        <div style="text-align:center;background:#f0fdf4;padding:16px 24px;border-radius:12px;border:2px solid var(--accent2);">
+          <div style="font-size:32px;font-weight:900;color:#166534;">15</div>
+          <div style="font-size:12px;color:var(--text-soft);font-weight:600;">PRODUCTO</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:right;">
+      <button class="btn-primary" onclick="goModule('pasos')">Continuar → Pasos para resolver</button>
+    </div>
+  </section>
+
+  <!-- ===========================================================
+       MÓDULO 3: PASOS PARA RESOLVER
+       =========================================================== -->
+  <section class="module" id="mod-pasos">
+    <div class="mod-title">🔢 2. Pasos para resolver problemas</div>
+    <div class="mod-subtitle">Metodología para atacar cualquier problema de multiplicación</div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="icon">📋</span>Los 6 pasos esenciales</div>
+        <ol class="steps">
+          <li><div class="step-body"><strong>📖 Leer el problema cuidadosamente</strong><br>Lee una o dos veces para entender la situación completa.</div></li>
+          <li><div class="step-body"><strong>🔍 Identificar los datos</strong><br>Subraya o escribe los números y datos que aparecen.</div></li>
+          <li><div class="step-body"><strong>❓ Determinar qué se pide</strong><br>¿Cuántos en total? ¿Cuántos hay? ¿Cuánto produce?</div></li>
+          <li><div class="step-body"><strong>✖️ Elegir la operación</strong><br>Si hay grupos iguales o repetición → multiplicar.</div></li>
+          <li><div class="step-body"><strong>🧮 Resolver</strong><br>Realiza la multiplicación con cuidado.</div></li>
+          <li><div class="step-body"><strong>✅ Verificar la respuesta</strong><br>¿Tiene sentido? ¿Concuerda con el problema?</div></li>
+        </ol>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">🔎</span>¿Cuándo multiplicar?</div>
+        <p style="margin-bottom:14px;font-size:14px;color:var(--text-soft);">Estas <strong>palabras clave</strong> en el enunciado te indican que debes multiplicar:</p>
+        <div class="highlight hl-amber">
+          <p>📌 <strong>en total, por día, cada, grupos de, veces, produce, reparte, duplica, triplica, por semana, en conjunto, filas de, paquetes de</strong></p>
+        </div>
+        <div class="canvas-wrap" style="margin-top:14px;">
+          <canvas id="canvasPasos" width="300" height="170"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🎮</span>Practica identificar el paso</div>
+      <div id="pasosQuiz">
+        <div class="activity-card">
+          <p class="q-text">📌 <em>"Una tienda vende 8 cajas por día durante 5 días. ¿Cuántas cajas vende en total?"</em><br><br>¿Cuál es el dato que pide el problema?</p>
+          <div class="input-row">
+            <button class="opt-btn" onclick="checkPasoQ(this,'Total de cajas vendidas',true)">A) Total de cajas vendidas</button>
+            <button class="opt-btn" onclick="checkPasoQ(this,'Cajas por día',false)">B) Cajas por día</button>
+            <button class="opt-btn" onclick="checkPasoQ(this,'Número de días',false)">C) Número de días</button>
+            <button class="opt-btn" onclick="checkPasoQ(this,'Precio por caja',false)">D) Precio por caja</button>
+          </div>
+          <div class="feedback" id="fb-paso1"></div>
+        </div>
+        <div class="activity-card">
+          <p class="q-text">📌 <em>"Hay 6 filas con 9 sillas cada una."</em><br><br>¿Qué operación corresponde?</p>
+          <div class="input-row">
+            <button class="opt-btn" onclick="checkPasoQ2(this,'Suma',false)">A) Suma: 6 + 9</button>
+            <button class="opt-btn" onclick="checkPasoQ2(this,'Multiplicación',true)">B) Multiplicación: 6 × 9</button>
+            <button class="opt-btn" onclick="checkPasoQ2(this,'Resta',false)">C) Resta: 9 − 6</button>
+            <button class="opt-btn" onclick="checkPasoQ2(this,'División',false)">D) División: 9 ÷ 6</button>
+          </div>
+          <div class="feedback" id="fb-paso2"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:right;">
+      <button class="btn-primary" onclick="goModule('ejemplos')">Continuar → Ejemplos guiados</button>
+    </div>
+  </section>
+
+  <!-- ===========================================================
+       MÓDULO 4: EJEMPLOS GUIADOS
+       =========================================================== -->
+  <section class="module" id="mod-ejemplos">
+    <div class="mod-title">🏗️ 3. Ejemplos guiados</div>
+    <div class="mod-subtitle">Resolvemos problemas paso a paso en los tres niveles</div>
+
+    <!-- Nivel básico -->
+    <span class="nivel-badge nivel-basico">🟢 Nivel Básico — 1 cifra</span>
+    <div class="ejemplo-box">
+      <div class="enunciado">📦 Juan tiene <strong>5 cajas</strong> con <strong>3 lápices</strong> cada una. ¿Cuántos lápices tiene en total?</div>
+      <div class="highlight hl-blue" style="margin:8px 0;"><strong>Datos:</strong> 5 cajas · 3 lápices por caja &nbsp;|&nbsp; <strong>Pide:</strong> total de lápices</div>
+      <div class="op">5 × 3 = </div>
+      <div class="res">15 lápices ✅</div>
+    </div>
+    <div class="ejemplo-box">
+      <div class="enunciado">🍎 Un árbol tiene <strong>3 ramas</strong> y en cada rama hay <strong>5 manzanas</strong>. ¿Cuántas manzanas hay?</div>
+      <div class="op">3 × 5 = </div><div class="res">15 manzanas ✅</div>
+    </div>
+    <div class="canvas-wrap">
+      <canvas id="canvasEj1" width="500" height="130"></canvas>
+    </div>
+
+    <!-- Nivel intermedio -->
+    <span class="nivel-badge nivel-medio" style="margin-top:20px;display:inline-block;">🟡 Nivel Intermedio — 2 cifras</span>
+    <div class="ejemplo-box">
+      <div class="enunciado">🏫 En una escuela hay <strong>24 estudiantes</strong> en cada aula. Si hay <strong>3 aulas</strong>, ¿cuántos estudiantes hay en total?</div>
+      <div class="highlight hl-amber" style="margin:8px 0;"><strong>Datos:</strong> 24 estudiantes/aula · 3 aulas &nbsp;|&nbsp; <strong>Pide:</strong> total de estudiantes</div>
+      <div class="op">24 × 3 = </div><div class="res">72 estudiantes ✅</div>
+    </div>
+    <div class="ejemplo-box">
+      <div class="enunciado">🚛 Un camión transporta <strong>18 cajas</strong> con <strong>6 productos</strong> cada una. ¿Cuántos productos transporta?</div>
+      <div class="op">18 × 6 = </div><div class="res">108 productos ✅</div>
+    </div>
+    <div class="canvas-wrap">
+      <canvas id="canvasEj2" width="500" height="130"></canvas>
+    </div>
+
+    <!-- Nivel avanzado -->
+    <span class="nivel-badge nivel-avanzado" style="margin-top:20px;display:inline-block;">🔴 Nivel Avanzado — 3 cifras</span>
+    <div class="ejemplo-box">
+      <div class="enunciado">🏭 Una fábrica produce <strong>125 botellas</strong> por día durante <strong>4 días</strong>. ¿Cuántas botellas produce en total?</div>
+      <div class="highlight hl-red" style="margin:8px 0;"><strong>Datos:</strong> 125 botellas/día · 4 días &nbsp;|&nbsp; <strong>Pide:</strong> total de botellas</div>
+      <div class="op">125 × 4 = </div><div class="res">500 botellas ✅</div>
+    </div>
+    <div class="ejemplo-box">
+      <div class="enunciado">🏟️ En un estadio hay <strong>235 asientos</strong> por sección. Si hay <strong>4 secciones</strong>, ¿cuántos asientos hay?</div>
+      <div class="op">235 × 4 = </div><div class="res">940 asientos ✅</div>
+    </div>
+
+    <!-- Interactivo: resuelve tú -->
+    <div class="card" style="margin-top:20px;">
+      <div class="card-title"><span class="icon">🎮</span>¡Resuelve tú el ejemplo!</div>
+      <p style="font-size:14px;margin-bottom:12px;">Una empresa fabrica <strong>320 piezas</strong> por día durante <strong>3 días</strong>. ¿Cuántas piezas produce?</p>
+      <div class="input-row">
+        <input type="number" id="ejInput" placeholder="Tu respuesta">
+        <button class="btn-check" onclick="checkEj()">Comprobar</button>
+      </div>
+      <div class="feedback" id="fb-ej"></div>
+    </div>
+
+    <div style="text-align:right;margin-top:16px;">
+      <button class="btn-primary" onclick="goModule('estrategias')">Continuar → Estrategias útiles</button>
+    </div>
+  </section>
+
+  <!-- ===========================================================
+       MÓDULO 5: ESTRATEGIAS ÚTILES
+       =========================================================== -->
+  <section class="module" id="mod-estrategias">
+    <div class="mod-title">🧠 4. Estrategias útiles</div>
+    <div class="mod-subtitle">Técnicas para resolver multiplicaciones más rápido</div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="icon">🎯</span>Descomponer factores</div>
+        <p style="font-size:14px;margin-bottom:12px;color:var(--text-soft);">Divide un número grande en partes más fáciles.</p>
+        <div class="highlight hl-blue">
+          <p><strong>Ejemplo:</strong> 14 × 3</p>
+          <p>= (10 × 3) + (4 × 3)</p>
+          <p>= 30 + 12 = <strong>42</strong> ✅</p>
+        </div>
+        <div class="highlight hl-green" style="margin-top:10px;">
+          <p><strong>Ejemplo:</strong> 25 × 4</p>
+          <p>= (20 × 4) + (5 × 4)</p>
+          <p>= 80 + 20 = <strong>100</strong> ✅</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">🔄</span>Propiedad conmutativa</div>
+        <p style="font-size:14px;margin-bottom:12px;color:var(--text-soft);">El orden de los factores <strong>NO altera el producto</strong>.</p>
+        <div class="highlight hl-amber">
+          <p><strong>6 × 7 = 7 × 6 = 42</strong></p>
+          <p style="margin-top:8px;">Elige el orden que te resulte más fácil.</p>
+        </div>
+        <div class="canvas-wrap" style="margin-top:14px;">
+          <canvas id="canvasComut" width="280" height="140"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:4px;">
+      <div class="card">
+        <div class="card-title"><span class="icon">⚡</span>Multiplicar por 10, 100, 1000</div>
+        <p style="font-size:14px;margin-bottom:10px;color:var(--text-soft);">Solo agrega ceros al final del número.</p>
+        <table>
+          <thead><tr><th>Operación</th><th>Resultado</th><th>Regla</th></tr></thead>
+          <tbody>
+            <tr><td>7 × 10</td><td><strong>70</strong></td><td>Agrega 1 cero</td></tr>
+            <tr><td>7 × 100</td><td><strong>700</strong></td><td>Agrega 2 ceros</td></tr>
+            <tr><td>7 × 1000</td><td><strong>7000</strong></td><td>Agrega 3 ceros</td></tr>
+            <tr><td>25 × 100</td><td><strong>2500</strong></td><td>Agrega 2 ceros</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">🌍</span>Multiplicación en la vida real</div>
+        <div class="highlight hl-purple"><strong>🛒 Compras:</strong> 5 productos a $12 cada uno → 5 × 12 = $60</div>
+        <div class="highlight hl-green"><strong>🏭 Producción:</strong> 250 piezas/día × 5 días = 1.250 piezas</div>
+        <div class="highlight hl-blue"><strong>📐 Área:</strong> Un jardín de 8m × 6m = 48 m²</div>
+        <div class="highlight hl-amber"><strong>🚌 Transporte:</strong> 45 pasajeros × 8 viajes = 360 personas</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🎯</span>Estrategia interactiva: Doble y mitad</div>
+      <p style="font-size:14px;margin-bottom:12px;color:var(--text-soft);">Si un factor es par, puedes dividirlo entre 2 y doblar el otro.</p>
+      <div class="highlight hl-blue">
+        <p><strong>Ejemplo:</strong> 14 × 8</p>
+        <p>→ 14 ÷ 2 = 7 &nbsp;&nbsp; y &nbsp;&nbsp; 8 × 2 = 16</p>
+        <p>→ 7 × 16 = <strong>112</strong> ✅</p>
+        <p style="margin-top:6px;font-size:13px;color:var(--text-soft);">(Mismo resultado, ¡más fácil de calcular!)</p>
+      </div>
+      <div style="margin-top:16px;">
+        <p style="font-size:14px;margin-bottom:8px;font-weight:600;">Prueba tú mismo: ¿Cuánto es 16 × 5?</p>
+        <div class="input-row">
+          <input type="number" id="estInput" placeholder="Tu respuesta">
+          <button class="btn-check" onclick="checkEstrategia()">Verificar</button>
+        </div>
+        <div class="feedback" id="fb-est"></div>
+      </div>
+    </div>
+
+    <div style="text-align:right;margin-top:16px;">
+      <button class="btn-primary" onclick="goModule('actividades')">Continuar → Actividades prácticas</button>
+    </div>
+  </section>
+
+  <!-- ===========================================================
+       MÓDULO 6: ACTIVIDADES PRÁCTICAS
+       =========================================================== -->
+  <section class="module" id="mod-actividades">
+    <div class="mod-title">✏️ 5. Actividades prácticas</div>
+    <div class="mod-subtitle">Practica con tres niveles de dificultad</div>
+
+    <!-- Progreso -->
+    <div class="card" style="padding:16px 20px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span style="font-weight:700;font-size:14px;">Progreso de actividades</span>
+        <span id="actProgress" style="font-weight:700;color:var(--blue);">0 / 15 correctas</span>
+      </div>
+      <div class="prog-bar-wrap"><div class="prog-bar" id="actBar" style="width:0%;"></div></div>
+    </div>
+
+    <!-- NIVEL BÁSICO -->
+    <span class="nivel-badge nivel-basico">🟢 Nivel Básico — 1 cifra</span>
+
+    <div id="basicActivities">
+      <!-- Actividad B1 -->
+      <div class="activity-card">
+        <p class="q-text">🍬 Ana tiene <strong>4 bolsas</strong> con <strong>6 dulces</strong> cada una. ¿Cuántos dulces hay en total?</p>
+        <div class="input-row">
+          <input type="number" id="b1" placeholder="Respuesta">
+          <button class="btn-check" onclick="checkAct('b1',24,'fb-b1')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb-b1"></div>
+      </div>
+      <!-- Actividad B2 -->
+      <div class="activity-card">
+        <p class="q-text">🍎 Un árbol tiene <strong>3 ramas</strong> y en cada rama hay <strong>5 manzanas</strong>. ¿Cuántas manzanas hay?</p>
+        <div class="input-row">
+          <input type="number" id="b2" placeholder="Respuesta">
+          <button class="btn-check" onclick="checkAct('b2',15,'fb-b2')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb-b2"></div>
+      </div>
+      <!-- Actividad B3 -->
+      <div class="activity-card">
+        <p class="q-text">🧸 Hay <strong>7 cajas</strong> con <strong>2 juguetes</strong> cada una. ¿Cuántos juguetes hay?</p>
+        <div class="input-row">
+          <input type="number" id="b3" placeholder="Respuesta">
+          <button class="btn-check" onclick="checkAct('b3',14,'fb-b3')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb-b3"></div>
+      </div>
+      <!-- Actividad B4 -->
+      <div class="activity-card">
+        <p class="q-text">🍪 Pedro compra <strong>9 paquetes</strong> con <strong>3 galletas</strong> cada uno. ¿Cuántas galletas tiene?</p>
+        <div class="input-row">
+          <input type="number" id="b4" placeholder="Respuesta">
+          <button class="btn-check" onclick="checkAct('b4',27,'fb-b4')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb-b4"></div>
+      </div>
+      <!-- Actividad B5 -->
+      <div class="activity-card">
+        <p class="q-text">🎒 Hay <strong>6 filas</strong> con <strong>4 estudiantes</strong> cada una. ¿Cuántos estudiantes hay?</p>
+        <div class="input-row">
+          <input type="number" id="b5" placeholder="Respuesta">
+          <button class="btn-check" onclick="checkAct('b5',24,'fb-b5')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb-b5"></div>
+      </div>
+    </div>
+
+    <!-- NIVEL INTERMEDIO -->
+    <span class="nivel-badge nivel-medio" style="margin-top:24px;display:inline-block;">🟡 Nivel Intermedio — 2 cifras</span>
+
+    <div id="medioActivities">
+      <div class="activity-card">
+        <p class="q-text">🏫 Una escuela tiene <strong>12 aulas</strong> con <strong>25 estudiantes</strong> cada una. ¿Cuántos estudiantes hay?</p>
+        <div class="input-row">
+          <input type="number" id="m1" placeholder="Respuesta">
+          <button class="btn-check" onclick="checkAct('m1',300,'fb-m1')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb-m1"></div>
+      </div>
+      <div class="activity-card">
+        <p class="q-text">🚛 Un camión transporta <strong>18 cajas</strong> con <strong>6 productos</strong> cada una. ¿Cuántos productos transporta?</p>
+        <div class="input-row">
+          <input type="number" id="m2" placeholder="Respuesta">
+          <button class="btn-check" onclick="checkAct('m2',108,'fb-m2')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb-m2"></div>
+      </div>
+      <div class="activity-card">
+        <p class="q-text">🌳 Hay <strong>23 árboles</strong> y cada uno produce <strong>4 frutas</strong>. ¿Cuántas frutas hay en total?</p>
+        <div class="input-row">
+          <input type="number" id="m3" placeholder="Respuesta">
+          <button class="btn-check" onclick="checkAct('m3',92,'fb-m3')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb-m3"></div>
+      </div>
+      <div class="activity-card">
+        <p class="q-text">🧸 Una fábrica produce <strong>15 juguetes</strong> diarios durante <strong>7 días</strong>. ¿Cuántos juguetes produce?</p>
+        <div class="input-row">
+          <input type="number" id="m4" placeholder="Respuesta">
+          <button class="btn-check" onclick="checkAct('m4',105,'fb-m4')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb-m4"></div>
+      </div>
+      <div class="activity-card">
+        <p class="q-text">🌱 Un agricultor siembra <strong>14 filas</strong> con <strong>8 plantas</strong> cada una. ¿Cuántas plantas sembró?</p>
+        <div class="input-row">
+          <input type="number" id="m5" placeholder="Respuesta">
+          <button class="btn-check" onclick="checkAct('m5',112,'fb-m5')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb-m5"></div>
+      </div>
+    </div>
+
+    <!-- NIVEL AVANZADO -->
+    <span class="nivel-badge nivel-avanzado" style="margin-top:24px;display:inline-block;">🔴 Nivel Avanzado — 3 cifras</span>
+
+    <div id="avanzActivities">
+      <div class="activity-card">
+        <p class="q-text">📓 Una fábrica produce <strong>125 cuadernos</strong> al día durante <strong>6 días</strong>. ¿Cuántos cuadernos produce?</p>
+        <div class="input-row">
+          <input type="number" id="a1" placeholder="Respuesta">
+          <button class="btn-check" onclick="checkAct('a1',750,'fb-a1')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb-a1"></div>
+      </div>
+      <div class="activity-card">
+        <p class="q-text">🏟️ En un estadio hay <strong>235 asientos</strong> por sección. Si hay <strong>4 secciones</strong>, ¿cuántos asientos hay?</p>
+        <div class="input-row">
+          <input type="number" id="a2" placeholder="Respuesta">
+          <button class="btn-check" onclick="checkAct('a2',940,'fb-a2')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb-a2"></div>
+      </div>
+      <div class="activity-card">
+        <p class="q-text">🛒 Un almacén vende <strong>148 productos</strong> al día durante <strong>5 días</strong>. ¿Cuántos productos vendió?</p>
+        <div class="input-row">
+          <input type="number" id="a3" placeholder="Respuesta">
+          <button class="btn-check" onclick="checkAct('a3',740,'fb-a3')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb-a3"></div>
+      </div>
+      <div class="activity-card">
+        <p class="q-text">⚙️ Una empresa fabrica <strong>320 piezas</strong> por día durante <strong>3 días</strong>. ¿Cuántas piezas produce?</p>
+        <div class="input-row">
+          <input type="number" id="a4" placeholder="Respuesta">
+          <button class="btn-check" onclick="checkAct('a4',960,'fb-a4')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb-a4"></div>
+      </div>
+      <div class="activity-card">
+        <p class="q-text">📚 Un colegio imprime <strong>215 libros</strong> en cada lote. Si imprime <strong>4 lotes</strong>, ¿cuántos libros imprime?</p>
+        <div class="input-row">
+          <input type="number" id="a5" placeholder="Respuesta">
+          <button class="btn-check" onclick="checkAct('a5',860,'fb-a5')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb-a5"></div>
+      </div>
+    </div>
+
+    <!-- DESAFÍO -->
+    <span class="nivel-badge nivel-desafio" style="margin-top:24px;display:inline-block;">🧩 Desafío — Pensamiento crítico</span>
+
+    <div class="activity-card" style="border:2px solid var(--accent4);">
+      <p class="q-text">🍬 María compra <strong>24 paquetes</strong> con <strong>12 caramelos</strong> cada uno. Luego regala <strong>50 caramelos</strong>. ¿Cuántos caramelos le quedan?</p>
+      <div style="font-size:13px;color:var(--text-soft);margin-bottom:10px;">💡 Pista: Primero multiplica, luego resta.</div>
+      <div class="input-row">
+        <input type="number" id="d1" placeholder="Respuesta">
+        <button class="btn-check" onclick="checkAct('d1',238,'fb-d1')">✔ Verificar</button>
+      </div>
+      <div class="feedback" id="fb-d1"></div>
+    </div>
+
+    <div style="text-align:right;margin-top:16px;">
+      <button class="btn-primary" onclick="goModule('evaluacion')">Ir a la Evaluación Final →</button>
+    </div>
+  </section>
+
+  <!-- ===========================================================
+       MÓDULO 7: EVALUACIÓN FINAL
+       =========================================================== -->
+  <section class="module" id="mod-evaluacion">
+    <div class="mod-title">📝 6. Evaluación final</div>
+    <div class="mod-subtitle">10 preguntas de opción múltiple — ¡Demuestra lo que aprendiste!</div>
+
+    <!-- Score bar -->
+    <div class="card" style="padding:16px 20px;margin-bottom:20px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span style="font-weight:700;font-size:14px;">Progreso</span>
+        <span id="evalProgress" style="font-weight:700;color:var(--blue);">0 / 10 respondidas</span>
+      </div>
+      <div class="prog-bar-wrap"><div class="prog-bar" id="evalBar" style="width:0%;"></div></div>
+    </div>
+
+    <!-- Preguntas -->
+    <div id="quizContainer">
+
+      <!-- Q1 -->
+      <div class="quiz-q" id="q1">
+        <div class="q-num">Pregunta 1 de 10</div>
+        <div class="q-text">¿Qué representa la multiplicación?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="evalAnswer(this,1,'B')">A) Separar en partes iguales</button>
+          <button class="opt-btn" onclick="evalAnswer(this,1,'B')">B) Sumar un número varias veces</button>
+          <button class="opt-btn" onclick="evalAnswer(this,1,'B')">C) Restar cantidades diferentes</button>
+          <button class="opt-btn" onclick="evalAnswer(this,1,'B')">D) Comparar dos cantidades</button>
+        </div>
+        <div class="q-feedback" id="qf1"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-q" id="q2">
+        <div class="q-num">Pregunta 2 de 10</div>
+        <div class="q-text">¿Qué significa 6 × 4?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="evalAnswer(this,2,'A')">A) 6 grupos de 4</button>
+          <button class="opt-btn" onclick="evalAnswer(this,2,'A')">B) 6 menos que 4</button>
+          <button class="opt-btn" onclick="evalAnswer(this,2,'A')">C) 6 dividido entre 4</button>
+          <button class="opt-btn" onclick="evalAnswer(this,2,'A')">D) 4 más que 6</button>
+        </div>
+        <div class="q-feedback" id="qf2"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-q" id="q3">
+        <div class="q-num">Pregunta 3 de 10</div>
+        <div class="q-text">¿Qué paso se realiza PRIMERO al resolver un problema de multiplicación?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="evalAnswer(this,3,'D')">A) Hacer la multiplicación</button>
+          <button class="opt-btn" onclick="evalAnswer(this,3,'D')">B) Identificar los datos</button>
+          <button class="opt-btn" onclick="evalAnswer(this,3,'D')">C) Escribir la respuesta</button>
+          <button class="opt-btn" onclick="evalAnswer(this,3,'D')">D) Leer el problema cuidadosamente</button>
+        </div>
+        <div class="q-feedback" id="qf3"></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-q" id="q4">
+        <div class="q-num">Pregunta 4 de 10</div>
+        <div class="q-text">¿Por qué es importante verificar la respuesta?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="evalAnswer(this,4,'C')">A) Para hacer el problema más difícil</button>
+          <button class="opt-btn" onclick="evalAnswer(this,4,'C')">B) Porque no es necesario</button>
+          <button class="opt-btn" onclick="evalAnswer(this,4,'C')">C) Para comprobar que la respuesta tiene sentido</button>
+          <button class="opt-btn" onclick="evalAnswer(this,4,'C')">D) Para perder tiempo</button>
+        </div>
+        <div class="q-feedback" id="qf4"></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-q" id="q5">
+        <div class="q-num">Pregunta 5 de 10</div>
+        <div class="q-text">7 × 8 = ___</div>
+        <div class="options">
+          <button class="opt-btn" onclick="evalAnswer(this,5,'B')">A) 54</button>
+          <button class="opt-btn" onclick="evalAnswer(this,5,'B')">B) 56</button>
+          <button class="opt-btn" onclick="evalAnswer(this,5,'B')">C) 48</button>
+          <button class="opt-btn" onclick="evalAnswer(this,5,'B')">D) 63</button>
+        </div>
+        <div class="q-feedback" id="qf5"></div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="quiz-q" id="q6">
+        <div class="q-num">Pregunta 6 de 10</div>
+        <div class="q-text">15 × 4 = ___</div>
+        <div class="options">
+          <button class="opt-btn" onclick="evalAnswer(this,6,'C')">A) 45</button>
+          <button class="opt-btn" onclick="evalAnswer(this,6,'C')">B) 55</button>
+          <button class="opt-btn" onclick="evalAnswer(this,6,'C')">C) 60</button>
+          <button class="opt-btn" onclick="evalAnswer(this,6,'C')">D) 75</button>
+        </div>
+        <div class="q-feedback" id="qf6"></div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="quiz-q" id="q7">
+        <div class="q-num">Pregunta 7 de 10</div>
+        <div class="q-text">23 × 3 = ___</div>
+        <div class="options">
+          <button class="opt-btn" onclick="evalAnswer(this,7,'A')">A) 69</button>
+          <button class="opt-btn" onclick="evalAnswer(this,7,'A')">B) 63</button>
+          <button class="opt-btn" onclick="evalAnswer(this,7,'A')">C) 66</button>
+          <button class="opt-btn" onclick="evalAnswer(this,7,'A')">D) 72</button>
+        </div>
+        <div class="q-feedback" id="qf7"></div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="quiz-q" id="q8">
+        <div class="q-num">Pregunta 8 de 10</div>
+        <div class="q-text">125 × 2 = ___</div>
+        <div class="options">
+          <button class="opt-btn" onclick="evalAnswer(this,8,'B')">A) 200</button>
+          <button class="opt-btn" onclick="evalAnswer(this,8,'B')">B) 250</button>
+          <button class="opt-btn" onclick="evalAnswer(this,8,'B')">C) 225</button>
+          <button class="opt-btn" onclick="evalAnswer(this,8,'B')">D) 300</button>
+        </div>
+        <div class="q-feedback" id="qf8"></div>
+      </div>
+
+      <!-- Q9 -->
+      <div class="quiz-q" id="q9">
+        <div class="q-num">Pregunta 9 de 10</div>
+        <div class="q-text">240 × 3 = ___</div>
+        <div class="options">
+          <button class="opt-btn" onclick="evalAnswer(this,9,'D')">A) 600</button>
+          <button class="opt-btn" onclick="evalAnswer(this,9,'D')">B) 680</button>
+          <button class="opt-btn" onclick="evalAnswer(this,9,'D')">C) 700</button>
+          <button class="opt-btn" onclick="evalAnswer(this,9,'D')">D) 720</button>
+        </div>
+        <div class="q-feedback" id="qf9"></div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="quiz-q" id="q10">
+        <div class="q-num">Pregunta 10 de 10</div>
+        <div class="q-text">134 × 5 = ___</div>
+        <div class="options">
+          <button class="opt-btn" onclick="evalAnswer(this,10,'C')">A) 640</button>
+          <button class="opt-btn" onclick="evalAnswer(this,10,'C')">B) 660</button>
+          <button class="opt-btn" onclick="evalAnswer(this,10,'C')">C) 670</button>
+          <button class="opt-btn" onclick="evalAnswer(this,10,'C')">D) 680</button>
+        </div>
+        <div class="q-feedback" id="qf10"></div>
+      </div>
+
+    </div><!-- /quizContainer -->
+
+    <!-- Score resultado final -->
+    <div class="score-wrap" id="scoreWrap">
+      <div class="score-label">Tu puntuación final</div>
+      <div class="score-big" id="scoreBig">--</div>
+      <div style="font-size:18px;opacity:.8;">de 10 puntos</div>
+      <div class="score-msg" id="scoreMsg"></div>
+      <button class="start-btn" style="margin-top:20px;" onclick="resetEval()">🔄 Intentar de nuevo</button>
+    </div>
+
+  </section><!-- /evaluacion -->
+
+</main><!-- /main -->
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  © 2026 MenteMatematica. Todos los derechos reservados VC.
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+/* ============================================================
+   NAVEGACIÓN DINÁMICA
+   ============================================================ */
+const navItems = document.querySelectorAll('.nav-item');
+const modules  = document.querySelectorAll('.module');
+
+function goModule(modName) {
+  // Desactiva todo
+  navItems.forEach(n => n.classList.remove('active'));
+  modules.forEach(m => { m.classList.remove('active'); });
+
+  // Activa el seleccionado
+  const target = document.getElementById('mod-' + modName);
+  if (target) { target.classList.add('active'); window.scrollTo(0,0); }
+  const navTarget = document.querySelector(`.nav-item[data-mod="${modName}"]`);
+  if (navTarget) { navTarget.classList.add('active'); }
+
+  // Inicializa canvas si es necesario
+  setTimeout(() => initCanvases(modName), 80);
+}
+
+navItems.forEach(item => {
+  item.addEventListener('click', () => {
+    const mod = item.dataset.mod;
+    goModule(mod);
+  });
+});
+
+/* ============================================================
+   CANVAS - VISUALIZACIONES INTERACTIVAS
+   ============================================================ */
+function initCanvases(modName) {
+  if (modName === 'bienvenida') { drawMap(); }
+  if (modName === 'concepto')   { drawConcepto(); setupConceptoSliders(); }
+  if (modName === 'pasos')      { drawPasos(); }
+  if (modName === 'ejemplos')   { drawEj1(); drawEj2(); }
+  if (modName === 'estrategias'){ drawComut(); }
+}
+
+/* ---- Mapa de aprendizaje (bienvenida) ---- */
+function drawMap() {
+  const c = document.getElementById('canvasMap');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+
+  const nodes = [
+    {x:40, y:90,  label:'🏠 Inicio', color:'#0d2a4e'},
+    {x:110,y:40,  label:'🎯 Objetivo', color:'#2563eb'},
+    {x:180,y:90,  label:'📖 Concepto', color:'#10b981'},
+    {x:250,y:40,  label:'🔢 Pasos', color:'#f59e0b'},
+    {x:250,y:140, label:'🏗️ Ejemplos', color:'#8b5cf6'},
+    {x:180,y:150, label:'🧠 Estrategia', color:'#ef4444'},
+    {x:110,y:140, label:'✏️ Actividades', color:'#0d2a4e'},
+    {x:40, y:90,  label:'',           color:'transparent'},
+  ];
+
+  // Líneas
+  ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 2;
+  for (let i=0;i<nodes.length-2;i++) {
+    ctx.beginPath();
+    ctx.moveTo(nodes[i].x,nodes[i].y);
+    ctx.lineTo(nodes[i+1].x,nodes[i+1].y);
+    ctx.stroke();
+  }
+  // Nodos
+  nodes.slice(0,-1).forEach(n => {
+    ctx.beginPath();
+    ctx.arc(n.x,n.y,18,0,Math.PI*2);
+    ctx.fillStyle = n.color;
+    ctx.fill();
+    ctx.font = '9px Segoe UI'; ctx.fillStyle='#fff'; ctx.textAlign='center';
+    ctx.fillText(n.label.slice(0,8),n.x,n.y+3);
+  });
+}
+
+/* ---- Visualización concepto (grupos) ---- */
+let sliderA, sliderB;
+function drawConcepto() {
+  const a = parseInt(document.getElementById('sliderA').value);
+  const b = parseInt(document.getElementById('sliderB').value);
+  document.getElementById('valA').textContent = a;
+  document.getElementById('valB').textContent = b;
+  document.getElementById('resultConcepto').textContent = `${a} × ${b} = ${a*b}`;
+
+  const c = document.getElementById('canvasConcepto');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+
+  const cols = b; const rows = a;
+  const size = Math.min(36, Math.floor((c.width-20)/cols), Math.floor((c.height-20)/rows));
+  const ox = (c.width - cols*size)/2;
+  const oy = (c.height - rows*size)/2;
+  const colors = ['#2563eb','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#f97316','#ec4899'];
+
+  for(let r=0;r<rows;r++){
+    for(let col=0;col<cols;col++){
+      ctx.beginPath();
+      ctx.roundRect(ox+col*size+2, oy+r*size+2, size-4, size-4, 4);
+      ctx.fillStyle = colors[r%colors.length]+'88';
+      ctx.fill();
+      ctx.strokeStyle = colors[r%colors.length];
+      ctx.lineWidth=1.5;
+      ctx.stroke();
+    }
+  }
+}
+
+function setupConceptoSliders() {
+  ['sliderA','sliderB'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', drawConcepto);
+  });
+}
+
+/* ---- Canvas pasos (palabras clave) ---- */
+function drawPasos() {
+  const c = document.getElementById('canvasPasos');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+
+  // Diagrama de flujo simple
+  const steps = [
+    {y:20, text:'Leer', color:'#0d2a4e'},
+    {y:60, text:'Identificar datos', color:'#2563eb'},
+    {y:100,text:'¿Grupos iguales?', color:'#f59e0b'},
+    {y:140,text:'Multiplicar', color:'#10b981'},
+  ];
+
+  steps.forEach((s,i) => {
+    // Caja
+    ctx.beginPath();
+    ctx.roundRect(60, s.y, 180, 30, 6);
+    ctx.fillStyle = s.color;
+    ctx.fill();
+    ctx.font = 'bold 12px Segoe UI'; ctx.fillStyle='#fff'; ctx.textAlign='center';
+    ctx.fillText(s.text, 150, s.y+19);
+
+    // Flecha
+    if (i < steps.length-1) {
+      ctx.fillStyle='#94a3b8';
+      ctx.beginPath();
+      ctx.moveTo(145,s.y+30); ctx.lineTo(150,s.y+43); ctx.lineTo(155,s.y+30);
+      ctx.fill();
+    }
+  });
+}
+
+/* ---- Canvas Ejemplo 1 (grupos lápices) ---- */
+function drawEj1() {
+  const c = document.getElementById('canvasEj1');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+
+  // 5 cajas con 3 puntos cada una
+  for (let g=0;g<5;g++){
+    const x = 20 + g*90;
+    ctx.fillStyle='#eff6ff'; ctx.strokeStyle='#2563eb'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.roundRect(x,20,75,90,8); ctx.fill(); ctx.stroke();
+    ctx.font='11px Segoe UI'; ctx.fillStyle='#0d2a4e'; ctx.textAlign='center';
+    ctx.fillText(`Caja ${g+1}`,x+37,80);
+    // 3 lápices
+    for(let p=0;p<3;p++){
+      ctx.fillStyle='#f59e0b';
+      ctx.fillRect(x+12+p*22, 32, 8, 36);
+      ctx.fillStyle='#0d2a4e';
+      ctx.beginPath(); ctx.moveTo(x+12+p*22,68); ctx.lineTo(x+16+p*22,32); ctx.lineTo(x+20+p*22,68); ctx.fill();
+    }
+  }
+  ctx.font='bold 13px Segoe UI'; ctx.fillStyle='#0d2a4e'; ctx.textAlign='center';
+  ctx.fillText('5 × 3 = 15 lápices', 250, 120);
+}
+
+/* ---- Canvas Ejemplo 2 (aulas) ---- */
+function drawEj2() {
+  const c = document.getElementById('canvasEj2');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+
+  for (let a=0;a<3;a++){
+    const x = 30 + a*155;
+    ctx.fillStyle='#fef3c7'; ctx.strokeStyle='#f59e0b'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.roundRect(x,20,130,90,8); ctx.fill(); ctx.stroke();
+    ctx.font='11px Segoe UI'; ctx.fillStyle='#92400e'; ctx.textAlign='center';
+    ctx.fillText(`Aula ${a+1} — 24 alumnos`,x+65,100);
+    // filas de alumnos (4 x 6)
+    for(let r=0;r<4;r++) for(let cc=0;cc<6;cc++){
+      ctx.fillStyle='#2563eb';
+      ctx.beginPath();
+      ctx.arc(x+12+cc*19,35+r*16,5,0,Math.PI*2); ctx.fill();
+    }
+  }
+  ctx.font='bold 13px Segoe UI'; ctx.fillStyle='#0d2a4e'; ctx.textAlign='center';
+  ctx.fillText('3 × 24 = 72 estudiantes', 250, 125);
+}
+
+/* ---- Canvas propiedad conmutativa ---- */
+function drawComut() {
+  const c = document.getElementById('canvasComut');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+
+  function drawGrid(ox,oy,rows,cols,color) {
+    for(let r=0;r<rows;r++) for(let cc=0;cc<cols;cc++){
+      ctx.beginPath();
+      ctx.arc(ox+cc*20+10,oy+r*20+10,7,0,Math.PI*2);
+      ctx.fillStyle=color+'88'; ctx.fill();
+      ctx.strokeStyle=color; ctx.lineWidth=1.5; ctx.stroke();
+    }
+  }
+
+  // 6 × 7
+  drawGrid(5,10,6,7,'#2563eb');
+  ctx.font='bold 12px Segoe UI'; ctx.fillStyle='#1e293b'; ctx.textAlign='center';
+  ctx.fillText('6 × 7 = 42',75,138);
+
+  // 7 × 6
+  drawGrid(155,10,7,6,'#10b981');
+  ctx.fillText('7 × 6 = 42',225,138);
+
+  // igual
+  ctx.font='bold 18px Segoe UI'; ctx.fillStyle='#ef4444';
+  ctx.fillText('=',132,75);
+}
+
+/* ============================================================
+   ACTIVIDADES PRÁCTICAS
+   ============================================================ */
+let actScore = 0;
+const actAnswered = {};
+const ACT_TOTAL = 15;
+
+function checkAct(inputId, correct, fbId) {
+  if (actAnswered[inputId]) return; // No repetir
+  const val = parseInt(document.getElementById(inputId).value);
+  const fb  = document.getElementById(fbId);
+  if (isNaN(val)) { fb.textContent='⚠️ Escribe un número.'; fb.className='feedback wrong'; return; }
+
+  if (val === correct) {
+    fb.textContent = `✅ ¡Correcto! ${val} es la respuesta correcta.`;
+    fb.className = 'feedback correct';
+    actAnswered[inputId] = true;
+    actScore++;
+    document.getElementById(inputId).disabled = true;
+  } else {
+    fb.textContent = `❌ Incorrecto. Tu respuesta: ${val}. Inténtalo de nuevo. 💡 Pista: multiplica los dos números del problema.`;
+    fb.className = 'feedback wrong';
+  }
+  updateActProgress();
+}
+
+function updateActProgress() {
+  const done = Object.keys(actAnswered).length;
+  document.getElementById('actProgress').textContent = `${actScore} / ${done} correctas`;
+  document.getElementById('actBar').style.width = `${(done/ACT_TOTAL)*100}%`;
+}
+
+/* Pasos quiz */
+function checkPasoQ(btn, label, correct) {
+  const all = btn.parentElement.querySelectorAll('.opt-btn');
+  all.forEach(b=>b.disabled=true);
+  const fb = document.getElementById('fb-paso1');
+  if (correct) {
+    btn.classList.add('selected-correct');
+    fb.textContent='✅ ¡Correcto! El problema pide el total de cajas vendidas (40).';
+    fb.className='feedback correct';
+  } else {
+    btn.classList.add('selected-wrong');
+    all.forEach(b=>{ if(b.textContent.includes('Total')) b.classList.add('show-correct'); });
+    fb.textContent='❌ Incorrecto. El problema pide el TOTAL, que es lo que no conocemos.';
+    fb.className='feedback wrong';
+  }
+}
+function checkPasoQ2(btn, label, correct) {
+  const all = btn.parentElement.querySelectorAll('.opt-btn');
+  all.forEach(b=>b.disabled=true);
+  const fb = document.getElementById('fb-paso2');
+  if (correct) {
+    btn.classList.add('selected-correct');
+    fb.textContent='✅ ¡Correcto! "Filas con" indica grupos iguales → multiplicación: 6 × 9 = 54.';
+    fb.className='feedback correct';
+  } else {
+    btn.classList.add('selected-wrong');
+    all.forEach(b=>{ if(b.textContent.includes('6 × 9')) b.classList.add('show-correct'); });
+    fb.textContent='❌ Incorrecto. "Filas con X elementos" siempre indica multiplicación.';
+    fb.className='feedback wrong';
+  }
+}
+
+/* Ejemplo guiado */
+function checkEj() {
+  const val = parseInt(document.getElementById('ejInput').value);
+  const fb = document.getElementById('fb-ej');
+  if (val === 960) {
+    fb.textContent='✅ ¡Excelente! 320 × 3 = 960 piezas.';
+    fb.className='feedback correct';
+    document.getElementById('ejInput').disabled=true;
+  } else {
+    fb.textContent=`❌ Tu respuesta: ${val}. Recuerda: 320 × 3. Multiplica 300×3 + 20×3.`;
+    fb.className='feedback wrong';
+  }
+}
+
+/* Estrategia */
+function checkEstrategia() {
+  const val = parseInt(document.getElementById('estInput').value);
+  const fb = document.getElementById('fb-est');
+  if (val === 80) {
+    fb.textContent='✅ ¡Correcto! 16 × 5 = 80. (Puedes usar: 16÷2=8, 5×2=10 → 8×10=80)';
+    fb.className='feedback correct';
+  } else {
+    fb.textContent=`❌ Tu respuesta: ${val}. 16 × 5 = 80. Intenta de nuevo.`;
+    fb.className='feedback wrong';
+  }
+}
+
+/* ============================================================
+   EVALUACIÓN FINAL
+   ============================================================ */
+// Respuestas correctas (letra correcta por pregunta)
+const correctAnswers = {
+  1:'B', 2:'A', 3:'D', 4:'C',
+  5:'B', 6:'C', 7:'A', 8:'B',
+  9:'D', 10:'C'
+};
+const feedbacks = {
+  1:'La multiplicación es sumar un número varias veces.',
+  2:'6 × 4 significa 6 grupos de 4 elementos.',
+  3:'El primer paso es LEER el problema cuidadosamente.',
+  4:'Verificar nos ayuda a confirmar que la respuesta tiene sentido con el contexto.',
+  5:'7 × 8 = 56.',
+  6:'15 × 4 = 60.',
+  7:'23 × 3 = 69.',
+  8:'125 × 2 = 250.',
+  9:'240 × 3 = 720.',
+  10:'134 × 5 = 670.'
+};
+const letters = ['A','B','C','D'];
+let evalAnswered = {};
+let evalScore = 0;
+
+function evalAnswer(btn, qNum, correctLetter) {
+  if (evalAnswered[qNum]) return;
+
+  const opts = btn.closest('.options').querySelectorAll('.opt-btn');
+  const chosen = letters[Array.from(opts).indexOf(btn)];
+  const isCorrect = (chosen === correctLetter);
+
+  opts.forEach((o,i)=>{
+    o.disabled = true;
+    if (letters[i]===correctLetter) o.classList.add('show-correct');
+  });
+  if (!isCorrect) btn.classList.add('selected-wrong');
+  else btn.classList.add('selected-correct');
+
+  const fb = document.getElementById(`qf${qNum}`);
+  fb.textContent = isCorrect
+    ? `✅ ¡Correcto! ${feedbacks[qNum]}`
+    : `❌ La respuesta correcta es ${correctLetter}. ${feedbacks[qNum]}`;
+  fb.style.color = isCorrect ? '#166534' : '#991b1b';
+  fb.classList.add('show');
+
+  evalAnswered[qNum] = true;
+  if (isCorrect) evalScore++;
+  updateEvalProgress();
+
+  if (Object.keys(evalAnswered).length === 10) {
+    setTimeout(showFinalScore, 600);
+  }
+}
+
+function updateEvalProgress() {
+  const done = Object.keys(evalAnswered).length;
+  document.getElementById('evalProgress').textContent = `${done} / 10 respondidas`;
+  document.getElementById('evalBar').style.width = `${done*10}%`;
+}
+
+function showFinalScore() {
+  const sw = document.getElementById('scoreWrap');
+  sw.classList.add('visible');
+  document.getElementById('scoreBig').textContent = evalScore;
+  let msg;
+  if (evalScore >= 9)      msg = '🏆 ¡Sobresaliente! ¡Eres un experto en multiplicación!';
+  else if (evalScore >= 7) msg = '🎉 ¡Muy bien! Tienes un excelente dominio del tema.';
+  else if (evalScore >= 5) msg = '👍 ¡Aprobado! Repasa algunos conceptos para mejorar.';
+  else                     msg = '📚 Sigue estudiando. ¡Revisa los módulos y vuelve a intentarlo!';
+  document.getElementById('scoreMsg').textContent = msg;
+  sw.scrollIntoView({behavior:'smooth'});
+}
+
+function resetEval() {
+  evalAnswered = {}; evalScore = 0;
+  document.getElementById('scoreWrap').classList.remove('visible');
+  document.querySelectorAll('.opt-btn').forEach(b=>{
+    b.disabled=false;
+    b.className='opt-btn';
+  });
+  document.querySelectorAll('.q-feedback').forEach(f=>{
+    f.textContent=''; f.classList.remove('show');
+  });
+  document.getElementById('evalProgress').textContent='0 / 10 respondidas';
+  document.getElementById('evalBar').style.width='0%';
+  window.scrollTo(0,0);
+}
+
+/* ============================================================
+   INICIALIZACIÓN
+   ============================================================ */
+window.addEventListener('load', () => {
+  initCanvases('bienvenida');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- ============================================================
+     MENTE MATEMÁTICA - Los Números Enteros (Z)
+     Autor: Victor Crespo
+     Descripción: Plataforma educativa interactiva para estudiantes de 9-15 años
+     ============================================================ -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mente Matemática – Los Números Enteros</title>
+
+<!-- ============================================================
+     GOOGLE FONTS
+     ============================================================ -->
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   CSS VARIABLES & RESET
+   ============================================================ */
+:root {
+  --navy:       #0d2346;
+  --navy-mid:   #1a3a6b;
+  --blue:       #2563eb;
+  --blue-light: #3b82f6;
+  --cyan:       #06b6d4;
+  --green:      #10b981;
+  --red:        #ef4444;
+  --yellow:     #f59e0b;
+  --bg:         #f0f4f8;
+  --sidebar-w:  260px;
+  --header-h:   70px;
+  --card-bg:    #ffffff;
+  --text:       #1e293b;
+  --text-muted: #64748b;
+  --radius:     14px;
+  --shadow:     0 4px 24px rgba(13,35,70,.10);
+  --shadow-lg:  0 8px 40px rgba(13,35,70,.16);
+  --transition: .3s cubic-bezier(.4,0,.2,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+#site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, #1d4ed8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  z-index: 200;
+  box-shadow: 0 2px 16px rgba(0,0,0,.25);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.logo-icon {
+  width: 42px; height: 42px;
+  background: linear-gradient(135deg, var(--cyan), var(--blue-light));
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  box-shadow: 0 2px 10px rgba(6,182,212,.4);
+}
+.logo-text { color: #fff; font-family: 'Poppins', sans-serif; }
+.logo-text span:first-child { display: block; font-size: 18px; font-weight: 700; letter-spacing: .5px; }
+.logo-text span:last-child  { display: block; font-size: 11px; font-weight: 400; opacity: .75; }
+
+.header-right { display: flex; align-items: center; gap: 14px; }
+
+.btn-back {
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.3);
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition);
+  backdrop-filter: blur(6px);
+}
+.btn-back:hover { background: rgba(255,255,255,.28); transform: translateY(-1px); }
+
+/* Score badge */
+.score-badge {
+  background: linear-gradient(135deg, var(--cyan), var(--blue));
+  color: #fff;
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex; align-items: center; gap: 6px;
+}
+
+/* ============================================================
+   LAYOUT: SIDEBAR + MAIN
+   ============================================================ */
+#layout {
+  display: flex;
+  padding-top: var(--header-h);
+  min-height: 100vh;
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+#sidebar {
+  position: fixed;
+  top: var(--header-h); left: 0; bottom: 0;
+  width: var(--sidebar-w);
+  background: #fff;
+  border-right: 1px solid #e2e8f0;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 2px 0 12px rgba(0,0,0,.06);
+}
+
+.sidebar-title {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  padding: 22px 20px 10px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 20px;
+  cursor: pointer;
+  transition: var(--transition);
+  border-left: 3px solid transparent;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 14px;
+  position: relative;
+}
+.nav-item:hover { background: #f1f5ff; color: var(--blue); }
+.nav-item.active {
+  background: linear-gradient(90deg, #e8f0fe, #f0f4ff);
+  border-left-color: var(--blue);
+  color: var(--blue);
+}
+.nav-icon {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  background: #f1f5ff;
+  flex-shrink: 0;
+}
+.nav-item.active .nav-icon { background: var(--blue); filter: none; }
+.nav-label { flex: 1; line-height: 1.3; }
+.nav-label small { display: block; font-size: 11px; font-weight: 500; color: var(--text-muted); }
+.nav-item.active .nav-label small { color: #93c5fd; }
+
+/* Progress dots */
+.nav-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #cbd5e1;
+}
+.nav-dot.done { background: var(--green); }
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+#main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  padding: 32px;
+  min-height: calc(100vh - var(--header-h));
+}
+
+/* ============================================================
+   SECTION TRANSITIONS
+   ============================================================ */
+.section { display: none; animation: fadeSlide .45s ease both; }
+.section.active { display: block; }
+
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   WELCOME MODAL
+   ============================================================ */
+#welcome-overlay {
+  position: fixed; inset: 0;
+  background: rgba(13,35,70,.7);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+}
+.welcome-box {
+  background: #fff;
+  border-radius: 24px;
+  padding: 48px 52px;
+  text-align: center;
+  max-width: 520px;
+  width: 92%;
+  box-shadow: var(--shadow-lg);
+  animation: popIn .5s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.welcome-emoji { font-size: 64px; margin-bottom: 16px; }
+.welcome-box h1 { font-family: 'Poppins', sans-serif; font-size: 28px; color: var(--navy); margin-bottom: 10px; }
+.welcome-box p { color: var(--text-muted); font-size: 16px; line-height: 1.6; margin-bottom: 28px; }
+.welcome-btn {
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  color: #fff;
+  border: none;
+  padding: 14px 40px;
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(37,99,235,.35);
+  transition: var(--transition);
+}
+.welcome-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,99,235,.45); }
+
+/* ============================================================
+   CARDS & TYPOGRAPHY
+   ============================================================ */
+.page-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+.page-subtitle { color: var(--text-muted); font-size: 15px; margin-bottom: 28px; }
+
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+}
+.card-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.card-title .icon { font-size: 22px; }
+
+.highlight-box {
+  background: linear-gradient(135deg, #eff6ff, #e0f2fe);
+  border-left: 4px solid var(--blue);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.highlight-box.green { background: #f0fdf4; border-left-color: var(--green); }
+.highlight-box.yellow { background: #fffbeb; border-left-color: var(--yellow); }
+.highlight-box.red { background: #fff1f2; border-left-color: var(--red); }
+
+.tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  margin: 4px;
+}
+.tag-blue   { background: #dbeafe; color: var(--blue); }
+.tag-green  { background: #d1fae5; color: #065f46; }
+.tag-red    { background: #fee2e2; color: #991b1b; }
+.tag-yellow { background: #fef3c7; color: #92400e; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media(max-width:720px){ .grid-2 { grid-template-columns: 1fr; } }
+
+/* ============================================================
+   VIDEO EMBED
+   ============================================================ */
+.video-wrapper {
+  background: #0f172a;
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 20px 0;
+  box-shadow: var(--shadow-lg);
+}
+.video-placeholder {
+  width: 100%; aspect-ratio: 16/9;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  color: #94a3b8;
+  font-size: 15px;
+  background: linear-gradient(135deg, #0f172a, #1e3a5f);
+}
+.video-placeholder .play-icon {
+  width: 64px; height: 64px;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  color: white;
+  box-shadow: 0 0 30px rgba(37,99,235,.5);
+}
+.video-placeholder p { font-size: 13px; color: #64748b; }
+
+/* ============================================================
+   CANVAS NUMBER LINE
+   ============================================================ */
+canvas { display: block; max-width: 100%; }
+.canvas-container {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  margin: 20px 0;
+  overflow: hidden;
+}
+.canvas-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+/* Interactive number line */
+.nl-controls {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 16px;
+}
+.nl-input {
+  width: 90px;
+  padding: 9px 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  outline: none;
+  transition: var(--transition);
+}
+.nl-input:focus { border-color: var(--blue); }
+.btn-primary {
+  background: linear-gradient(135deg, var(--blue), var(--blue-light));
+  color: #fff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(37,99,235,.35); }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border: 1.5px solid #e2e8f0;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.btn-secondary:hover { background: #e2e8f0; }
+
+/* ============================================================
+   ACTIVITIES
+   ============================================================ */
+.activity-card {
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 22px;
+  margin-bottom: 18px;
+  transition: var(--transition);
+}
+.activity-card:hover { border-color: #bfdbfe; }
+.activity-card.correct { border-color: var(--green); background: #f0fdf4; }
+.activity-card.incorrect { border-color: var(--red); background: #fff1f2; }
+
+.activity-q {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 14px;
+  color: var(--navy);
+}
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media(max-width:520px){ .options-grid { grid-template-columns: 1fr; } }
+
+.opt-btn {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 11px 16px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: var(--transition);
+  display: flex; align-items: center; gap: 10px;
+}
+.opt-btn:hover:not(:disabled) { border-color: var(--blue); background: #eff6ff; }
+.opt-btn.selected-correct { background: #d1fae5; border-color: var(--green); color: #065f46; }
+.opt-btn.selected-wrong   { background: #fee2e2; border-color: var(--red);   color: #991b1b; }
+.opt-btn.reveal-correct   { background: #d1fae5; border-color: var(--green); }
+.opt-btn:disabled { cursor: default; }
+
+.opt-letter {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  background: #e2e8f0;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.selected-correct .opt-letter { background: var(--green); color: #fff; }
+.selected-wrong .opt-letter   { background: var(--red); color: #fff; }
+
+.feedback-msg {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  display: none;
+}
+.feedback-msg.show { display: block; }
+.feedback-msg.ok  { background: #d1fae5; color: #065f46; }
+.feedback-msg.err { background: #fee2e2; color: #991b1b; }
+
+.retry-btn {
+  margin-top: 10px;
+  background: none;
+  border: 2px solid var(--red);
+  color: var(--red);
+  padding: 7px 16px;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  display: none;
+}
+.retry-btn.show { display: inline-block; }
+.retry-btn:hover { background: var(--red); color: #fff; }
+
+/* ============================================================
+   EVALUATION
+   ============================================================ */
+.eval-header {
+  background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+  color: #fff;
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 24px;
+  display: flex; align-items: center; gap: 20px;
+}
+.eval-header .big-icon { font-size: 52px; }
+.eval-header h2 { font-family: 'Poppins', sans-serif; font-size: 22px; margin-bottom: 6px; }
+.eval-header p  { opacity: .8; font-size: 14px; }
+
+.q-number {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  color: #fff;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* Score panel */
+#score-panel {
+  display: none;
+  background: #fff;
+  border-radius: 18px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  margin-top: 30px;
+  animation: fadeSlide .5s ease both;
+}
+#score-panel.show { display: block; }
+
+.score-circle {
+  width: 130px; height: 130px;
+  border-radius: 50%;
+  margin: 0 auto 24px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  font-family: 'Poppins', sans-serif;
+}
+.score-circle .score-num { font-size: 38px; font-weight: 800; }
+.score-circle .score-denom { font-size: 16px; font-weight: 600; opacity: .7; }
+
+.score-msg { font-size: 20px; font-weight: 700; margin: 12px 0 6px; font-family: 'Poppins', sans-serif; }
+.score-sub { color: var(--text-muted); font-size: 15px; margin-bottom: 26px; }
+
+.btn-pdf {
+  background: linear-gradient(135deg, #dc2626, #f87171);
+  color: #fff;
+  border: none;
+  padding: 13px 32px;
+  border-radius: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  margin: 6px;
+}
+.btn-pdf:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(220,38,38,.35); }
+
+.btn-retry-eval {
+  background: #f1f5f9;
+  color: var(--navy);
+  border: none;
+  padding: 13px 32px;
+  border-radius: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  margin: 6px;
+}
+.btn-retry-eval:hover { background: #e2e8f0; }
+
+/* Progress bar */
+.progress-bar-wrap {
+  background: #e2e8f0;
+  border-radius: 10px;
+  height: 8px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  border-radius: 10px;
+  transition: width .4s ease;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  margin-left: var(--sidebar-w);
+  background: var(--navy);
+  color: #94a3b8;
+  text-align: center;
+  padding: 20px;
+  font-size: 13px;
+}
+footer span { color: var(--cyan); font-weight: 700; }
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+/* ============================================================
+   UTILITY
+   ============================================================ */
+.text-center { text-align: center; }
+.mt-10 { margin-top: 10px; }
+.mt-20 { margin-top: 20px; }
+.mb-10 { margin-bottom: 10px; }
+
+/* Number display */
+.num-display {
+  font-family: 'Poppins', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  padding: 12px 20px;
+  border-radius: 12px;
+  display: inline-block;
+  margin: 4px;
+}
+.num-pos { background: #dbeafe; color: var(--blue); }
+.num-neg { background: #fee2e2; color: var(--red); }
+.num-zero { background: #f3f4f6; color: #374151; }
+
+/* Z symbol */
+.z-symbol {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 56px; height: 56px;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(37,99,235,.35);
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     WELCOME MODAL
+     ============================================================ -->
+<div id="welcome-overlay">
+  <div class="welcome-box">
+    <div class="welcome-emoji">🧮</div>
+    <h1>¡Bienvenido a la lección 1: Números Enteros!</h1>
+    <p>En esta plataforma aprenderás todo sobre los <strong>Números Enteros</strong>. Explorarás videos, actividades interactivas y pondrás a prueba tus conocimientos.</p>
+    <button class="welcome-btn" onclick="closeWelcome()">¡Comenzar ahora! 🚀</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header id="site-header">
+  <a href="#" class="logo" onclick="return false;">
+    <div class="logo-icon">🧠</div>
+    <div class="logo-text">
+      <span>Mente Matemática</span>
+      <span>Plataforma Educativa Interactiva</span>
+    </div>
+  </a>
+  <div class="header-right">
+    <div class="score-badge">⭐ Puntos: <span id="global-score">0</span></div>
+    <a href="temario.html" class="btn-back">↩ Volver al menú</a>
+  </div>
+</header>
+
+<!-- ============================================================
+     LAYOUT
+     ============================================================ -->
+<div id="layout">
+
+  <!-- SIDEBAR -->
+  <nav id="sidebar">
+    <div class="sidebar-title">📚 Módulos</div>
+
+    <div class="nav-item active" onclick="showSection('s-aprenderemos')" id="nav-aprenderemos">
+      <div class="nav-icon">🎬</div>
+      <div class="nav-label">¿Qué aprenderemos?<small>Introducción al tema</small></div>
+      <div class="nav-dot" id="dot-aprenderemos"></div>
+    </div>
+
+    <div class="nav-item" onclick="showSection('s-definicion')" id="nav-definicion">
+      <div class="nav-icon">📖</div>
+      <div class="nav-label">¿Qué son los enteros?<small>Definición y tipos</small></div>
+      <div class="nav-dot" id="dot-definicion"></div>
+    </div>
+
+    <div class="nav-item" onclick="showSection('s-recta')" id="nav-recta">
+      <div class="nav-icon">📏</div>
+      <div class="nav-label">Recta numérica<small>Representación de Z</small></div>
+      <div class="nav-dot" id="dot-recta"></div>
+    </div>
+
+    <div class="nav-item" onclick="showSection('s-eval')" id="nav-eval">
+      <div class="nav-icon">📝</div>
+      <div class="nav-label">Evaluación Final<small>10 preguntas</small></div>
+      <div class="nav-dot" id="dot-eval"></div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main id="main">
+
+    <!-- ====================================================
+         SECCIÓN 1 — ¿Qué aprenderemos?
+         ==================================================== -->
+    <section class="section active" id="s-aprenderemos">
+      <h1 class="page-title">🎬 ¿Qué aprenderemos?</h1>
+      <p class="page-subtitle">Tema 1 · Introducción a los Números Enteros (ℤ)</p>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🎯</span> Objetivos de aprendizaje</div>
+        <p style="margin-bottom:14px; line-height:1.7;">Al finalizar este módulo serás capaz de:</p>
+        <div class="grid-2">
+          <div class="highlight-box">
+            <strong>1. Reconocer</strong> qué son los números enteros y para qué se usan en la vida cotidiana.
+          </div>
+          <div class="highlight-box green">
+            <strong>2. Clasificar</strong> los números enteros en positivos, negativos y el cero.
+          </div>
+          <div class="highlight-box yellow">
+            <strong>3. Representar</strong> números enteros en la recta numérica correctamente.
+          </div>
+          <div class="highlight-box red">
+            <strong>4. Aplicar</strong> el concepto en situaciones reales: temperaturas, alturas, deudas...
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📋</span> Contenidos del tema</div>
+        <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:8px;">
+          <div style="background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:10px; padding:14px 18px; flex:1; min-width:200px;">
+            <div style="font-size:22px; margin-bottom:6px;">🔢</div>
+            <strong>Definición de ℤ</strong>
+            <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">Enteros positivos, negativos y cero</p>
+          </div>
+          <div style="background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:10px; padding:14px 18px; flex:1; min-width:200px;">
+            <div style="font-size:22px; margin-bottom:6px;">📏</div>
+            <strong>Recta numérica</strong>
+            <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">Ubicación y representación visual</p>
+          </div>
+          <div style="background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:10px; padding:14px 18px; flex:1; min-width:200px;">
+            <div style="font-size:22px; margin-bottom:6px;">🌍</div>
+            <strong>Vida real</strong>
+            <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">Temperaturas, alturas, deudas...</p>
+          </div>
+          <div style="background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:10px; padding:14px 18px; flex:1; min-width:200px;">
+            <div style="font-size:22px; margin-bottom:6px;">📝</div>
+            <strong>Evaluación</strong>
+            <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">10 preguntas de opción múltiple</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🌟</span> ¿Sabías que…?</div>
+        <p style="line-height:1.8; font-size:15px;">Los números enteros son uno de los conjuntos numéricos más antiguos de la historia. Los matemáticos de la antigua China usaban varillas de colores para distinguir cantidades positivas (rojas) y negativas (negras). ¡Llevamos más de 2.000 años usando enteros! 🎉</p>
+        <div style="margin-top:16px; display:flex; flex-wrap:wrap; gap:8px;">
+          <span class="tag tag-blue">Matemáticas antiguas</span>
+          <span class="tag tag-green">Números naturales ⊂ ℤ</span>
+          <span class="tag tag-yellow">La letra Z = "Zahlen"</span>
+          <span class="tag tag-red">Infinitos en ambos lados</span>
+        </div>
+      </div>
+
+      <!-- Canvas decorativo – visualización del conjunto Z -->
+      <div class="card">
+        <div class="card-title"><span class="icon">📊</span> El conjunto ℤ de un vistazo</div>
+        <div class="canvas-container" style="padding:16px;">
+          <canvas id="canvas-intro" width="700" height="100"></canvas>
+        </div>
+        <p style="font-size:13px; color:var(--text-muted); text-align:center; margin-top:8px;">Los puntos azules son positivos, los rojos negativos y el blanco es el cero.</p>
+      </div>
+
+      <div class="text-center mt-20">
+        <button class="btn-primary" style="font-size:16px; padding:14px 36px;" onclick="showSection('s-definicion'); markDone('aprenderemos')">
+          Continuar al siguiente módulo →
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ====================================================
+         SECCIÓN 2 — ¿Qué son los números enteros?
+         ==================================================== -->
+    <section class="section" id="s-definicion">
+      <h1 class="page-title">📖 ¿Qué son los números enteros?</h1>
+      <p class="page-subtitle">Definición, tipos y ejemplos de la vida cotidiana</p>
+
+      <!-- VIDEO -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🎬</span> Video explicativo</div>
+        <div class="video-wrapper">
+          <video class="video-placeholder" controls width="100%" style="max-height:420px; background:#0f172a;">
+            <source src="vid/num_ent.mp4" type="video/mp4">
+            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:320px; color:#94a3b8; gap:12px;">
+              <div class="play-icon">▶</div>
+              <strong>Video: Los Números Enteros</strong>
+              <p style="font-size:13px;">Si el video no carga, verifique la ruta <code>/vid/num_ent.mp4</code></p>
+            </div>
+          </video>
+        </div>
+        <p style="font-size:13px; color:var(--text-muted); margin-top:8px;">
+  📁 Fuente: 
+  <a href="https://youtu.be/5HE66809NYI?si=jZY1ip0ZAyxKl4UZ" 
+     target="_blank" 
+     style="color:inherit; text-decoration:underline;">
+     <code>Canal YouTube - Aprendiendo Matemática - Cristina & Adrian</code>
+  </a>
+</p>
+      </div>
+
+      <!-- DEFINICION -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🔎</span> Definición formal</div>
+        <div style="display:flex; align-items:flex-start; gap:16px; margin-bottom:16px;">
+          <div class="z-symbol">ℤ</div>
+          <div>
+            <p style="line-height:1.8; font-size:15px;">El conjunto de los <strong>números enteros</strong>, representado con la letra <strong>ℤ</strong>, contiene a los números naturales, sus opuestos (negativos) y el cero.</p>
+          </div>
+        </div>
+        <div class="highlight-box">
+          <strong>Notación matemática:</strong><br>
+          <code style="font-size:16px; color:var(--blue);">ℤ = { …, −3, −2, −1, 0, 1, 2, 3, … }</code>
+        </div>
+        <div class="highlight-box yellow" style="margin-top:12px;">
+          💡 <strong>Dato curioso:</strong> La letra <strong>Z</strong> proviene de la palabra alemana <em>Zahlen</em>, que significa <em>"números"</em>.
+        </div>
+      </div>
+
+      <!-- TIPOS -->
+      <div class="grid-2">
+        <!-- Positivos -->
+        <div class="card">
+          <div class="card-title"><span class="icon">➕</span> Enteros Positivos</div>
+          <p style="line-height:1.7; font-size:14px; margin-bottom:14px;">Son los números <strong>mayores que cero</strong>. Se pueden escribir con signo + o sin signo.</p>
+          <div style="margin-bottom:14px;">
+            <span class="num-display num-pos">+5</span>
+            <span class="num-display num-pos">12</span>
+            <span class="num-display num-pos">+100</span>
+          </div>
+          <div class="highlight-box green" style="font-size:13px;">
+            🌍 <strong>En la vida real:</strong> ganancias, alturas sobre el nivel del mar, años d.C., temperaturas calurosas.
+          </div>
+          <p style="font-size:13px; color:var(--text-muted); margin-top:12px;">Son equivalentes a los <strong>números naturales (ℕ)</strong>.</p>
+        </div>
+
+        <!-- Negativos -->
+        <div class="card">
+          <div class="card-title"><span class="icon">➖</span> Enteros Negativos</div>
+          <p style="line-height:1.7; font-size:14px; margin-bottom:14px;">Son los números <strong>menores que cero</strong>. Siempre llevan el signo − delante.</p>
+          <div style="margin-bottom:14px;">
+            <span class="num-display num-neg">−1</span>
+            <span class="num-display num-neg">−10</span>
+            <span class="num-display num-neg">−50</span>
+          </div>
+          <div class="highlight-box red" style="font-size:13px;">
+            🌍 <strong>En la vida real:</strong> deudas, profundidades, sótanos, temperaturas bajo cero.
+          </div>
+          <div class="highlight-box" style="margin-top:12px; font-size:13px;">
+            ⚠️ <strong>Regla de oro:</strong> Cuanto más lejos del cero esté un negativo hacia la izquierda, <em>menor</em> es su valor. −10 &lt; −1.
+          </div>
+        </div>
+      </div>
+
+      <!-- Cero -->
+      <div class="card">
+        <div class="card-title"><span class="icon">0️⃣</span> El Cero</div>
+        <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
+          <span class="num-display num-zero" style="font-size:42px;">0</span>
+          <div>
+            <p style="line-height:1.8; font-size:15px; margin-bottom:10px;">El cero <strong>no es positivo ni negativo</strong>. Es el punto de referencia que separa los enteros positivos de los negativos.</p>
+            <p style="font-size:14px; color:var(--text-muted);">El cero pertenece al conjunto ℤ y es el único entero que es su propio opuesto: <strong>−0 = 0</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Canvas clasificación -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🗂️</span> Clasificación visual del conjunto ℤ</div>
+        <div class="canvas-container">
+          <canvas id="canvas-clasificacion" width="680" height="220"></canvas>
+        </div>
+      </div>
+
+      <div class="text-center mt-20">
+        <button class="btn-primary" style="font-size:16px; padding:14px 36px;" onclick="showSection('s-recta'); markDone('definicion')">
+          Continuar →
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ====================================================
+         SECCIÓN 3 — Recta numérica
+         ==================================================== -->
+    <section class="section" id="s-recta">
+      <h1 class="page-title">📏 Representación de ℤ en la recta numérica</h1>
+      <p class="page-subtitle">Visualiza los enteros y practica con actividades interactivas</p>
+
+      <!-- VIDEO -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🎬</span> Video explicativo</div>
+        <div class="video-wrapper">
+          <video class="video-placeholder" controls width="100%" style="max-height:420px; background:#0f172a;">
+            <source src="vid/rect_num.mp4" type="video/mp4">
+          </video>
+        </div>
+        <p style="font-size:13px; color:var(--text-muted); margin-top:8px;">📁 Fuente: <code>Canal YouTube - Aprendiendo Matemática - Cristina & Adrian</code></p>
+      </div>
+
+      <!-- TEORIA -->
+      <div class="card">
+        <div class="card-title"><span class="icon">📐</span> ¿Cómo se construye la recta numérica?</div>
+        <p style="line-height:1.8; margin-bottom:14px;">La recta numérica es la herramienta visual más importante para entender los enteros. Se construye con estas reglas:</p>
+        <div class="highlight-box">🎯 <strong>El origen:</strong> El número <strong>0</strong> se coloca en el centro.</div>
+        <div class="highlight-box green" style="margin-top:10px;">➡️ <strong>Hacia la derecha:</strong> Los números positivos (+1, +2, +3…) a distancias iguales.</div>
+        <div class="highlight-box red" style="margin-top:10px;">⬅️ <strong>Hacia la izquierda:</strong> Los números negativos (−1, −2, −3…) manteniendo la misma escala.</div>
+      </div>
+
+      <!-- RECTA INTERACTIVA -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🖱️</span> Recta numérica interactiva</div>
+        <p style="font-size:14px; color:var(--text-muted); margin-bottom:16px;">Escribe un número y haz clic en "Marcar" para ubicarlo en la recta numérica.</p>
+        <div class="canvas-container">
+          <canvas id="canvas-recta" width="680" height="120"></canvas>
+        </div>
+        <div class="nl-controls">
+          <input type="number" class="nl-input" id="nl-value" placeholder="Ej: -3" min="-10" max="10" value="">
+          <button class="btn-primary" onclick="marcarEnRecta()">📍 Marcar número</button>
+          <button class="btn-secondary" onclick="limpiarRecta()">🗑️ Limpiar</button>
+        </div>
+        <div id="nl-feedback" style="margin-top:12px; font-size:14px; font-weight:700; color:var(--blue); min-height:20px;"></div>
+      </div>
+
+      <!-- ACTIVIDAD 1 – positivos/negativos -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🎮</span> Actividad 1 · Clasifica el número</div>
+        <p style="font-size:14px; color:var(--text-muted); margin-bottom:18px;">Indica si el número mostrado es <strong>positivo</strong>, <strong>negativo</strong> o <strong>cero</strong>.</p>
+        <div id="act1-container"></div>
+      </div>
+
+      <!-- ACTIVIDAD 2 – ordena en recta -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🔢</span> Actividad 2 · Orden en la recta numérica</div>
+        <p style="font-size:14px; color:var(--text-muted); margin-bottom:18px;">¿Cuál de los dos números es <strong>mayor</strong>?</p>
+        <div id="act2-container"></div>
+      </div>
+
+      <!-- ACTIVIDAD 3 – situaciones reales -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🌍</span> Actividad 3 · Situaciones de la vida real</div>
+        <p style="font-size:14px; color:var(--text-muted); margin-bottom:18px;">¿Qué número entero representa cada situación?</p>
+        <div id="act3-container"></div>
+      </div>
+
+      <div class="text-center mt-20">
+        <button class="btn-primary" style="font-size:16px; padding:14px 36px;" onclick="showSection('s-eval'); markDone('recta')">
+          Ir a la Evaluación Final 📝
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ====================================================
+         SECCIÓN 4 — Evaluación Final
+         ==================================================== -->
+    <section class="section" id="s-eval">
+      <div class="eval-header">
+        <div class="big-icon">📝</div>
+        <div>
+          <h2>Evaluación Final</h2>
+          <p>10 preguntas de opción múltiple · Retroalimentación automática</p>
+        </div>
+      </div>
+
+      <!-- Barra de progreso -->
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="eval-progress" style="width:0%"></div>
+      </div>
+
+      <div id="eval-questions"></div>
+
+      <!-- Panel de resultados -->
+      <div id="score-panel">
+        <div id="score-circle-el" class="score-circle"></div>
+        <div id="score-msg" class="score-msg"></div>
+        <div id="score-sub" class="score-sub"></div>
+        <div>
+          <button class="btn-pdf" onclick="exportPDF()">📄 Exportar resultados a PDF</button>
+          <button class="btn-retry-eval" onclick="retryEval()">🔄 Reintentar evaluación</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Créditos: <span>Victor Crespo</span> · Mente Matemática © 2026 · Todos los derechos reservados</p>
+</footer>
+
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+/* ============================================================
+   NAVEGACIÓN DINÁMICA
+   ============================================================ */
+let globalScore = 0;
+let sectionsDone = {};
+
+function showSection(id) {
+  // Quitar activo de todas
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  // Activar la seleccionada
+  document.getElementById(id).classList.add('active');
+  const navKey = id.replace('s-', 'nav-');
+  const navEl = document.getElementById(navKey);
+  if (navEl) navEl.classList.add('active');
+
+  // Dibujar canvas según sección
+  setTimeout(() => {
+    if (id === 's-aprenderemos') drawIntroCanvas();
+    if (id === 's-definicion')   drawClasificacion();
+    if (id === 's-recta')        { drawRecta([]); buildActivities(); }
+    if (id === 's-eval')         buildEval();
+  }, 50);
+}
+
+function markDone(key) {
+  if (!sectionsDone[key]) {
+    sectionsDone[key] = true;
+    const dot = document.getElementById('dot-' + key);
+    if (dot) dot.classList.add('done');
+    addScore(10);
+  }
+}
+
+function addScore(n) {
+  globalScore += n;
+  document.getElementById('global-score').textContent = globalScore;
+}
+
+function closeWelcome() {
+  document.getElementById('welcome-overlay').style.display = 'none';
+  setTimeout(drawIntroCanvas, 100);
+}
+
+/* ============================================================
+   CANVAS — INTRO (conjunto Z visualización)
+   ============================================================ */
+function drawIntroCanvas() {
+  const canvas = document.getElementById('canvas-intro');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  // Fondo
+  ctx.fillStyle = '#f8fafc';
+  ctx.fillRect(0, 0, W, H);
+
+  // Línea
+  ctx.strokeStyle = '#94a3b8';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(40, H/2);
+  ctx.lineTo(W - 40, H/2);
+  ctx.stroke();
+  // Flechas
+  drawArrow(ctx, W - 40, H/2, W - 10, H/2, '#94a3b8');
+  drawArrow(ctx, 40, H/2, 10, H/2, '#94a3b8');
+
+  // Números del -5 al 5
+  const nums = [-5,-4,-3,-2,-1,0,1,2,3,4,5];
+  const cx = W / 2;
+  const step = (W - 100) / (nums.length - 1);
+
+  nums.forEach((n, i) => {
+    const x = 50 + i * step;
+    // Tick
+    ctx.strokeStyle = '#cbd5e1';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(x, H/2 - 8); ctx.lineTo(x, H/2 + 8); ctx.stroke();
+
+    // Punto
+    const color = n < 0 ? '#ef4444' : n > 0 ? '#3b82f6' : '#fff';
+    const stroke = n === 0 ? '#94a3b8' : (n < 0 ? '#dc2626' : '#2563eb');
+    ctx.beginPath();
+    ctx.arc(x, H/2, 10, 0, Math.PI * 2);
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Etiqueta
+    ctx.fillStyle = n < 0 ? '#dc2626' : n > 0 ? '#1d4ed8' : '#374151';
+    ctx.font = 'bold 11px Poppins, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(n, x, H/2 + 28);
+  });
+}
+
+function drawArrow(ctx, fromX, fromY, toX, toY, color) {
+  const angle = Math.atan2(toY - fromY, toX - fromX);
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(toX - 10*Math.cos(angle-0.4), toY - 10*Math.sin(angle-0.4));
+  ctx.lineTo(toX, toY);
+  ctx.lineTo(toX - 10*Math.cos(angle+0.4), toY - 10*Math.sin(angle+0.4));
+  ctx.stroke();
+}
+
+/* ============================================================
+   CANVAS — CLASIFICACIÓN (diagrama de conjuntos)
+   ============================================================ */
+function drawClasificacion() {
+  const canvas = document.getElementById('canvas-clasificacion');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#f8fafc';
+  ctx.fillRect(0, 0, W, H);
+
+  // Rectángulo exterior ℤ
+  roundRect(ctx, 10, 10, W-20, H-20, 16, '#dbeafe', '#3b82f6', 2);
+  ctx.fillStyle = '#1d4ed8';
+  ctx.font = 'bold 16px Poppins, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('ℤ  Números Enteros', 26, 36);
+
+  // Negatives
+  roundRect(ctx, 28, 48, (W-56)/3 - 6, H-70, 12, '#fee2e2', '#ef4444', 1.5);
+  ctx.fillStyle = '#991b1b';
+  ctx.font = 'bold 13px Poppins';
+  ctx.textAlign = 'center';
+  ctx.fillText('Negativos', 28 + (W-56)/6 - 3, 72);
+  const negs = [-5,-4,-3,-2,-1];
+  negs.forEach((n,i) => {
+    ctx.fillStyle = '#dc2626';
+    ctx.font = 'bold 15px Poppins';
+    ctx.fillText(n, 28 + (W-56)/6 - 3, 100 + i*22);
+  });
+
+  // Cero
+  const z0x = 28 + (W-56)/3 + 8;
+  roundRect(ctx, z0x, 48, (W-56)/3 - 14, H-70, 12, '#f3f4f6', '#94a3b8', 1.5);
+  ctx.fillStyle = '#374151';
+  ctx.font = 'bold 13px Poppins';
+  ctx.textAlign = 'center';
+  ctx.fillText('Cero', z0x + (W-56)/6 - 7, 72);
+  ctx.font = 'bold 28px Poppins';
+  ctx.fillText('0', z0x + (W-56)/6 - 7, 115);
+  ctx.font = '12px Nunito';
+  ctx.fillStyle = '#6b7280';
+  ctx.fillText('ni + ni −', z0x + (W-56)/6 - 7, 140);
+
+  // Positivos
+  const posX = 28 + 2*(W-56)/3 + 10;
+  roundRect(ctx, posX, 48, (W-56)/3 - 18, H-70, 12, '#dbeafe', '#3b82f6', 1.5);
+  ctx.fillStyle = '#1d4ed8';
+  ctx.font = 'bold 13px Poppins';
+  ctx.textAlign = 'center';
+  ctx.fillText('Positivos', posX + (W-56)/6 - 9, 72);
+  const poss = [1,2,3,4,5];
+  poss.forEach((n,i) => {
+    ctx.fillStyle = '#2563eb';
+    ctx.font = 'bold 15px Poppins';
+    ctx.fillText('+' + n, posX + (W-56)/6 - 9, 100 + i*22);
+  });
+}
+
+function roundRect(ctx, x, y, w, h, r, fill, stroke, lw) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+  if (fill)   { ctx.fillStyle = fill; ctx.fill(); }
+  if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = lw; ctx.stroke(); }
+}
+
+/* ============================================================
+   CANVAS — RECTA NUMÉRICA INTERACTIVA
+   ============================================================ */
+let markedNumbers = [];
+
+function drawRecta(marked) {
+  const canvas = document.getElementById('canvas-recta');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#f8fafc';
+  ctx.fillRect(0, 0, W, H);
+
+  const cx = W / 2;
+  const cy = H / 2;
+  const step = (W - 100) / 20; // -10 to +10 → 20 steps
+
+  // Línea principal
+  ctx.strokeStyle = '#64748b';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(40, cy);
+  ctx.lineTo(W - 40, cy);
+  ctx.stroke();
+  drawArrow(ctx, W - 45, cy, W - 18, cy, '#64748b');
+  drawArrow(ctx, 45, cy, 18, cy, '#64748b');
+
+  // Ticks y etiquetas –10 a +10
+  for (let n = -10; n <= 10; n++) {
+    const x = cx + n * step;
+    const major = n % 5 === 0;
+    ctx.strokeStyle = major ? '#475569' : '#cbd5e1';
+    ctx.lineWidth = major ? 2 : 1;
+    ctx.beginPath();
+    ctx.moveTo(x, cy - (major ? 12 : 7));
+    ctx.lineTo(x, cy + (major ? 12 : 7));
+    ctx.stroke();
+
+    if (major || n === 0) {
+      ctx.fillStyle = n < 0 ? '#dc2626' : n > 0 ? '#2563eb' : '#374151';
+      ctx.font = `${n===0?'bold ':''}12px Poppins, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText(n, x, cy + 28);
+    }
+  }
+
+  // Marcar los números seleccionados
+  marked.forEach(n => {
+    if (n < -10 || n > 10) return;
+    const x = cx + n * step;
+    ctx.beginPath();
+    ctx.arc(x, cy, 12, 0, Math.PI * 2);
+    ctx.fillStyle = n < 0 ? '#ef4444' : '#3b82f6';
+    ctx.fill();
+    ctx.strokeStyle = n < 0 ? '#991b1b' : '#1d4ed8';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 11px Poppins';
+    ctx.textAlign = 'center';
+    ctx.fillText(n, x, cy + 4);
+
+    // Etiqueta arriba
+    ctx.fillStyle = n < 0 ? '#ef4444' : '#3b82f6';
+    ctx.font = 'bold 13px Poppins';
+    ctx.fillText((n > 0 ? '+' : '') + n, x, cy - 22);
+  });
+}
+
+function marcarEnRecta() {
+  const val = parseInt(document.getElementById('nl-value').value);
+  const fb = document.getElementById('nl-feedback');
+  if (isNaN(val)) { fb.textContent = '⚠️ Ingresa un número válido.'; return; }
+  if (val < -10 || val > 10) { fb.textContent = '⚠️ Usa un número entre −10 y +10.'; return; }
+  if (!markedNumbers.includes(val)) markedNumbers.push(val);
+  drawRecta(markedNumbers);
+  const tipo = val < 0 ? 'negativo 🔴' : val > 0 ? 'positivo 🔵' : 'cero ⚪';
+  fb.textContent = `✅ El número ${val} es ${tipo}. Está marcado en la recta.`;
+  addScore(2);
+}
+
+function limpiarRecta() {
+  markedNumbers = [];
+  drawRecta([]);
+  document.getElementById('nl-feedback').textContent = '';
+  document.getElementById('nl-value').value = '';
+}
+
+/* ============================================================
+   ACTIVIDADES DE LA SECCIÓN RECTA
+   ============================================================ */
+// Actividad 1: Clasificar positivo/negativo/cero
+const act1Data = [
+  { num: -7, correct: 'Negativo', options: ['Positivo', 'Negativo', 'Cero'] },
+  { num: 4,  correct: 'Positivo', options: ['Positivo', 'Negativo', 'Cero'] },
+  { num: 0,  correct: 'Cero',     options: ['Positivo', 'Negativo', 'Cero'] },
+  { num: -15,correct: 'Negativo', options: ['Positivo', 'Negativo', 'Cero'] },
+  { num: 25, correct: 'Positivo', options: ['Positivo', 'Negativo', 'Cero'] },
+];
+
+// Actividad 2: ¿Cuál es mayor?
+const act2Data = [
+  { a: -3, b: -7, correct: '-3', options: ['-3', '-7'] },
+  { a: -1, b: 2,  correct: '2',  options: ['-1', '2'] },
+  { a: 0,  b: -4, correct: '0',  options: ['0', '-4'] },
+  { a: 5,  b: 3,  correct: '5',  options: ['5', '3'] },
+  { a: -8, b: -2, correct: '-2', options: ['-8', '-2'] },
+];
+
+// Actividad 3: situaciones reales
+const act3Data = [
+  { situation: 'Un buzo desciende 15 metros bajo el mar.', correct: '−15', options: ['−15', '+15', '0', '15'] },
+  { situation: 'La temperatura sube 8 grados sobre cero.', correct: '+8', options: ['+8', '−8', '0', '8°'] },
+  { situation: 'Una empresa pierde $500.', correct: '−500', options: ['+500', '0', '−500', '500'] },
+  { situation: 'El nivel del mar es el punto de referencia.', correct: '0', options: ['+1', '0', '−1', '+100'] },
+];
+
+let actAnswered = { act1: [], act2: [], act3: [] };
+
+function buildActivities() {
+  buildAct('act1-container', act1Data, 'act1', renderAct1);
+  buildAct('act2-container', act2Data, 'act2', renderAct2);
+  buildAct('act3-container', act3Data, 'act3', renderAct3);
+}
+
+function renderAct1(d, i, actKey) {
+  const sign = d.num < 0 ? '−' : d.num > 0 ? '+' : '';
+  const absNum = Math.abs(d.num);
+  return `
+    <div class="activity-card" id="${actKey}-card-${i}">
+      <div class="activity-q">¿El número <span style="font-size:22px; color:${d.num<0?'#dc2626':d.num>0?'#2563eb':'#374151'}; font-family:Poppins">${d.num}</span> es…?</div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        ${d.options.map(o => `<button class="opt-btn" onclick="checkAct('${actKey}',${i},'${o}','${d.correct}',this)" style="flex:1; min-width:100px; justify-content:center;">
+          ${o === 'Positivo' ? '➕' : o === 'Negativo' ? '➖' : '0️⃣'} ${o}
+        </button>`).join('')}
+      </div>
+      <div class="feedback-msg" id="${actKey}-fb-${i}"></div>
+      <button class="retry-btn" id="${actKey}-retry-${i}" onclick="retryAct('${actKey}',${i})">🔄 Reintentar</button>
+    </div>`;
+}
+
+function renderAct2(d, i, actKey) {
+  return `
+    <div class="activity-card" id="${actKey}-card-${i}">
+      <div class="activity-q">¿Cuál es mayor? <span style="font-family:Poppins; font-size:18px; color:var(--blue)">${d.a}</span> o <span style="font-family:Poppins; font-size:18px; color:var(--red)">${d.b}</span></div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        ${d.options.map(o => `<button class="opt-btn" onclick="checkAct('${actKey}',${i},'${o}','${d.correct}',this)" style="flex:1; min-width:100px; justify-content:center; font-family:Poppins; font-size:18px; font-weight:800;">
+          ${o}
+        </button>`).join('')}
+      </div>
+      <div class="feedback-msg" id="${actKey}-fb-${i}"></div>
+      <button class="retry-btn" id="${actKey}-retry-${i}" onclick="retryAct('${actKey}',${i})">🔄 Reintentar</button>
+    </div>`;
+}
+
+function renderAct3(d, i, actKey) {
+  return `
+    <div class="activity-card" id="${actKey}-card-${i}">
+      <div class="activity-q">📍 ${d.situation}</div>
+      <div class="options-grid">
+        ${d.options.map(o => `<button class="opt-btn" onclick="checkAct('${actKey}',${i},'${o}','${d.correct}',this)">
+          <div class="opt-letter">${o}</div> ${o}
+        </button>`).join('')}
+      </div>
+      <div class="feedback-msg" id="${actKey}-fb-${i}"></div>
+      <button class="retry-btn" id="${actKey}-retry-${i}" onclick="retryAct('${actKey}',${i})">🔄 Reintentar</button>
+    </div>`;
+}
+
+function buildAct(containerId, data, actKey, renderer) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = data.map((d, i) => renderer(d, i, actKey)).join('');
+}
+
+function checkAct(actKey, idx, selected, correct, btn) {
+  const card = document.getElementById(`${actKey}-card-${idx}`);
+  const fb   = document.getElementById(`${actKey}-fb-${idx}`);
+  const retry= document.getElementById(`${actKey}-retry-${idx}`);
+  // Deshabilitar todos los botones
+  card.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+
+  if (selected === correct) {
+    btn.classList.add('selected-correct');
+    card.classList.add('correct');
+    fb.className = 'feedback-msg show ok';
+    fb.textContent = '✅ ¡Correcto! Muy bien.';
+    addScore(5);
+  } else {
+    btn.classList.add('selected-wrong');
+    card.classList.add('incorrect');
+    fb.className = 'feedback-msg show err';
+    fb.textContent = `❌ Incorrecto. La respuesta correcta es: ${correct}.`;
+    retry.classList.add('show');
+    // Mostrar la correcta
+    card.querySelectorAll('.opt-btn').forEach(b => {
+      const label = b.textContent.trim();
+      if (label.includes(correct) || b.textContent.includes(correct)) {
+        b.classList.add('reveal-correct');
+      }
+    });
+  }
+}
+
+function retryAct(actKey, idx) {
+  const dataMap = { act1: act1Data, act2: act2Data, act3: act3Data };
+  const rendererMap = { act1: renderAct1, act2: renderAct2, act3: renderAct3 };
+  const containerMap = { act1: 'act1-container', act2: 'act2-container', act3: 'act3-container' };
+  const data = dataMap[actKey];
+  const renderer = rendererMap[actKey];
+  const card = document.getElementById(`${actKey}-card-${idx}`);
+  card.outerHTML = renderer(data[idx], idx, actKey);
+}
+
+/* ============================================================
+   EVALUACIÓN FINAL
+   ============================================================ */
+const evalQuestions = [
+  {
+    q: '¿Cuál es el símbolo que representa al conjunto de los números enteros?',
+    opts: ['{N}', '{Q}', '{Z}', '{R}'],
+    correct: 2,
+    explain: 'La letra Z proviene de la palabra alemana "Zahlen" (números).'
+  },
+  {
+    q: 'En la recta numérica, ¿hacia qué lado se ubican los números negativos respecto al cero?',
+    opts: ['Hacia arriba', 'Hacia la derecha', 'Hacia la izquierda', 'No tienen un lugar fijo'],
+    correct: 2,
+    explain: 'Los negativos siempre se ubican a la izquierda del cero en la recta numérica.'
+  },
+  {
+    q: '¿Cuál de las siguientes afirmaciones sobre el número cero es correcta?',
+    opts: ['Es el número positivo más pequeño', 'Es un número negativo', 'No es ni positivo ni negativo', 'Es mayor que cualquier número positivo'],
+    correct: 2,
+    explain: 'El cero es neutro: no es positivo ni negativo. Es el origen de la recta numérica.'
+  },
+  {
+    q: 'Si un termómetro marca 5 grados bajo cero, ¿cómo se representa matemáticamente?',
+    opts: ['+5', '0', '5', '−5'],
+    correct: 3,
+    explain: '"Bajo cero" indica un valor negativo: −5.'
+  },
+  {
+    q: '¿Cuál de los siguientes números es un entero negativo?',
+    opts: ['0.5', '−8', '+10', '0'],
+    correct: 1,
+    explain: '−8 es negativo. 0.5 es decimal, +10 es positivo y 0 es neutro.'
+  },
+  {
+    q: '¿Qué número está más lejos del cero en la recta numérica?',
+    opts: ['−2', '+3', '−5', '+1'],
+    correct: 2,
+    explain: '|−5| = 5 es la distancia mayor. −2→2, +3→3, +1→1.'
+  },
+  {
+    q: 'Un buzo se encuentra a 20 metros de profundidad. ¿Con qué número entero se representa su posición?',
+    opts: ['20', '−20', '+20', '0'],
+    correct: 1,
+    explain: 'La profundidad (bajo el nivel del mar) se representa con número negativo: −20.'
+  },
+  {
+    q: '¿Cuál es el orden correcto de estos números de menor a mayor?',
+    opts: ['−3, −1, 0, 2', '2, 0, −1, −3', '0, −1, 2, −3', '−1, −3, 0, 2'],
+    correct: 0,
+    explain: 'De menor a mayor: −3 < −1 < 0 < 2. En la recta, van de izquierda a derecha.'
+  },
+  {
+    q: 'Los números enteros positivos son también conocidos como:',
+    opts: ['Números decimales', 'Números naturales', 'Números fraccionarios', 'Números nulos'],
+    correct: 1,
+    explain: 'Los enteros positivos son equivalentes al conjunto ℕ de números naturales.'
+  },
+  {
+    q: 'Si debes Bs. 10 a un amigo, tu saldo se representa como:',
+    opts: ['+10', '0', '−10', '10'],
+    correct: 2,
+    explain: 'Una deuda o pérdida se representa con número negativo: −10.'
+  },
+];
+
+let evalAnswers = new Array(10).fill(null);
+let evalBuilt = false;
+
+function buildEval() {
+  if (evalBuilt) return;
+  evalBuilt = true;
+  const container = document.getElementById('eval-questions');
+  container.innerHTML = evalQuestions.map((q, i) => `
+    <div class="card" id="eq-card-${i}" style="margin-bottom:20px;">
+      <div style="display:flex; align-items:flex-start; gap:14px; margin-bottom:16px;">
+        <div class="q-number">${i+1}</div>
+        <div class="activity-q" style="margin-bottom:0;">${q.q}</div>
+      </div>
+      <div class="options-grid" id="eq-opts-${i}">
+        ${q.opts.map((o, j) => `
+          <button class="opt-btn" onclick="answerEval(${i},${j},this)" id="eq-opt-${i}-${j}">
+            <div class="opt-letter">${'ABCD'[j]}</div>
+            <span>${o}</span>
+          </button>`).join('')}
+      </div>
+      <div class="feedback-msg" id="eq-fb-${i}"></div>
+    </div>
+  `).join('');
+}
+
+function answerEval(qIdx, optIdx, btn) {
+  if (evalAnswers[qIdx] !== null) return; // ya respondida
+  evalAnswers[qIdx] = optIdx;
+
+  const card = document.getElementById(`eq-card-${qIdx}`);
+  const fb   = document.getElementById(`eq-fb-${qIdx}`);
+  const q    = evalQuestions[qIdx];
+
+  // Deshabilitar opciones
+  document.querySelectorAll(`#eq-opts-${qIdx} .opt-btn`).forEach(b => b.disabled = true);
+
+  if (optIdx === q.correct) {
+    btn.classList.add('selected-correct');
+    card.classList.add('correct');
+    fb.className = 'feedback-msg show ok';
+    fb.innerHTML = `✅ ¡Correcto! ${q.explain}`;
+  } else {
+    btn.classList.add('selected-wrong');
+    card.classList.add('incorrect');
+    fb.className = 'feedback-msg show err';
+    fb.innerHTML = `❌ Incorrecto. ${q.explain}`;
+    document.getElementById(`eq-opt-${qIdx}-${q.correct}`).classList.add('reveal-correct');
+  }
+
+  // Actualizar barra de progreso
+  const answered = evalAnswers.filter(a => a !== null).length;
+  document.getElementById('eval-progress').style.width = (answered / 10 * 100) + '%';
+
+  // Si respondió todo, mostrar panel
+  if (answered === 10) setTimeout(showScorePanel, 500);
+}
+
+function showScorePanel() {
+  const correct = evalAnswers.filter((a, i) => a === evalQuestions[i].correct).length;
+  const pct = correct / 10 * 100;
+  const panel = document.getElementById('score-panel');
+  panel.classList.add('show');
+  markDone('eval');
+
+  // Círculo
+  const color = pct >= 70 ? '#10b981' : pct >= 50 ? '#f59e0b' : '#ef4444';
+  const bg    = pct >= 70 ? 'linear-gradient(135deg,#d1fae5,#a7f3d0)' : pct >= 50 ? 'linear-gradient(135deg,#fef3c7,#fde68a)' : 'linear-gradient(135deg,#fee2e2,#fecaca)';
+  const circleEl = document.getElementById('score-circle-el');
+  circleEl.style.background = bg;
+  circleEl.style.color = color;
+  circleEl.innerHTML = `<span class="score-num">${correct}</span><span class="score-denom">/ 10</span>`;
+
+  const msgs = pct === 100 ? ['🏆 ¡Perfecto!', '¡Dominas los números enteros completamente!']
+             : pct >= 80   ? ['🌟 ¡Excelente!', 'Muy buen desempeño. Sigue así!']
+             : pct >= 60   ? ['👍 ¡Bien!', 'Aprobado. Repasa los puntos que fallaste.']
+             : pct >= 40   ? ['📚 ¡Casi!', 'Necesitas repasar el material. ¡Inténtalo de nuevo!']
+             :               ['💪 ¡Ánimo!', 'Revisa los módulos y vuelve a intentarlo.'];
+
+  document.getElementById('score-msg').textContent = msgs[0];
+  document.getElementById('score-sub').textContent = msgs[1] + `  (${pct}%)`;
+  addScore(correct * 10);
+
+  panel.scrollIntoView({ behavior: 'smooth' });
+}
+
+function retryEval() {
+  evalAnswers = new Array(10).fill(null);
+  evalBuilt = false;
+  document.getElementById('score-panel').classList.remove('show');
+  document.getElementById('eval-progress').style.width = '0%';
+  buildEval();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ============================================================
+   EXPORT TO PDF
+   ============================================================ */
+function exportPDF() {
+  const correct = evalAnswers.filter((a, i) => a !== null && a === evalQuestions[i].correct).length;
+  const pct = (correct / 10 * 100).toFixed(0);
+  const now = new Date().toLocaleDateString('es-ES', { year:'numeric', month:'long', day:'numeric' });
+
+  let rows = evalQuestions.map((q, i) => {
+    const ans = evalAnswers[i];
+    const isOk = ans === q.correct;
+    const selOpt = ans !== null ? q.opts[ans] : 'Sin responder';
+    return `<tr style="background:${isOk?'#f0fdf4':'#fff1f2'}">
+      <td style="padding:8px 12px; border:1px solid #e2e8f0; font-weight:700;">${i+1}</td>
+      <td style="padding:8px 12px; border:1px solid #e2e8f0;">${q.q}</td>
+      <td style="padding:8px 12px; border:1px solid #e2e8f0; font-weight:700; color:${isOk?'#065f46':'#991b1b'}">${selOpt}</td>
+      <td style="padding:8px 12px; border:1px solid #e2e8f0; color:#065f46;">${q.opts[q.correct]}</td>
+      <td style="padding:8px 12px; border:1px solid #e2e8f0; text-align:center;">${isOk?'✅':'❌'}</td>
+    </tr>`;
+  }).join('');
+
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8">
+  <title>Resultados – Mente Matemática</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; color: #1e293b; }
+    h1 { color: #0d2346; } h2 { color: #1a3a6b; margin-top: 30px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: #0d2346; color: #fff; padding: 10px 12px; text-align: left; border: 1px solid #e2e8f0; }
+    .score-big { font-size: 64px; font-weight: 800; color: ${pct>=70?'#10b981':pct>=50?'#f59e0b':'#ef4444'}; }
+    .footer { margin-top: 40px; text-align: center; color: #94a3b8; font-size: 12px; }
+    @media print { body { margin: 20px; } }
+  </style></head><body>
+  <h1>🧮 Mente Matemática — Resultados de Evaluación</h1>
+  <p><strong>Tema:</strong> Los Números Enteros (ℤ) &nbsp;|&nbsp; <strong>Fecha:</strong> ${now}</p>
+  <div style="text-align:center; margin:30px 0;">
+    <div class="score-big">${correct}/10</div>
+    <div style="font-size:20px; font-weight:700; margin-top:8px;">${pct}% de aciertos</div>
+  </div>
+  <h2>Detalle por pregunta</h2>
+  <table>
+    <tr><th>#</th><th>Pregunta</th><th>Tu respuesta</th><th>Respuesta correcta</th><th>Resultado</th></tr>
+    ${rows}
+  </table>
+  <div class="footer">Créditos: Victor Crespo · Mente Matemática</div>
+  <script>window.onload=()=>window.print()<\/script>
+  </body></html>`;
+
+  const win = window.open('', '_blank');
+  win.document.write(html);
+  win.document.close();
+}
+
+/* ============================================================
+   INICIALIZACIÓN
+   ============================================================ */
+window.addEventListener('load', () => {
+  // Dibuja el canvas de intro cuando cargue
+  setTimeout(drawIntroCanvas, 200);
+});
+</script>
+
+</body>
+</html>

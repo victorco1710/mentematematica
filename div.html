@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- ============================================================
+     TEMA 15: DIVISIÓN DE 1, 2 Y 3 CIFRAS
+     Plataforma educativa interactiva — Mente Matemática
+     © 2026 MenteMatemáticaI. Todos los derechos reservados VC.
+     ============================================================ -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tema 15 – División de 1, 2 y 3 Cifras | Mente Matemática</title>
+
+<!-- ============================================================
+     ESTILOS CSS
+     ============================================================ -->
+<style>
+  /* ---- Variables de color y tipografía ---- */
+  :root {
+    --azul-marino:   #0d2c5e;
+    --azul-medio:    #1a4a8a;
+    --azul-claro:    #2e7bc4;
+    --azul-suave:    #dbeafe;
+    --verde:         #16a34a;
+    --verde-suave:   #dcfce7;
+    --rojo:          #dc2626;
+    --rojo-suave:    #fee2e2;
+    --amarillo:      #d97706;
+    --amarillo-suave:#fef3c7;
+    --naranja:       #ea580c;
+    --morado:        #7c3aed;
+    --gris-fondo:    #f1f5f9;
+    --gris-borde:    #e2e8f0;
+    --blanco:        #ffffff;
+    --texto:         #1e293b;
+    --texto-suave:   #64748b;
+    --sidebar-ancho: 260px;
+  }
+
+  /* ---- Reset y base ---- */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--gris-fondo);
+    color: var(--texto);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* ============================================================
+     HEADER
+     ============================================================ */
+  header {
+    background: linear-gradient(135deg, var(--azul-marino) 0%, var(--azul-medio) 60%, var(--azul-claro) 100%);
+    color: var(--blanco);
+    padding: 0 24px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 3px 12px rgba(0,0,0,.35);
+  }
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo-icon {
+    width: 44px; height: 44px;
+    background: rgba(255,255,255,.18);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    border: 2px solid rgba(255,255,255,.35);
+  }
+  .logo-text { font-size: 1.4rem; font-weight: 800; letter-spacing: .5px; }
+  .logo-sub  { font-size: .7rem; opacity: .75; letter-spacing: 1.5px; text-transform: uppercase; }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .btn-menu {
+    background: rgba(255,255,255,.18);
+    color: var(--blanco);
+    border: 2px solid rgba(255,255,255,.4);
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: .85rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .25s, transform .15s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-menu:hover { background: rgba(255,255,255,.3); transform: translateY(-1px); }
+  .score-badge {
+    background: rgba(255,255,255,.18);
+    border: 2px solid rgba(255,255,255,.3);
+    border-radius: 20px;
+    padding: 5px 16px;
+    font-size: .82rem;
+    font-weight: 700;
+  }
+
+  /* ============================================================
+     LAYOUT PRINCIPAL
+     ============================================================ */
+  .layout {
+    display: flex;
+    flex: 1;
+    min-height: calc(100vh - 68px - 48px);
+  }
+
+  /* ============================================================
+     SIDEBAR
+     ============================================================ */
+  .sidebar {
+    width: var(--sidebar-ancho);
+    background: var(--blanco);
+    border-right: 1px solid var(--gris-borde);
+    position: sticky;
+    top: 68px;
+    height: calc(100vh - 68px);
+    overflow-y: auto;
+    flex-shrink: 0;
+    box-shadow: 2px 0 8px rgba(0,0,0,.05);
+  }
+  .sidebar-header {
+    background: var(--azul-suave);
+    padding: 14px 16px;
+    font-size: .72rem;
+    font-weight: 800;
+    color: var(--azul-marino);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #bfdbfe;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--gris-borde);
+    transition: background .2s, border-left .2s;
+    border-left: 4px solid transparent;
+    font-size: .88rem;
+    color: var(--texto);
+    user-select: none;
+  }
+  .nav-item:hover   { background: var(--azul-suave); border-left-color: var(--azul-claro); }
+  .nav-item.active  { background: #eff6ff; border-left-color: var(--azul-marino); font-weight: 700; color: var(--azul-marino); }
+  .nav-icon { font-size: 1.1rem; width: 22px; text-align: center; }
+  .nav-label { flex: 1; line-height: 1.3; }
+  .nav-badge { background: var(--azul-claro); color: #fff; border-radius: 10px; padding: 2px 7px; font-size: .7rem; font-weight: 700; }
+
+  /* ============================================================
+     CONTENIDO PRINCIPAL
+     ============================================================ */
+  .main {
+    flex: 1;
+    padding: 28px;
+    overflow-y: auto;
+    max-width: 960px;
+  }
+
+  /* ---- Secciones ---- */
+  .section { display: none; animation: fadeIn .4s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ---- Tarjetas ---- */
+  .card {
+    background: var(--blanco);
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    padding: 24px;
+    margin-bottom: 20px;
+    border: 1px solid var(--gris-borde);
+  }
+  .card-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--azul-marino);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--azul-suave);
+  }
+  .page-title {
+    font-size: 1.65rem;
+    font-weight: 900;
+    color: var(--azul-marino);
+    margin-bottom: 6px;
+  }
+  .page-sub { color: var(--texto-suave); font-size: .9rem; margin-bottom: 22px; }
+
+  /* ---- Colores de énfasis ---- */
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: .78rem;
+    font-weight: 700;
+    margin: 3px 4px;
+  }
+  .badge-blue   { background: var(--azul-suave); color: var(--azul-marino); }
+  .badge-green  { background: var(--verde-suave); color: #15803d; }
+  .badge-red    { background: var(--rojo-suave); color: #b91c1c; }
+  .badge-yellow { background: var(--amarillo-suave); color: #92400e; }
+  .badge-purple { background: #ede9fe; color: var(--morado); }
+
+  /* ---- Botones ---- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 10px 22px;
+    border: none; border-radius: 9px;
+    font-size: .88rem; font-weight: 700;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s, opacity .2s;
+  }
+  .btn:hover  { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,.15); }
+  .btn:active { transform: translateY(0); }
+  .btn-primary  { background: var(--azul-marino); color: #fff; }
+  .btn-success  { background: var(--verde); color: #fff; }
+  .btn-warning  { background: var(--amarillo); color: #fff; }
+  .btn-danger   { background: var(--rojo); color: #fff; }
+  .btn-outline  { background: transparent; border: 2px solid var(--azul-claro); color: var(--azul-claro); }
+  .btn-sm { padding: 7px 14px; font-size: .8rem; }
+  .btn-lg { padding: 13px 30px; font-size: 1rem; }
+
+  /* ---- Inputs ---- */
+  .inp {
+    border: 2px solid var(--gris-borde);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: .9rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color .2s;
+    width: 100%;
+  }
+  .inp:focus { border-color: var(--azul-claro); }
+  .inp-sm { padding: 7px 10px; font-size: .85rem; }
+  label { font-size: .85rem; font-weight: 600; color: var(--texto); display: block; margin-bottom: 5px; }
+
+  /* ---- Grids y helpers ---- */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  .flex-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .mt-2 { margin-top: 8px; } .mt-3 { margin-top: 14px; } .mt-4 { margin-top: 22px; }
+  .mb-2 { margin-bottom: 8px; }
+  .text-center { text-align: center; }
+  .text-green { color: var(--verde); } .text-red { color: var(--rojo); }
+  .fw-bold { font-weight: 700; }
+
+  /* ---- Separador ---- */
+  hr.sep { border: none; border-top: 2px solid var(--gris-borde); margin: 20px 0; }
+
+  /* ============================================================
+     BIENVENIDA
+     ============================================================ */
+  .welcome-banner {
+    background: linear-gradient(135deg, var(--azul-marino) 0%, var(--azul-claro) 100%);
+    color: #fff;
+    border-radius: 18px;
+    padding: 36px 32px;
+    margin-bottom: 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .welcome-banner::before {
+    content: '';
+    position: absolute; top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    background: rgba(255,255,255,.07);
+    border-radius: 50%;
+  }
+  .welcome-banner h1 { font-size: 2rem; font-weight: 900; margin-bottom: 8px; }
+  .welcome-banner p  { font-size: 1rem; opacity: .88; max-width: 600px; margin: 0 auto; }
+  .welcome-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px,1fr)); gap: 14px; margin-top: 20px; }
+  .welcome-card {
+    background: var(--blanco);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,.07);
+    border: 1px solid var(--gris-borde);
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .welcome-card:hover { transform: translateY(-4px); box-shadow: 0 6px 22px rgba(0,0,0,.13); }
+  .welcome-card .icon { font-size: 2.2rem; margin-bottom: 8px; }
+  .welcome-card .title { font-size: .85rem; font-weight: 700; color: var(--azul-marino); }
+  .welcome-card .desc  { font-size: .75rem; color: var(--texto-suave); margin-top: 4px; }
+
+  /* ============================================================
+     ELEMENTOS DE LA DIVISIÓN
+     ============================================================ */
+  .division-box {
+    display: flex; align-items: stretch; justify-content: center;
+    gap: 0; margin: 18px auto; max-width: 420px;
+    font-size: 1.6rem; font-weight: 800;
+  }
+  .div-part {
+    border: 3px solid var(--azul-claro);
+    padding: 16px 22px;
+    text-align: center;
+    min-width: 90px;
+    position: relative;
+  }
+  .div-part:first-child { border-radius: 10px 0 0 10px; background: #eff6ff; }
+  .div-part:last-child  { border-radius: 0 10px 10px 0; background: #f0fdf4; }
+  .div-part .label {
+    font-size: .65rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--texto-suave); display: block; margin-top: 4px;
+  }
+  .div-sep {
+    width: 3px; background: var(--azul-claro);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; color: var(--azul-claro); padding: 0 8px;
+  }
+
+  /* ---- Arrastrar elementos (concepto game) ---- */
+  .concept-game { }
+  .concept-item {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--azul-suave);
+    border: 2px dashed var(--azul-claro);
+    border-radius: 8px;
+    padding: 8px 16px;
+    margin: 5px;
+    cursor: grab;
+    font-weight: 700;
+    font-size: .9rem;
+    color: var(--azul-marino);
+    user-select: none;
+    transition: background .2s;
+  }
+  .concept-item:hover { background: #bfdbfe; }
+  .drop-zone {
+    min-width: 130px; min-height: 42px;
+    border: 2px dashed #94a3b8;
+    border-radius: 8px;
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 6px 10px;
+    font-size: .82rem; color: #94a3b8;
+    background: #f8fafc;
+    transition: border-color .2s, background .2s;
+    vertical-align: middle;
+    margin: 4px;
+  }
+  .drop-zone.drag-over { border-color: var(--azul-claro); background: var(--azul-suave); }
+  .drop-zone.filled    { border-color: var(--verde); background: var(--verde-suave); color: var(--texto); font-weight: 700; }
+  .drop-zone.wrong     { border-color: var(--rojo); background: var(--rojo-suave); animation: shake .4s; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+  /* ============================================================
+     SIMULADOR DE DIVISIÓN
+     ============================================================ */
+  .sim-display {
+    background: var(--gris-fondo);
+    border-radius: 10px;
+    padding: 18px;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    border: 1px solid var(--gris-borde);
+    min-height: 80px;
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .sim-step {
+    background: var(--blanco);
+    border-left: 4px solid var(--azul-claro);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    font-size: .88rem;
+    animation: stepIn .3s ease;
+    box-shadow: 0 1px 6px rgba(0,0,0,.05);
+  }
+  .sim-step .step-num { font-weight: 800; color: var(--azul-claro); }
+  @keyframes stepIn { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:translateX(0)} }
+
+  .division-visual {
+    display: flex; align-items: flex-start; gap: 0;
+    font-family: 'Courier New', monospace;
+    font-size: 1.4rem; font-weight: 700;
+    margin: 16px auto; width: fit-content;
+  }
+  .dv-dividend { padding: 8px 14px; border-right: 3px solid var(--texto); }
+  .dv-right { display: flex; flex-direction: column; }
+  .dv-divisor { padding: 8px 14px; border-bottom: 3px solid var(--texto); }
+  .dv-quotient { padding: 8px 14px; color: var(--verde); }
+
+  /* ============================================================
+     JUEGO DE REPASO
+     ============================================================ */
+  .game-board {
+    background: linear-gradient(135deg,#0f172a,#1e3a5f);
+    border-radius: 14px;
+    padding: 24px;
+    color: #fff;
+    text-align: center;
+  }
+  .game-question { font-size: 2rem; font-weight: 900; margin: 16px 0; letter-spacing: 2px; }
+  .game-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 380px; margin: 0 auto; }
+  .game-opt {
+    background: rgba(255,255,255,.1);
+    border: 2px solid rgba(255,255,255,.25);
+    color: #fff;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 1.1rem; font-weight: 700;
+    cursor: pointer;
+    transition: background .2s, transform .15s;
+  }
+  .game-opt:hover:not(:disabled) { background: rgba(255,255,255,.2); transform: scale(1.04); }
+  .game-opt.correct { background: var(--verde) !important; border-color: var(--verde); }
+  .game-opt.wrong   { background: var(--rojo)  !important; border-color: var(--rojo); }
+  .game-opt:disabled { cursor: default; }
+  .game-stats { display: flex; justify-content: center; gap: 20px; margin-bottom: 14px; }
+  .game-stat { background: rgba(255,255,255,.1); border-radius: 8px; padding: 8px 18px; font-size: .85rem; }
+  .game-stat .val { font-size: 1.4rem; font-weight: 900; display: block; }
+  .progress-bar { background: rgba(255,255,255,.15); border-radius: 20px; height: 8px; overflow: hidden; margin-top: 14px; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #22d3ee, #a78bfa); border-radius: 20px; transition: width .5s; }
+
+  /* ============================================================
+     GENERADOR DE EJERCICIOS
+     ============================================================ */
+  .gen-form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .gen-form .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .worksheet-preview {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 24px;
+    font-family: 'Times New Roman', serif;
+    box-shadow: 0 2px 10px rgba(0,0,0,.1);
+    min-height: 200px;
+  }
+  .ws-header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 14px; }
+  .ws-info   { display: flex; justify-content: space-between; font-size: .85rem; margin-bottom: 16px; }
+  .ws-exercises { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .ws-ex { text-align: center; }
+  .ws-ex-division {
+    display: inline-flex;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 6px 0;
+  }
+  .ws-dividend { padding: 4px 8px; border-right: 2px solid #000; }
+  .ws-divisor-block { display: flex; flex-direction: column; }
+  .ws-divisor { padding: 4px 8px; border-bottom: 2px solid #000; min-width: 40px; }
+  .ws-answer-line { padding: 4px 8px; color: #ccc; min-width: 40px; }
+
+  /* ============================================================
+     EVALUACIÓN FINAL
+     ============================================================ */
+  .quiz-question {
+    background: var(--blanco);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 18px;
+    border: 2px solid var(--gris-borde);
+    transition: border-color .3s;
+  }
+  .quiz-question.answered-correct { border-color: var(--verde); background: var(--verde-suave); }
+  .quiz-question.answered-wrong   { border-color: var(--rojo);  background: var(--rojo-suave); }
+  .q-num { font-size: .75rem; font-weight: 700; color: var(--texto-suave); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .q-text { font-size: 1rem; font-weight: 700; margin-bottom: 14px; }
+  .q-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .q-opt {
+    border: 2px solid var(--gris-borde);
+    background: var(--blanco);
+    border-radius: 9px;
+    padding: 11px 14px;
+    text-align: left;
+    cursor: pointer;
+    font-size: .88rem;
+    font-weight: 600;
+    transition: all .2s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .q-opt:hover:not(:disabled) { border-color: var(--azul-claro); background: var(--azul-suave); }
+  .q-opt.correct { background: var(--verde-suave); border-color: var(--verde); color: #15803d; }
+  .q-opt.wrong   { background: var(--rojo-suave);  border-color: var(--rojo);  color: #b91c1c; }
+  .q-opt:disabled { cursor: default; }
+  .q-feedback { margin-top: 10px; font-size: .85rem; padding: 8px 12px; border-radius: 7px; font-weight: 600; }
+  .q-feedback.ok  { background: var(--verde-suave); color: #15803d; }
+  .q-feedback.err { background: var(--rojo-suave);  color: #b91c1c; }
+
+  .score-display {
+    text-align: center; padding: 32px;
+    background: linear-gradient(135deg, var(--azul-marino), var(--azul-claro));
+    border-radius: 16px; color: #fff; margin-top: 20px;
+  }
+  .score-circle {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    border: 6px solid rgba(255,255,255,.5);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.4rem; font-weight: 900;
+    margin: 0 auto 14px;
+    background: rgba(255,255,255,.12);
+  }
+
+  /* ============================================================
+     VIDEO
+     ============================================================ */
+  .video-container {
+    background: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .video-container video { width: 100%; height: 100%; }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  footer {
+    background: var(--azul-marino);
+    color: rgba(255,255,255,.7);
+    text-align: center;
+    padding: 14px;
+    font-size: .8rem;
+  }
+  footer span { color: rgba(255,255,255,.9); font-weight: 700; }
+
+  /* ============================================================
+     TOOLTIP / FEEDBACK FLOTANTE
+     ============================================================ */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--azul-marino); color: #fff;
+    padding: 14px 22px; border-radius: 10px;
+    font-size: .9rem; font-weight: 700;
+    box-shadow: 0 6px 24px rgba(0,0,0,.3);
+    z-index: 9999;
+    transform: translateY(60px); opacity: 0;
+    transition: all .35s;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: var(--verde); }
+  .toast.error   { background: var(--rojo); }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media(max-width: 768px) {
+    .sidebar { display: none; }
+    .main { padding: 16px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .q-options { grid-template-columns: 1fr; }
+    .ws-exercises { grid-template-columns: repeat(2,1fr); }
+  }
+
+  /* ============================================================
+     ELEMENTOS INTERACTIVOS EXTRA
+     ============================================================ */
+  .example-card {
+    border-left: 4px solid var(--azul-claro);
+    background: #f8fafc;
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin: 10px 0;
+    font-size: .9rem;
+  }
+  .example-card strong { color: var(--azul-marino); }
+  .formula-box {
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border: 2px solid var(--azul-claro);
+    border-radius: 10px;
+    padding: 16px 20px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--azul-marino);
+    margin: 14px 0;
+  }
+  .info-box {
+    background: #fefce8; border-left: 4px solid var(--amarillo);
+    border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 10px 0;
+    font-size: .88rem;
+  }
+  .success-box {
+    background: var(--verde-suave); border-left: 4px solid var(--verde);
+    border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 10px 0;
+    font-size: .88rem;
+  }
+  select.inp { cursor: pointer; }
+  .highlight { background: #fef9c3; padding: 1px 4px; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header>
+  <div class="header-logo">
+    <div class="logo-icon">🧮</div>
+    <div>
+      <div class="logo-text">Mente Matemática</div>
+      <div class="logo-sub">Plataforma Educativa</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="score-badge" id="headerScore">⭐ Puntos: <span id="scoreVal">0</span></div>
+    <a href="temario.html" class="btn-menu">🏠 Volver al menú</a>
+  </div>
+</header>
+
+<!-- ============================================================
+     LAYOUT
+     ============================================================ -->
+<div class="layout">
+
+  <!-- ========================================================
+       SIDEBAR
+       ======================================================== -->
+  <nav class="sidebar">
+    <div class="sidebar-header">📚 Módulos del Tema 15</div>
+    <div class="nav-item active" onclick="showSection('bienvenida',this)">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Bienvenida</span>
+    </div>
+    <div class="nav-item" onclick="showSection('sec1',this)">
+      <span class="nav-icon">🎬</span>
+      <span class="nav-label">1. ¿Qué aprenderemos?</span>
+    </div>
+    <div class="nav-item" onclick="showSection('sec2',this)">
+      <span class="nav-icon">📖</span>
+      <span class="nav-label">2. Concepto de División</span>
+    </div>
+    <div class="nav-item" onclick="showSection('sec3',this)">
+      <span class="nav-icon">1️⃣</span>
+      <span class="nav-label">3. División 1 Cifra</span>
+    </div>
+    <div class="nav-item" onclick="showSection('sec4',this)">
+      <span class="nav-icon">2️⃣</span>
+      <span class="nav-label">4. División 2 Cifras</span>
+    </div>
+    <div class="nav-item" onclick="showSection('sec5',this)">
+      <span class="nav-icon">3️⃣</span>
+      <span class="nav-label">5. División 3 Cifras</span>
+    </div>
+    <div class="nav-item" onclick="showSection('sec6',this)">
+      <span class="nav-icon">📝</span>
+      <span class="nav-label">6. Evaluación Final</span>
+      <span class="nav-badge">10</span>
+    </div>
+  </nav>
+
+  <!-- ========================================================
+       MAIN CONTENT
+       ======================================================== -->
+  <main class="main">
+
+    <!-- ======================================================
+         BIENVENIDA
+         ====================================================== -->
+    <section id="bienvenida" class="section active">
+      <div class="welcome-banner">
+        <div style="font-size:3rem;margin-bottom:10px;">➗</div>
+        <h1>¡Bienvenido a la División!</h1>
+        <p>Aprende a dividir números enteros de 1, 2 y 3 cifras de forma fácil, paso a paso, con ejemplos interactivos y actividades divertidas.</p>
+        <div style="margin-top:16px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
+          <span class="badge badge-blue">🎯 6 Módulos</span>
+          <span class="badge badge-green">⭐ Puntos y logros</span>
+          <span class="badge badge-yellow">📊 Evaluación final</span>
+          <span class="badge badge-purple">🧑‍🏫 Para 9–15 años</span>
+        </div>
+      </div>
+
+      <div class="welcome-cards">
+        <div class="welcome-card" onclick="showSection('sec1',document.querySelectorAll('.nav-item')[1])">
+          <div class="icon">🎬</div>
+          <div class="title">¿Qué aprenderemos?</div>
+          <div class="desc">Objetivos del tema</div>
+        </div>
+        <div class="welcome-card" onclick="showSection('sec2',document.querySelectorAll('.nav-item')[2])">
+          <div class="icon">📖</div>
+          <div class="title">Concepto</div>
+          <div class="desc">Elementos de la división</div>
+        </div>
+        <div class="welcome-card" onclick="showSection('sec3',document.querySelectorAll('.nav-item')[3])">
+          <div class="icon">1️⃣</div>
+          <div class="title">División 1 cifra</div>
+          <div class="desc">Video + Simulador</div>
+        </div>
+        <div class="welcome-card" onclick="showSection('sec4',document.querySelectorAll('.nav-item')[4])">
+          <div class="icon">2️⃣</div>
+          <div class="title">División 2 cifras</div>
+          <div class="desc">Video + Simulador</div>
+        </div>
+        <div class="welcome-card" onclick="showSection('sec5',document.querySelectorAll('.nav-item')[5])">
+          <div class="icon">3️⃣</div>
+          <div class="title">División 3 cifras</div>
+          <div class="desc">Video + Simulador</div>
+        </div>
+        <div class="welcome-card" onclick="showSection('sec6',document.querySelectorAll('.nav-item')[6])">
+          <div class="icon">📝</div>
+          <div class="title">Evaluación Final</div>
+          <div class="desc">10 preguntas</div>
+        </div>
+      </div>
+
+      <div class="card mt-4">
+        <div class="card-title">🌟 ¿Por qué aprender a dividir?</div>
+        <p style="font-size:.92rem;line-height:1.7;color:var(--texto-suave)">
+          La división es una de las cuatro operaciones básicas de las matemáticas. La usamos todos los días: para repartir cosas entre amigos,
+          calcular velocidades, distribuir recursos, cocinar con recetas, y mucho más. Dominar la división te abrirá las puertas a temas más avanzados
+          como fracciones, porcentajes y álgebra.
+        </p>
+        <div class="flex-row mt-3">
+          <span class="badge badge-blue">🛒 Reparto de objetos</span>
+          <span class="badge badge-green">🚗 Velocidad y tiempo</span>
+          <span class="badge badge-yellow">🍕 Fracciones</span>
+          <span class="badge badge-purple">📐 Geometría</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         SECCIÓN 1 — ¿QUÉ APRENDEREMOS?
+         ====================================================== -->
+    <section id="sec1" class="section">
+      <div class="page-title">🎬 1. ¿Qué aprenderemos?</div>
+      <div class="page-sub">Objetivos de aprendizaje del Tema 15</div>
+
+      <div class="welcome-banner" style="padding:26px 24px;">
+        <div style="font-size:2rem;margin-bottom:8px;">🎯</div>
+        <h1 style="font-size:1.4rem">Introducción al Tema</h1>
+        <p>En este tema aprenderás a dividir números enteros de 1, 2 y 3 cifras. Verás las reglas básicas para dividir, cómo interpretar los cocientes y cómo aplicar esas reglas en problemas de la vida cotidiana.</p>
+      </div>
+
+      <div class="grid-2 mt-4">
+        <div class="card">
+          <div class="card-title">📚 Contenidos del Tema</div>
+          <ul style="list-style:none;padding:0;line-height:2">
+            <li>✅ Concepto de división de números enteros</li>
+            <li>✅ Elementos: dividendo, divisor, cociente y residuo</li>
+            <li>✅ División con divisor de 1 cifra</li>
+            <li>✅ División con divisor de 2 cifras</li>
+            <li>✅ División con divisor de 3 cifras</li>
+            <li>✅ Propiedades de la división</li>
+            <li>✅ Aplicaciones en la vida cotidiana</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">🏆 Objetivos de Aprendizaje</div>
+          <ul style="list-style:none;padding:0;line-height:2">
+            <li>🎯 Identificar los elementos de una división</li>
+            <li>🎯 Realizar divisiones con 1 cifra en el divisor</li>
+            <li>🎯 Realizar divisiones con 2 cifras en el divisor</li>
+            <li>🎯 Realizar divisiones con 3 cifras en el divisor</li>
+            <li>🎯 Verificar resultados usando la prueba de la división</li>
+            <li>🎯 Resolver problemas cotidianos con divisiones</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">💡 Recuerda la Prueba de la División</div>
+        <div class="formula-box">
+          Dividendo = Divisor × Cociente + Residuo
+        </div>
+        <p style="font-size:.88rem;color:var(--texto-suave);text-align:center">Esta fórmula sirve para verificar si tu división está correcta. Si el resultado de Divisor × Cociente + Residuo es igual al Dividendo, ¡la división está bien!</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📌 Aplicaciones en la Vida Real</div>
+        <div class="grid-3" style="gap:12px">
+          <div class="example-card">
+            <strong>💳 División de deuda</strong><br>
+            Si debes 60 Bs y la divides entre 4 amigos:<br>
+            −60 ÷ 4 = <strong>−15 Bs</strong> cada uno
+          </div>
+          <div class="example-card">
+            <strong>🌾 Reparto de productos</strong><br>
+            36 sacos de yuca entre 6 compradores:<br>
+            36 ÷ 6 = <strong>6 sacos</strong> cada uno
+          </div>
+          <div class="example-card">
+            <strong>🚌 Velocidad promedio</strong><br>
+            240 km en 4 horas:<br>
+            240 ÷ 4 = <strong>60 km/h</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <button class="btn btn-primary btn-lg" onclick="showSection('sec2',document.querySelectorAll('.nav-item')[2])">
+          ▶ Comenzar con el Concepto →
+        </button>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         SECCIÓN 2 — CONCEPTO DE DIVISIÓN
+         ====================================================== -->
+    <section id="sec2" class="section">
+      <div class="page-title">📖 2. Concepto de División</div>
+      <div class="page-sub">Conoce los fundamentos y elementos de la división</div>
+
+      <div class="card">
+        <div class="card-title">📌 ¿Qué es la División?</div>
+        <div class="formula-box">
+          La <strong>división de números enteros</strong> es la <strong>operación inversa a la multiplicación</strong>.
+        </div>
+        <p style="font-size:.9rem;line-height:1.7;color:var(--texto-suave)">
+          Cuando dividimos, repartimos una cantidad (dividendo) en grupos iguales cuyo tamaño viene dado por el divisor. El resultado nos dice cuántos grupos podemos formar (cociente) y cuánto sobra (residuo).
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🔢 Elementos de la División</div>
+        <div class="division-box">
+          <div class="div-part">
+            <span id="el-dividendo" style="color:var(--azul-marino)">48</span>
+            <span class="label">Dividendo</span>
+          </div>
+          <div class="div-sep">÷</div>
+          <div class="div-part">
+            <span id="el-divisor" style="color:var(--naranja)">6</span>
+            <span class="label">Divisor</span>
+          </div>
+          <div class="div-sep">=</div>
+          <div class="div-part">
+            <span id="el-cociente" style="color:var(--verde)">8</span>
+            <span class="label">Cociente</span>
+          </div>
+          <div class="div-sep">R</div>
+          <div class="div-part" style="border-radius:0 10px 10px 0;background:#fef3c7">
+            <span id="el-residuo" style="color:var(--amarillo)">0</span>
+            <span class="label">Residuo</span>
+          </div>
+        </div>
+        <div class="grid-2 mt-3" style="gap:12px">
+          <div style="background:#eff6ff;padding:14px;border-radius:10px;">
+            <div style="font-weight:800;color:var(--azul-marino);margin-bottom:6px">🔵 Dividendo</div>
+            <p style="font-size:.85rem;color:var(--texto-suave)">Es el número que se va a dividir. Siempre es el número más grande en una división exacta. En el ejemplo: <strong>48</strong>.</p>
+          </div>
+          <div style="background:#fff7ed;padding:14px;border-radius:10px;">
+            <div style="font-weight:800;color:var(--naranja);margin-bottom:6px">🟠 Divisor</div>
+            <p style="font-size:.85rem;color:var(--texto-suave)">Es el número entre el que se divide. Indica el tamaño de cada grupo. En el ejemplo: <strong>6</strong>.</p>
+          </div>
+          <div style="background:#f0fdf4;padding:14px;border-radius:10px;">
+            <div style="font-weight:800;color:var(--verde);margin-bottom:6px">🟢 Cociente</div>
+            <p style="font-size:.85rem;color:var(--texto-suave)">Es el resultado de la división. Indica cuántos grupos se pueden formar. En el ejemplo: <strong>8</strong>.</p>
+          </div>
+          <div style="background:#fefce8;padding:14px;border-radius:10px;">
+            <div style="font-weight:800;color:var(--amarillo);margin-bottom:6px">🟡 Residuo</div>
+            <p style="font-size:.85rem;color:var(--texto-suave)">Es la cantidad que sobra después de dividir. Si es 0, la división es exacta. En el ejemplo: <strong>0</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- JUEGO DE CONCEPTOS -->
+      <div class="card">
+        <div class="card-title">🎮 Juego: Identifica los Elementos</div>
+        <p style="font-size:.87rem;color:var(--texto-suave);margin-bottom:14px">Arrastra cada palabra al lugar correcto en la expresión de división.</p>
+
+        <div style="margin-bottom:16px;text-align:center;font-size:.9rem">
+          <strong>Términos disponibles:</strong><br>
+          <div id="conceptItems" style="margin-top:10px">
+            <span class="concept-item" draggable="true" data-term="dividendo">Dividendo</span>
+            <span class="concept-item" draggable="true" data-term="divisor">Divisor</span>
+            <span class="concept-item" draggable="true" data-term="cociente">Cociente</span>
+            <span class="concept-item" draggable="true" data-term="residuo">Residuo</span>
+          </div>
+        </div>
+
+        <div style="text-align:center;font-size:1.1rem;line-height:3">
+          <span class="drop-zone" data-answer="dividendo" id="dz1">?</span>
+          ÷
+          <span class="drop-zone" data-answer="divisor" id="dz2">?</span>
+          =
+          <span class="drop-zone" data-answer="cociente" id="dz3">?</span>
+          R
+          <span class="drop-zone" data-answer="residuo" id="dz4">?</span>
+        </div>
+
+        <div id="conceptFeedback" class="mt-3" style="text-align:center;font-weight:700;min-height:32px"></div>
+
+        <div class="text-center mt-3">
+          <button class="btn btn-outline btn-sm" onclick="resetConceptGame()">🔄 Reiniciar juego</button>
+          <button class="btn btn-primary btn-sm" onclick="checkConceptGame()">✅ Verificar</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📐 Propiedades de la División</div>
+        <div class="grid-2" style="gap:12px">
+          <div class="example-card">
+            <strong>❌ No es conmutativa</strong><br>
+            12 ÷ 4 ≠ 4 ÷ 12
+          </div>
+          <div class="example-card">
+            <strong>❌ No es asociativa</strong><br>
+            (24÷4)÷3 ≠ 24÷(4÷3)
+          </div>
+          <div class="example-card">
+            <strong>✅ División por 1</strong><br>
+            Cualquier número ÷ 1 = ese número
+          </div>
+          <div class="example-card">
+            <strong>✅ Cero dividido</strong><br>
+            0 ÷ cualquier número = 0
+          </div>
+          <div class="example-card">
+            <strong>⚠️ No dividir por 0</strong><br>
+            Cualquier número ÷ 0 = indefinido
+          </div>
+          <div class="example-card">
+            <strong>✅ División propia</strong><br>
+            Cualquier número ÷ sí mismo = 1
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         SECCIÓN 3 — DIVISIÓN 1 CIFRA
+         ====================================================== -->
+    <section id="sec3" class="section">
+      <div class="page-title">1️⃣ 3. División con Divisor de 1 Cifra</div>
+      <div class="page-sub">Aprende a dividir paso a paso cuando el divisor tiene 1 cifra</div>
+
+      <!-- VIDEO -->
+      <div class="card">
+        <div class="card-title">🎬 Video Explicativo</div>
+        <div class="video-container">
+          <video controls>
+            <source src="vid/div1.mp4" type="video/mp4">
+            <p style="color:#fff;padding:20px;text-align:center">⚠️ El video se cargará desde: <code>/vid/div1.mp4</code>. Asegúrate de tener el archivo en la carpeta correcta.</p>
+          </video>
+        </div>
+      </div>
+
+      <!-- CONTENIDO TEÓRICO -->
+      <div class="card">
+        <div class="card-title">📚 División de 1 Cifra: Reglas Básicas</div>
+        <div class="info-box">
+          💡 <strong>Recuerda:</strong> Para dividir, el divisor tiene que ser diferente de cero. El dividendo puede ser cualquier número entero.
+        </div>
+        <div class="grid-2 mt-3" style="gap:12px">
+          <div class="example-card">
+            <strong>✅ Ambos positivos:</strong><br>
+            12 ÷ 4 = <span class="text-green">3</span>
+          </div>
+          <div class="example-card">
+            <strong>✅ Ambos negativos:</strong><br>
+            (−12) ÷ (−4) = <span class="text-green">3</span>
+          </div>
+          <div class="example-card">
+            <strong>❗ Signos distintos:</strong><br>
+            (−12) ÷ 4 = <span class="text-red">−3</span>
+          </div>
+          <div class="example-card">
+            <strong>❗ Signos distintos:</strong><br>
+            12 ÷ (−4) = <span class="text-red">−3</span>
+          </div>
+        </div>
+        <div class="formula-box mt-3">
+          ➕ ÷ ➕ = ➕ &nbsp;|&nbsp; ➖ ÷ ➖ = ➕ &nbsp;|&nbsp; ➕ ÷ ➖ = ➖ &nbsp;|&nbsp; ➖ ÷ ➕ = ➖
+        </div>
+      </div>
+
+      <!-- SIMULADOR -->
+      <div class="card">
+        <div class="card-title">🔬 Simulador Interactivo — División de 1 Cifra</div>
+        <p style="font-size:.85rem;color:var(--texto-suave);margin-bottom:14px">Ingresa un dividendo y un divisor de 1 cifra para ver la solución paso a paso.</p>
+        <div class="flex-row mb-2" style="gap:10px;align-items:flex-end">
+          <div>
+            <label>Dividendo</label>
+            <input type="number" id="sim1-dividend" class="inp inp-sm" style="width:120px" value="84" placeholder="Ej: 84">
+          </div>
+          <div>
+            <label>Divisor (1 cifra: 1–9)</label>
+            <input type="number" id="sim1-divisor" class="inp inp-sm" style="width:100px" value="4" min="1" max="9" placeholder="Ej: 4">
+          </div>
+          <button class="btn btn-primary" onclick="runSim1()">▶ Calcular</button>
+          <button class="btn btn-outline btn-sm" onclick="randomSim1()">🎲 Aleatorio</button>
+        </div>
+        <div id="sim1-output"></div>
+      </div>
+
+      <!-- JUEGO DE REPASO -->
+      <div class="card">
+        <div class="card-title">🎮 Repaso Gamificado — División de 1 Cifra</div>
+        <div class="game-board" id="game1-board">
+          <div class="game-stats">
+            <div class="game-stat"><span class="val" id="g1-score">0</span>Puntos</div>
+            <div class="game-stat"><span class="val" id="g1-q">1</span>/10 Preg.</div>
+            <div class="game-stat"><span class="val" id="g1-streak">0</span>🔥 Racha</div>
+          </div>
+          <div id="g1-question" class="game-question">¿Cuánto es 12 ÷ 4?</div>
+          <div class="game-options" id="g1-options"></div>
+          <div class="progress-bar"><div class="progress-fill" id="g1-progress" style="width:10%"></div></div>
+          <div id="g1-feedback" style="margin-top:12px;min-height:28px;font-weight:700;font-size:1rem"></div>
+        </div>
+        <div class="text-center mt-3">
+          <button class="btn btn-success" onclick="startGame1()">🚀 Iniciar Juego</button>
+          <button class="btn btn-outline btn-sm" onclick="resetGame1()">🔄 Reiniciar</button>
+        </div>
+      </div>
+
+      <!-- GENERADOR DE HOJA -->
+      <div class="card">
+        <div class="card-title">📄 Generador de Hoja de Ejercicios — 1 Cifra</div>
+        <div class="gen-form">
+          <div class="row">
+            <div><label>🏫 Centro Educativo</label><input type="text" id="ws1-centro" class="inp inp-sm" placeholder="Ej: U.E. Simón Bolívar"></div>
+            <div><label>👨‍🏫 Nombre del Maestro/a</label><input type="text" id="ws1-maestro" class="inp inp-sm" placeholder="Ej: Prof. García"></div>
+          </div>
+          <div class="row">
+            <div><label>🎓 Curso / Grado</label><input type="text" id="ws1-curso" class="inp inp-sm" placeholder="Ej: 5to Primaria A"></div>
+            <div><label>🔢 Dígitos en el Dividendo</label>
+              <select id="ws1-digits" class="inp inp-sm">
+                <option value="1">1 dígito (1-9)</option>
+                <option value="2" selected>2 dígitos (10-99)</option>
+                <option value="3">3 dígitos (100-999)</option>
+                <option value="4">4 dígitos (1000-9999)</option>
+              </select>
+            </div>
+          </div>
+          <div class="row" style="align-items:center">
+            <div><label>📋 Cantidad de Ejercicios</label>
+              <select id="ws1-count" class="inp inp-sm">
+                <option value="8">8 ejercicios</option>
+                <option value="12" selected>12 ejercicios</option>
+                <option value="16">16 ejercicios</option>
+                <option value="20">20 ejercicios</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:flex-end;gap:8px;padding-top:22px">
+              <button class="btn btn-primary" onclick="generateWS1()">👁️ Previsualizar</button>
+              <button class="btn btn-success" onclick="saveWS1PDF()">💾 Guardar PDF</button>
+            </div>
+          </div>
+        </div>
+        <div id="ws1-preview" style="margin-top:16px"></div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         SECCIÓN 4 — DIVISIÓN 2 CIFRAS
+         ====================================================== -->
+    <section id="sec4" class="section">
+      <div class="page-title">2️⃣ 4. División con Divisor de 2 Cifras</div>
+      <div class="page-sub">Aprende a dividir paso a paso cuando el divisor tiene 2 cifras</div>
+
+      <!-- VIDEO -->
+      <div class="card">
+        <div class="card-title">🎬 Video Explicativo</div>
+        <div class="video-container">
+          <video controls>
+            <source src="vid/div2.mp4" type="video/mp4">
+            <p style="color:#fff;padding:20px;text-align:center">⚠️ El video se cargará desde: <code>/vid/div2.mp4</code>. Asegúrate de tener el archivo en la carpeta correcta.</p>
+          </video>
+        </div>
+      </div>
+
+      <!-- CONTENIDO TEÓRICO -->
+      <div class="card">
+        <div class="card-title">📚 División de 2 Cifras: Método Paso a Paso</div>
+        <div class="info-box">
+          💡 <strong>Clave:</strong> En la división con 2 cifras en el divisor, debemos tomar suficientes cifras del dividendo hasta que sean mayores o iguales al divisor.
+        </div>
+        <div class="mt-3">
+          <strong style="color:var(--azul-marino)">Ejemplo resuelto: 756 ÷ 21</strong>
+          <div class="example-card mt-2">
+            <strong>Paso 1:</strong> ¿Cabe 21 en 7? No. Tomamos 75.<br>
+            <strong>Paso 2:</strong> ¿Cuántas veces cabe 21 en 75? 3 veces (21×3=63). Escribimos 3 en el cociente.<br>
+            <strong>Paso 3:</strong> 75 − 63 = 12. Bajamos el 6 → queda 126.<br>
+            <strong>Paso 4:</strong> ¿Cuántas veces cabe 21 en 126? 6 veces (21×6=126). Escribimos 6 en el cociente.<br>
+            <strong>Paso 5:</strong> 126 − 126 = 0. Residuo = 0.<br>
+            <strong>Resultado: 756 ÷ 21 = 36</strong>
+          </div>
+        </div>
+        <div class="formula-box mt-3">
+          Verificación: 21 × 36 + 0 = 756 ✅
+        </div>
+      </div>
+
+      <!-- SIMULADOR -->
+      <div class="card">
+        <div class="card-title">🔬 Simulador Interactivo — División de 2 Cifras</div>
+        <p style="font-size:.85rem;color:var(--texto-suave);margin-bottom:14px">Ingresa los valores para ver la división paso a paso.</p>
+        <div class="flex-row mb-2" style="gap:10px;align-items:flex-end">
+          <div>
+            <label>Dividendo</label>
+            <input type="number" id="sim2-dividend" class="inp inp-sm" style="width:140px" value="756" placeholder="Ej: 756">
+          </div>
+          <div>
+            <label>Divisor (2 cifras: 10–99)</label>
+            <input type="number" id="sim2-divisor" class="inp inp-sm" style="width:110px" value="21" min="10" max="99" placeholder="Ej: 21">
+          </div>
+          <button class="btn btn-primary" onclick="runSim2()">▶ Calcular</button>
+          <button class="btn btn-outline btn-sm" onclick="randomSim2()">🎲 Aleatorio</button>
+        </div>
+        <div id="sim2-output"></div>
+      </div>
+
+      <!-- JUEGO DE REPASO -->
+      <div class="card">
+        <div class="card-title">🎮 Repaso Gamificado — División de 2 Cifras</div>
+        <div class="game-board" id="game2-board">
+          <div class="game-stats">
+            <div class="game-stat"><span class="val" id="g2-score">0</span>Puntos</div>
+            <div class="game-stat"><span class="val" id="g2-q">1</span>/10 Preg.</div>
+            <div class="game-stat"><span class="val" id="g2-streak">0</span>🔥 Racha</div>
+          </div>
+          <div id="g2-question" class="game-question">¿Cuánto es 96 ÷ 12?</div>
+          <div class="game-options" id="g2-options"></div>
+          <div class="progress-bar"><div class="progress-fill" id="g2-progress" style="width:10%"></div></div>
+          <div id="g2-feedback" style="margin-top:12px;min-height:28px;font-weight:700;font-size:1rem"></div>
+        </div>
+        <div class="text-center mt-3">
+          <button class="btn btn-success" onclick="startGame2()">🚀 Iniciar Juego</button>
+          <button class="btn btn-outline btn-sm" onclick="resetGame2()">🔄 Reiniciar</button>
+        </div>
+      </div>
+
+      <!-- GENERADOR DE HOJA -->
+      <div class="card">
+        <div class="card-title">📄 Generador de Hoja de Ejercicios — 2 Cifras</div>
+        <div class="gen-form">
+          <div class="row">
+            <div><label>🏫 Centro Educativo</label><input type="text" id="ws2-centro" class="inp inp-sm" placeholder="Ej: U.E. Simón Bolívar"></div>
+            <div><label>👨‍🏫 Nombre del Maestro/a</label><input type="text" id="ws2-maestro" class="inp inp-sm" placeholder="Ej: Prof. García"></div>
+          </div>
+          <div class="row">
+            <div><label>🎓 Curso / Grado</label><input type="text" id="ws2-curso" class="inp inp-sm" placeholder="Ej: 6to Primaria B"></div>
+            <div><label>🔢 Dígitos en el Dividendo</label>
+              <select id="ws2-digits" class="inp inp-sm">
+                <option value="3" selected>3 dígitos (100-999)</option>
+                <option value="4">4 dígitos (1000-9999)</option>
+                <option value="5">5 dígitos (10000-99999)</option>
+              </select>
+            </div>
+          </div>
+          <div class="row" style="align-items:center">
+            <div><label>📋 Cantidad de Ejercicios</label>
+              <select id="ws2-count" class="inp inp-sm">
+                <option value="8">8 ejercicios</option>
+                <option value="12" selected>12 ejercicios</option>
+                <option value="16">16 ejercicios</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:flex-end;gap:8px;padding-top:22px">
+              <button class="btn btn-primary" onclick="generateWS2()">👁️ Previsualizar</button>
+              <button class="btn btn-success" onclick="saveWS2PDF()">💾 Guardar PDF</button>
+            </div>
+          </div>
+        </div>
+        <div id="ws2-preview" style="margin-top:16px"></div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         SECCIÓN 5 — DIVISIÓN 3 CIFRAS
+         ====================================================== -->
+    <section id="sec5" class="section">
+      <div class="page-title">3️⃣ 5. División con Divisor de 3 Cifras</div>
+      <div class="page-sub">Aprende a dividir paso a paso cuando el divisor tiene 3 cifras</div>
+
+      <!-- VIDEO -->
+      <div class="card">
+        <div class="card-title">🎬 Video Explicativo</div>
+        <div class="video-container">
+          <video controls>
+            <source src="vid/div3.mp4" type="video/mp4">
+            <p style="color:#fff;padding:20px;text-align:center">⚠️ El video se cargará desde: <code>/vid/div3.mp4</code>. Asegúrate de tener el archivo en la carpeta correcta.</p>
+          </video>
+        </div>
+      </div>
+
+      <!-- CONTENIDO TEÓRICO -->
+      <div class="card">
+        <div class="card-title">📚 División de 3 Cifras: Método Paso a Paso</div>
+        <div class="info-box">
+          💡 <strong>Clave:</strong> Con divisores de 3 cifras, normalmente necesitamos tomar al menos 3 cifras del dividendo para comenzar. Estima cuántas veces cabe el divisor en la parte del dividendo que vas tomando.
+        </div>
+        <div class="mt-3">
+          <strong style="color:var(--azul-marino)">Ejemplo resuelto: 15 624 ÷ 123</strong>
+          <div class="example-card mt-2">
+            <strong>Paso 1:</strong> ¿Cabe 123 en 1? No. ¿En 15? No. ¿En 156? Sí: 1 vez (123×1=123). Cociente: 1.<br>
+            <strong>Paso 2:</strong> 156 − 123 = 33. Bajamos el 2 → 332.<br>
+            <strong>Paso 3:</strong> ¿Cuántas veces cabe 123 en 332? 2 veces (123×2=246). Cociente: 12.<br>
+            <strong>Paso 4:</strong> 332 − 246 = 86. Bajamos el 4 → 864.<br>
+            <strong>Paso 5:</strong> ¿Cuántas veces cabe 123 en 864? 7 veces (123×7=861). Cociente: 127.<br>
+            <strong>Paso 6:</strong> 864 − 861 = 3. Residuo = 3.<br>
+            <strong>Resultado: 15624 ÷ 123 = 127 R 3</strong>
+          </div>
+        </div>
+        <div class="formula-box mt-3">
+          Verificación: 123 × 127 + 3 = 15621 + 3 = 15624 ✅
+        </div>
+      </div>
+
+      <!-- SIMULADOR -->
+      <div class="card">
+        <div class="card-title">🔬 Simulador Interactivo — División de 3 Cifras</div>
+        <p style="font-size:.85rem;color:var(--texto-suave);margin-bottom:14px">Ingresa los valores para ver la división paso a paso.</p>
+        <div class="flex-row mb-2" style="gap:10px;align-items:flex-end">
+          <div>
+            <label>Dividendo</label>
+            <input type="number" id="sim3-dividend" class="inp inp-sm" style="width:160px" value="15624" placeholder="Ej: 15624">
+          </div>
+          <div>
+            <label>Divisor (3 cifras: 100–999)</label>
+            <input type="number" id="sim3-divisor" class="inp inp-sm" style="width:120px" value="123" min="100" max="999" placeholder="Ej: 123">
+          </div>
+          <button class="btn btn-primary" onclick="runSim3()">▶ Calcular</button>
+          <button class="btn btn-outline btn-sm" onclick="randomSim3()">🎲 Aleatorio</button>
+        </div>
+        <div id="sim3-output"></div>
+      </div>
+
+      <!-- JUEGO DE REPASO -->
+      <div class="card">
+        <div class="card-title">🎮 Repaso Gamificado — División de 3 Cifras</div>
+        <div class="game-board" id="game3-board">
+          <div class="game-stats">
+            <div class="game-stat"><span class="val" id="g3-score">0</span>Puntos</div>
+            <div class="game-stat"><span class="val" id="g3-q">1</span>/10 Preg.</div>
+            <div class="game-stat"><span class="val" id="g3-streak">0</span>🔥 Racha</div>
+          </div>
+          <div id="g3-question" class="game-question">¿Cuánto es 1200 ÷ 100?</div>
+          <div class="game-options" id="g3-options"></div>
+          <div class="progress-bar"><div class="progress-fill" id="g3-progress" style="width:10%"></div></div>
+          <div id="g3-feedback" style="margin-top:12px;min-height:28px;font-weight:700;font-size:1rem"></div>
+        </div>
+        <div class="text-center mt-3">
+          <button class="btn btn-success" onclick="startGame3()">🚀 Iniciar Juego</button>
+          <button class="btn btn-outline btn-sm" onclick="resetGame3()">🔄 Reiniciar</button>
+        </div>
+      </div>
+
+      <!-- GENERADOR DE HOJA -->
+      <div class="card">
+        <div class="card-title">📄 Generador de Hoja de Ejercicios — 3 Cifras</div>
+        <div class="gen-form">
+          <div class="row">
+            <div><label>🏫 Centro Educativo</label><input type="text" id="ws3-centro" class="inp inp-sm" placeholder="Ej: U.E. Simón Bolívar"></div>
+            <div><label>👨‍🏫 Nombre del Maestro/a</label><input type="text" id="ws3-maestro" class="inp inp-sm" placeholder="Ej: Prof. García"></div>
+          </div>
+          <div class="row">
+            <div><label>🎓 Curso / Grado</label><input type="text" id="ws3-curso" class="inp inp-sm" placeholder="Ej: 1ro Secundaria"></div>
+            <div><label>🔢 Dígitos en el Dividendo</label>
+              <select id="ws3-digits" class="inp inp-sm">
+                <option value="4">4 dígitos (1000-9999)</option>
+                <option value="5" selected>5 dígitos (10000-99999)</option>
+                <option value="6">6 dígitos (100000-999999)</option>
+              </select>
+            </div>
+          </div>
+          <div class="row" style="align-items:center">
+            <div><label>📋 Cantidad de Ejercicios</label>
+              <select id="ws3-count" class="inp inp-sm">
+                <option value="8">8 ejercicios</option>
+                <option value="12" selected>12 ejercicios</option>
+                <option value="16">16 ejercicios</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:flex-end;gap:8px;padding-top:22px">
+              <button class="btn btn-primary" onclick="generateWS3()">👁️ Previsualizar</button>
+              <button class="btn btn-success" onclick="saveWS3PDF()">💾 Guardar PDF</button>
+            </div>
+          </div>
+        </div>
+        <div id="ws3-preview" style="margin-top:16px"></div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         SECCIÓN 6 — EVALUACIÓN FINAL
+         ====================================================== -->
+    <section id="sec6" class="section">
+      <div class="page-title">📝 6. Evaluación Final</div>
+      <div class="page-sub">10 preguntas de opción múltiple sobre División de 1, 2 y 3 cifras</div>
+
+      <div class="card" id="quizContainer">
+        <div class="card-title">🏆 Evaluación — Tema 15: División</div>
+        <div id="quizQuestions"></div>
+        <div class="text-center mt-4" id="quizActions">
+          <button class="btn btn-primary btn-lg" onclick="submitQuiz()">📊 Ver Resultados</button>
+          <button class="btn btn-outline btn-sm" onclick="resetQuiz()" style="margin-left:10px">🔄 Reiniciar</button>
+        </div>
+        <div id="quizResult" style="display:none"></div>
+      </div>
+    </section>
+
+  </main><!-- /main -->
+</div><!-- /layout -->
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  © 2026 <span>MenteMatemáticaI</span>. Todos los derechos reservados <span>VC</span>.
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+/* ================================================================
+   NAVEGACIÓN DINÁMICA
+   ================================================================ */
+let totalScore = 0;
+
+function showSection(id, navEl) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (navEl) navEl.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function addScore(pts) {
+  totalScore += pts;
+  document.getElementById('scoreVal').textContent = totalScore;
+  showToast(`+${pts} puntos! ⭐`, 'success');
+}
+
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+/* ================================================================
+   SECCIÓN 2 — JUEGO DE CONCEPTO (DRAG & DROP)
+   ================================================================ */
+let draggedTerm = null;
+let conceptCorrect = {};
+
+function initConceptGame() {
+  document.querySelectorAll('.concept-item').forEach(item => {
+    item.addEventListener('dragstart', () => { draggedTerm = item; });
+    item.addEventListener('dragend', () => { draggedTerm = null; });
+  });
+  document.querySelectorAll('.drop-zone').forEach(zone => {
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', () => {
+      zone.classList.remove('drag-over');
+      if (!draggedTerm) return;
+      const term = draggedTerm.dataset.term;
+      zone.textContent = draggedTerm.textContent.trim();
+      zone.dataset.placed = term;
+      zone.classList.add('filled');
+      draggedTerm.style.opacity = '.3';
+      draggedTerm.setAttribute('draggable', 'false');
+    });
+  });
+}
+
+function checkConceptGame() {
+  let allFilled = true, allCorrect = true;
+  document.querySelectorAll('.drop-zone').forEach(zone => {
+    if (!zone.dataset.placed) { allFilled = false; return; }
+    if (zone.dataset.placed === zone.dataset.answer) {
+      zone.classList.remove('wrong'); zone.classList.add('filled');
+    } else {
+      zone.classList.add('wrong'); allCorrect = false;
+    }
+  });
+  const fb = document.getElementById('conceptFeedback');
+  if (!allFilled) { fb.innerHTML = '⚠️ Coloca todos los términos antes de verificar.'; fb.style.color = 'var(--amarillo)'; return; }
+  if (allCorrect) {
+    fb.innerHTML = '🎉 ¡Excelente! Identificaste todos los elementos correctamente.';
+    fb.style.color = 'var(--verde)';
+    addScore(20);
+  } else {
+    fb.innerHTML = '❌ Algunos elementos están mal ubicados. ¡Inténtalo de nuevo!';
+    fb.style.color = 'var(--rojo)';
+  }
+}
+
+function resetConceptGame() {
+  document.querySelectorAll('.drop-zone').forEach(zone => {
+    zone.textContent = '?'; zone.dataset.placed = ''; zone.className = 'drop-zone';
+  });
+  document.querySelectorAll('.concept-item').forEach(item => {
+    item.style.opacity = '1'; item.setAttribute('draggable','true');
+  });
+  document.getElementById('conceptFeedback').innerHTML = '';
+}
+
+/* ================================================================
+   SIMULADORES DE DIVISIÓN — ALGORITMO GENERAL
+   ================================================================ */
+function divisionSteps(dividend, divisor) {
+  if (divisor === 0) return { error: 'No se puede dividir entre cero.' };
+  const absDividend = Math.abs(dividend);
+  const absDivisor  = Math.abs(divisor);
+  const negResult   = (dividend < 0) !== (divisor < 0);
+  const quotient    = Math.floor(absDividend / absDivisor);
+  const remainder   = absDividend % absDivisor;
+
+  // Construir pasos del algoritmo largo
+  const dividendStr = String(absDividend);
+  const steps = [];
+  let current = 0;
+  let quotientStr = '';
+  let i = 0;
+
+  while (i < dividendStr.length) {
+    current = current * 10 + parseInt(dividendStr[i]);
+    i++;
+    // Si current aún es menor que divisor, seguimos bajando
+    while (current < absDivisor && i < dividendStr.length) {
+      current = current * 10 + parseInt(dividendStr[i]);
+      quotientStr += '0';
+      i++;
+    }
+    if (current < absDivisor) {
+      quotientStr += '0';
+      steps.push({ partial: current, times: 0, product: 0, sub: current });
+      break;
+    }
+    const times = Math.floor(current / absDivisor);
+    const product = times * absDivisor;
+    const sub = current - product;
+    quotientStr += String(times);
+    steps.push({ partial: current, times, product, sub });
+    current = sub;
+  }
+
+  return { dividend: absDividend, divisor: absDivisor, quotient, remainder, negResult, steps, quotientStr };
+}
+
+function renderSimulator(containerId, dividend, divisor) {
+  const result = divisionSteps(parseInt(dividend), parseInt(divisor));
+  const out = document.getElementById(containerId);
+
+  if (result.error) { out.innerHTML = `<div style="color:var(--rojo);padding:12px">${result.error}</div>`; return; }
+
+  const sign = result.negResult ? '−' : '';
+  let html = `<div class="division-visual">
+    <div class="dv-dividend">${result.dividend}</div>
+    <div class="dv-right">
+      <div class="dv-divisor">${result.divisor}</div>
+      <div class="dv-quotient">${sign}${result.quotient}</div>
+    </div>
+  </div>`;
+
+  html += `<div class="mt-3"><strong style="color:var(--azul-marino)">📋 Pasos detallados:</strong></div>`;
+  result.steps.forEach((s, idx) => {
+    html += `<div class="sim-step">
+      <span class="step-num">Paso ${idx+1}:</span>
+      ¿Cuántas veces cabe <strong>${result.divisor}</strong> en <strong>${s.partial}</strong>?
+      → <strong>${s.times}</strong> vez/veces (${result.divisor} × ${s.times} = ${s.product})
+      → Resta: ${s.partial} − ${s.product} = <strong>${s.sub}</strong>
+    </div>`;
+  });
+
+  html += `<div class="success-box mt-3">
+    ✅ <strong>Resultado:</strong>
+    ${result.dividend} ÷ ${result.divisor} = <strong>${sign}${result.quotient}</strong>
+    ${result.remainder > 0 ? `con <strong>residuo ${result.remainder}</strong>` : '(división exacta)'}
+  </div>`;
+
+  html += `<div class="formula-box mt-2">
+    🔍 Verificación: ${result.divisor} × ${result.quotient} + ${result.remainder} = ${result.divisor * result.quotient + result.remainder}
+    ${result.divisor * result.quotient + result.remainder === result.dividend ? '✅' : '❌'}
+  </div>`;
+
+  if (result.negResult) {
+    html += `<div class="info-box mt-2">⚠️ Como los signos son diferentes (uno positivo y uno negativo), el resultado es <strong>negativo</strong>: ${sign}${result.quotient}</div>`;
+  }
+
+  out.innerHTML = html;
+  addScore(5);
+}
+
+// SIMULADOR 1
+function runSim1() {
+  const d = document.getElementById('sim1-dividend').value;
+  const v = document.getElementById('sim1-divisor').value;
+  if (!d || !v || parseInt(v) < 1 || parseInt(v) > 9) {
+    showToast('El divisor debe ser entre 1 y 9', 'error'); return;
+  }
+  renderSimulator('sim1-output', d, v);
+}
+function randomSim1() {
+  const divisors = [2,3,4,5,6,7,8,9];
+  const div = divisors[Math.floor(Math.random()*divisors.length)];
+  const rand = Math.floor(Math.random()*900)+100;
+  document.getElementById('sim1-dividend').value = rand;
+  document.getElementById('sim1-divisor').value = div;
+  runSim1();
+}
+
+// SIMULADOR 2
+function runSim2() {
+  const d = document.getElementById('sim2-dividend').value;
+  const v = document.getElementById('sim2-divisor').value;
+  if (!d || !v || parseInt(v) < 10 || parseInt(v) > 99) {
+    showToast('El divisor debe ser entre 10 y 99', 'error'); return;
+  }
+  renderSimulator('sim2-output', d, v);
+}
+function randomSim2() {
+  const div = Math.floor(Math.random()*89)+10;
+  const rand = Math.floor(Math.random()*9000)+1000;
+  document.getElementById('sim2-dividend').value = rand;
+  document.getElementById('sim2-divisor').value = div;
+  runSim2();
+}
+
+// SIMULADOR 3
+function runSim3() {
+  const d = document.getElementById('sim3-dividend').value;
+  const v = document.getElementById('sim3-divisor').value;
+  if (!d || !v || parseInt(v) < 100 || parseInt(v) > 999) {
+    showToast('El divisor debe ser entre 100 y 999', 'error'); return;
+  }
+  renderSimulator('sim3-output', d, v);
+}
+function randomSim3() {
+  const div = Math.floor(Math.random()*899)+100;
+  const rand = Math.floor(Math.random()*900000)+10000;
+  document.getElementById('sim3-dividend').value = rand;
+  document.getElementById('sim3-divisor').value = div;
+  runSim3();
+}
+
+/* ================================================================
+   JUEGOS DE REPASO — MOTOR GENÉRICO
+   ================================================================ */
+function makeGameEngine(prefix, genQuestion) {
+  let score = 0, qNum = 0, streak = 0, maxQ = 10, active = false;
+
+  function generateQuestion() {
+    return genQuestion();
+  }
+
+  function makeOptions(correct) {
+    let opts = new Set([correct]);
+    while (opts.size < 4) {
+      const delta = Math.floor(Math.random()*10)+1;
+      opts.add(correct + (Math.random()>.5 ? delta : -delta));
+    }
+    return [...opts].sort(() => Math.random()-.5);
+  }
+
+  function render() {
+    if (qNum >= maxQ) {
+      document.getElementById(prefix+'-question').textContent = '🏁 ¡Juego terminado!';
+      document.getElementById(prefix+'-options').innerHTML = '';
+      document.getElementById(prefix+'-feedback').textContent = `Puntaje final: ${score} puntos 🎉`;
+      document.getElementById(prefix+'-progress').style.width = '100%';
+      addScore(score > 70 ? 30 : score > 40 ? 15 : 5);
+      active = false;
+      return;
+    }
+    const q = generateQuestion();
+    const opts = makeOptions(q.answer);
+    document.getElementById(prefix+'-question').textContent = q.text;
+    document.getElementById(prefix+'-q').textContent = qNum + 1;
+    document.getElementById(prefix+'-feedback').textContent = '';
+    document.getElementById(prefix+'-progress').style.width = ((qNum+1)/maxQ*100)+'%';
+
+    const optContainer = document.getElementById(prefix+'-options');
+    optContainer.innerHTML = '';
+    opts.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'game-opt';
+      btn.textContent = opt;
+      btn.onclick = () => {
+        if (!active) return;
+        optContainer.querySelectorAll('.game-opt').forEach(b => { b.disabled = true; });
+        if (opt === q.answer) {
+          btn.classList.add('correct');
+          streak++;
+          const pts = 10 + (streak > 2 ? 5 : 0);
+          score += pts;
+          document.getElementById(prefix+'-score').textContent = score;
+          document.getElementById(prefix+'-streak').textContent = streak;
+          document.getElementById(prefix+'-feedback').textContent = `✅ ¡Correcto! +${pts} pts 🔥`;
+        } else {
+          btn.classList.add('wrong');
+          optContainer.querySelectorAll('.game-opt').forEach(b => {
+            if (parseInt(b.textContent) === q.answer) b.classList.add('correct');
+          });
+          streak = 0;
+          document.getElementById(prefix+'-streak').textContent = '0';
+          document.getElementById(prefix+'-feedback').textContent = `❌ Era ${q.answer}. ¡No te rindas!`;
+        }
+        qNum++;
+        setTimeout(render, 1600);
+      };
+      optContainer.appendChild(btn);
+    });
+  }
+
+  return {
+    start() { score=0; qNum=0; streak=0; active=true;
+      document.getElementById(prefix+'-score').textContent='0';
+      document.getElementById(prefix+'-streak').textContent='0';
+      render(); },
+    reset() { score=0; qNum=0; streak=0; active=false;
+      document.getElementById(prefix+'-score').textContent='0';
+      document.getElementById(prefix+'-q').textContent='1';
+      document.getElementById(prefix+'-streak').textContent='0';
+      document.getElementById(prefix+'-progress').style.width='10%';
+      document.getElementById(prefix+'-question').textContent='Presiona Iniciar Juego';
+      document.getElementById(prefix+'-options').innerHTML='';
+      document.getElementById(prefix+'-feedback').textContent='';
+    }
+  };
+}
+
+/* ---- Juego 1: divisor de 1 cifra ---- */
+const game1 = makeGameEngine('g1', () => {
+  const divs=[2,3,4,5,6,7,8,9];
+  const d = divs[Math.floor(Math.random()*divs.length)];
+  const q = Math.floor(Math.random()*15)+2;
+  const dividend = d * q;
+  return { text:`¿Cuánto es ${dividend} ÷ ${d}?`, answer: q };
+});
+function startGame1()  { game1.start(); }
+function resetGame1()  { game1.reset(); }
+
+/* ---- Juego 2: divisor de 2 cifras ---- */
+const game2 = makeGameEngine('g2', () => {
+  const d = Math.floor(Math.random()*40)+10;
+  const q = Math.floor(Math.random()*15)+2;
+  const dividend = d * q;
+  return { text:`¿Cuánto es ${dividend} ÷ ${d}?`, answer: q };
+});
+function startGame2()  { game2.start(); }
+function resetGame2()  { game2.reset(); }
+
+/* ---- Juego 3: divisor de 3 cifras ---- */
+const game3 = makeGameEngine('g3', () => {
+  const d = Math.floor(Math.random()*400)+100;
+  const q = Math.floor(Math.random()*15)+2;
+  const dividend = d * q;
+  return { text:`¿Cuánto es ${dividend} ÷ ${d}?`, answer: q };
+});
+function startGame3()  { game3.start(); }
+function resetGame3()  { game3.reset(); }
+
+/* ================================================================
+   GENERADOR DE HOJAS DE EJERCICIOS
+   ================================================================ */
+function randInt(min, max) { return Math.floor(Math.random()*(max-min+1))+min; }
+
+function generateExercises(divisorMin, divisorMax, dividendDigits, count) {
+  const exs = [];
+  for (let i = 0; i < count; i++) {
+    const divisor  = randInt(divisorMin, divisorMax);
+    const min = Math.pow(10, dividendDigits-1);
+    const max = Math.pow(10, dividendDigits)-1;
+    const dividend = randInt(min, max);
+    exs.push({ dividend, divisor });
+  }
+  return exs;
+}
+
+function worksheetHTML(centro, maestro, curso, exs, title) {
+  const fecha = new Date().toLocaleDateString('es-BO');
+  const cols  = exs.length <= 8 ? 2 : exs.length <= 12 ? 3 : 4;
+  let exHTML = '';
+  exs.forEach((ex, i) => {
+    exHTML += `<div class="ws-ex">
+      <div style="font-size:.78rem;margin-bottom:4px"><strong>${i+1}.</strong></div>
+      <div class="ws-ex-division">
+        <div class="ws-dividend">${ex.dividend}</div>
+        <div class="ws-divisor-block">
+          <div class="ws-divisor">${ex.divisor}</div>
+          <div class="ws-answer-line">_____</div>
+        </div>
+      </div>
+    </div>`;
+  });
+  return `<div class="worksheet-preview" id="ws-print">
+    <div class="ws-header">
+      <div style="font-size:1.1rem;font-weight:900">${centro || 'Centro Educativo'}</div>
+      <div style="font-size:1.4rem;font-weight:900;margin:6px 0">${title}</div>
+    </div>
+    <div class="ws-info">
+      <div>👨‍🏫 <strong>Maestro/a:</strong> ${maestro || '_____________________'}</div>
+      <div>🎓 <strong>Curso:</strong> ${curso || '___________'}</div>
+      <div>📅 <strong>Fecha:</strong> ${fecha}</div>
+    </div>
+    <div style="font-size:.82rem;margin-bottom:14px;color:#555">
+      <strong>Nombre del alumno/a:</strong> ___________________________________&nbsp;&nbsp;&nbsp;
+      <strong>Calificación:</strong> ______
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(${cols},1fr);gap:18px 14px;margin-top:10px">
+      ${exHTML}
+    </div>
+    <hr style="margin:18px 0;border:none;border-top:1px solid #ccc">
+    <div style="font-size:.72rem;text-align:center;color:#999">© 2026 MenteMatemáticaI — Todos los derechos reservados VC.</div>
+  </div>`;
+}
+
+function generateWS(n) {
+  const centro  = document.getElementById(`ws${n}-centro`).value;
+  const maestro = document.getElementById(`ws${n}-maestro`).value;
+  const curso   = document.getElementById(`ws${n}-curso`).value;
+  const digits  = parseInt(document.getElementById(`ws${n}-digits`).value);
+  const count   = parseInt(document.getElementById(`ws${n}-count`).value);
+  const divRanges = { 1:[1,9], 2:[10,99], 3:[100,999] };
+  const [dmin, dmax] = divRanges[n];
+  const titles = { 1:'División con Divisor de 1 Cifra', 2:'División con Divisor de 2 Cifras', 3:'División con Divisor de 3 Cifras' };
+  const exs = generateExercises(dmin, dmax, digits, count);
+  document.getElementById(`ws${n}-preview`).innerHTML = worksheetHTML(centro, maestro, curso, exs, titles[n]);
+}
+
+function generateWS1() { generateWS(1); }
+function generateWS2() { generateWS(2); }
+function generateWS3() { generateWS(3); }
+
+function saveWSPDF(n) {
+  const preview = document.getElementById(`ws${n}-preview`);
+  if (!preview.innerHTML.trim()) { showToast('Primero genera la hoja', 'error'); return; }
+  const content = document.getElementById('ws-print');
+  if (!content) { showToast('Primero genera la hoja', 'error'); return; }
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(`<!DOCTYPE html><html><head>
+    <meta charset="UTF-8">
+    <title>Hoja de Ejercicios</title>
+    <style>
+      body { font-family:'Times New Roman',serif; margin:20px; }
+      .ws-header { text-align:center; border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:14px; }
+      .ws-info { display:flex; justify-content:space-between; font-size:.85rem; margin-bottom:16px; }
+      .ws-ex-division { display:inline-flex; font-family:'Courier New',monospace; font-size:1rem; font-weight:700; margin:6px 0; }
+      .ws-dividend { padding:4px 8px; border-right:2px solid #000; }
+      .ws-divisor-block { display:flex; flex-direction:column; }
+      .ws-divisor { padding:4px 8px; border-bottom:2px solid #000; min-width:40px; }
+      .ws-answer-line { padding:4px 8px; color:#ccc; min-width:40px; }
+      @media print { body { margin:0; } }
+    </style>
+  </head><body>${content.outerHTML}<script>window.onload=()=>{window.print();}<\/script></body></html>`);
+  printWindow.document.close();
+}
+
+function saveWS1PDF() { saveWSPDF(1); }
+function saveWS2PDF() { saveWSPDF(2); }
+function saveWS3PDF() { saveWSPDF(3); }
+
+/* ================================================================
+   EVALUACIÓN FINAL — 10 PREGUNTAS
+   ================================================================ */
+const quizData = [
+  {
+    q: '¿Cuál es el resultado de 72 ÷ 8?',
+    opts: ['A) 7', 'B) 8', 'C) 9', 'D) 10'],
+    answer: 2, // índice 0
+    explanation: '72 ÷ 8 = 9, porque 8 × 9 = 72.'
+  },
+  {
+    q: '¿Cómo se llama la cantidad que "sobra" en una división?',
+    opts: ['A) Cociente', 'B) Divisor', 'C) Dividendo', 'D) Residuo'],
+    answer: 3,
+    explanation: 'El residuo es la cantidad que sobra después de realizar la división.'
+  },
+  {
+    q: '¿Cuánto es (−24) ÷ (−6)?',
+    opts: ['A) −4', 'B) 4', 'C) −18', 'D) 18'],
+    answer: 1,
+    explanation: 'Negativo ÷ Negativo = Positivo. 24 ÷ 6 = 4, por tanto el resultado es +4.'
+  },
+  {
+    q: 'Si 560 ÷ 14 = 40, ¿cuál es la verificación correcta?',
+    opts: ['A) 14 + 40 = 560', 'B) 14 − 40 = 560', 'C) 14 × 40 = 560', 'D) 14 ÷ 40 = 560'],
+    answer: 2,
+    explanation: 'La prueba de la división es: Divisor × Cociente + Residuo = Dividendo. Aquí: 14 × 40 = 560.'
+  },
+  {
+    q: '¿Cuánto es 325 ÷ 25?',
+    opts: ['A) 11', 'B) 12', 'C) 13', 'D) 14'],
+    answer: 2,
+    explanation: '25 × 13 = 325. Por tanto 325 ÷ 25 = 13.'
+  },
+  {
+    q: '¿Cuál es el dividendo en la expresión: 120 ÷ 15 = 8?',
+    opts: ['A) 15', 'B) 8', 'C) 0', 'D) 120'],
+    answer: 3,
+    explanation: 'El dividendo es el número que se divide, en este caso 120.'
+  },
+  {
+    q: '¿Cuánto es 2448 ÷ 12?',
+    opts: ['A) 204', 'B) 206', 'C) 210', 'D) 214'],
+    answer: 0,
+    explanation: '12 × 204 = 2448. Por tanto 2448 ÷ 12 = 204.'
+  },
+  {
+    q: 'Un agricultor tiene 1500 semillas y quiere distribuirlas en 125 bolsas. ¿Cuántas semillas hay por bolsa?',
+    opts: ['A) 10', 'B) 12', 'C) 13', 'D) 15'],
+    answer: 1,
+    explanation: '1500 ÷ 125 = 12. En cada bolsa habrá 12 semillas.'
+  },
+  {
+    q: '¿Cuál es la propiedad que dice que cualquier número dividido entre sí mismo es igual a 1?',
+    opts: ['A) División por cero', 'B) División por 1', 'C) División propia', 'D) División exacta'],
+    answer: 2,
+    explanation: 'La propiedad de división propia establece que n ÷ n = 1, para cualquier n ≠ 0.'
+  },
+  {
+    q: '¿Cuánto es 45 360 ÷ 315?',
+    opts: ['A) 140', 'B) 142', 'C) 144', 'D) 148'],
+    answer: 2,
+    explanation: '315 × 144 = 45360. Por tanto 45360 ÷ 315 = 144.'
+  }
+];
+
+let quizAnswers = new Array(10).fill(null);
+let quizSubmitted = false;
+
+function renderQuiz() {
+  const container = document.getElementById('quizQuestions');
+  container.innerHTML = '';
+  quizData.forEach((q, qi) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-question';
+    div.id = `qq-${qi}`;
+    let optsHTML = q.opts.map((o, oi) =>
+      `<button class="q-opt" id="qopt-${qi}-${oi}" onclick="selectQuizOpt(${qi},${oi})">${o}</button>`
+    ).join('');
+    div.innerHTML = `
+      <div class="q-num">Pregunta ${qi+1} de 10</div>
+      <div class="q-text">${q.q}</div>
+      <div class="q-options">${optsHTML}</div>
+      <div class="q-feedback" id="qfb-${qi}" style="display:none"></div>`;
+    container.appendChild(div);
+  });
+  document.getElementById('quizResult').style.display = 'none';
+  document.getElementById('quizActions').style.display = 'block';
+  quizSubmitted = false;
+}
+
+function selectQuizOpt(qi, oi) {
+  if (quizSubmitted) return;
+  // Deselect others
+  quizData[qi].opts.forEach((_, i) => {
+    document.getElementById(`qopt-${qi}-${i}`).classList.remove('selected');
+    document.getElementById(`qopt-${qi}-${i}`).style.borderColor = 'var(--gris-borde)';
+  });
+  quizAnswers[qi] = oi;
+  const btn = document.getElementById(`qopt-${qi}-${oi}`);
+  btn.style.borderColor = 'var(--azul-claro)';
+  btn.style.background = 'var(--azul-suave)';
+}
+
+function submitQuiz() {
+  const unanswered = quizAnswers.filter(a => a === null).length;
+  if (unanswered > 0) {
+    showToast(`Faltan ${unanswered} preguntas por responder`, 'error');
+    return;
+  }
+  quizSubmitted = true;
+  let correct = 0;
+  quizData.forEach((q, qi) => {
+    const selected = quizAnswers[qi];
+    const isCorrect = selected === q.answer;
+    if (isCorrect) correct++;
+    const qqEl = document.getElementById(`qq-${qi}`);
+    qqEl.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+    q.opts.forEach((_, oi) => {
+      const btn = document.getElementById(`qopt-${qi}-${oi}`);
+      btn.disabled = true;
+      btn.style.background = '';
+      btn.style.borderColor = '';
+      if (oi === q.answer) btn.classList.add('correct');
+      else if (oi === selected && !isCorrect) btn.classList.add('wrong');
+    });
+    const fb = document.getElementById(`qfb-${qi}`);
+    fb.style.display = 'block';
+    fb.className = `q-feedback ${isCorrect ? 'ok' : 'err'}`;
+    fb.innerHTML = isCorrect
+      ? `✅ ¡Correcto! ${q.explanation}`
+      : `❌ Respuesta correcta: ${q.opts[q.answer]}. ${q.explanation}`;
+  });
+
+  const pct  = (correct / 10) * 100;
+  const nota = pct >= 90 ? '¡Sobresaliente! 🏆' : pct >= 70 ? '¡Muy bien! 🌟' : pct >= 50 ? 'Aprobado 👍' : 'Necesitas repasar 📚';
+  const color = pct >= 70 ? '#16a34a' : pct >= 50 ? '#d97706' : '#dc2626';
+
+  document.getElementById('quizActions').style.display = 'none';
+  const resEl = document.getElementById('quizResult');
+  resEl.style.display = 'block';
+  resEl.innerHTML = `<div class="score-display">
+    <h2 style="margin-bottom:16px">📊 Resultados de la Evaluación</h2>
+    <div class="score-circle">${correct}/10</div>
+    <div style="font-size:1.6rem;font-weight:900;margin-bottom:6px">${pct}%</div>
+    <div style="font-size:1.1rem;opacity:.9;margin-bottom:16px">${nota}</div>
+    <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:18px">
+      <div style="background:rgba(255,255,255,.15);border-radius:10px;padding:12px 20px">
+        <div style="font-size:.75rem;opacity:.7">Correctas</div>
+        <div style="font-size:1.8rem;font-weight:900;color:#86efac">${correct}</div>
+      </div>
+      <div style="background:rgba(255,255,255,.15);border-radius:10px;padding:12px 20px">
+        <div style="font-size:.75rem;opacity:.7">Incorrectas</div>
+        <div style="font-size:1.8rem;font-weight:900;color:#fca5a5">${10-correct}</div>
+      </div>
+      <div style="background:rgba(255,255,255,.15);border-radius:10px;padding:12px 20px">
+        <div style="font-size:.75rem;opacity:.7">Porcentaje</div>
+        <div style="font-size:1.8rem;font-weight:900">${pct}%</div>
+      </div>
+    </div>
+    <button class="btn btn-outline" onclick="resetQuiz()" style="border-color:rgba(255,255,255,.5);color:#fff">🔄 Intentar de nuevo</button>
+  </div>`;
+
+  addScore(correct * 10);
+  window.scrollTo({ top: document.getElementById('quizResult').offsetTop - 100, behavior:'smooth' });
+}
+
+function resetQuiz() {
+  quizAnswers = new Array(10).fill(null);
+  renderQuiz();
+}
+
+/* ================================================================
+   INICIALIZACIÓN
+   ================================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  initConceptGame();
+  renderQuiz();
+
+  // Iniciar simuladores con valores por defecto
+  setTimeout(() => {
+    renderSimulator('sim1-output', 84, 4);
+    renderSimulator('sim2-output', 756, 21);
+    renderSimulator('sim3-output', 15624, 123);
+  }, 300);
+
+  // Mensaje de bienvenida
+  setTimeout(() => {
+    showToast('¡Bienvenido a Mente Matemática! 🎉');
+  }, 800);
+});
+</script>
+</body>
+</html>

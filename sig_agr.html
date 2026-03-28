@@ -1,0 +1,2264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signos de Agrupación – Mente Matemática</title>
+<!-- ============================================================
+     SIGNOS DE AGRUPACIÓN – Plataforma Educativa Interactiva
+     Diseño: Mente Matemática | © 2026 MenteMatemáticaI
+     Autor: Generado con HTML5, CSS3, JavaScript puro
+     ============================================================ -->
+<style>
+/* ===== VARIABLES Y RESET ===== */
+:root {
+  --navy: #0d2550;
+  --navy2: #1a3a6e;
+  --blue: #1565c0;
+  --blue-light: #1e88e5;
+  --accent: #ff6f00;
+  --accent2: #ffa000;
+  --green: #2e7d32;
+  --green-light: #43a047;
+  --red: #c62828;
+  --purple: #6a1b9a;
+  --teal: #00796b;
+  --bg: #f0f2f5;
+  --sidebar-w: 260px;
+  --card-radius: 14px;
+  --shadow: 0 4px 18px rgba(13,37,80,.10);
+  --shadow-hover: 0 8px 28px rgba(13,37,80,.18);
+  --font-main: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --trans: all .28s cubic-bezier(.4,0,.2,1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-main);
+  background: var(--bg);
+  color: #1a2340;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+/* ===== HEADER ===== */
+#site-header {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 50%, var(--blue) 100%);
+  color: #fff;
+  padding: 0 28px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  box-shadow: 0 3px 16px rgba(0,0,0,.35);
+}
+.logo-wrap { display: flex; align-items: center; gap: 12px; }
+.logo-icon {
+  width: 42px; height: 42px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: 900; color: #fff;
+  box-shadow: 0 2px 10px rgba(255,111,0,.4);
+}
+.logo-text { display: flex; flex-direction: column; }
+.logo-name { font-size: 1.18rem; font-weight: 800; letter-spacing: .5px; }
+.logo-sub { font-size: .68rem; opacity: .8; letter-spacing: 1.5px; text-transform: uppercase; }
+.header-center { font-size: 1.08rem; font-weight: 700; letter-spacing: .4px; opacity: .95; text-align: center; flex: 1; }
+.header-center span { font-size: .82rem; font-weight: 400; display: block; opacity: .75; }
+.btn-back {
+  background: rgba(255,255,255,.15);
+  border: 1.5px solid rgba(255,255,255,.35);
+  color: #fff;
+  padding: 7px 16px;
+  border-radius: 8px;
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex; align-items: center; gap: 6px;
+  transition: var(--trans);
+  backdrop-filter: blur(8px);
+}
+.btn-back:hover { background: rgba(255,255,255,.28); transform: translateY(-1px); }
+/* ===== LAYOUT ===== */
+#layout { display: flex; padding-top: 64px; min-height: 100vh; }
+/* ===== SIDEBAR ===== */
+#sidebar {
+  width: var(--sidebar-w);
+  background: #fff;
+  position: fixed;
+  top: 64px; left: 0; bottom: 0;
+  overflow-y: auto;
+  box-shadow: 3px 0 18px rgba(13,37,80,.10);
+  z-index: 100;
+  padding-bottom: 24px;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+#sidebar::-webkit-scrollbar { width: 5px; }
+#sidebar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+.sidebar-header {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
+  color: #fff;
+  padding: 16px 18px 12px;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  opacity: .85;
+}
+.nav-btn {
+  display: flex; align-items: center; gap: 11px;
+  padding: 11px 18px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-main);
+  font-size: .86rem;
+  color: #3a4a6b;
+  border-left: 4px solid transparent;
+  transition: var(--trans);
+  position: relative;
+}
+.nav-btn:hover { background: #f0f4ff; color: var(--blue); }
+.nav-btn.active {
+  background: linear-gradient(90deg, #e8f0fe 0%, #f0f4ff 100%);
+  color: var(--navy);
+  border-left-color: var(--accent);
+  font-weight: 700;
+}
+.nav-icon { font-size: 1.1rem; min-width: 22px; text-align: center; }
+.nav-label { line-height: 1.3; }
+.nav-num {
+  margin-left: auto;
+  background: var(--navy);
+  color: #fff;
+  border-radius: 20px;
+  font-size: .65rem;
+  padding: 1px 7px;
+  font-weight: 700;
+  min-width: 22px;
+  text-align: center;
+}
+.nav-divider { height: 1px; background: #f0f2f5; margin: 6px 14px; }
+/* ===== MAIN CONTENT ===== */
+#main-content {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  padding: 28px 32px 40px;
+  min-height: calc(100vh - 64px);
+}
+/* ===== SECTION COMMON ===== */
+.section-content { display: none; animation: fadeIn .35s ease; }
+.section-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+/* ===== CARDS ===== */
+.card {
+  background: #fff;
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow);
+  padding: 26px 28px;
+  margin-bottom: 22px;
+  transition: var(--trans);
+}
+.card:hover { box-shadow: var(--shadow-hover); }
+.card-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.card-title .ico { font-size: 1.4rem; }
+/* ===== PAGE HEADERS ===== */
+.page-header {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+  border-radius: var(--card-radius);
+  padding: 28px 32px;
+  color: #fff;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::after {
+  content: '';
+  position: absolute;
+  right: -30px; top: -30px;
+  width: 180px; height: 180px;
+  background: rgba(255,255,255,.07);
+  border-radius: 50%;
+}
+.page-header h1 { font-size: 1.65rem; font-weight: 900; margin-bottom: 6px; position: relative; z-index: 1; }
+.page-header p { font-size: .92rem; opacity: .85; position: relative; z-index: 1; line-height: 1.6; }
+/* ===== BADGES & PILLS ===== */
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .3px;
+}
+.badge-blue { background: #e3f2fd; color: var(--blue); }
+.badge-orange { background: #fff3e0; color: var(--accent); }
+.badge-green { background: #e8f5e9; color: var(--green); }
+.badge-red { background: #ffebee; color: var(--red); }
+.badge-purple { background: #f3e5f5; color: var(--purple); }
+/* ===== GRID ===== */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+/* ===== VIDEO CONTAINER ===== */
+.video-wrap {
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0,0,0,.3);
+  margin-bottom: 20px;
+}
+.video-wrap video {
+  width: 100%;
+  max-height: 380px;
+  display: block;
+}
+.video-caption {
+  background: var(--navy);
+  color: #fff;
+  padding: 10px 16px;
+  font-size: .82rem;
+  display: flex; align-items: center; gap: 8px;
+}
+/* ===== INFO BOXES ===== */
+.info-box {
+  border-left: 5px solid var(--blue);
+  background: #e3f2fd;
+  padding: 16px 18px;
+  border-radius: 0 10px 10px 0;
+  margin-bottom: 16px;
+  font-size: .93rem;
+  line-height: 1.7;
+}
+.info-box.warning { border-color: var(--accent); background: #fff8e1; }
+.info-box.success { border-color: var(--green); background: #e8f5e9; }
+.info-box.purple { border-color: var(--purple); background: #f3e5f5; }
+.info-box strong { color: var(--navy); }
+/* ===== SIGN TABLE ===== */
+.sign-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+  font-size: .9rem;
+}
+.sign-table th {
+  background: linear-gradient(135deg, var(--navy), var(--navy2));
+  color: #fff;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 700;
+  font-size: .82rem;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+.sign-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f2f5;
+  vertical-align: middle;
+}
+.sign-table tr:nth-child(even) td { background: #f8fafd; }
+.sign-table tr:last-child td { border-bottom: none; }
+.sign-symbol {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--blue);
+  text-align: center;
+}
+/* ===== STEP CARDS ===== */
+.step-list { display: flex; flex-direction: column; gap: 12px; }
+.step-item {
+  display: flex; gap: 14px;
+  align-items: flex-start;
+  background: #f8fafd;
+  border-radius: 10px;
+  padding: 14px 16px;
+  border: 1px solid #e3eaf6;
+}
+.step-num {
+  width: 32px; height: 32px;
+  min-width: 32px;
+  background: linear-gradient(135deg, var(--blue), var(--blue-light));
+  color: #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900;
+  font-size: .92rem;
+  box-shadow: 0 2px 8px rgba(21,101,192,.35);
+}
+.step-text { font-size: .91rem; line-height: 1.6; color: #2a3a5a; }
+.step-text strong { color: var(--navy); }
+/* ===== SIGN CARDS (interactive) ===== */
+.sign-cards { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 20px; }
+.sign-card {
+  background: linear-gradient(135deg, #fff 60%, #f0f4ff);
+  border: 2px solid #e3eaf6;
+  border-radius: 14px;
+  padding: 20px 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--trans);
+  position: relative;
+  overflow: hidden;
+}
+.sign-card:hover, .sign-card.selected {
+  border-color: var(--blue);
+  box-shadow: 0 6px 22px rgba(21,101,192,.18);
+  transform: translateY(-3px);
+}
+.sign-card.selected { background: linear-gradient(135deg, #e3f2fd, #bbdefb); }
+.sign-card .sym { font-size: 2.2rem; font-weight: 900; color: var(--navy); margin-bottom: 8px; }
+.sign-card .sname { font-size: .82rem; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: .5px; }
+.sign-card .sdesc { font-size: .75rem; color: #5a6a8a; margin-top: 5px; line-height: 1.5; }
+/* ===== SIMULATOR ===== */
+.simulator {
+  background: linear-gradient(135deg, #f8fafd 0%, #e8f0fe 100%);
+  border: 2px solid #c5d8f8;
+  border-radius: 14px;
+  padding: 22px 24px;
+  margin-bottom: 20px;
+}
+.simulator h3 { font-size: 1rem; font-weight: 800; color: var(--navy); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.sim-display {
+  background: #fff;
+  border: 2px solid #e3eaf6;
+  border-radius: 10px;
+  padding: 18px 20px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navy);
+  min-height: 60px;
+  display: flex; align-items: center; gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  font-family: 'Courier New', monospace;
+  letter-spacing: .5px;
+}
+.sim-step {
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: .88rem;
+  color: #3a4a6a;
+  border-left: 4px solid var(--blue);
+  margin-bottom: 8px;
+}
+.sim-step.done { border-left-color: var(--green); background: #f1f8f2; }
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 20px;
+  border-radius: 8px;
+  font-size: .88rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: var(--trans);
+  font-family: var(--font-main);
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,.15); }
+.btn-primary { background: linear-gradient(135deg, var(--blue), var(--blue-light)); color: #fff; }
+.btn-accent { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
+.btn-green { background: linear-gradient(135deg, var(--green), var(--green-light)); color: #fff; }
+.btn-outline { background: transparent; border: 2px solid var(--blue); color: var(--blue); }
+.btn-sm { padding: 6px 14px; font-size: .82rem; }
+.btn-lg { padding: 12px 28px; font-size: 1rem; }
+.btns-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+/* ===== EXERCISE CARDS ===== */
+.exercise-card {
+  background: #fff;
+  border: 2px solid #e8f0fe;
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin-bottom: 18px;
+}
+.exercise-card .ex-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 2px dashed #e8f0fe;
+}
+.ex-num {
+  background: linear-gradient(135deg, var(--navy), var(--navy2));
+  color: #fff;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900;
+  font-size: .9rem;
+  flex-shrink: 0;
+}
+.ex-expr {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--navy);
+  font-family: 'Courier New', monospace;
+  background: #f0f4ff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  display: inline-block;
+  letter-spacing: .5px;
+  margin-bottom: 14px;
+}
+.steps-accordion { cursor: pointer; }
+.steps-toggle {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px;
+  background: #f0f4ff;
+  border-radius: 8px;
+  font-size: .88rem;
+  font-weight: 700;
+  color: var(--blue);
+  margin-bottom: 10px;
+  transition: var(--trans);
+}
+.steps-toggle:hover { background: #dbeafe; }
+.steps-body { display: none; }
+.steps-body.open { display: block; }
+.step-row {
+  display: flex; gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid #f0f2f5;
+  font-size: .87rem;
+  align-items: center;
+}
+.step-row:last-child { border-bottom: none; }
+.step-label {
+  font-weight: 700;
+  color: var(--blue);
+  min-width: 60px;
+  font-size: .78rem;
+  text-transform: uppercase;
+}
+.step-val {
+  font-family: 'Courier New', monospace;
+  font-size: .92rem;
+  color: #2a3a5a;
+  font-weight: 600;
+}
+.result-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: linear-gradient(135deg, var(--green), var(--green-light));
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: .88rem;
+  font-weight: 800;
+  margin-top: 10px;
+}
+/* ===== QUIZ / GAMIFIED ===== */
+.quiz-container { }
+.quiz-q {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 18px;
+  border: 2px solid #e8f0fe;
+  position: relative;
+}
+.quiz-q-text {
+  font-size: .98rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 14px;
+  line-height: 1.6;
+}
+.quiz-options { display: flex; flex-direction: column; gap: 9px; }
+.quiz-opt {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 16px;
+  border: 2px solid #e8f0fe;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: .9rem;
+  transition: var(--trans);
+  background: #fff;
+  font-family: var(--font-main);
+  text-align: left;
+  width: 100%;
+}
+.quiz-opt:hover { border-color: var(--blue); background: #e8f0fe; }
+.quiz-opt.correct { border-color: var(--green); background: #e8f5e9; color: var(--green); font-weight: 700; }
+.quiz-opt.wrong { border-color: var(--red); background: #ffebee; color: var(--red); font-weight: 700; }
+.quiz-opt .opt-letter {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: #e8f0fe;
+  color: var(--blue);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900;
+  font-size: .82rem;
+  flex-shrink: 0;
+}
+.quiz-opt.correct .opt-letter { background: var(--green); color: #fff; }
+.quiz-opt.wrong .opt-letter { background: var(--red); color: #fff; }
+.feedback {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: .87rem;
+  font-weight: 600;
+  display: none;
+}
+.feedback.show { display: block; }
+.feedback.ok { background: #e8f5e9; color: var(--green); border-left: 4px solid var(--green); }
+.feedback.fail { background: #ffebee; color: var(--red); border-left: 4px solid var(--red); }
+.score-board {
+  background: linear-gradient(135deg, var(--navy), var(--blue));
+  color: #fff;
+  border-radius: 14px;
+  padding: 22px 26px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.score-board .score-val { font-size: 3rem; font-weight: 900; }
+.score-board .score-label { font-size: .9rem; opacity: .8; margin-top: 4px; }
+/* ===== GENERATOR ===== */
+.generator-form { background: #f8fafd; border-radius: 12px; padding: 22px; border: 2px solid #e3eaf6; margin-bottom: 20px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-label { font-size: .82rem; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: .5px; }
+.form-input, .form-select {
+  padding: 9px 13px;
+  border: 2px solid #e3eaf6;
+  border-radius: 8px;
+  font-family: var(--font-main);
+  font-size: .9rem;
+  color: #2a3a5a;
+  outline: none;
+  transition: var(--trans);
+  background: #fff;
+}
+.form-input:focus, .form-select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(21,101,192,.1); }
+.checkbox-group { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; padding: 6px 0; }
+.checkbox-item { display: flex; align-items: center; gap: 6px; font-size: .88rem; cursor: pointer; }
+.checkbox-item input { width: 16px; height: 16px; cursor: pointer; accent-color: var(--blue); }
+/* ===== PRINT SHEET ===== */
+.print-sheet {
+  background: #fff;
+  border: 2px solid #e3eaf6;
+  border-radius: 12px;
+  padding: 28px 32px;
+  display: none;
+}
+.print-sheet.visible { display: block; }
+.sheet-header { text-align: center; border-bottom: 3px double var(--navy); padding-bottom: 16px; margin-bottom: 20px; }
+.sheet-header h2 { font-size: 1.4rem; color: var(--navy); font-weight: 900; margin-bottom: 4px; }
+.sheet-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+.sheet-meta-item { display: flex; gap: 6px; font-size: .88rem; }
+.sheet-meta-label { font-weight: 700; color: var(--navy); }
+.sheet-exercises { counter-reset: exercise; }
+.sheet-ex {
+  display: flex; gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px dashed #ccc;
+  counter-increment: exercise;
+  align-items: center;
+}
+.sheet-ex::before {
+  content: counter(exercise)".";
+  font-weight: 700;
+  color: var(--navy);
+  min-width: 24px;
+  font-size: .95rem;
+}
+.sheet-ex-expr { font-family: 'Courier New', monospace; font-size: 1rem; font-weight: 700; flex: 1; }
+.sheet-ex-line { flex: 1; border-bottom: 1px solid #888; height: 1px; margin: 0 10px; align-self: flex-end; margin-bottom: 6px; }
+/* ===== PROGRESS BAR ===== */
+.progress-bar-wrap { background: #e3eaf6; border-radius: 10px; height: 10px; margin: 10px 0; overflow: hidden; }
+.progress-bar-fill { height: 100%; border-radius: 10px; background: linear-gradient(90deg, var(--blue), var(--accent)); transition: width .5s ease; }
+/* ===== WELCOME SCREEN ===== */
+#welcome-overlay {
+  position: fixed; inset: 0;
+  background: linear-gradient(135deg, var(--navy) 0%, #0a3370 50%, var(--blue) 100%);
+  z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  transition: opacity .8s ease, transform .8s ease;
+}
+#welcome-overlay.hide { opacity: 0; pointer-events: none; transform: scale(1.05); }
+.welcome-box { text-align: center; max-width: 540px; padding: 30px; }
+.welcome-emoji { font-size: 4.5rem; margin-bottom: 16px; display: block; animation: bounce 1.5s infinite; }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+.welcome-box h1 { font-size: 2rem; font-weight: 900; margin-bottom: 12px; line-height: 1.2; }
+.welcome-box p { font-size: 1rem; opacity: .85; margin-bottom: 28px; line-height: 1.7; }
+.welcome-btn {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  padding: 14px 40px;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  transition: var(--trans);
+  box-shadow: 0 6px 24px rgba(255,111,0,.45);
+  letter-spacing: .5px;
+}
+.welcome-btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 30px rgba(255,111,0,.5); }
+/* ===== LEY DE SIGNOS ===== */
+.sign-law-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.law-card {
+  border-radius: 12px;
+  padding: 18px 20px;
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+.law-card.positive { background: linear-gradient(135deg, #e8f5e9, #f1f8f2); border-color: #a5d6a7; }
+.law-card.negative { background: linear-gradient(135deg, #ffebee, #fff5f5); border-color: #ef9a9a; }
+.law-card .op { font-size: 2rem; font-weight: 900; margin-bottom: 8px; }
+.law-card.positive .op { color: var(--green); }
+.law-card.negative .op { color: var(--red); }
+.law-card .rule-row { font-size: .9rem; padding: 4px 0; border-bottom: 1px solid rgba(0,0,0,.07); display: flex; align-items: center; gap: 8px; }
+.law-card .rule-row:last-child { border-bottom: none; }
+/* ===== CANVAS ===== */
+canvas { border-radius: 10px; display: block; }
+/* ===== EVALUATION ===== */
+.eval-result {
+  background: linear-gradient(135deg, #fff, #f8fafd);
+  border-radius: 14px;
+  padding: 28px;
+  text-align: center;
+  border: 2px solid #e3eaf6;
+  display: none;
+}
+.eval-result.show { display: block; }
+.eval-grade { font-size: 4rem; font-weight: 900; color: var(--navy); }
+.eval-label { font-size: 1.2rem; font-weight: 700; margin-top: 6px; }
+.eval-stars { font-size: 2rem; margin: 10px 0; }
+/* ===== TOOLTIP ===== */
+.tooltip-wrap { position: relative; display: inline-block; }
+.tooltip-tip {
+  visibility: hidden;
+  background: var(--navy);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 7px;
+  font-size: .78rem;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 100;
+  box-shadow: 0 3px 12px rgba(0,0,0,.2);
+}
+.tooltip-wrap:hover .tooltip-tip { visibility: visible; }
+/* ===== INTERACTIVE DRILL ===== */
+.drill-box {
+  background: #f8fafd;
+  border: 2px solid #c5d8f8;
+  border-radius: 14px;
+  padding: 22px 24px;
+}
+.drill-expr { font-size: 1.4rem; font-family: 'Courier New', monospace; font-weight: 800; color: var(--navy); background: #fff; padding: 14px 20px; border-radius: 10px; margin-bottom: 16px; border: 2px dashed #c5d8f8; text-align: center; }
+.drill-input {
+  padding: 10px 16px;
+  border: 2px solid #e3eaf6;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  width: 120px;
+  text-align: center;
+  outline: none;
+  transition: var(--trans);
+}
+.drill-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(21,101,192,.1); }
+.drill-input.ok { border-color: var(--green); background: #e8f5e9; color: var(--green); }
+.drill-input.err { border-color: var(--red); background: #ffebee; color: var(--red); }
+.drill-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; flex-wrap: wrap; }
+/* ===== GAMIFIED SCORE ===== */
+.gm-score { display: flex; align-items: center; gap: 12px; background: var(--navy); color: #fff; padding: 10px 18px; border-radius: 10px; margin-bottom: 14px; }
+.gm-score .pts { font-size: 1.6rem; font-weight: 900; }
+.gm-score .lbl { font-size: .8rem; opacity: .8; }
+.gm-score .streak { margin-left: auto; font-size: .85rem; background: rgba(255,255,255,.15); padding: 4px 12px; border-radius: 20px; }
+/* ===== OBJECTIVES ===== */
+.obj-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.obj-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: linear-gradient(135deg, #e8f5e9, #f8fafd);
+  border-radius: 12px;
+  padding: 16px 18px;
+  border: 1.5px solid #a5d6a7;
+}
+.obj-icon { font-size: 1.6rem; flex-shrink: 0; }
+.obj-text { font-size: .9rem; line-height: 1.6; font-weight: 600; color: #1a3320; }
+/* ===== RULE DISPLAY ===== */
+.rule-box {
+  background: linear-gradient(135deg, var(--navy), var(--navy2));
+  color: #fff;
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin-bottom: 14px;
+}
+.rule-box .rule-formula { font-family: 'Courier New', monospace; font-size: 1.2rem; font-weight: 700; background: rgba(255,255,255,.1); padding: 10px 14px; border-radius: 8px; margin: 10px 0; letter-spacing: .5px; }
+.rule-box .rule-title { font-size: .85rem; font-weight: 700; opacity: .7; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+/* ===== FOOTER ===== */
+#site-footer {
+  background: linear-gradient(135deg, var(--navy), var(--navy2));
+  color: rgba(255,255,255,.75);
+  text-align: center;
+  padding: 16px;
+  font-size: .8rem;
+  margin-left: var(--sidebar-w);
+}
+/* ===== PRINT STYLES ===== */
+@media print {
+  #site-header, #sidebar, #site-footer, .no-print, .btns-row, .btn { display: none !important; }
+  #main-content { margin-left: 0; padding: 0; }
+  #layout { padding-top: 0; }
+  .print-sheet { display: block !important; border: none; padding: 0; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  #sidebar { display: none; }
+  #main-content { margin-left: 0; padding: 16px; }
+  #site-footer { margin-left: 0; }
+  .grid-2, .sign-law-grid, .obj-list, .form-row { grid-template-columns: 1fr; }
+  .grid-3, .grid-4, .sign-cards { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== WELCOME OVERLAY ===== -->
+<div id="welcome-overlay">
+  <div class="welcome-box">
+    <span class="welcome-emoji">🧮</span>
+    <h1>¡Bienvenido a<br>Mente Matemática!</h1>
+    <p>Hoy aprenderás sobre los <strong>Signos de Agrupación</strong>:<br>
+    los guardianes del orden matemático que aseguran<br>que todos obtengamos el mismo resultado.</p>
+    <button class="welcome-btn" onclick="closeWelcome()">¡Comenzar la aventura! 🚀</button>
+  </div>
+</div>
+
+<!-- ===== HEADER ===== -->
+<header id="site-header">
+  <div class="logo-wrap">
+    <div class="logo-icon">M²</div>
+    <div class="logo-text">
+      <span class="logo-name">Mente Matemática</span>
+      <span class="logo-sub">Plataforma Educativa</span>
+    </div>
+  </div>
+  <div class="header-center">
+    🔢 Signos de Agrupación
+    <span>Matemáticas · 9 a 15 años</span>
+  </div>
+  <a href="temario.html" class="btn-back">← Volver al menú</a>
+</header>
+
+<!-- ===== LAYOUT ===== -->
+<div id="layout">
+  <!-- SIDEBAR -->
+  <nav id="sidebar">
+    <div class="sidebar-header">📚 Módulos de aprendizaje</div>
+    <button class="nav-btn active" onclick="goTo('s0',this)">
+      <span class="nav-icon">🏠</span><span class="nav-label">Bienvenida</span>
+    </button>
+    <button class="nav-btn" onclick="goTo('s1',this)">
+      <span class="nav-icon">🎯</span><span class="nav-label">¿Qué aprenderemos?</span><span class="nav-num">1</span>
+    </button>
+    <div class="nav-divider"></div>
+    <button class="nav-btn" onclick="goTo('s2',this)">
+      <span class="nav-icon">📖</span><span class="nav-label">Definición</span><span class="nav-num">2</span>
+    </button>
+    <button class="nav-btn" onclick="goTo('s3',this)">
+      <span class="nav-icon">🔣</span><span class="nav-label">Tipos de Signos</span><span class="nav-num">3</span>
+    </button>
+    <button class="nav-btn" onclick="goTo('s4',this)">
+      <span class="nav-icon">⚡</span><span class="nav-label">Ley de Signos</span><span class="nav-num">4</span>
+    </button>
+    <button class="nav-btn" onclick="goTo('s5',this)">
+      <span class="nav-icon">✂️</span><span class="nav-label">Eliminación de Símbolos</span><span class="nav-num">5</span>
+    </button>
+    <div class="nav-divider"></div>
+    <button class="nav-btn" onclick="goTo('s6',this)">
+      <span class="nav-icon">📝</span><span class="nav-label">Práctica Guiada</span><span class="nav-num">6</span>
+    </button>
+    <button class="nav-btn" onclick="goTo('s7',this)">
+      <span class="nav-icon">🏋️</span><span class="nav-label">Ejercicios Fácil→Difícil</span><span class="nav-num">7</span>
+    </button>
+    <div class="nav-divider"></div>
+    <button class="nav-btn" onclick="goTo('s8',this)">
+      <span class="nav-icon">🏆</span><span class="nav-label">Evaluación Final</span><span class="nav-num">8</span>
+    </button>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main id="main-content">
+
+    <!-- ===== S0: BIENVENIDA ===== -->
+    <div id="s0" class="section-content active">
+      <div class="page-header">
+        <h1>🏠 Bienvenida</h1>
+        <p>¡Hola, matemático! Estás en la plataforma de aprendizaje de <strong>Signos de Agrupación</strong>.</p>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title"><span class="ico">✨</span>¿De qué trata este material?</div>
+          <p style="font-size:.93rem;line-height:1.8;color:#3a4a6b;">
+            ¿Alguna vez te has preguntado por qué en matemáticas los paréntesis son tan importantes?<br><br>
+            En este material descubrirás el fascinante mundo de los <strong>Signos de Agrupación</strong>,
+            que son herramientas clave para que todos los matemáticos del mundo obtengan el <strong>mismo resultado</strong>
+            cuando resuelven una misma operación.
+          </p>
+          <div style="margin-top:14px;" class="info-box success">
+            💡 <strong>Recuerda:</strong> ¡Cada error es una oportunidad de aprender!
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="ico">🗺️</span>Mapa de navegación</div>
+          <div class="step-list">
+            <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>¿Qué aprenderemos?</strong> — Objetivos del tema</div></div>
+            <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Definición</strong> — ¿Qué son los signos?</div></div>
+            <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Tipos</strong> — Paréntesis, corchetes, llaves...</div></div>
+            <div class="step-item"><div class="step-num">4</div><div class="step-text"><strong>Ley de signos</strong> — Reglas de suma, resta y mult.</div></div>
+            <div class="step-item"><div class="step-num">5</div><div class="step-text"><strong>Eliminación</strong> — Reglas paso a paso</div></div>
+            <div class="step-item"><div class="step-num">6-7</div><div class="step-text"><strong>Práctica</strong> — Ejercicios guiados y libres</div></div>
+            <div class="step-item"><div class="step-num">8</div><div class="step-text"><strong>Evaluación final</strong> — ¡Demuestra lo aprendido!</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="background:linear-gradient(135deg,#fff3e0,#fff8e1);border:2px solid #ffcc80;">
+        <div style="display:flex;align-items:center;gap:16px;">
+          <span style="font-size:3rem;">🎯</span>
+          <div>
+            <div style="font-weight:800;font-size:1.05rem;color:#e65100;margin-bottom:4px;">¿Estás listo para comenzar?</div>
+            <p style="font-size:.91rem;color:#6d4c41;line-height:1.7;">Usa la barra lateral izquierda para navegar entre los módulos. Cada módulo tiene videos, simuladores interactivos y ejercicios para practicar. ¡Navega a tu propio ritmo!</p>
+          </div>
+          <button class="btn btn-accent" onclick="goTo('s1',document.querySelectorAll('.nav-btn')[1])">Empezar →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== S1: QUÉ APRENDEREMOS ===== -->
+    <div id="s1" class="section-content">
+      <div class="page-header">
+        <h1>🎯 ¿Qué aprenderemos?</h1>
+        <p>Objetivos de aprendizaje del tema: <em>Signos de Agrupación</em></p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico">🌟</span>Introducción</div>
+        <p style="font-size:.95rem;line-height:1.8;color:#2a3a5a;margin-bottom:16px;">
+          En matemáticas, el <strong>orden</strong> lo es todo. Cuando realizamos operaciones aritméticas,
+          necesitamos un sistema que indique a todos los matemáticos del mundo en qué orden deben hacerse los cálculos.
+          Ese sistema son los <strong>Signos de Agrupación</strong>.
+        </p>
+        <canvas id="intro-canvas" width="700" height="140" style="margin:10px 0;max-width:100%;"></canvas>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico">✅</span>Al finalizar este material serás capaz de:</div>
+        <div class="obj-list">
+          <div class="obj-item"><div class="obj-icon">🔍</div><div class="obj-text"><strong>Reconocer y nombrar</strong> los diferentes signos de agrupación: paréntesis, corchetes, llaves y barra vincular.</div></div>
+          <div class="obj-item"><div class="obj-icon">✂️</div><div class="obj-text"><strong>Eliminar correctamente</strong> los signos de agrupación aplicando las reglas del signo positivo y negativo.</div></div>
+          <div class="obj-item"><div class="obj-icon">🔢</div><div class="obj-text"><strong>Resolver operaciones</strong> aritméticas respetando la jerarquía correcta de adentro hacia afuera.</div></div>
+          <div class="obj-item"><div class="obj-icon">🏆</div><div class="obj-text"><strong>Demostrar tus conocimientos</strong> en la evaluación final con seguridad y confianza.</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico">🎬</span>¡Un vistazo previo!</div>
+        <p style="font-size:.92rem;line-height:1.7;color:#3a4a6b;margin-bottom:14px;">
+          A lo largo del material verás estas estructuras matemáticas y aprenderás cómo resolverlas:
+        </p>
+        <div class="grid-3">
+          <div style="background:#e3f2fd;border-radius:10px;padding:14px;text-align:center;">
+            <div style="font-size:1.5rem;font-weight:900;font-family:'Courier New';color:#0d47a1;">( )</div>
+            <div style="font-size:.8rem;margin-top:6px;color:#1565c0;font-weight:700;">Paréntesis · 1er nivel</div>
+            <div style="font-size:.75rem;color:#555;margin-top:4px;">Se resuelven primero</div>
+          </div>
+          <div style="background:#f3e5f5;border-radius:10px;padding:14px;text-align:center;">
+            <div style="font-size:1.5rem;font-weight:900;font-family:'Courier New';color:#6a1b9a;">[ ]</div>
+            <div style="font-size:.8rem;margin-top:6px;color:#6a1b9a;font-weight:700;">Corchetes · 2do nivel</div>
+            <div style="font-size:.75rem;color:#555;margin-top:4px;">Después de los paréntesis</div>
+          </div>
+          <div style="background:#fff3e0;border-radius:10px;padding:14px;text-align:center;">
+            <div style="font-size:1.5rem;font-weight:900;font-family:'Courier New';color:#e65100;">{ }</div>
+            <div style="font-size:.8rem;margin-top:6px;color:#e65100;font-weight:700;">Llaves · 3er nivel</div>
+            <div style="font-size:.75rem;color:#555;margin-top:4px;">Al final de todo</div>
+          </div>
+        </div>
+        <div class="info-box" style="margin-top:16px;">
+          <strong>📌 Regla de oro:</strong> Siempre se resuelve de <strong>ADENTRO HACIA AFUERA</strong>: primero ( ), luego [ ], finalmente { }.
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== S2: DEFINICIÓN ===== -->
+    <div id="s2" class="section-content">
+      <div class="page-header">
+        <h1>📖 Definición</h1>
+        <p>¿Qué son exactamente los Signos de Agrupación?</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico">📚</span>¿Qué son los signos de agrupación?</div>
+        <p style="font-size:.95rem;line-height:1.8;color:#2a3a5a;margin-bottom:16px;">
+          Los <strong>signos de agrupación</strong> son símbolos matemáticos que se utilizan para
+          <strong>indicar qué operaciones deben realizarse primero</strong>, agrupando una o más operaciones dentro de ellos.
+        </p>
+        <div class="rule-box">
+          <div class="rule-title">📌 Definición Formal</div>
+          <p style="font-size:.95rem;line-height:1.7;">Los signos de agrupación son <strong>símbolos que encierran una o varias operaciones matemáticas</strong> para indicar que deben realizarse antes que las demás. Establecen un <strong>ORDEN de resolución</strong>, garantizando que el resultado sea siempre el mismo sin importar quién realice la operación.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico">🤔</span>¿Por qué son importantes?</div>
+        <div class="grid-2">
+          <div>
+            <div class="info-box warning" style="margin-bottom:12px;">
+              <strong>⚠️ Sin signos de agrupación:</strong><br>
+              La expresión <code style="font-family:'Courier New';font-weight:700;">3 + 4 × 2</code> puede dar 14 (si multiplicas primero) o 14 (si applies jerarquía)... pero si fuera <code style="font-family:'Courier New';font-weight:700;">3 + 4 + 2 × ?</code> habría confusión.
+            </div>
+            <div class="info-box success">
+              <strong>✅ Con signos de agrupación:</strong><br>
+              <code style="font-family:'Courier New';font-weight:700;">(3 + 4) × 2 = 14</code> — todos obtienen el mismo resultado porque el paréntesis obliga a sumar primero.
+            </div>
+          </div>
+          <div>
+            <canvas id="def-canvas" width="300" height="200" style="max-width:100%;"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico">🔄</span>Comparación interactiva</div>
+        <p style="font-size:.9rem;color:#5a6a8a;margin-bottom:14px;">Observa cómo los signos de agrupación cambian el resultado de una expresión:</p>
+        <div style="display:flex;gap:18px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:200px;">
+            <div style="font-size:.82rem;font-weight:700;color:var(--red);text-transform:uppercase;margin-bottom:6px;">❌ Sin agrupar</div>
+            <div class="ex-expr">10 − 3 + 2</div>
+            <div class="step-list">
+              <div class="step-item"><div class="step-num">1</div><div class="step-text">10 − 3 = <strong>7</strong></div></div>
+              <div class="step-item"><div class="step-num">2</div><div class="step-text">7 + 2 = <strong>9</strong></div></div>
+            </div>
+            <div class="result-badge" style="background:linear-gradient(135deg,var(--red),#e53935);">Resultado: 9</div>
+          </div>
+          <div style="flex:1;min-width:200px;">
+            <div style="font-size:.82rem;font-weight:700;color:var(--green);text-transform:uppercase;margin-bottom:6px;">✅ Con paréntesis</div>
+            <div class="ex-expr">10 − (3 + 2)</div>
+            <div class="step-list">
+              <div class="step-item"><div class="step-num">1</div><div class="step-text">Paréntesis: 3 + 2 = <strong>5</strong></div></div>
+              <div class="step-item"><div class="step-num">2</div><div class="step-text">10 − 5 = <strong>5</strong></div></div>
+            </div>
+            <div class="result-badge">Resultado: 5</div>
+          </div>
+          <div style="flex:1;min-width:200px;">
+            <div style="font-size:.82rem;font-weight:700;color:var(--purple);text-transform:uppercase;margin-bottom:6px;">🔵 Con corchetes</div>
+            <div class="ex-expr">10 − [3 − 2]</div>
+            <div class="step-list">
+              <div class="step-item"><div class="step-num">1</div><div class="step-text">Corchete: 3 − 2 = <strong>1</strong></div></div>
+              <div class="step-item"><div class="step-num">2</div><div class="step-text">10 − 1 = <strong>9</strong></div></div>
+            </div>
+            <div class="result-badge" style="background:linear-gradient(135deg,var(--purple),#8e24aa);">Resultado: 9</div>
+          </div>
+        </div>
+        <div class="info-box" style="margin-top:16px;">
+          <strong>💡 Conclusión:</strong> La misma expresión con diferentes signos de agrupación puede producir resultados completamente diferentes. ¡Por eso son tan importantes!
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== S3: TIPOS DE SIGNOS ===== -->
+    <div id="s3" class="section-content">
+      <div class="page-header">
+        <h1>🔣 Tipos de Signos de Agrupación</h1>
+        <p>Conoce los cuatro tipos y su importancia en las matemáticas</p>
+      </div>
+      <!-- VIDEO -->
+      <div class="card">
+        <div class="card-title"><span class="ico">🎬</span>Video explicativo — Tipos de Signos</div>
+        <div class="video-wrap">
+          <video controls>
+            <source src="vid/sig_ag1.mp4" type="video/mp4">
+            <p style="color:#fff;padding:20px;text-align:center;">⚠️ Coloca el archivo <strong>vid/sig_ag1.mp4</strong> en la misma carpeta para ver el video.</p>
+          </video>
+          <div class="video-caption">🎬 Tipos de Signos de Agrupación — Mente Matemática</div>
+        </div>
+      </div>
+      <!-- TARJETAS INTERACTIVAS -->
+      <div class="card">
+        <div class="card-title"><span class="ico">🃏</span>Los 4 signos — haz clic para explorar</div>
+        <div class="sign-cards" id="sign-cards-container">
+          <div class="sign-card" onclick="showSignDetail(0,this)">
+            <div class="sym">( )</div>
+            <div class="sname">Paréntesis</div>
+            <div class="sdesc">1er nivel · Se resuelven primero</div>
+          </div>
+          <div class="sign-card" onclick="showSignDetail(1,this)">
+            <div class="sym">[ ]</div>
+            <div class="sname">Corchetes</div>
+            <div class="sdesc">2do nivel · Tras los paréntesis</div>
+          </div>
+          <div class="sign-card" onclick="showSignDetail(2,this)">
+            <div class="sym">{ }</div>
+            <div class="sname">Llaves</div>
+            <div class="sdesc">3er nivel · Al final</div>
+          </div>
+          <div class="sign-card" onclick="showSignDetail(3,this)">
+            <div class="sym">—</div>
+            <div class="sname">Barra Vincular</div>
+            <div class="sdesc">Fracciones y raíces</div>
+          </div>
+        </div>
+        <div id="sign-detail-box" style="display:none;" class="info-box purple">
+          <div id="sign-detail-content"></div>
+        </div>
+      </div>
+      <!-- TABLA -->
+      <div class="card">
+        <div class="card-title"><span class="ico">📊</span>Tabla resumen de los signos</div>
+        <table class="sign-table">
+          <thead><tr><th>Nombre</th><th>Símbolo</th><th>Nivel</th><th>Uso</th><th>Ejemplo</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Paréntesis</strong></td><td class="sign-symbol">( )</td><td><span class="badge badge-blue">1°</span></td><td>Se resuelven primero (nivel interno)</td><td><code>3 + (4 × 2) = 11</code></td></tr>
+            <tr><td><strong>Corchetes</strong></td><td class="sign-symbol">[ ]</td><td><span class="badge badge-purple">2°</span></td><td>Después de los paréntesis</td><td><code>2 × [3 + (4 − 1)] = 12</code></td></tr>
+            <tr><td><strong>Llaves</strong></td><td class="sign-symbol">{ }</td><td><span class="badge badge-orange">3°</span></td><td>Se resuelven al final</td><td><code>{5 + [2 × (3+1)]} = 13</code></td></tr>
+            <tr><td><strong>Barra vincular</strong></td><td class="sign-symbol">—</td><td><span class="badge badge-green">Especial</span></td><td>Fracciones / raíces</td><td><code>(6+2) ÷ (4−2) = 4</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- SIMULADOR -->
+      <div class="card">
+        <div class="card-title"><span class="ico">🖥️</span>Simulador interactivo — Signos anidados</div>
+        <div class="simulator">
+          <h3>🔬 Observa cómo se resuelven los signos de adentro hacia afuera</h3>
+          <div class="sim-display" id="sim3-display">{ 5 + [ 2 × ( 3 + 1 ) ] }</div>
+          <div id="sim3-steps"></div>
+          <div class="btns-row">
+            <button class="btn btn-primary" onclick="sim3Next()">▶ Siguiente paso</button>
+            <button class="btn btn-outline" onclick="sim3Reset()">🔄 Reiniciar</button>
+            <button class="btn btn-accent btn-sm" onclick="sim3Random()">🎲 Nueva expresión</button>
+          </div>
+        </div>
+        <canvas id="nesting-canvas" width="680" height="120" style="max-width:100%;margin-top:10px;"></canvas>
+      </div>
+      <!-- GAMIFIED REVIEW -->
+      <div class="card">
+        <div class="card-title"><span class="ico">🎮</span>Repaso gamificado — Tipos de signos</div>
+        <div class="gm-score">
+          <div><div class="pts" id="gm3-pts">0</div><div class="lbl">puntos</div></div>
+          <div style="margin-left:20px;"><div style="font-size:1rem;font-weight:700;" id="gm3-q">0</div><div class="lbl">de 6 preguntas</div></div>
+          <div class="streak" id="gm3-streak">🔥 Racha: 0</div>
+        </div>
+        <div id="gm3-container"></div>
+        <div class="btns-row"><button class="btn btn-accent" id="gm3-btn" onclick="gm3Next()">▶ Comenzar quiz</button></div>
+      </div>
+    </div>
+
+    <!-- ===== S4: LEY DE SIGNOS ===== -->
+    <div id="s4" class="section-content">
+      <div class="page-header">
+        <h1>⚡ Ley de Signos</h1>
+        <p>Reglas para operar con números positivos y negativos</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico">🎬</span>Video explicativo — Ley de Signos</div>
+        <div class="video-wrap">
+          <video controls>
+            <source src="vid/ley_signos.mp4" type="video/mp4">
+            <p style="color:#fff;padding:20px;text-align:center;">⚠️ Coloca el archivo <strong>vid/ley_signos.mp4</strong> en la misma carpeta para ver el video.</p>
+          </video>
+          <div class="video-caption">🎬 Ley de Signos — Mente Matemática</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico">📏</span>Regla clave para multiplicación y división</div>
+        <div style="background:var(--navy);color:#fff;border-radius:12px;padding:20px 24px;text-align:center;margin-bottom:16px;">
+          <div style="font-size:1.1rem;font-weight:800;margin-bottom:12px;">👉 Signos IGUALES = Resultado POSITIVO (+)<br>👉 Signos DIFERENTES = Resultado NEGATIVO (−)</div>
+        </div>
+        <div class="sign-law-grid">
+          <div class="law-card positive">
+            <div class="op">+ y +</div>
+            <div class="rule-row">➕ × ➕ = ➕ <span style="margin-left:auto;font-size:.8rem;color:#388e3c;">Positivo</span></div>
+            <div class="rule-row">➖ × ➖ = ➕ <span style="margin-left:auto;font-size:.8rem;color:#388e3c;">Positivo</span></div>
+            <div class="rule-row">➖ ÷ ➖ = ➕ <span style="margin-left:auto;font-size:.8rem;color:#388e3c;">Positivo</span></div>
+          </div>
+          <div class="law-card negative">
+            <div class="op">+ y −</div>
+            <div class="rule-row">➕ × ➖ = ➖ <span style="margin-left:auto;font-size:.8rem;color:#c62828;">Negativo</span></div>
+            <div class="rule-row">➖ × ➕ = ➖ <span style="margin-left:auto;font-size:.8rem;color:#c62828;">Negativo</span></div>
+            <div class="rule-row">➕ ÷ ➖ = ➖ <span style="margin-left:auto;font-size:.8rem;color:#c62828;">Negativo</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico">➕➖</span>Ley de signos en Suma y Resta</div>
+        <div class="grid-2" style="margin-bottom:14px;">
+          <div class="info-box success">
+            <strong>(+) + (+) → se suman, resultado positivo</strong><br>
+            (+5) + (+3) = <strong>+8</strong>
+          </div>
+          <div class="info-box" style="border-color:var(--red);background:#ffebee;">
+            <strong>(−) + (−) → se suman, resultado negativo</strong><br>
+            (−4) + (−6) = <strong>−10</strong>
+          </div>
+          <div class="info-box warning">
+            <strong>(+) + (−) → se restan, signo del mayor</strong><br>
+            (+7) + (−2) = <strong>+5</strong>
+          </div>
+          <div class="info-box purple">
+            <strong>(−) + (+) → se restan, signo del mayor</strong><br>
+            (−9) + (+4) = <strong>−5</strong>
+          </div>
+        </div>
+      </div>
+      <!-- SIMULADOR LEY DE SIGNOS -->
+      <div class="card">
+        <div class="card-title"><span class="ico">🖥️</span>Simulador — Practica la Ley de Signos</div>
+        <div class="simulator">
+          <h3>🔢 Selecciona signos y operación para ver el resultado</h3>
+          <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px;align-items:center;">
+            <div>
+              <div class="form-label" style="margin-bottom:4px;">Primer número</div>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <select class="form-select" id="ls-sign1" style="width:60px;"><option value="+">+</option><option value="-">−</option></select>
+                <input type="number" class="form-input" id="ls-num1" value="5" min="1" max="20" style="width:70px;">
+              </div>
+            </div>
+            <div>
+              <div class="form-label" style="margin-bottom:4px;">Operación</div>
+              <select class="form-select" id="ls-op" style="width:70px;">
+                <option value="+">+</option>
+                <option value="-">−</option>
+                <option value="×">×</option>
+                <option value="÷">÷</option>
+              </select>
+            </div>
+            <div>
+              <div class="form-label" style="margin-bottom:4px;">Segundo número</div>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <select class="form-select" id="ls-sign2" style="width:60px;"><option value="+">+</option><option value="-">−</option></select>
+                <input type="number" class="form-input" id="ls-num2" value="3" min="1" max="20" style="width:70px;">
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="calcLeySignos()" style="margin-top:18px;">Calcular ▶</button>
+          </div>
+          <div id="ls-result" class="sim-display" style="font-size:1.1rem;flex-direction:column;align-items:flex-start;gap:6px;min-height:80px;"></div>
+        </div>
+        <canvas id="ls-canvas" width="680" height="80" style="max-width:100%;margin-top:10px;"></canvas>
+      </div>
+      <!-- GAMIFIED -->
+      <div class="card">
+        <div class="card-title"><span class="ico">🎮</span>Repaso gamificado — Ley de Signos</div>
+        <div class="gm-score">
+          <div><div class="pts" id="gm4-pts">0</div><div class="lbl">puntos</div></div>
+          <div style="margin-left:20px;"><div style="font-size:1rem;font-weight:700;" id="gm4-q">0</div><div class="lbl">de 6 preguntas</div></div>
+          <div class="streak" id="gm4-streak">🔥 Racha: 0</div>
+        </div>
+        <div id="gm4-container"></div>
+        <div class="btns-row"><button class="btn btn-accent" id="gm4-btn" onclick="gm4Next()">▶ Comenzar quiz</button></div>
+      </div>
+    </div>
+
+    <!-- ===== S5: ELIMINACIÓN ===== -->
+    <div id="s5" class="section-content">
+      <div class="page-header">
+        <h1>✂️ Eliminación de Símbolos de Agrupación</h1>
+        <p>Reglas para quitar paréntesis, corchetes y llaves</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico">🎬</span>Videos explicativos</div>
+        <div class="grid-2">
+          <div>
+            <div style="font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:6px;">📹 Eliminación de símbolos (Parte 1)</div>
+            <div class="video-wrap">
+              <video controls>
+                <source src="vid/sig_ag2.mp4" type="video/mp4">
+                <p style="color:#fff;padding:14px;text-align:center;font-size:.82rem;">⚠️ Archivo: vid/sig_ag2.mp4</p>
+              </video>
+              <div class="video-caption" style="font-size:.75rem;">🎬 Orden de resolución — Signos anidados</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:6px;">📹 Eliminación de símbolos (Parte 2)</div>
+            <div class="video-wrap">
+              <video controls>
+                <source src="vid/sig_ag4.mp4" type="video/mp4">
+                <p style="color:#fff;padding:14px;text-align:center;font-size:.82rem;">⚠️ Archivo: vid/sig_ag4.mp4</p>
+              </video>
+              <div class="video-caption" style="font-size:.75rem;">🎬 Reglas de eliminación detalladas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico">📋</span>Regla de anidamiento (orden de resolución)</div>
+        <div class="rule-box">
+          <div class="rule-title">Regla fundamental</div>
+          <div class="rule-formula">Primero: ( ) → Luego: [ ] → Finalmente: { }</div>
+          <p style="font-size:.9rem;opacity:.85;">Cuando en una expresión aparecen varios signos de agrupación, siempre se resuelve de <strong>ADENTRO HACIA AFUERA</strong>. Esta regla asegura que todos los matemáticos lleguen al mismo resultado.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico">📐</span>Las 3 reglas de eliminación</div>
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-num" style="background:linear-gradient(135deg,var(--green),var(--green-light));">+</div>
+            <div class="step-text">
+              <strong>REGLA 1 — Signo + delante del paréntesis:</strong><br>
+              Los signos del interior <strong>NO CAMBIAN</strong>.
+              <div class="rule-box" style="margin-top:8px;padding:12px 16px;">
+                <div class="rule-formula">+ ( a + b − c ) = +a +b −c</div>
+              </div>
+              <div style="font-size:.85rem;color:#3a4a6a;margin-top:6px;">
+                ✅ + (3 + 5) = 3 + 5 = <strong>8</strong><br>
+                ✅ + (7 − 2 + 4) = 7 − 2 + 4 = <strong>9</strong><br>
+                ✅ 10 + (3 − 1) = 10 + 3 − 1 = <strong>12</strong>
+              </div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num" style="background:linear-gradient(135deg,var(--red),#e53935);">−</div>
+            <div class="step-text">
+              <strong>REGLA 2 — Signo − delante del paréntesis:</strong><br>
+              <strong>TODOS los signos del interior CAMBIAN</strong> (+ → − y − → +).
+              <div class="rule-box" style="margin-top:8px;padding:12px 16px;background:linear-gradient(135deg,#7b1f1f,#c62828);">
+                <div class="rule-formula">− ( a + b − c ) = −a −b +c</div>
+              </div>
+              <div style="font-size:.85rem;color:#3a4a6a;margin-top:6px;">
+                ✅ − (3 + 5) = −3 − 5 = <strong>−8</strong><br>
+                ✅ − (7 − 2 + 4) = −7 + 2 − 4 = <strong>−9</strong><br>
+                ✅ 10 − (3 − 1) = 10 − 3 + 1 = <strong>8</strong>
+              </div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num" style="background:linear-gradient(135deg,var(--purple),#8e24aa);">{ }</div>
+            <div class="step-text">
+              <strong>REGLA 3 — Signos anidados uno dentro de otro:</strong><br>
+              Se eliminan de <strong>ADENTRO HACIA AFUERA</strong> respetando el signo que precede a cada símbolo.
+              <div style="font-size:.85rem;color:#3a4a6a;margin-top:8px;">
+                📌 Paso 1: Resolver ( )<br>
+                📌 Paso 2: Resolver [ ]<br>
+                📌 Paso 3: Resolver { }<br>
+                📌 Paso 4: Aplicar jerarquía al resultado final
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- TABLA RESUMEN -->
+      <div class="card">
+        <div class="card-title"><span class="ico">📊</span>Tabla resumen de reglas</div>
+        <table class="sign-table">
+          <thead><tr><th>Signo delante</th><th>Acción al eliminar</th><th>Ejemplo</th></tr></thead>
+          <tbody>
+            <tr><td><strong>+ o (sin signo)</strong></td><td>Los signos <strong>NO cambian</strong></td><td><code>+ (a − b) → a − b</code></td></tr>
+            <tr><td><strong>− (menos)</strong></td><td><strong>TODOS los signos cambian</strong></td><td><code>− (a − b) → −a + b</code></td></tr>
+            <tr><td><strong>Anidado { [ ( ) ] }</strong></td><td>De adentro hacia afuera</td><td>Paso a paso: ( ), [ ], { }</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- SIMULADOR ELIMINACIÓN -->
+      <div class="card">
+        <div class="card-title"><span class="ico">🖥️</span>Simulador paso a paso — Eliminación</div>
+        <div class="simulator">
+          <h3>🔢 Sigue los pasos para eliminar los signos de agrupación</h3>
+          <div style="margin-bottom:12px;">
+            <div class="form-label" style="margin-bottom:4px;">Elige una expresión de ejemplo:</div>
+            <select class="form-select" id="elim-select" onchange="elimLoad()">
+              <option value="0">8 + (5 − 3)</option>
+              <option value="1">15 − (4 + 3)</option>
+              <option value="2">20 − (6 − 4 + 2)</option>
+              <option value="3">5 + [10 − (3 + 2)]</option>
+              <option value="4">{20 − [8 + (3 − 1)]}</option>
+              <option value="5">3 × {2 + [5 − (4 − 2)]} − 1</option>
+            </select>
+          </div>
+          <div class="sim-display" id="elim-display"></div>
+          <div id="elim-steps-wrap"></div>
+          <div class="btns-row">
+            <button class="btn btn-primary" onclick="elimNext()">▶ Siguiente paso</button>
+            <button class="btn btn-outline" onclick="elimReset()">🔄 Reiniciar</button>
+          </div>
+        </div>
+      </div>
+      <!-- GAMIFIED -->
+      <div class="card">
+        <div class="card-title"><span class="ico">🎮</span>Repaso gamificado — Eliminación de signos</div>
+        <div class="gm-score">
+          <div><div class="pts" id="gm5-pts">0</div><div class="lbl">puntos</div></div>
+          <div style="margin-left:20px;"><div style="font-size:1rem;font-weight:700;" id="gm5-q">0</div><div class="lbl">de 6 preguntas</div></div>
+          <div class="streak" id="gm5-streak">🔥 Racha: 0</div>
+        </div>
+        <div id="gm5-container"></div>
+        <div class="btns-row"><button class="btn btn-accent" id="gm5-btn" onclick="gm5Next()">▶ Comenzar quiz</button></div>
+      </div>
+    </div>
+
+    <!-- ===== S6: PRÁCTICA GUIADA ===== -->
+    <div id="s6" class="section-content">
+      <div class="page-header">
+        <h1>📝 Práctica y Ejercicios Guiados</h1>
+        <p>6 ejercicios resueltos paso a paso con explicación completa</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico">📚</span>Instrucciones</div>
+        <div class="info-box">Observa cada ejercicio, luego haz clic en <strong>"Ver solución paso a paso"</strong> para ver cómo se resuelve. Después podrás intentar resolver ejercicios similares tú solo.</div>
+      </div>
+      <!-- 6 EJERCICIOS GUIADOS -->
+      <div id="guided-exercises"></div>
+      <!-- GENERADOR ALEATORIO -->
+      <div class="card">
+        <div class="card-title"><span class="ico">🎲</span>Generador de ejercicios similares</div>
+        <p style="font-size:.9rem;color:#5a6a8a;margin-bottom:14px;">¿Quieres practicar más? Genera un ejercicio aleatorio y resuélvelo:</p>
+        <div class="drill-box">
+          <div class="drill-expr" id="s6-drill-expr">Presiona "Nuevo ejercicio" para comenzar</div>
+          <div class="drill-row">
+            <span style="font-size:.9rem;font-weight:700;color:#3a4a6a;">Tu respuesta =</span>
+            <input type="number" class="drill-input" id="s6-drill-ans" placeholder="?">
+            <button class="btn btn-primary" onclick="checkS6Drill()">Verificar ✓</button>
+            <button class="btn btn-outline btn-sm" onclick="genS6Exercise()">🎲 Nuevo ejercicio</button>
+          </div>
+          <div id="s6-drill-feedback" class="feedback"></div>
+          <div id="s6-drill-solution" style="display:none;margin-top:10px;padding:12px;background:#f0f4ff;border-radius:8px;font-size:.88rem;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== S7: EJERCICIOS FÁCIL→DIFÍCIL ===== -->
+    <div id="s7" class="section-content">
+      <div class="page-header">
+        <h1>🏋️ Ejercicios de Práctica</h1>
+        <p>Del nivel Fácil ⭐ al nivel Experto ⭐⭐⭐⭐ — ¡Sube de nivel!</p>
+      </div>
+      <!-- SISTEMA GAMIFICADO -->
+      <div class="card">
+        <div class="card-title"><span class="ico">🎮</span>Sistema de práctica por niveles</div>
+        <div class="gm-score" id="s7-scoreboard">
+          <div><div class="pts" id="s7-pts">0</div><div class="lbl">puntos</div></div>
+          <div style="margin-left:16px;"><div style="font-size:1rem;font-weight:700;" id="s7-correct">0</div><div class="lbl">correctos</div></div>
+          <div style="margin-left:16px;"><div style="font-size:1rem;font-weight:700;" id="s7-total">0</div><div class="lbl">intentados</div></div>
+          <div class="streak" id="s7-streak">🔥 Racha: 0</div>
+        </div>
+        <div id="s7-drill-container"></div>
+        <div class="btns-row">
+          <button class="btn btn-accent btn-lg" onclick="s7Next()">▶ Nuevo ejercicio</button>
+          <button class="btn btn-outline" onclick="s7Reset()">🔄 Reiniciar</button>
+        </div>
+      </div>
+      <!-- HOJA DE EJERCICIOS (GENERADOR PDF) -->
+      <div class="card">
+        <div class="card-title"><span class="ico">🖨️</span>Generador de Hoja de Ejercicios (PDF)</div>
+        <div class="generator-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Centro Educativo</label>
+              <input type="text" class="form-input" id="g-school" placeholder="Ej: Escuela Nacional N° 1">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nombre del Maestro/a</label>
+              <input type="text" class="form-input" id="g-teacher" placeholder="Ej: Prof. García">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Curso / Grado</label>
+              <input type="text" class="form-input" id="g-course" placeholder="Ej: 7° Grado B">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Cantidad de ejercicios</label>
+              <select class="form-select" id="g-count">
+                <option value="5">5 ejercicios</option>
+                <option value="8">8 ejercicios</option>
+                <option value="10" selected>10 ejercicios</option>
+                <option value="15">15 ejercicios</option>
+                <option value="20">20 ejercicios</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tipos de signos a incluir</label>
+            <div class="checkbox-group">
+              <label class="checkbox-item"><input type="checkbox" id="g-par" checked> Paréntesis ( )</label>
+              <label class="checkbox-item"><input type="checkbox" id="g-bra"> Corchetes [ ]</label>
+              <label class="checkbox-item"><input type="checkbox" id="g-cur"> Llaves { }</label>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:8px;">
+            <label class="form-label">Nivel de dificultad</label>
+            <select class="form-select" id="g-level">
+              <option value="easy">⭐ Fácil (solo paréntesis)</option>
+              <option value="medium" selected>⭐⭐ Medio (paréntesis + corchetes)</option>
+              <option value="hard">⭐⭐⭐ Difícil (todos los niveles)</option>
+              <option value="mixed">🎲 Mixto (variedad de dificultades)</option>
+            </select>
+          </div>
+          <div class="btns-row" style="margin-top:14px;">
+            <button class="btn btn-primary btn-lg" onclick="generateSheet()">📋 Generar hoja</button>
+            <button class="btn btn-green" onclick="printSheet()">💾 Guardar como PDF</button>
+          </div>
+        </div>
+        <!-- PRINT SHEET OUTPUT -->
+        <div class="print-sheet" id="print-sheet">
+          <div class="sheet-header">
+            <h2 id="ps-school">Centro Educativo</h2>
+            <p style="font-size:.95rem;font-weight:700;color:var(--navy);">Hoja de Ejercicios — Signos de Agrupación</p>
+            <div class="sheet-meta">
+              <div class="sheet-meta-item"><span class="sheet-meta-label">Maestro/a:</span><span id="ps-teacher"></span></div>
+              <div class="sheet-meta-item"><span class="sheet-meta-label">Curso:</span><span id="ps-course"></span></div>
+              <div class="sheet-meta-item"><span class="sheet-meta-label">Nombre del estudiante:</span><span style="border-bottom:1px solid #333;min-width:160px;display:inline-block;">&nbsp;</span></div>
+              <div class="sheet-meta-item"><span class="sheet-meta-label">Fecha:</span><span id="ps-date"></span></div>
+            </div>
+            <div style="font-size:.82rem;color:#5a6a8a;margin-top:8px;">
+              <strong>Instrucciones:</strong> Resuelve cada ejercicio mostrando todos los pasos. Trabaja de adentro hacia afuera cuando hay signos anidados.
+            </div>
+          </div>
+          <div class="sheet-exercises" id="ps-exercises"></div>
+          <div style="margin-top:24px;padding-top:14px;border-top:2px solid var(--navy);text-align:center;font-size:.78rem;color:#5a6a8a;">
+            © 2026 MenteMatemáticaI · Todos los derechos reservados VC
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== S8: EVALUACIÓN FINAL ===== -->
+    <div id="s8" class="section-content">
+      <div class="page-header">
+        <h1>🏆 Evaluación Final</h1>
+        <p>Demuestra todo lo que aprendiste — 10 preguntas · 20 puntos posibles</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico">📋</span>Instrucciones</div>
+        <div class="grid-2">
+          <div class="info-box"><strong>Parte 1:</strong> Preguntas teóricas (5 preguntas) — Valor: 2 puntos cada una</div>
+          <div class="info-box warning"><strong>Parte 2:</strong> Ejercicios de eliminación (5 preguntas) — Valor: 2 puntos cada una</div>
+        </div>
+        <div class="info-box success" style="margin-top:12px;">
+          <strong>Puntaje total: 20 puntos | Nota mínima de aprobación: 12 puntos (60%)</strong>
+        </div>
+      </div>
+      <div id="eval-questions"></div>
+      <div class="card">
+        <div class="btns-row">
+          <button class="btn btn-accent btn-lg" onclick="submitEval()">📊 Ver resultados</button>
+          <button class="btn btn-outline" onclick="resetEval()">🔄 Reiniciar evaluación</button>
+        </div>
+      </div>
+      <!-- RESULTADO -->
+      <div class="eval-result" id="eval-result">
+        <div style="font-size:2rem;margin-bottom:8px;" id="eval-trophy"></div>
+        <div class="eval-grade" id="eval-grade">0/20</div>
+        <div class="eval-stars" id="eval-stars"></div>
+        <div class="eval-label" id="eval-label"></div>
+        <div class="progress-bar-wrap" style="max-width:300px;margin:16px auto;">
+          <div class="progress-bar-fill" id="eval-bar" style="width:0%"></div>
+        </div>
+        <p id="eval-msg" style="font-size:.92rem;color:#5a6a8a;margin-top:10px;line-height:1.7;max-width:400px;margin-left:auto;margin-right:auto;"></p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer id="site-footer">
+  © 2026 MenteMatemáticaI. Todos los derechos reservados VC.
+</footer>
+
+<!-- ===================================================
+     JAVASCRIPT — Toda la lógica interactiva
+     =================================================== -->
+<script>
+// ===== NAVEGACIÓN =====
+function goTo(id, btn) {
+  document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Inicializar canvas/componentes según sección
+  setTimeout(() => {
+    if (id === 's1') drawIntroCanvas();
+    if (id === 's2') drawDefCanvas();
+    if (id === 's3') { drawNestingCanvas(); sim3Reset(); }
+    if (id === 's5') { elimLoad(); }
+    if (id === 's6') { buildGuidedExercises(); genS6Exercise(); }
+    if (id === 's7') { s7BuildDrill(); }
+    if (id === 's8') { buildEval(); }
+  }, 100);
+}
+// ===== WELCOME =====
+function closeWelcome() {
+  document.getElementById('welcome-overlay').classList.add('hide');
+  setTimeout(() => document.getElementById('welcome-overlay').style.display = 'none', 900);
+  drawIntroCanvas(); // init first canvas
+}
+
+// ===== CANVAS: INTRO =====
+function drawIntroCanvas() {
+  const c = document.getElementById('intro-canvas'); if (!c) return;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+  ctx.fillStyle = '#f0f4ff';
+  ctx.roundRect(0, 0, c.width, c.height, 10); ctx.fill();
+  const items = [
+    { sym: '( )', label: 'Paréntesis', color: '#1565c0', x: 90 },
+    { sym: '[ ]', label: 'Corchetes', color: '#6a1b9a', x: 250 },
+    { sym: '{ }', label: 'Llaves', color: '#e65100', x: 410 },
+    { sym: '—', label: 'Barra vincular', color: '#00796b', x: 570 },
+  ];
+  items.forEach(it => {
+    ctx.fillStyle = it.color + '22';
+    ctx.beginPath(); ctx.roundRect(it.x - 60, 10, 120, 120, 12); ctx.fill();
+    ctx.fillStyle = it.color;
+    ctx.font = 'bold 36px Courier New'; ctx.textAlign = 'center';
+    ctx.fillText(it.sym, it.x, 68);
+    ctx.font = 'bold 12px Segoe UI'; ctx.fillText(it.label, it.x, 98);
+    // Level badge
+    const level = items.indexOf(it) + 1;
+    if (level <= 3) {
+      ctx.fillStyle = it.color;
+      ctx.beginPath(); ctx.arc(it.x + 45, 22, 12, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 11px Segoe UI';
+      ctx.fillText(level + '°', it.x + 45, 26);
+    }
+  });
+  // Arrow between
+  ctx.strokeStyle = '#aaa'; ctx.lineWidth = 2; ctx.setLineDash([5, 4]);
+  [180, 340, 500].forEach(x => {
+    ctx.beginPath(); ctx.moveTo(x - 8, 70); ctx.lineTo(x + 8, 70); ctx.stroke();
+    ctx.fillStyle = '#aaa'; ctx.beginPath();
+    ctx.moveTo(x + 12, 70); ctx.lineTo(x + 5, 65); ctx.lineTo(x + 5, 75); ctx.closePath(); ctx.fill();
+  });
+  ctx.setLineDash([]);
+}
+// ===== CANVAS: DEFINITION =====
+function drawDefCanvas() {
+  const c = document.getElementById('def-canvas'); if (!c) return;
+  const ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
+  // 3 + 4 × 2 vs (3+4) × 2
+  ctx.fillStyle = '#f8fafd'; ctx.roundRect(0, 0, 300, 200, 12); ctx.fill();
+  ctx.font = 'bold 14px Segoe UI'; ctx.fillStyle = '#c62828'; ctx.textAlign = 'center';
+  ctx.fillText('Sin paréntesis:', 75, 30);
+  ctx.font = 'bold 20px Courier New'; ctx.fillStyle = '#2a3a5a';
+  ctx.fillText('3+4 × 2', 75, 60);
+  ctx.font = '13px Segoe UI'; ctx.fillStyle = '#5a6a8a';
+  ctx.fillText('= 3 + 8 = 11', 75, 85);
+  ctx.font = 'bold 14px Segoe UI'; ctx.fillStyle = '#2e7d32';
+  ctx.fillText('Con paréntesis:', 225, 30);
+  ctx.font = 'bold 20px Courier New'; ctx.fillStyle = '#2a3a5a';
+  ctx.fillText('(3+4)× 2', 225, 60);
+  ctx.font = '13px Segoe UI'; ctx.fillStyle = '#5a6a8a';
+  ctx.fillText('= 7 × 2 = 14', 225, 85);
+  // divider
+  ctx.strokeStyle = '#e3eaf6'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(150, 10); ctx.lineTo(150, 100); ctx.stroke();
+  // Results
+  ctx.font = 'bold 28px Segoe UI'; ctx.fillStyle = '#c62828'; ctx.textAlign = 'center';
+  ctx.fillText('11', 75, 140);
+  ctx.fillStyle = '#2e7d32'; ctx.fillText('14', 225, 140);
+  ctx.font = '12px Segoe UI'; ctx.fillStyle = '#5a6a8a';
+  ctx.fillText('Resultado', 75, 162); ctx.fillText('Resultado', 225, 162);
+  ctx.font = 'bold 13px Segoe UI'; ctx.fillStyle = '#1565c0';
+  ctx.fillText('¡Los signos cambian', 150, 182); ctx.fillText('el resultado!', 150, 196);
+}
+// ===== CANVAS: NESTING LEVELS =====
+function drawNestingCanvas() {
+  const c = document.getElementById('nesting-canvas'); if (!c) return;
+  const ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
+  const colors = ['#e65100', '#6a1b9a', '#1565c0'];
+  const labels = ['{ }  Llaves — 3er nivel (exterior)', '[ ]  Corchetes — 2do nivel', '( )  Paréntesis — 1er nivel (interior)'];
+  const rects = [
+    { x: 10, y: 10, w: 660, h: 100, r: 14 },
+    { x: 40, y: 22, w: 600, h: 76, r: 10 },
+    { x: 70, y: 34, w: 540, h: 52, r: 8 },
+  ];
+  rects.forEach((r, i) => {
+    ctx.fillStyle = colors[i] + '28';
+    ctx.strokeStyle = colors[i];
+    ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.roundRect(r.x, r.y, r.w, r.h, r.r);
+    ctx.fill(); ctx.stroke();
+    ctx.fillStyle = colors[i];
+    ctx.font = 'bold 12px Segoe UI'; ctx.textAlign = 'right';
+    ctx.fillText(labels[i], r.x + r.w - 14, r.y + r.h - 8);
+  });
+  ctx.font = 'bold 20px Courier New'; ctx.fillStyle = '#0d2550'; ctx.textAlign = 'center';
+  ctx.fillText('Se resuelve aquí primero ➤', 340, 68);
+}
+// ===== SIMULADOR S3: SIGNOS ANIDADOS =====
+const sim3Expressions = [
+  {
+    expr: '{ 5 + [ 2 × ( 3 + 1 ) ] }',
+    steps: [
+      { action: 'Resolvemos el paréntesis: (3 + 1)', result: '{ 5 + [ 2 × 4 ] }', highlight: '(3 + 1) = 4' },
+      { action: 'Resolvemos el corchete: [2 × 4]', result: '{ 5 + 8 }', highlight: '[2 × 4] = 8' },
+      { action: 'Resolvemos las llaves: {5 + 8}', result: '13', highlight: '{5 + 8} = 13' },
+    ]
+  },
+  {
+    expr: '{ 10 − [ 3 + ( 2 − 1 ) ] }',
+    steps: [
+      { action: 'Resolvemos el paréntesis: (2 − 1)', result: '{ 10 − [ 3 + 1 ] }', highlight: '(2 − 1) = 1' },
+      { action: 'Resolvemos el corchete: [3 + 1]', result: '{ 10 − 4 }', highlight: '[3 + 1] = 4' },
+      { action: 'Resolvemos las llaves: {10 − 4}', result: '6', highlight: '{10 − 4} = 6' },
+    ]
+  },
+  {
+    expr: '{ 4 + [ 6 − ( 1 + 2 ) ] } × 2',
+    steps: [
+      { action: 'Resolvemos el paréntesis: (1 + 2)', result: '{ 4 + [ 6 − 3 ] } × 2', highlight: '(1 + 2) = 3' },
+      { action: 'Resolvemos el corchete: [6 − 3]', result: '{ 4 + 3 } × 2', highlight: '[6 − 3] = 3' },
+      { action: 'Resolvemos las llaves: {4 + 3}', result: '7 × 2', highlight: '{4 + 3} = 7' },
+      { action: 'Multiplicación final', result: '14', highlight: '7 × 2 = 14' },
+    ]
+  },
+];
+let sim3Idx = 0, sim3Step = 0, sim3Expr = 0;
+function sim3Reset() {
+  sim3Step = 0;
+  const e = sim3Expressions[sim3Expr];
+  document.getElementById('sim3-display').textContent = e.expr;
+  document.getElementById('sim3-steps').innerHTML = '';
+}
+function sim3Next() {
+  const e = sim3Expressions[sim3Expr];
+  if (sim3Step >= e.steps.length) return;
+  const s = e.steps[sim3Step];
+  const div = document.createElement('div');
+  div.className = 'sim-step done';
+  div.innerHTML = `<strong>Paso ${sim3Step+1}:</strong> ${s.action} → <code style="font-family:'Courier New';font-weight:700;">${s.highlight}</code>`;
+  document.getElementById('sim3-steps').appendChild(div);
+  document.getElementById('sim3-display').textContent = s.result;
+  sim3Step++;
+}
+function sim3Random() {
+  sim3Expr = (sim3Expr + 1) % sim3Expressions.length;
+  sim3Reset();
+}
+// ===== SIGN DETAIL =====
+const signDetails = [
+  { name: 'PARÉNTESIS ( )', color: '#1565c0', icon: '🔵', desc: 'Son los signos más utilizados. Representados con <strong>( )</strong>. Son el <strong>1er nivel</strong> de agrupación — cuando hay varios signos anidados, los paréntesis son los más internos y se resuelven primero.', ex: '3 + (4 × 2) = 3 + 8 = 11' },
+  { name: 'CORCHETES [ ]', color: '#6a1b9a', icon: '🟣', desc: 'Son el <strong>2do nivel</strong>. Encierran expresiones que ya contienen paréntesis. Se resuelven después de los paréntesis.', ex: '2 × [3 + (4 − 1)] = 2 × [3 + 3] = 2 × 6 = 12' },
+  { name: 'LLAVES { }', color: '#e65100', icon: '🟠', desc: 'Son el <strong>3er nivel</strong>. Encierran expresiones con corchetes y paréntesis. Se resuelven al final.', ex: '{5 + [2 × (3+1)]} = {5 + [2×4]} = {5+8} = 13' },
+  { name: 'BARRA VINCULAR —', color: '#00796b', icon: '🟢', desc: 'Línea horizontal en fracciones o raíces. El numerador y denominador se calculan por separado antes de dividir.', ex: '(6 + 2) ÷ (4 − 2) → 8 ÷ 2 = 4' },
+];
+function showSignDetail(i, el) {
+  document.querySelectorAll('.sign-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  const d = signDetails[i];
+  document.getElementById('sign-detail-box').style.display = 'block';
+  document.getElementById('sign-detail-box').style.borderColor = d.color;
+  document.getElementById('sign-detail-box').style.background = d.color + '12';
+  document.getElementById('sign-detail-content').innerHTML =
+    `<strong style="color:${d.color};font-size:1rem;">${d.icon} ${d.name}</strong><br>
+     <span style="font-size:.9rem;line-height:1.7;">${d.desc}</span><br>
+     <code style="font-family:'Courier New';font-size:.95rem;font-weight:700;background:rgba(0,0,0,.06);padding:4px 8px;border-radius:5px;">📌 ${d.ex}</code>`;
+}
+// ===== GAMIFIED QUIZ ENGINE =====
+function buildQuiz(containerID, questions, ptsID, qID, streakID, btnID) {
+  const state = { q: 0, pts: 0, streak: 0, answered: false };
+  function render() {
+    if (state.q >= questions.length) {
+      document.getElementById(containerID).innerHTML =
+        `<div class="info-box success" style="font-size:1rem;font-weight:700;">🎉 ¡Quiz completado! Obtuviste <strong>${state.pts} puntos</strong> de ${questions.length * 10}. ${state.pts >= questions.length * 7 ? '¡Excelente!' : 'Sigue practicando.'}</div>`;
+      document.getElementById(btnID).style.display = 'none';
+      return;
+    }
+    const q = questions[state.q];
+    const letters = ['A', 'B', 'C', 'D'];
+    state.answered = false;
+    document.getElementById(containerID).innerHTML =
+      `<div class="quiz-q">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+          <span class="badge badge-blue">${state.q + 1}/${questions.length}</span>
+          ${q.level ? `<span class="badge badge-orange">${q.level}</span>` : ''}
+        </div>
+        <div class="quiz-q-text">${q.q}</div>
+        <div class="quiz-options">
+          ${q.opts.map((o, i) =>
+            `<button class="quiz-opt" onclick="answerQ(this,${i},${q.ans},'${containerID}','${ptsID}','${qID}','${streakID}')">
+              <span class="opt-letter">${letters[i]}</span>${o}
+            </button>`).join('')}
+        </div>
+        <div class="feedback" id="fb-${containerID}"></div>
+      </div>`;
+    document.getElementById(ptsID).textContent = state.pts;
+    document.getElementById(qID).textContent = state.q;
+    document.getElementById(streakID).textContent = `🔥 Racha: ${state.streak}`;
+  }
+  window[btnID.replace('-btn', 'Next')] = function() {
+    if (!state.answered && state.q < questions.length) { render(); }
+    else if (state.q < questions.length) { state.q++; render(); }
+  };
+  window['answer_' + containerID] = function(correct) {
+    state.answered = true;
+    if (correct) { state.pts += 10; state.streak++; } else { state.streak = 0; }
+  };
+  render();
+}
+// Global answer handler
+function answerQ(btn, selected, correct, cid, pid, qid, sid) {
+  const container = document.getElementById(cid);
+  const opts = container.querySelectorAll('.quiz-opt');
+  opts.forEach((o, i) => {
+    o.disabled = true;
+    if (i === correct) o.classList.add('correct');
+    else if (i === selected && selected !== correct) o.classList.add('wrong');
+  });
+  const fb = document.getElementById('fb-' + cid);
+  const isCorrect = selected === correct;
+  fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'fail');
+  fb.textContent = isCorrect
+    ? '✅ ¡Correcto! +10 puntos'
+    : `❌ No es correcto. La respuesta correcta era: ${['A','B','C','D'][correct]}`;
+  // Update score
+  const ptsEl = document.getElementById(pid);
+  const streakEl = document.getElementById(sid);
+  let pts = parseInt(ptsEl.textContent);
+  let streakText = streakEl.textContent;
+  let streak = parseInt(streakText.replace('🔥 Racha: ', ''));
+  if (isCorrect) { pts += 10; streak++; } else { streak = 0; }
+  ptsEl.textContent = pts;
+  streakEl.textContent = `🔥 Racha: ${streak}`;
+  document.getElementById(qid).textContent = parseInt(document.getElementById(qid).textContent) + 1;
+}
+// ===== GM3: TIPOS DE SIGNOS QUIZ =====
+const gm3Questions = [
+  { q: '¿Qué signo de agrupación se resuelve PRIMERO cuando hay varios anidados?', opts: ['Llaves { }', 'Corchetes [ ]', 'Paréntesis ( )', 'Barra vincular —'], ans: 2, level: '⭐' },
+  { q: '¿Qué signo representa el SEGUNDO nivel de agrupación?', opts: ['Paréntesis ( )', 'Corchetes [ ]', 'Llaves { }', 'Barra vincular'], ans: 1, level: '⭐' },
+  { q: 'En la expresión {5 + [2 × (3+1)]}, ¿qué se resuelve primero?', opts: ['Las llaves {5+...}', 'Los corchetes [2×...]', 'El paréntesis (3+1)', 'La multiplicación 2×...'], ans: 2, level: '⭐⭐' },
+  { q: '¿Cuántos niveles tiene la expresión {[()]}?', opts: ['Un nivel', 'Dos niveles', 'Tres niveles', 'Cuatro niveles'], ans: 2, level: '⭐⭐' },
+  { q: 'La barra vincular en una fracción 8/4 sirve para:', opts: ['Solo decorar', 'Agrupar numerador y denominador por separado', 'Indicar multiplicación', 'Reemplazar las llaves'], ans: 1, level: '⭐' },
+  { q: '¿Cuál es el resultado de {5 + [2 × (3 + 1)]}?', opts: ['11', '13', '15', '17'], ans: 1, level: '⭐⭐⭐' },
+];
+let gm3Active = false;
+function gm3Next() {
+  if (!gm3Active) {
+    gm3Active = true;
+    document.getElementById('gm3-btn').textContent = '▶ Siguiente pregunta';
+    buildQuizState('gm3', gm3Questions);
+  }
+  advanceQuiz('gm3');
+}
+// Simple stateful quiz
+const quizStates = {};
+function buildQuizState(id, questions) {
+  quizStates[id] = { questions, idx: 0, pts: 0, streak: 0 };
+}
+function advanceQuiz(id) {
+  const s = quizStates[id];
+  if (!s) return;
+  const container = document.getElementById(id + '-container');
+  if (s.idx >= s.questions.length) {
+    container.innerHTML = `<div class="info-box success"><strong>🎉 ¡Completado!</strong> Obtuviste ${s.pts} puntos. ${s.pts >= s.questions.length * 7 ? '¡Excelente trabajo!' : 'Sigue practicando para mejorar.'}</div>`;
+    document.getElementById(id + '-btn').style.display = 'none';
+    return;
+  }
+  const q = s.questions[s.idx];
+  const letters = ['A','B','C','D'];
+  const html = `<div class="quiz-q">
+    <div style="display:flex;gap:8px;margin-bottom:8px;">
+      <span class="badge badge-blue">Pregunta ${s.idx + 1}/${s.questions.length}</span>
+      ${q.level ? `<span class="badge badge-orange">${q.level}</span>` : ''}
+    </div>
+    <div class="quiz-q-text">${q.q}</div>
+    <div class="quiz-options" id="${id}-opts">
+      ${q.opts.map((o,i) => `<button class="quiz-opt" onclick="pickAns('${id}',this,${i})">${'<span class="opt-letter">'+letters[i]+'</span>'}${o}</button>`).join('')}
+    </div>
+    <div class="feedback" id="${id}-fb"></div>
+  </div>`;
+  container.innerHTML = html;
+  s.idx++;
+  // Register answer check
+  quizStates[id]._correctAns = q.ans;
+}
+function pickAns(id, btn, selected) {
+  const s = quizStates[id];
+  const correct = s._correctAns;
+  const optsEl = document.getElementById(id + '-opts');
+  optsEl.querySelectorAll('.quiz-opt').forEach((o, i) => {
+    o.disabled = true;
+    if (i === correct) o.classList.add('correct');
+    else if (i === selected && selected !== correct) o.classList.add('wrong');
+  });
+  const fb = document.getElementById(id + '-fb');
+  const isOk = selected === correct;
+  fb.className = 'feedback show ' + (isOk ? 'ok' : 'fail');
+  fb.textContent = isOk ? '✅ ¡Correcto! Muy bien.' : `❌ Incorrecto. La respuesta correcta es: ${'ABCD'[correct]}`;
+  if (isOk) { s.pts += 10; s.streak++; } else { s.streak = 0; }
+  document.getElementById(id + '-pts').textContent = s.pts;
+  document.getElementById(id + '-q').textContent = s.idx;
+  document.getElementById(id + '-streak').textContent = `🔥 Racha: ${s.streak}`;
+}
+// ===== GM4: LEY DE SIGNOS QUIZ =====
+const gm4Questions = [
+  { q: '¿Cuál es el resultado de (+5) + (+3)?', opts: ['+2', '+8', '−2', '−8'], ans: 1, level: '⭐' },
+  { q: '¿Cuál es el resultado de (−4) + (−6)?', opts: ['+10', '−2', '+2', '−10'], ans: 3, level: '⭐' },
+  { q: '¿Cuál es el resultado de (+7) + (−2)?', opts: ['−5', '+9', '+5', '−9'], ans: 2, level: '⭐' },
+  { q: '¿Cuál es el resultado de (−3) × (−5)?', opts: ['−15', '+8', '+15', '−8'], ans: 2, level: '⭐⭐' },
+  { q: 'Signos IGUALES en multiplicación dan resultado:', opts: ['Negativo siempre', 'Positivo siempre', 'Depende del número', 'Cero'], ans: 1, level: '⭐' },
+  { q: '¿Cuál es el resultado de (+9) ÷ (−3)?', opts: ['+3', '−3', '+27', '−27'], ans: 1, level: '⭐⭐' },
+];
+let gm4Active = false;
+function gm4Next() {
+  if (!gm4Active) { gm4Active = true; document.getElementById('gm4-btn').textContent = '▶ Siguiente pregunta'; buildQuizState('gm4', gm4Questions); }
+  advanceQuiz('gm4');
+}
+// ===== GM5: ELIMINACIÓN QUIZ =====
+const gm5Questions = [
+  { q: '¿Cuál es el resultado de: + (3 + 5)?', opts: ['−8', '+2', '+8', '−2'], ans: 2, level: '⭐' },
+  { q: '¿Cuál es el resultado de: − (3 + 5)?', opts: ['+8', '−8', '+2', '−2'], ans: 1, level: '⭐' },
+  { q: 'Al eliminar: − (7 − 2), la expresión queda:', opts: ['−7 − 2', '−7 + 2', '+7 + 2', '+7 − 2'], ans: 1, level: '⭐⭐' },
+  { q: '¿Cuál es el resultado de: 10 + (3 − 1)?', opts: ['6', '8', '12', '14'], ans: 2, level: '⭐⭐' },
+  { q: '¿Cuál es el resultado de: 15 − (4 + 3)?', opts: ['22', '8', '12', '18'], ans: 1, level: '⭐⭐' },
+  { q: '¿Cuál es el resultado de: 5 + [10 − (3 + 2)]?', opts: ['14', '10', '20', '0'], ans: 1, level: '⭐⭐⭐' },
+];
+let gm5Active = false;
+function gm5Next() {
+  if (!gm5Active) { gm5Active = true; document.getElementById('gm5-btn').textContent = '▶ Siguiente pregunta'; buildQuizState('gm5', gm5Questions); }
+  advanceQuiz('gm5');
+}
+// ===== LEY DE SIGNOS CALCULATOR =====
+function calcLeySignos() {
+  const s1 = document.getElementById('ls-sign1').value === '-' ? -1 : 1;
+  const n1 = parseFloat(document.getElementById('ls-num1').value);
+  const op = document.getElementById('ls-op').value;
+  const s2 = document.getElementById('ls-sign2').value === '-' ? -1 : 1;
+  const n2 = parseFloat(document.getElementById('ls-num2').value);
+  const a = s1 * n1, b = s2 * n2;
+  let res, law = '';
+  if (op === '+') { res = a + b; law = `Suma: signo del mayor prevalece`; }
+  else if (op === '-') { res = a - b; law = `Resta: sumamos el opuesto de ${b}`; }
+  else if (op === '×') {
+    res = a * b;
+    law = (s1 === s2) ? 'Signos IGUALES → resultado POSITIVO' : 'Signos DIFERENTES → resultado NEGATIVO';
+  }
+  else {
+    if (b === 0) { document.getElementById('ls-result').innerHTML = '⚠️ No se puede dividir entre cero'; return; }
+    res = a / b;
+    law = (s1 === s2) ? 'Signos IGUALES → resultado POSITIVO' : 'Signos DIFERENTES → resultado NEGATIVO';
+  }
+  const sign1 = s1 > 0 ? '+' : '−';
+  const sign2 = s2 > 0 ? '+' : '−';
+  document.getElementById('ls-result').innerHTML =
+    `<span>Expresión: <strong>(${sign1}${n1}) ${op} (${sign2}${n2})</strong></span>
+     <span style="color:var(--blue);">📏 Regla: ${law}</span>
+     <span style="color:var(--navy);font-size:1.3rem;">= <strong>${res >= 0 ? '+' : ''}${res}</strong></span>`;
+  // Draw canvas indicator
+  const c = document.getElementById('ls-canvas'); if (!c) return;
+  const ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
+  ctx.fillStyle = '#f8fafd'; ctx.roundRect(0, 0, c.width, c.height, 8); ctx.fill();
+  const color = res >= 0 ? '#2e7d32' : '#c62828';
+  ctx.fillStyle = color + '20'; ctx.roundRect(20, 10, c.width - 40, 60, 8); ctx.fill();
+  ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.strokeRect(20, 10, c.width - 40, 60);
+  ctx.fillStyle = color; ctx.font = 'bold 18px Courier New'; ctx.textAlign = 'center';
+  ctx.fillText(`(${sign1}${n1}) ${op} (${sign2}${n2}) = ${res >= 0 ? '+' : ''}${res}`, c.width / 2, 48);
+}
+// ===== ELIMINACIÓN SIMULADOR =====
+const elimData = [
+  { label: 'Ejercicio 1: 8 + (5 − 3)', init: '8 + (5 − 3)', steps: [
+    { txt: 'Signo + delante del paréntesis → signos NO cambian', expr: '8 + 5 − 3' },
+    { txt: 'Resolvemos de izquierda a derecha: 8 + 5 = 13', expr: '13 − 3' },
+    { txt: 'Resultado final: 13 − 3 = 10', expr: '10 ✅' },
+  ]},
+  { label: 'Ejercicio 2: 15 − (4 + 3)', init: '15 − (4 + 3)', steps: [
+    { txt: 'Signo − delante del paréntesis → TODOS los signos cambian', expr: '15 − 4 − 3' },
+    { txt: 'Resolvemos: 15 − 4 = 11', expr: '11 − 3' },
+    { txt: 'Resultado final: 11 − 3 = 8', expr: '8 ✅' },
+  ]},
+  { label: 'Ejercicio 3: 20 − (6 − 4 + 2)', init: '20 − (6 − 4 + 2)', steps: [
+    { txt: 'Signo − delante: todos los signos cambian', expr: '20 − 6 + 4 − 2' },
+    { txt: 'Resolvemos paso a paso: 20 − 6 = 14', expr: '14 + 4 − 2' },
+    { txt: '14 + 4 = 18', expr: '18 − 2' },
+    { txt: 'Resultado final', expr: '16 ✅' },
+  ]},
+  { label: 'Ejercicio 4: 5 + [10 − (3 + 2)]', init: '5 + [10 − (3 + 2)]', steps: [
+    { txt: 'Primero el paréntesis: (3 + 2) = 5', expr: '5 + [10 − 5]' },
+    { txt: 'Ahora el corchete: [10 − 5] = 5', expr: '5 + 5' },
+    { txt: 'Resultado final', expr: '10 ✅' },
+  ]},
+  { label: 'Ejercicio 5: {20 − [8 + (3 − 1)]}', init: '{20 − [8 + (3 − 1)]}', steps: [
+    { txt: 'Paréntesis más interno: (3 − 1) = 2', expr: '{20 − [8 + 2]}' },
+    { txt: 'Corchetes: [8 + 2] = 10', expr: '{20 − 10}' },
+    { txt: 'Resultado final', expr: '10 ✅' },
+  ]},
+  { label: 'Ejercicio 6: 3 × {2 + [5 − (4 − 2)]} − 1', init: '3 × {2 + [5 − (4 − 2)]} − 1', steps: [
+    { txt: 'Paréntesis: (4 − 2) = 2', expr: '3 × {2 + [5 − 2]} − 1' },
+    { txt: 'Corchetes: [5 − 2] = 3', expr: '3 × {2 + 3} − 1' },
+    { txt: 'Llaves: {2 + 3} = 5', expr: '3 × 5 − 1' },
+    { txt: 'Multiplicación primero: 3 × 5 = 15', expr: '15 − 1' },
+    { txt: 'Resultado final', expr: '14 ✅' },
+  ]},
+];
+let elimStep = 0, elimIdx = 0;
+function elimLoad() {
+  elimIdx = parseInt(document.getElementById('elim-select').value);
+  elimStep = 0;
+  document.getElementById('elim-display').textContent = elimData[elimIdx].init;
+  document.getElementById('elim-steps-wrap').innerHTML = '';
+}
+function elimNext() {
+  const d = elimData[elimIdx];
+  if (elimStep >= d.steps.length) return;
+  const s = d.steps[elimStep];
+  const div = document.createElement('div');
+  div.className = 'sim-step done';
+  div.innerHTML = `<strong>Paso ${elimStep+1}:</strong> ${s.txt}`;
+  document.getElementById('elim-steps-wrap').appendChild(div);
+  document.getElementById('elim-display').textContent = s.expr;
+  elimStep++;
+}
+function elimReset() { elimLoad(); }
+
+// ===== GUIDED EXERCISES S6 =====
+const guidedData = [
+  { num:1, level:'⭐ Fácil', expr:'8 + (5 − 3)', result:10, steps:[
+    { label:'Regla', val:'Signo + delante → signos NO cambian' },
+    { label:'Eliminar', val:'8 + 5 − 3' },
+    { label:'Resolver', val:'8 + 5 = 13 → 13 − 3 = 10' },
+    { label:'Resultado', val:'10 ✅' },
+  ]},
+  { num:2, level:'⭐ Fácil', expr:'15 − (4 + 3)', result:8, steps:[
+    { label:'Regla', val:'Signo − delante → TODOS los signos cambian' },
+    { label:'Cambio', val:'+4 → −4, +3 → −3' },
+    { label:'Expresión', val:'15 − 4 − 3' },
+    { label:'Resolver', val:'15 − 4 = 11 → 11 − 3 = 8 ✅' },
+  ]},
+  { num:3, level:'⭐⭐ Medio', expr:'20 − (6 − 4 + 2)', result:16, steps:[
+    { label:'Regla', val:'Signo − delante → todos los signos cambian' },
+    { label:'Cambio', val:'−6→+6, −4→+4... OJO: −6,+4,−2' },
+    { label:'Expresión', val:'20 − 6 + 4 − 2' },
+    { label:'Resolver', val:'20−6=14 → 14+4=18 → 18−2=16 ✅' },
+  ]},
+  { num:4, level:'⭐⭐ Medio', expr:'5 + [10 − (3 + 2)]', result:10, steps:[
+    { label:'Paso 1', val:'Paréntesis: (3 + 2) = 5' },
+    { label:'Expresión', val:'5 + [10 − 5]' },
+    { label:'Paso 2', val:'Corchete: [10 − 5] = 5' },
+    { label:'Resultado', val:'5 + 5 = 10 ✅' },
+  ]},
+  { num:5, level:'⭐⭐⭐ Difícil', expr:'{20 − [8 + (3 − 1)]}', result:10, steps:[
+    { label:'Paso 1', val:'Paréntesis: (3 − 1) = 2' },
+    { label:'Expresión', val:'{20 − [8 + 2]}' },
+    { label:'Paso 2', val:'Corchete: [8 + 2] = 10' },
+    { label:'Expresión', val:'{20 − 10}' },
+    { label:'Resultado', val:'20 − 10 = 10 ✅' },
+  ]},
+  { num:6, level:'⭐⭐⭐ Difícil', expr:'3 × {2 + [5 − (4 − 2)]} − 1', result:14, steps:[
+    { label:'Paso 1', val:'Paréntesis: (4−2) = 2' },
+    { label:'Paso 2', val:'Corchete: [5−2] = 3' },
+    { label:'Paso 3', val:'Llaves: {2+3} = 5' },
+    { label:'Paso 4', val:'Mult: 3 × 5 = 15' },
+    { label:'Resultado', val:'15 − 1 = 14 ✅' },
+  ]},
+];
+function buildGuidedExercises() {
+  const container = document.querySelector('#s6 #guided-exercises');
+  if (container.children.length > 0) return;
+  guidedData.forEach(ex => {
+    const div = document.createElement('div');
+    div.className = 'exercise-card';
+    div.innerHTML = `
+      <div class="ex-header">
+        <div class="ex-num">${ex.num}</div>
+        <div>
+          <div style="font-weight:800;font-size:.95rem;color:var(--navy);">Ejercicio Guiado N° ${ex.num}</div>
+          <span class="badge badge-orange">${ex.level}</span>
+        </div>
+      </div>
+      <div class="ex-expr">${ex.expr}</div>
+      <div class="steps-accordion">
+        <div class="steps-toggle" onclick="toggleSteps(this)">
+          🔍 Ver solución paso a paso ▼
+        </div>
+        <div class="steps-body">
+          ${ex.steps.map(s => `<div class="step-row"><span class="step-label">${s.label}</span><span class="step-val">${s.val}</span></div>`).join('')}
+          <div class="result-badge" style="margin-top:8px;">✅ Resultado: ${ex.result}</div>
+        </div>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+function toggleSteps(el) {
+  const body = el.nextElementSibling;
+  body.classList.toggle('open');
+  el.innerHTML = body.classList.contains('open')
+    ? '🔼 Ocultar solución'
+    : '🔍 Ver solución paso a paso ▼';
+}
+// ===== S6 DRILL GENERATOR =====
+const s6DrillData = [
+  { expr: '7 + (4 − 2)', ans: 9 },
+  { expr: '12 − (3 + 4)', ans: 5 },
+  { expr: '6 + (8 − 5)', ans: 9 },
+  { expr: '20 − (5 + 3)', ans: 12 },
+  { expr: '9 + (2 + 3)', ans: 14 },
+  { expr: '15 − (6 − 2)', ans: 11 },
+  { expr: '3 + [8 − (1 + 2)]', ans: 8 },
+  { expr: '10 + [6 − (2 + 1)]', ans: 13 },
+];
+let s6DrillCurrent = null;
+function genS6Exercise() {
+  s6DrillCurrent = s6DrillData[Math.floor(Math.random() * s6DrillData.length)];
+  document.getElementById('s6-drill-expr').textContent = s6DrillCurrent.expr + ' = ?';
+  const inp = document.getElementById('s6-drill-ans');
+  inp.value = ''; inp.className = 'drill-input';
+  document.getElementById('s6-drill-feedback').className = 'feedback';
+  document.getElementById('s6-drill-solution').style.display = 'none';
+}
+function checkS6Drill() {
+  if (!s6DrillCurrent) return;
+  const val = parseFloat(document.getElementById('s6-drill-ans').value);
+  const inp = document.getElementById('s6-drill-ans');
+  const fb = document.getElementById('s6-drill-feedback');
+  if (val === s6DrillCurrent.ans) {
+    inp.className = 'drill-input ok';
+    fb.className = 'feedback show ok'; fb.textContent = '✅ ¡Correcto! Muy bien.';
+  } else {
+    inp.className = 'drill-input err';
+    fb.className = 'feedback show fail'; fb.textContent = `❌ No es correcto. La respuesta es ${s6DrillCurrent.ans}.`;
+    const sol = document.getElementById('s6-drill-solution');
+    sol.style.display = 'block';
+    sol.textContent = `Pista: Recuerda resolver primero lo que está entre paréntesis, luego corchetes.`;
+  }
+}
+// ===== S7: EJERCICIOS FÁCIL → DIFÍCIL =====
+const s7Pool = [
+  // Fácil
+  { expr:'12 + (3 + 5)', ans:20, level:'⭐ Fácil', pts:5 },
+  { expr:'20 − (4 + 6)', ans:10, level:'⭐ Fácil', pts:5 },
+  { expr:'15 + (8 − 3)', ans:20, level:'⭐ Fácil', pts:5 },
+  { expr:'8 + (6 − 2)', ans:12, level:'⭐ Fácil', pts:5 },
+  { expr:'25 − (10 + 5)', ans:10, level:'⭐ Fácil', pts:5 },
+  // Medio
+  { expr:'30 − (7 − 2 + 4)', ans:21, level:'⭐⭐ Medio', pts:10 },
+  { expr:'2 × (3 + 4) − 5', ans:9, level:'⭐⭐ Medio', pts:10 },
+  { expr:'5 + [12 − (4 + 3)]', ans:10, level:'⭐⭐ Medio', pts:10 },
+  { expr:'18 − [5 + (3 − 1)]', ans:11, level:'⭐⭐ Medio', pts:10 },
+  { expr:'3 × (2 + 4) − 5', ans:13, level:'⭐⭐ Medio', pts:10 },
+  // Difícil
+  { expr:'4 × [6 − (2 + 1)] + 3', ans:15, level:'⭐⭐⭐ Difícil', pts:15 },
+  { expr:'{18 − [5 + (3 − 1)]} + 4', ans:15, level:'⭐⭐⭐ Difícil', pts:15 },
+  { expr:'2 × {3 + [10 − (4 + 2)]} − 1', ans:15, level:'⭐⭐⭐ Difícil', pts:15 },
+  { expr:'{20 − [8 + (3 − 1)]} + 4', ans:14, level:'⭐⭐⭐ Difícil', pts:15 },
+  // Experto
+  { expr:'5 × {4 − [2 × (3 − 1) − 1]} + 6', ans:11, level:'⭐⭐⭐⭐ Experto', pts:20 },
+  { expr:'3 × {5 − [2 + (4 − 3)]} + 1', ans:7, level:'⭐⭐⭐⭐ Experto', pts:20 },
+];
+let s7State = { pts:0, correct:0, total:0, streak:0, current:null };
+function s7BuildDrill() {
+  const c = document.getElementById('s7-drill-container');
+  if (!c.innerHTML) s7Next();
+}
+function s7Next() {
+  const ex = s7Pool[Math.floor(Math.random() * s7Pool.length)];
+  s7State.current = ex;
+  document.getElementById('s7-drill-container').innerHTML = `
+    <div class="drill-box">
+      <div style="display:flex;gap:8px;margin-bottom:12px;">
+        <span class="badge badge-orange">${ex.level}</span>
+        <span class="badge badge-blue">+${ex.pts} pts</span>
+      </div>
+      <div class="drill-expr">${ex.expr} = ?</div>
+      <div class="drill-row">
+        <span style="font-weight:700;color:#3a4a6a;">Tu respuesta =</span>
+        <input type="number" class="drill-input" id="s7-ans" placeholder="?">
+        <button class="btn btn-primary" onclick="checkS7()">Verificar ✓</button>
+      </div>
+      <div class="feedback" id="s7-fb"></div>
+    </div>`;
+}
+function checkS7() {
+  const val = parseFloat(document.getElementById('s7-ans').value);
+  const ex = s7State.current;
+  const inp = document.getElementById('s7-ans');
+  const fb = document.getElementById('s7-fb');
+  s7State.total++;
+  const isOk = val === ex.ans;
+  if (isOk) {
+    s7State.pts += ex.pts; s7State.correct++; s7State.streak++;
+    inp.className = 'drill-input ok';
+    fb.className = 'feedback show ok'; fb.textContent = `✅ ¡Correcto! +${ex.pts} puntos`;
+  } else {
+    s7State.streak = 0;
+    inp.className = 'drill-input err';
+    fb.className = 'feedback show fail'; fb.textContent = `❌ Incorrecto. La respuesta correcta es ${ex.ans}.`;
+  }
+  document.getElementById('s7-pts').textContent = s7State.pts;
+  document.getElementById('s7-correct').textContent = s7State.correct;
+  document.getElementById('s7-total').textContent = s7State.total;
+  document.getElementById('s7-streak').textContent = `🔥 Racha: ${s7State.streak}`;
+}
+function s7Reset() {
+  s7State = { pts:0, correct:0, total:0, streak:0, current:null };
+  document.getElementById('s7-pts').textContent = '0';
+  document.getElementById('s7-correct').textContent = '0';
+  document.getElementById('s7-total').textContent = '0';
+  document.getElementById('s7-streak').textContent = '🔥 Racha: 0';
+  s7Next();
+}
+// ===== GENERADOR DE HOJA PDF =====
+function genExprForSheet(type, level) {
+  const pools = {
+    easy: [
+      { expr:'12 + (3 + 5)', ans:20 },
+      { expr:'20 − (4 + 6)', ans:10 },
+      { expr:'15 + (8 − 3)', ans:20 },
+      { expr:'9 − (2 + 3)', ans:4 },
+      { expr:'18 + (5 − 7)', ans:16 },
+      { expr:'25 − (10 + 5)', ans:10 },
+      { expr:'7 + (4 − 2)', ans:9 },
+      { expr:'30 − (15 + 5)', ans:10 },
+    ],
+    medium: [
+      { expr:'30 − (7 − 2 + 4)', ans:21 },
+      { expr:'5 + [12 − (4 + 3)]', ans:10 },
+      { expr:'2 × (3 + 4) − 5', ans:9 },
+      { expr:'4 + [8 − (2 + 3)]', ans:7 },
+      { expr:'20 − [5 + (3 + 2)]', ans:10 },
+      { expr:'3 × (5 − 2) + 4', ans:13 },
+    ],
+    hard: [
+      { expr:'4 × [6 − (2 + 1)] + 3', ans:15 },
+      { expr:'{18 − [5 + (3 − 1)]} + 4', ans:15 },
+      { expr:'2 × {3 + [10 − (4 + 2)]} − 1', ans:15 },
+      { expr:'5 × {4 − [2 × (3 − 1) − 1]} + 6', ans:11 },
+      { expr:'3 × {5 − [2 + (4 − 3)]} + 1', ans:7 },
+    ],
+  };
+  const levelMap = { easy: pools.easy, medium: pools.medium, hard: pools.hard, mixed: [...pools.easy, ...pools.medium, ...pools.hard] };
+  const pool = levelMap[level] || pools.easy;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+function generateSheet() {
+  const school = document.getElementById('g-school').value || 'Centro Educativo';
+  const teacher = document.getElementById('g-teacher').value || 'Docente';
+  const course = document.getElementById('g-course').value || 'Curso';
+  const count = parseInt(document.getElementById('g-count').value);
+  const level = document.getElementById('g-level').value;
+  document.getElementById('ps-school').textContent = school;
+  document.getElementById('ps-teacher').textContent = teacher;
+  document.getElementById('ps-course').textContent = course;
+  document.getElementById('ps-date').textContent = new Date().toLocaleDateString('es', { year:'numeric', month:'long', day:'numeric' });
+  const exContainer = document.getElementById('ps-exercises');
+  exContainer.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const ex = genExprForSheet(null, level);
+    const div = document.createElement('div');
+    div.className = 'sheet-ex';
+    div.innerHTML = `<span class="sheet-ex-expr">${ex.expr} =</span><div class="sheet-ex-line"></div>`;
+    exContainer.appendChild(div);
+  }
+  document.getElementById('print-sheet').classList.add('visible');
+  document.getElementById('print-sheet').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+function printSheet() {
+  if (!document.getElementById('print-sheet').classList.contains('visible')) {
+    alert('Primero genera la hoja haciendo clic en "Generar hoja"');
+    return;
+  }
+  window.print();
+}
+// ===== EVALUACIÓN FINAL =====
+const evalQuestions = [
+  // Parte 1: Teóricas
+  { q:'¿Cuál es la definición correcta de los signos de agrupación?', opts:['Símbolos que indican cuándo usar la multiplicación', 'Símbolos que encierran operaciones para que se resuelvan primero', 'Signos que solo se usan en la resta y la división', 'Ninguna de las anteriores'], ans:1, tipo:'Teórica', pts:2 },
+  { q:'¿En qué orden deben resolverse: llaves { }, paréntesis ( ) y corchetes [ ]?', opts:['Primero { }, luego [ ], finalmente ( )', 'Primero [ ], luego { }, finalmente ( )', 'Primero ( ), luego [ ], finalmente { }', 'El orden no importa, da lo mismo'], ans:2, tipo:'Teórica', pts:2 },
+  { q:'Cuando un signo NEGATIVO (−) precede a un paréntesis, ¿qué ocurre con los signos interiores?', opts:['Permanecen igual', 'Solo el primer signo cambia', 'Todos los signos cambian (+ → − y − → +)', 'Se eliminan junto con el paréntesis'], ans:2, tipo:'Teórica', pts:2 },
+  { q:'¿Cuál es el orden correcto de la jerarquía de operaciones?', opts:['Suma → Resta → Mult → Div → Signos', 'Signos → Potencias → Mult/Div → Suma/Resta', 'Potencias → Signos → Suma → Mult', 'Div → Mult → Resta → Suma → Paréntesis'], ans:1, tipo:'Teórica', pts:2 },
+  { q:'¿Cuántos niveles de anidamiento tiene la expresión { [ ( ) ] }?', opts:['Un nivel', 'Dos niveles', 'Tres niveles', 'Cuatro niveles'], ans:2, tipo:'Teórica', pts:2 },
+  // Parte 2: Ejercicios
+  { q:'¿Cuál es el resultado de: 10 + (3 − 1)?', opts:['6', '12', '14', '8'], ans:1, tipo:'Ejercicio', pts:2 },
+  { q:'¿Cuál es el resultado de: 18 − (5 + 4)?', opts:['27', '17', '9', '13'], ans:2, tipo:'Ejercicio', pts:2 },
+  { q:'¿Cuál es el resultado de: 6 + [9 − (2 + 3)]?', opts:['10', '14', '20', '4'], ans:0, tipo:'Ejercicio', pts:2 },
+  { q:'¿Cuál es el resultado de: 3 × (2 + 4) − 5?', opts:['7', '13', '9', '11'], ans:1, tipo:'Ejercicio', pts:2 },
+  { q:'¿Cuál es el resultado de: {12 − [3 + (2 − 1)]} + 5?', opts:['11', '13', '9', '15'], ans:1, tipo:'Ejercicio', pts:2 },
+];
+function buildEval() {
+  const c = document.getElementById('eval-questions');
+  if (c.children.length > 0) return;
+  let part1 = '<div class="card"><div class="card-title"><span class="ico">📋</span>Parte 1: Preguntas Teóricas</div>';
+  let part2 = '<div class="card"><div class="card-title"><span class="ico">🧮</span>Parte 2: Ejercicios de Eliminación</div>';
+  const letters = ['A','B','C','D'];
+  evalQuestions.forEach((q, qi) => {
+    const block = `<div class="quiz-q" style="margin-bottom:14px;">
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <span class="badge badge-blue">Pregunta ${qi+1}</span>
+        <span class="badge badge-green">${q.tipo}</span>
+        <span class="badge badge-orange">${q.pts} pts</span>
+      </div>
+      <div class="quiz-q-text">${q.q}</div>
+      <div class="quiz-options">
+        ${q.opts.map((o,i) => `<button class="quiz-opt" id="eq${qi}-${i}" onclick="selectEval(${qi},${i})">
+          <span class="opt-letter">${letters[i]}</span>${o}
+        </button>`).join('')}
+      </div>
+    </div>`;
+    if (qi < 5) part1 += block;
+    else part2 += block;
+  });
+  part1 += '</div>'; part2 += '</div>';
+  c.innerHTML = part1 + part2;
+}
+const evalSelections = {};
+function selectEval(qi, selected) {
+  // Deselect others
+  for (let i = 0; i < 4; i++) {
+    const b = document.getElementById(`eq${qi}-${i}`);
+    if (b) b.style.background = i === selected ? '#e3f2fd' : '';
+  }
+  evalSelections[qi] = selected;
+}
+function submitEval() {
+  let total = 0;
+  const letters = ['A','B','C','D'];
+  evalQuestions.forEach((q, qi) => {
+    const sel = evalSelections[qi];
+    for (let i = 0; i < q.opts.length; i++) {
+      const b = document.getElementById(`eq${qi}-${i}`);
+      if (!b) continue;
+      b.disabled = true;
+      if (i === q.ans) { b.classList.add('correct'); total += q.pts; }
+      else if (i === sel && sel !== q.ans) b.classList.add('wrong');
+    }
+  });
+  showEvalResult(total);
+}
+function showEvalResult(score) {
+  const r = document.getElementById('eval-result');
+  const pct = (score / 20) * 100;
+  let stars, label, msg, trophy;
+  if (score >= 18) { stars='⭐⭐⭐⭐⭐'; label='¡EXCELENTE!'; msg='Dominas perfectamente los signos de agrupación. ¡Felicitaciones!'; trophy='🏆'; }
+  else if (score >= 14) { stars='⭐⭐⭐⭐'; label='MUY BUENO'; msg='Muy buen trabajo. Tienes sólidos conocimientos sobre los signos de agrupación.'; trophy='🥇'; }
+  else if (score >= 12) { stars='⭐⭐⭐'; label='APROBADO'; msg='Aprobaste la evaluación. Repasa los temas donde tuviste dificultades.'; trophy='✅'; }
+  else { stars='⭐⭐'; label='NECESITA REFUERZO'; msg='No alcanzaste el puntaje mínimo. Te recomendamos repasar los módulos 3, 4 y 5.'; trophy='📚'; }
+  document.getElementById('eval-trophy').textContent = trophy;
+  document.getElementById('eval-grade').textContent = `${score}/20`;
+  document.getElementById('eval-stars').textContent = stars;
+  document.getElementById('eval-label').textContent = label;
+  document.getElementById('eval-msg').textContent = msg;
+  document.getElementById('eval-bar').style.width = pct + '%';
+  r.classList.add('show');
+  r.scrollIntoView({ behavior:'smooth' });
+}
+function resetEval() {
+  Object.keys(evalSelections).forEach(k => delete evalSelections[k]);
+  document.getElementById('eval-questions').innerHTML = '';
+  document.getElementById('eval-result').classList.remove('show');
+  buildEval();
+}
+// ===== INIT =====
+window.addEventListener('load', () => {
+  drawIntroCanvas();
+  buildGuidedExercises();
+});
+</script>
+</body>
+</html>

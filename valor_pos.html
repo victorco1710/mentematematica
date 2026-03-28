@@ -1,0 +1,2918 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valor Posicional y Lectura de Números | Mente Matemática</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Raleway:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ===========================
+   CSS VARIABLES & RESET
+=========================== */
+:root {
+  --navy: #0d2b6b;
+  --navy2: #1a3f8f;
+  --blue: #2563eb;
+  --blue-light: #3b82f6;
+  --accent: #f59e0b;
+  --accent2: #ef4444;
+  --green: #10b981;
+  --red: #ef4444;
+  --purple: #7c3aed;
+  --teal: #0891b2;
+  --bg: #f0f4f8;
+  --white: #ffffff;
+  --card: #ffffff;
+  --text: #1e293b;
+  --text2: #475569;
+  --text3: #94a3b8;
+  --border: #e2e8f0;
+  --sidebar-w: 260px;
+  --header-h: 70px;
+  --shadow: 0 4px 20px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+  --radius: 12px;
+  --radius-lg: 20px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+#header{
+  position:fixed;top:0;left:0;right:0;
+  height:var(--header-h);
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 50%,#1e56b8 100%);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px 0 0;
+  z-index:1000;
+  box-shadow:0 4px 24px rgba(13,43,107,0.4);
+}
+.header-logo{
+  display:flex;align-items:center;gap:14px;
+  padding:0 20px;
+  text-decoration:none;
+}
+.logo-icon{
+  width:48px;height:48px;
+  background:linear-gradient(135deg,var(--accent) 0%,#f97316 100%);
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;
+  box-shadow:0 4px 12px rgba(245,158,11,0.4);
+  flex-shrink:0;
+}
+.logo-text{
+  font-family:'Raleway',sans-serif;
+  font-weight:900;
+  font-size:20px;
+  color:#fff;
+  letter-spacing:-0.5px;
+  line-height:1.1;
+}
+.logo-sub{
+  font-family:'Nunito',sans-serif;
+  font-size:11px;
+  color:rgba(255,255,255,0.7);
+  font-weight:600;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+.header-right{display:flex;align-items:center;gap:16px}
+.btn-menu{
+  background:rgba(255,255,255,0.15);
+  color:#fff;
+  border:1.5px solid rgba(255,255,255,0.3);
+  padding:10px 20px;
+  border-radius:8px;
+  font-family:'Nunito',sans-serif;
+  font-weight:700;
+  font-size:13px;
+  cursor:pointer;
+  text-decoration:none;
+  transition:all .2s;
+  display:flex;align-items:center;gap:8px;
+  white-space:nowrap;
+}
+.btn-menu:hover{background:rgba(255,255,255,0.25);border-color:rgba(255,255,255,0.5)}
+.header-title{
+  color:rgba(255,255,255,0.9);
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:0.3px;
+}
+@media(max-width:700px){.header-title{display:none}}
+
+/* ===========================
+   SIDEBAR
+=========================== */
+#sidebar{
+  position:fixed;
+  top:var(--header-h);
+  left:0;
+  width:var(--sidebar-w);
+  height:calc(100vh - var(--header-h));
+  background:var(--white);
+  border-right:1px solid var(--border);
+  overflow-y:auto;
+  z-index:900;
+  box-shadow:2px 0 12px rgba(0,0,0,0.06);
+  padding-bottom:20px;
+}
+.sidebar-section-label{
+  font-size:10px;
+  font-weight:800;
+  color:var(--text3);
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  padding:20px 20px 8px;
+}
+.nav-item{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 20px;
+  cursor:pointer;
+  transition:all .2s;
+  border-radius:0;
+  color:var(--text2);
+  font-weight:600;
+  font-size:13.5px;
+  border-left:3px solid transparent;
+  text-decoration:none;
+  user-select:none;
+}
+.nav-item:hover{
+  background:rgba(37,99,235,0.07);
+  color:var(--blue);
+  border-left-color:rgba(37,99,235,0.3);
+}
+.nav-item.active{
+  background:rgba(37,99,235,0.1);
+  color:var(--blue);
+  border-left-color:var(--blue);
+  font-weight:800;
+}
+.nav-icon{
+  width:32px;height:32px;
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;
+  flex-shrink:0;
+  transition:all .2s;
+}
+.nav-item.active .nav-icon{transform:scale(1.1)}
+.ni-0{background:#eff6ff}
+.ni-1{background:#fff7ed}
+.ni-2{background:#ecfdf5}
+.ni-3{background:#f5f3ff}
+.ni-4{background:#fef2f2}
+.ni-5{background:#f0fdfa}
+.ni-6{background:#fdf4ff}
+.sidebar-score-box{
+  margin:16px;
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
+  border-radius:var(--radius);
+  padding:14px;
+  color:#fff;
+  text-align:center;
+}
+.score-label{font-size:10px;opacity:.75;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.score-value{font-size:28px;font-weight:900;line-height:1.1;font-family:'Raleway',sans-serif}
+.score-total{font-size:11px;opacity:.7}
+
+/* ===========================
+   MAIN CONTENT
+=========================== */
+#main{
+  margin-left:var(--sidebar-w);
+  margin-top:var(--header-h);
+  padding:28px;
+  min-height:calc(100vh - var(--header-h));
+}
+.section{display:none}
+.section.active{display:block;animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===========================
+   CARDS
+=========================== */
+.card{
+  background:var(--card);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow);
+  padding:28px;
+  margin-bottom:24px;
+  border:1px solid var(--border);
+}
+.card-header{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:20px;
+}
+.card-icon{
+  width:48px;height:48px;
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;
+  flex-shrink:0;
+}
+.card-title{
+  font-family:'Raleway',sans-serif;
+  font-weight:800;
+  font-size:20px;
+  color:var(--text);
+  line-height:1.2;
+}
+.card-subtitle{font-size:13px;color:var(--text3);font-weight:600;margin-top:2px}
+
+/* ===========================
+   SECTION HEADER
+=========================== */
+.section-hero{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 40%,#1e56b8 100%);
+  border-radius:var(--radius-lg);
+  padding:32px;
+  margin-bottom:28px;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+}
+.section-hero::before{
+  content:'';
+  position:absolute;top:-40px;right:-40px;
+  width:200px;height:200px;
+  background:rgba(255,255,255,0.05);
+  border-radius:50%;
+}
+.section-hero::after{
+  content:'';
+  position:absolute;bottom:-60px;right:60px;
+  width:150px;height:150px;
+  background:rgba(255,255,255,0.04);
+  border-radius:50%;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,0.15);
+  border:1px solid rgba(255,255,255,0.25);
+  border-radius:999px;
+  padding:6px 14px;
+  font-size:11px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  margin-bottom:12px;
+  position:relative;z-index:1;
+}
+.hero-title{
+  font-family:'Raleway',sans-serif;
+  font-size:28px;
+  font-weight:900;
+  line-height:1.2;
+  margin-bottom:8px;
+  position:relative;z-index:1;
+}
+.hero-desc{
+  font-size:15px;
+  opacity:.85;
+  line-height:1.6;
+  position:relative;z-index:1;
+  max-width:600px;
+}
+
+/* ===========================
+   THEORY BLOCKS
+=========================== */
+.theory-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:20px}
+.theory-card{
+  border-radius:var(--radius);
+  padding:20px;
+  border:2px solid transparent;
+  transition:all .2s;
+}
+.theory-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.tc-blue{background:#eff6ff;border-color:#bfdbfe}
+.tc-green{background:#ecfdf5;border-color:#a7f3d0}
+.tc-orange{background:#fff7ed;border-color:#fed7aa}
+.tc-purple{background:#f5f3ff;border-color:#ddd6fe}
+.tc-red{background:#fef2f2;border-color:#fecaca}
+.tc-teal{background:#f0fdfa;border-color:#99f6e4}
+.tc-title{font-weight:800;font-size:15px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.tc-body{font-size:13.5px;color:var(--text2);line-height:1.5}
+.big-num{font-size:24px;font-weight:900;font-family:'Raleway',sans-serif}
+
+/* ===========================
+   POSITION TABLE
+=========================== */
+.pos-table-wrap{overflow-x:auto;border-radius:var(--radius);margin:16px 0}
+.pos-table{
+  width:100%;border-collapse:collapse;
+  font-size:14px;
+}
+.pos-table th{
+  background:var(--navy);
+  color:#fff;
+  padding:12px 14px;
+  font-weight:800;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  text-align:center;
+}
+.pos-table td{
+  padding:11px 14px;
+  text-align:center;
+  border-bottom:1px solid var(--border);
+  font-weight:600;
+}
+.pos-table tr:nth-child(even) td{background:#f8fafc}
+.pos-table tr:hover td{background:#eff6ff}
+.highlight-cell{background:linear-gradient(135deg,#dbeafe,#eff6ff)!important;color:var(--blue);font-weight:800}
+
+/* ===========================
+   EXAMPLE BOXES
+=========================== */
+.example-box{
+  background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%);
+  border:2px solid #bfdbfe;
+  border-radius:var(--radius);
+  padding:20px;
+  margin:12px 0;
+}
+.example-label{
+  font-size:11px;font-weight:800;text-transform:uppercase;
+  letter-spacing:1px;color:var(--blue);margin-bottom:10px;
+  display:flex;align-items:center;gap:6px;
+}
+.example-number{
+  font-family:'Raleway',sans-serif;
+  font-size:32px;
+  font-weight:900;
+  color:var(--navy);
+  margin-bottom:12px;
+}
+.decomp-row{
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+}
+.decomp-chip{
+  border-radius:8px;
+  padding:8px 14px;
+  font-weight:800;
+  font-size:15px;
+  display:flex;flex-direction:column;align-items:center;
+  gap:2px;
+}
+.dc-cm{background:#7c3aed;color:#fff}
+.dc-dm{background:#2563eb;color:#fff}
+.dc-um{background:#0891b2;color:#fff}
+.dc-c{background:#10b981;color:#fff}
+.dc-d{background:#f59e0b;color:#fff}
+.dc-u{background:#ef4444;color:#fff}
+.dc-label{font-size:9px;opacity:.85;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.decomp-plus{color:var(--text3);font-size:20px;font-weight:900}
+.decomp-eq{font-size:18px;font-weight:900;color:var(--navy);margin:0 4px}
+
+/* ===========================
+   VIDEO CONTAINER
+=========================== */
+.video-wrap{
+  background:#000;
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  margin:16px 0;
+  aspect-ratio:16/9;
+  position:relative;
+}
+.video-wrap video{width:100%;height:100%;object-fit:contain}
+.video-placeholder{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);
+  color:#fff;gap:12px;
+  min-height:280px;
+}
+.video-placeholder .play-icon{
+  width:72px;height:72px;
+  background:rgba(255,255,255,0.15);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:30px;
+  border:2px solid rgba(255,255,255,0.25);
+}
+.video-placeholder p{font-size:14px;opacity:.7;font-weight:600}
+
+/* ===========================
+   CANVAS VISUALIZATIONS
+=========================== */
+.canvas-wrap{
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  background:#fff;
+  border:2px solid var(--border);
+  margin:16px 0;
+}
+canvas{display:block;max-width:100%}
+
+/* ===========================
+   INTERACTIVE ACTIVITIES
+=========================== */
+.activity-card{
+  background:linear-gradient(135deg,#fafafa 0%,#f8fafc 100%);
+  border:2px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:24px;
+  margin:16px 0;
+  transition:all .2s;
+}
+.activity-card:hover{border-color:var(--blue-light)}
+.activity-title{
+  font-family:'Raleway',sans-serif;
+  font-weight:800;
+  font-size:17px;
+  color:var(--navy);
+  margin-bottom:6px;
+  display:flex;align-items:center;gap:8px;
+}
+.activity-desc{font-size:13px;color:var(--text3);margin-bottom:16px;font-weight:600}
+.input-row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-bottom:12px}
+.input-group{display:flex;flex-direction:column;gap:4px}
+.input-label{font-size:11px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
+input[type="number"],input[type="text"],select{
+  padding:10px 14px;
+  border:2px solid var(--border);
+  border-radius:8px;
+  font-family:'Nunito',sans-serif;
+  font-size:15px;
+  font-weight:700;
+  color:var(--text);
+  background:#fff;
+  transition:all .2s;
+  outline:none;
+  min-width:80px;
+}
+input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.btn{
+  padding:11px 20px;
+  border:none;
+  border-radius:8px;
+  font-family:'Nunito',sans-serif;
+  font-weight:800;
+  font-size:14px;
+  cursor:pointer;
+  transition:all .2s;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.btn:active{transform:translateY(0)}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{background:#1d4ed8}
+.btn-success{background:var(--green);color:#fff}
+.btn-danger{background:var(--red);color:#fff}
+.btn-accent{background:var(--accent);color:#fff}
+.btn-sm{padding:8px 14px;font-size:13px}
+.feedback{
+  border-radius:8px;
+  padding:12px 16px;
+  margin-top:12px;
+  font-weight:700;
+  font-size:14px;
+  display:none;
+  align-items:center;
+  gap:10px;
+}
+.feedback.show{display:flex;animation:slideIn .3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+.feedback.correct{background:#dcfce7;color:#166534;border:1.5px solid #86efac}
+.feedback.incorrect{background:#fee2e2;color:#991b1b;border:1.5px solid #fca5a5}
+.feedback.info{background:#dbeafe;color:#1e40af;border:1.5px solid #93c5fd}
+
+/* ===========================
+   POSITIONAL VALUE BUILDER
+=========================== */
+.pos-builder{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(90px,1fr));
+  gap:12px;
+  margin:16px 0;
+}
+.pos-slot{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.pos-slot-label{
+  font-size:10px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.8px;padding:4px 8px;
+  border-radius:6px;color:#fff;
+  white-space:nowrap;
+}
+.pos-slot input{
+  width:60px;
+  text-align:center;
+  font-size:22px;
+  font-weight:900;
+  font-family:'Raleway',sans-serif;
+  padding:10px 4px;
+  border-radius:10px;
+}
+.pos-slot-val{
+  font-size:12px;font-weight:700;
+  color:var(--text3);
+  text-align:center;
+  min-height:18px;
+}
+
+/* ===========================
+   QUIZ / EVALUATION
+=========================== */
+.quiz-question{
+  background:#fff;
+  border:2px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:24px;
+  margin-bottom:20px;
+  transition:all .3s;
+}
+.quiz-question.answered-correct{border-color:var(--green);background:#f0fdf4}
+.quiz-question.answered-wrong{border-color:var(--red);background:#fff5f5}
+.quiz-q-num{
+  font-size:11px;font-weight:800;text-transform:uppercase;
+  letter-spacing:1px;color:var(--blue);
+  margin-bottom:8px;display:flex;align-items:center;gap:6px;
+}
+.quiz-q-text{
+  font-weight:700;font-size:16px;color:var(--text);
+  margin-bottom:16px;line-height:1.4;
+}
+.quiz-options{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 16px;
+  border:2px solid var(--border);
+  border-radius:10px;
+  cursor:pointer;
+  transition:all .2s;
+  font-weight:600;font-size:14.5px;
+  user-select:none;
+  background:#fff;
+}
+.quiz-opt:hover{border-color:var(--blue);background:#eff6ff;color:var(--blue)}
+.quiz-opt.selected{border-color:var(--blue);background:#eff6ff;color:var(--blue)}
+.quiz-opt.correct{border-color:var(--green)!important;background:#dcfce7!important;color:#166534!important}
+.quiz-opt.wrong{border-color:var(--red)!important;background:#fee2e2!important;color:#991b1b!important}
+.quiz-opt-letter{
+  width:28px;height:28px;
+  border-radius:50%;
+  background:var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:800;
+  flex-shrink:0;
+  transition:all .2s;
+}
+.quiz-opt:hover .quiz-opt-letter,
+.quiz-opt.selected .quiz-opt-letter{background:var(--blue);color:#fff}
+.quiz-opt.correct .quiz-opt-letter{background:var(--green);color:#fff}
+.quiz-opt.wrong .quiz-opt-letter{background:var(--red);color:#fff}
+.quiz-feedback{
+  margin-top:10px;padding:10px 14px;
+  border-radius:8px;font-size:13px;font-weight:700;
+  display:none;
+}
+.quiz-feedback.show{display:block}
+.qf-correct{background:#dcfce7;color:#166534;border:1.5px solid #86efac}
+.qf-wrong{background:#fee2e2;color:#991b1b;border:1.5px solid #fca5a5}
+.result-panel{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
+  border-radius:var(--radius-lg);
+  padding:36px;
+  text-align:center;
+  color:#fff;
+  margin-top:24px;
+  display:none;
+}
+.result-panel.show{display:block;animation:fadeIn .5s ease}
+.result-score{
+  font-family:'Raleway',sans-serif;
+  font-size:72px;font-weight:900;
+  line-height:1;margin:16px 0 8px;
+}
+.result-label{font-size:18px;font-weight:700;opacity:.9}
+.result-msg{font-size:14px;opacity:.75;margin-top:8px}
+.result-emoji{font-size:48px}
+.progress-bar{
+  background:rgba(255,255,255,.2);
+  border-radius:999px;
+  height:12px;
+  margin:16px 0;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--accent),#f97316);
+  border-radius:999px;
+  transition:width 1s ease;
+}
+
+/* ===========================
+   WELCOME SCREEN
+=========================== */
+.welcome-screen{
+  max-width:800px;margin:0 auto;text-align:center;padding:40px 20px;
+}
+.welcome-logo{font-size:72px;margin-bottom:20px;animation:bounce 1.5s ease infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.welcome-title{
+  font-family:'Raleway',sans-serif;
+  font-size:36px;font-weight:900;
+  color:var(--navy);
+  margin-bottom:12px;
+  line-height:1.2;
+}
+.welcome-subtitle{
+  font-size:16px;color:var(--text2);
+  margin-bottom:32px;line-height:1.6;
+}
+.welcome-cards{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:16px;margin:32px 0;
+}
+.wc-card{
+  background:#fff;border-radius:var(--radius-lg);padding:24px 16px;
+  box-shadow:var(--shadow);
+  border:2px solid var(--border);
+  transition:all .3s;cursor:pointer;
+}
+.wc-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--blue)}
+.wc-icon{font-size:36px;margin-bottom:10px}
+.wc-title{font-weight:800;font-size:13px;color:var(--navy)}
+
+/* ===========================
+   CHIPS / BADGES
+=========================== */
+.badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:4px 10px;border-radius:999px;
+  font-size:11px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.badge-blue{background:#dbeafe;color:#1e40af}
+.badge-green{background:#dcfce7;color:#166534}
+.badge-orange{background:#fed7aa;color:#92400e}
+.badge-red{background:#fee2e2;color:#991b1b}
+.badge-purple{background:#ede9fe;color:#5b21b6}
+
+/* ===========================
+   INFO BOX
+=========================== */
+.info-box{
+  border-radius:var(--radius);
+  padding:16px 20px;
+  margin:12px 0;
+  display:flex;gap:14px;
+  align-items:flex-start;
+}
+.ib-blue{background:#eff6ff;border-left:4px solid var(--blue)}
+.ib-green{background:#ecfdf5;border-left:4px solid var(--green)}
+.ib-orange{background:#fff7ed;border-left:4px solid var(--accent)}
+.ib-purple{background:#f5f3ff;border-left:4px solid var(--purple)}
+.ib-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.ib-content{flex:1}
+.ib-title{font-weight:800;font-size:14px;margin-bottom:4px}
+.ib-text{font-size:13.5px;color:var(--text2);line-height:1.5}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media(max-width:900px){
+  :root{--sidebar-w:220px}
+}
+@media(max-width:700px){
+  :root{--sidebar-w:0px}
+  #sidebar{transform:translateX(-220px);width:220px;transition:transform .3s}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0;padding:16px}
+  .hero-title{font-size:20px}
+}
+
+/* ===========================
+   MISC
+=========================== */
+hr.divider{border:none;border-top:2px solid var(--border);margin:20px 0}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.text-center{text-align:center}
+.mb-0{margin-bottom:0}
+.mt-16{margin-top:16px}
+.bold{font-weight:800}
+.color-blue{color:var(--blue)}
+.color-green{color:var(--green)}
+.color-red{color:var(--red)}
+.color-accent{color:var(--accent)}
+
+/* Tab system */
+.tab-nav{display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:10px;margin-bottom:20px;flex-wrap:wrap}
+.tab-btn{
+  flex:1;min-width:80px;
+  padding:8px 12px;border:none;
+  background:transparent;
+  border-radius:8px;
+  font-family:'Nunito',sans-serif;
+  font-weight:700;font-size:12px;
+  color:var(--text3);cursor:pointer;
+  transition:all .2s;
+  text-align:center;
+}
+.tab-btn.active{background:#fff;color:var(--blue);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.tab-content{display:none}
+.tab-content.active{display:block;animation:fadeIn .3s ease}
+
+/* Number reading display */
+.number-display{
+  font-family:'Raleway',sans-serif;
+  font-size:48px;font-weight:900;
+  color:var(--navy);
+  text-align:center;
+  padding:20px;
+  background:linear-gradient(135deg,#eff6ff,#dbeafe);
+  border-radius:var(--radius-lg);
+  border:2px solid #bfdbfe;
+  margin:12px 0;
+  letter-spacing:2px;
+}
+.words-display{
+  font-size:20px;font-weight:700;
+  text-align:center;
+  color:var(--blue);
+  padding:12px;
+  background:#eff6ff;
+  border-radius:var(--radius);
+  margin:8px 0;
+  min-height:50px;
+  display:flex;align-items:center;justify-content:center;
+}
+</style>
+</head>
+<body>
+
+<!-- ===========================
+     HEADER
+=========================== -->
+<header id="header">
+  <a class="header-logo" href="contenidos.html">
+    <div class="logo-icon">🧮</div>
+    <div>
+      <div class="logo-text">Mente Matemática</div>
+      <div class="logo-sub">Plataforma Educativa</div>
+    </div>
+  </a>
+  <div class="header-right">
+    <div class="header-title">Valor Posicional y Lectura de Números</div>
+    <a href="temario.html" class="btn-menu">⬅ Volver al Menú</a>
+  </div>
+</header>
+
+<!-- ===========================
+     SIDEBAR
+=========================== -->
+<nav id="sidebar">
+  <!-- Puntuación acumulada -->
+  <div class="sidebar-score-box">
+    <div class="score-label">🏆 Mi Puntuación</div>
+    <div class="score-value" id="global-score">0</div>
+    <div class="score-total">puntos acumulados</div>
+  </div>
+  
+  <div class="sidebar-section-label">Módulos</div>
+
+  <div class="nav-item active" onclick="showSection('welcome')" id="nav-welcome">
+    <div class="nav-icon ni-0">🏠</div>
+    <span>Inicio</span>
+  </div>
+  <div class="nav-item" onclick="showSection('s1')" id="nav-s1">
+    <div class="nav-icon ni-1">🎯</div>
+    <span>¿Qué aprenderemos?</span>
+  </div>
+  <div class="nav-item" onclick="showSection('s2')" id="nav-s2">
+    <div class="nav-icon ni-2">🔢</div>
+    <span>3 Dígitos – Básico</span>
+  </div>
+  <div class="nav-item" onclick="showSection('s3')" id="nav-s3">
+    <div class="nav-icon ni-3">🔷</div>
+    <span>5 Dígitos – Intermedio</span>
+  </div>
+  <div class="nav-item" onclick="showSection('s4')" id="nav-s4">
+    <div class="nav-icon ni-4">⭐</div>
+    <span>6 Dígitos – Difícil</span>
+  </div>
+  <div class="nav-item" onclick="showSection('s5')" id="nav-s5">
+    <div class="nav-icon ni-5">📖</div>
+    <span>Lectura de Números</span>
+  </div>
+  <div class="nav-item" onclick="showSection('s6')" id="nav-s6">
+    <div class="nav-icon ni-6">📝</div>
+    <span>Evaluación Final</span>
+  </div>
+</nav>
+
+<!-- ===========================
+     MAIN CONTENT
+=========================== -->
+<main id="main">
+
+<!-- ===========================
+  WELCOME SECTION
+=========================== -->
+<section id="welcome" class="section active">
+  <div class="welcome-screen">
+    <div class="welcome-logo">🧮</div>
+    <h1 class="welcome-title">¡Bienvenido a<br>Mente Matemática!</h1>
+    <p class="welcome-subtitle">
+      En esta plataforma aprenderás todo sobre el <strong>Valor Posicional y la Lectura de los Números</strong>. 
+      Descubrirás el súper poder que tienen los números: que un mismo dígito puede valer mucho o valer poco 
+      dependiendo de ¡dónde esté sentado! 🎉
+    </p>
+    <div class="info-box ib-blue">
+      <span class="ib-icon">💡</span>
+      <div class="ib-content">
+        <div class="ib-title">¿Cómo funciona?</div>
+        <div class="ib-text">Usa el menú de la izquierda para navegar entre los módulos. Cada uno tiene explicaciones, videos, visualizaciones y actividades interactivas. ¡Tus puntos se acumulan!</div>
+      </div>
+    </div>
+    <div class="welcome-cards">
+      <div class="wc-card" onclick="showSection('s1')">
+        <div class="wc-icon">🎯</div>
+        <div class="wc-title">¿Qué aprenderemos?</div>
+      </div>
+      <div class="wc-card" onclick="showSection('s2')">
+        <div class="wc-icon">🔢</div>
+        <div class="wc-title">3 Dígitos Básico</div>
+      </div>
+      <div class="wc-card" onclick="showSection('s3')">
+        <div class="wc-icon">🔷</div>
+        <div class="wc-title">5 Dígitos Intermedio</div>
+      </div>
+      <div class="wc-card" onclick="showSection('s4')">
+        <div class="wc-icon">⭐</div>
+        <div class="wc-title">6 Dígitos Difícil</div>
+      </div>
+      <div class="wc-card" onclick="showSection('s5')">
+        <div class="wc-icon">📖</div>
+        <div class="wc-title">Lectura de Números</div>
+      </div>
+      <div class="wc-card" onclick="showSection('s6')">
+        <div class="wc-icon">📝</div>
+        <div class="wc-title">Evaluación Final</div>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="font-size:16px;padding:14px 32px;" onclick="showSection('s1')">
+      🚀 ¡Comenzar a aprender!
+    </button>
+  </div>
+</section>
+
+<!-- ===========================
+  SECCIÓN 1: ¿QUÉ APRENDEREMOS?
+=========================== -->
+<section id="s1" class="section">
+  <div class="section-hero">
+    <div class="hero-badge">🎯 Módulo 1</div>
+    <h2 class="hero-title">¿Qué Aprenderemos?</h2>
+    <p class="hero-desc">Descubre el súper poder del Valor Posicional y los secretos de los números. ¡Todo lo que necesitas saber está aquí!</p>
+  </div>
+
+  <!-- Bienvenida del tema -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#fff7ed">🌟</div>
+      <div>
+        <div class="card-title">¡Descubriendo los Secretos de los Números!</div>
+        <div class="card-subtitle">Introducción al Tema</div>
+      </div>
+    </div>
+    <div class="info-box ib-orange">
+      <span class="ib-icon">⚽</span>
+      <div class="ib-content">
+        <div class="ib-title">¡Hola! Qué bueno tenerte aquí.</div>
+        <div class="ib-text">Hoy vamos a descubrir un súper poder que tienen los números: el <strong>valor posicional</strong>. ¿Sabías que un mismo número puede valer mucho o valer poco dependiendo de dónde esté sentado? ¡Así es! Imagina que los números son como los jugadores en un equipo de fútbol; su rol y su importancia cambian dependiendo de la posición en la que jueguen.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Definición -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#eff6ff">📖</div>
+      <div>
+        <div class="card-title">Definición Fundamental</div>
+      </div>
+    </div>
+    <div class="example-box">
+      <div class="example-label">📌 Definición</div>
+      <p style="font-size:16px;font-weight:700;color:var(--navy);line-height:1.5">
+        El <strong>valor posicional</strong> es "el valor que toma un dígito (0, 1, 2, 3, 4, 5, 6, 7, 8, 9) 
+        según la posición que ocupa dentro de un número".
+      </p>
+    </div>
+    <div class="info-box ib-blue" style="margin-top:12px">
+      <span class="ib-icon">💡</span>
+      <div class="ib-content">
+        <div class="ib-title">Ejemplo rápido</div>
+        <div class="ib-text">El dígito <strong>5</strong> en el número <strong>500</strong> vale 500. Pero el mismo dígito <strong>5</strong> en el número <strong>52</strong> vale 50. ¡Y en el número <strong>35</strong> solo vale 5!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Objetivos de aprendizaje -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#ecfdf5">🎯</div>
+      <div>
+        <div class="card-title">Objetivos de Aprendizaje</div>
+        <div class="card-subtitle">Al terminar este tema podrás…</div>
+      </div>
+    </div>
+    <div class="theory-grid">
+      <div class="theory-card tc-blue">
+        <div class="tc-title">🔢 Identificar posiciones</div>
+        <div class="tc-body">Reconocer la posición de cada dígito en un número: unidades, decenas, centenas, miles y más.</div>
+      </div>
+      <div class="theory-card tc-green">
+        <div class="tc-title">💡 Calcular valores</div>
+        <div class="tc-body">Determinar cuánto vale cada dígito según su posición dentro del número.</div>
+      </div>
+      <div class="theory-card tc-orange">
+        <div class="tc-title">📝 Descomponer números</div>
+        <div class="tc-body">Escribir un número como suma de sus partes: forma desarrollada y forma normal.</div>
+      </div>
+      <div class="theory-card tc-purple">
+        <div class="tc-title">📖 Leer números</div>
+        <div class="tc-body">Traducir correctamente cualquier número natural a palabras en español.</div>
+      </div>
+      <div class="theory-card tc-red">
+        <div class="tc-title">✍️ Escribir números</div>
+        <div class="tc-body">Convertir números escritos en palabras a su representación numérica correcta.</div>
+      </div>
+      <div class="theory-card tc-teal">
+        <div class="tc-title">📊 Comparar números</div>
+        <div class="tc-body">Ordenar y comparar números usando el valor posicional como herramienta.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Propiedades Mágicas - Base 10 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#f5f3ff">✨</div>
+      <div>
+        <div class="card-title">Propiedades Mágicas: El Sistema Base 10</div>
+        <div class="card-subtitle">Nuestro sistema numérico funciona en grupos de diez</div>
+      </div>
+    </div>
+    <p style="margin-bottom:20px;color:var(--text2);line-height:1.6">
+      Nuestro sistema numérico es de <strong>base 10</strong>. Esto significa que siempre se agrupa de 10 en 10. ¡Siempre se multiplica por 10 al saltar a la izquierda!
+    </p>
+    <!-- Canvas: pirámide base 10 -->
+    <div class="canvas-wrap">
+      <canvas id="base10Canvas" width="700" height="200"></canvas>
+    </div>
+    <div class="theory-grid" style="margin-top:16px">
+      <div class="theory-card tc-blue">
+        <div class="tc-title"><span class="big-num color-blue">10</span> Unidades</div>
+        <div class="tc-body">forman <strong>1 Decena</strong></div>
+      </div>
+      <div class="theory-card tc-green">
+        <div class="tc-title"><span class="big-num color-green">10</span> Decenas</div>
+        <div class="tc-body">forman <strong>1 Centena</strong></div>
+      </div>
+      <div class="theory-card tc-orange">
+        <div class="tc-title"><span class="big-num color-accent">10</span> Centenas</div>
+        <div class="tc-body">forman <strong>1 Unidad de Mil</strong></div>
+      </div>
+      <div class="theory-card tc-purple">
+        <div class="tc-title"><span class="big-num" style="color:var(--purple)">10</span> U. de Mil</div>
+        <div class="tc-body">forman <strong>1 Decena de Mil</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de posiciones -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#fef2f2">📊</div>
+      <div>
+        <div class="card-title">Las Posiciones de los Números</div>
+        <div class="card-subtitle">De derecha a izquierda</div>
+      </div>
+    </div>
+    <div class="pos-table-wrap">
+      <table class="pos-table">
+        <thead>
+          <tr>
+            <th>Posición</th>
+            <th>Abreviatura</th>
+            <th>Valor</th>
+            <th>Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Unidades</td><td><span class="badge badge-red">U</span></td><td>1</td><td>Los números del 0 al 9 solitos</td></tr>
+          <tr><td>Decenas</td><td><span class="badge badge-orange">D</span></td><td>10</td><td>Grupos de diez</td></tr>
+          <tr><td>Centenas</td><td><span class="badge badge-green">C</span></td><td>100</td><td>Grupos de cien</td></tr>
+          <tr><td>Unidades de Mil</td><td><span class="badge badge-blue">UM</span></td><td>1.000</td><td>Grupos de mil</td></tr>
+          <tr><td>Decenas de Mil</td><td><span class="badge badge-blue">DM</span></td><td>10.000</td><td>Grupos de diez mil</td></tr>
+          <tr><td>Centenas de Mil</td><td><span class="badge badge-purple">CM</span></td><td>100.000</td><td>Grupos de cien mil</td></tr>
+          <tr><td>Millón</td><td><span class="badge badge-purple">M</span></td><td>1.000.000</td><td>Grupos de un millón</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-box ib-green" style="margin-top:16px">
+      <span class="ib-icon">🔑</span>
+      <div class="ib-content">
+        <div class="ib-title">¡La regla de oro!</div>
+        <div class="ib-text">Los números se leen y se colocan de <strong>derecha a izquierda</strong>: primero las Unidades, luego las Decenas, después las Centenas, y así sucesivamente.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido del módulo siguiente -->
+  <div class="card" style="text-align:center;background:linear-gradient(135deg,#eff6ff,#dbeafe)">
+    <p style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:16px">
+      ¡Excelente! Ya conoces los conceptos básicos. Ahora vamos a practicar con números reales 🚀
+    </p>
+    <button class="btn btn-primary" onclick="showSection('s2')">Ir al Módulo 2 →</button>
+  </div>
+</section>
+
+<!-- ===========================
+  SECCIÓN 2: 3 DÍGITOS - BÁSICO
+=========================== -->
+<section id="s2" class="section">
+  <div class="section-hero" style="background:linear-gradient(135deg,#065f46,#047857,#059669)">
+    <div class="hero-badge">🔢 Módulo 2</div>
+    <h2 class="hero-title">Valor Posicional de 3 Dígitos</h2>
+    <p class="hero-desc">Nivel Básico — Aprende a identificar centenas, decenas y unidades en números hasta el 999.</p>
+  </div>
+
+  <!-- Video -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#ecfdf5">🎬</div>
+      <div>
+        <div class="card-title">Video: Valor Posicional de 3 Dígitos</div>
+        <div class="card-subtitle">Mira el video antes de comenzar</div>
+      </div>
+    </div>
+    <div class="video-wrap">
+      <video controls preload="metadata" poster="">
+        <source src="vid/val_pos1.mp4" type="video/mp4">
+        <div class="video-placeholder">
+          <div class="play-icon">▶</div>
+          <p>Video: val_pos1.mp4</p>
+          <p style="font-size:12px">Asegúrate de que el archivo esté en la carpeta <code>vid/</code></p>
+        </div>
+      </video>
+    </div>
+  </div>
+
+  <!-- Teoría -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#ecfdf5">🧠</div>
+      <div>
+        <div class="card-title">Parte Teórica</div>
+        <div class="card-subtitle">Centenas, Decenas y Unidades</div>
+      </div>
+    </div>
+    <p style="color:var(--text2);line-height:1.6;margin-bottom:16px">
+      El valor posicional indica <strong>cuánto vale cada cifra</strong> según el lugar que ocupa en el número. En un número de <strong>tres dígitos</strong> existen tres posiciones:
+    </p>
+    <div class="theory-grid">
+      <div class="theory-card tc-green">
+        <div class="tc-title">🟩 Centena (C)</div>
+        <div class="tc-body">Ocupa la posición izquierda.<br><strong>Vale 100 unidades.</strong><br>Ejemplo: el 3 en 345 vale 300.</div>
+      </div>
+      <div class="theory-card tc-orange">
+        <div class="tc-title">🟧 Decena (D)</div>
+        <div class="tc-body">Ocupa la posición central.<br><strong>Vale 10 unidades.</strong><br>Ejemplo: el 4 en 345 vale 40.</div>
+      </div>
+      <div class="theory-card tc-red">
+        <div class="tc-title">🟥 Unidad (U)</div>
+        <div class="tc-body">Ocupa la posición derecha.<br><strong>Vale 1 unidad.</strong><br>Ejemplo: el 5 en 345 vale 5.</div>
+      </div>
+    </div>
+    <!-- Ejemplo 345 -->
+    <div class="example-box" style="margin-top:16px">
+      <div class="example-label">✏️ Ejemplo General</div>
+      <div class="example-number">345</div>
+      <div class="decomp-row">
+        <div class="decomp-chip dc-c">300<div class="dc-label">3 centenas</div></div>
+        <span class="decomp-plus">+</span>
+        <div class="decomp-chip dc-d">40<div class="dc-label">4 decenas</div></div>
+        <span class="decomp-plus">+</span>
+        <div class="decomp-chip dc-u">5<div class="dc-label">5 unidades</div></div>
+        <span class="decomp-eq">=</span>
+        <strong style="font-size:22px;color:var(--navy)">345</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ejemplos resueltos -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#eff6ff">✏️</div>
+      <div><div class="card-title">Ejemplos Resueltos</div></div>
+    </div>
+    <div class="grid-2">
+      <div>
+        <div class="example-box">
+          <div class="example-label">Ejemplo 1</div>
+          <div class="example-number">128</div>
+          <div class="decomp-row">
+            <div class="decomp-chip dc-c">100<div class="dc-label">1 C</div></div>
+            <span class="decomp-plus">+</span>
+            <div class="decomp-chip dc-d">20<div class="dc-label">2 D</div></div>
+            <span class="decomp-plus">+</span>
+            <div class="decomp-chip dc-u">8<div class="dc-label">8 U</div></div>
+          </div>
+          <p style="margin-top:10px;font-weight:700;color:var(--green)">✔ Valor total: 128</p>
+        </div>
+      </div>
+      <div>
+        <div class="example-box" style="background:linear-gradient(135deg,#ecfdf5,#d1fae5);border-color:#6ee7b7">
+          <div class="example-label" style="color:var(--green)">Ejemplo 2</div>
+          <div class="example-number">506</div>
+          <div class="decomp-row">
+            <div class="decomp-chip dc-c">500<div class="dc-label">5 C</div></div>
+            <span class="decomp-plus">+</span>
+            <div class="decomp-chip dc-d">0<div class="dc-label">0 D</div></div>
+            <span class="decomp-plus">+</span>
+            <div class="decomp-chip dc-u">6<div class="dc-label">6 U</div></div>
+          </div>
+          <p style="margin-top:10px;font-weight:700;color:var(--green)">✔ Valor total: 506</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Visualización Canvas -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#ecfdf5">👁️</div>
+      <div>
+        <div class="card-title">Representación Gráfica — Tablero Interactivo</div>
+        <div class="card-subtitle">Ingresa un número de 1 a 999 y visualiza su valor posicional</div>
+      </div>
+    </div>
+    <div class="input-row">
+      <div class="input-group">
+        <label class="input-label">Número (1-999)</label>
+        <input type="number" id="num3Input" min="0" max="999" value="345" style="width:130px;font-size:22px;text-align:center">
+      </div>
+      <button class="btn btn-primary" onclick="drawNum3()">🔍 Visualizar</button>
+    </div>
+    <div class="canvas-wrap">
+      <canvas id="canvas3" width="680" height="220"></canvas>
+    </div>
+  </div>
+
+  <!-- Propiedades Mágicas -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#fff7ed">✨</div>
+      <div><div class="card-title">Propiedades Mágicas del Sistema Base 10</div></div>
+    </div>
+    <div class="theory-grid">
+      <div class="theory-card tc-orange">
+        <div class="tc-title">✖️ × 10 al ir izquierda</div>
+        <div class="tc-body">Cada vez que un dígito se mueve una posición a la izquierda, su valor se <strong>multiplica por 10</strong>.</div>
+      </div>
+      <div class="theory-card tc-blue">
+        <div class="tc-title">➗ ÷ 10 al ir derecha</div>
+        <div class="tc-body">Cada vez que un dígito se mueve una posición a la derecha, su valor se <strong>divide entre 10</strong>.</div>
+      </div>
+      <div class="theory-card tc-green">
+        <div class="tc-title">🔢 El 0 como guardaposición</div>
+        <div class="tc-body">El cero no vale nada, pero <strong>ocupa un lugar</strong> muy importante para indicar que esa posición está vacía.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de valor posicional -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#eff6ff">📊</div>
+      <div><div class="card-title">Tabla de Valor Posicional — Números hasta 999</div></div>
+    </div>
+    <div class="pos-table-wrap">
+      <table class="pos-table">
+        <thead>
+          <tr><th>Número</th><th>Centenas (C)</th><th>Decenas (D)</th><th>Unidades (U)</th><th>Forma desarrollada</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>7</td><td>0</td><td>0</td><td class="highlight-cell">7</td><td>7</td></tr>
+          <tr><td>45</td><td>0</td><td class="highlight-cell">4</td><td>5</td><td>40 + 5</td></tr>
+          <tr><td>128</td><td class="highlight-cell">1</td><td>2</td><td>8</td><td>100 + 20 + 8</td></tr>
+          <tr><td>345</td><td class="highlight-cell">3</td><td>4</td><td>5</td><td>300 + 40 + 5</td></tr>
+          <tr><td>506</td><td class="highlight-cell">5</td><td>0</td><td>6</td><td>500 + 0 + 6</td></tr>
+          <tr><td>999</td><td class="highlight-cell">9</td><td>9</td><td>9</td><td>900 + 90 + 9</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Actividades -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#ecfdf5">🧩</div>
+      <div><div class="card-title">Actividades Interactivas</div></div>
+    </div>
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('tabs2','tab2-1',this)">🟢 Fácil</button>
+      <button class="tab-btn" onclick="switchTab('tabs2','tab2-2',this)">🟡 Medio</button>
+      <button class="tab-btn" onclick="switchTab('tabs2','tab2-3',this)">🔴 Difícil</button>
+      <button class="tab-btn" onclick="switchTab('tabs2','tab2-4',this)">🎯 Constructor</button>
+    </div>
+    
+    <!-- Fácil -->
+    <div id="tab2-1" class="tab-content active" data-tabgroup="tabs2">
+      <div class="activity-card">
+        <div class="activity-title">🟢 Nivel Fácil — Descomposición</div>
+        <div class="activity-desc">Descompón el número 234 en centenas, decenas y unidades</div>
+        <div class="input-row">
+          <div class="input-group"><label class="input-label">Centenas</label><input type="number" id="a2_1c" min="0" max="9" style="width:70px"></div>
+          <div class="input-group"><label class="input-label">Decenas</label><input type="number" id="a2_1d" min="0" max="9" style="width:70px"></div>
+          <div class="input-group"><label class="input-label">Unidades</label><input type="number" id="a2_1u" min="0" max="9" style="width:70px"></div>
+          <button class="btn btn-primary" onclick="check2_1()">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb2_1"></div>
+      </div>
+
+      <div class="activity-card">
+        <div class="activity-title">🟢 ¿Cuánto vale el 5 en 152?</div>
+        <div class="activity-desc">Escribe el valor posicional del dígito 5</div>
+        <div class="input-row">
+          <div class="input-group"><label class="input-label">Valor del 5</label><input type="number" id="a2_2" min="0" max="999" style="width:100px"></div>
+          <button class="btn btn-primary" onclick="checkActivity('a2_2',50,'fb2_2','¡Correcto! El 5 en 152 está en las decenas, vale 5 × 10 = 50.','Incorrecto. El 5 en 152 ocupa la posición de las decenas, vale 50.')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb2_2"></div>
+      </div>
+
+      <div class="activity-card">
+        <div class="activity-title">🟢 Forma desarrollada de 319</div>
+        <div class="activity-desc">Completa: 319 = ___ + ___ + ___</div>
+        <div class="input-row">
+          <div class="input-group"><label class="input-label">Centenas</label><input type="number" id="a2_3a" style="width:80px"></div>
+          <span style="font-size:20px;font-weight:900;align-self:flex-end;padding-bottom:8px">+</span>
+          <div class="input-group"><label class="input-label">Decenas</label><input type="number" id="a2_3b" style="width:80px"></div>
+          <span style="font-size:20px;font-weight:900;align-self:flex-end;padding-bottom:8px">+</span>
+          <div class="input-group"><label class="input-label">Unidades</label><input type="number" id="a2_3c" style="width:80px"></div>
+          <button class="btn btn-primary" onclick="check2_3()">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb2_3"></div>
+      </div>
+    </div>
+
+    <!-- Medio -->
+    <div id="tab2-2" class="tab-content" data-tabgroup="tabs2">
+      <div class="activity-card">
+        <div class="activity-title">🟡 ¿Qué cifra ocupa las decenas en 487?</div>
+        <div class="input-row">
+          <div class="input-group"><label class="input-label">Dígito en decenas</label><input type="number" id="a2_4" min="0" max="9" style="width:80px"></div>
+          <button class="btn btn-primary" onclick="checkActivity('a2_4',8,'fb2_4','¡Perfecto! El 8 ocupa la posición de las decenas en 487.','Incorrecto. El número 487: 4 está en centenas, 8 en decenas, 7 en unidades. Busca la posición del medio.')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb2_4"></div>
+      </div>
+      <div class="activity-card">
+        <div class="activity-title">🟡 Forma el número: 6C + 2D + 9U</div>
+        <div class="activity-desc">¿Qué número se forma con 6 centenas, 2 decenas y 9 unidades?</div>
+        <div class="input-row">
+          <div class="input-group"><label class="input-label">Número resultante</label><input type="number" id="a2_5" min="0" max="999" style="width:120px"></div>
+          <button class="btn btn-primary" onclick="checkActivity('a2_5',629,'fb2_5','¡Excelente! 6C + 2D + 9U = 600 + 20 + 9 = 629.','Incorrecto. 6 centenas = 600, 2 decenas = 20, 9 unidades = 9. Suma: 600+20+9 = 629.')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb2_5"></div>
+      </div>
+    </div>
+
+    <!-- Difícil -->
+    <div id="tab2-3" class="tab-content" data-tabgroup="tabs2">
+      <div class="activity-card">
+        <div class="activity-title">🔴 ¿Cuál es el valor del dígito 7 en el número 372?</div>
+        <div class="input-row">
+          <div class="input-group"><label class="input-label">Valor posicional</label><input type="number" id="a2_6" style="width:100px"></div>
+          <button class="btn btn-primary" onclick="checkActivity('a2_6',70,'fb2_6','¡Brillante! El 7 en 372 ocupa las decenas: 7 × 10 = 70.','Incorrecto. En el número 372: 3 está en centenas (300), 7 en decenas (70), 2 en unidades (2). El 7 vale 70.')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb2_6"></div>
+      </div>
+      <div class="activity-card">
+        <div class="activity-title">🔴 Escribe el número: 4 Decenas y 5 Unidades</div>
+        <div class="input-row">
+          <div class="input-group"><label class="input-label">Número</label><input type="number" id="a2_7" style="width:100px"></div>
+          <button class="btn btn-primary" onclick="checkActivity('a2_7',45,'fb2_7','¡Correcto! 4 decenas = 40, 5 unidades = 5. Total: 45.','Incorrecto. 4 Decenas = 40, 5 Unidades = 5. El número es 40 + 5 = 45.')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb2_7"></div>
+      </div>
+    </div>
+
+    <!-- Constructor -->
+    <div id="tab2-4" class="tab-content" data-tabgroup="tabs2">
+      <div class="activity-card">
+        <div class="activity-title">🎯 Constructor de Números de 3 Dígitos</div>
+        <div class="activity-desc">Arrastra los dígitos a cada posición y construye tu número</div>
+        <div class="pos-builder">
+          <div class="pos-slot">
+            <div class="pos-slot-label" style="background:var(--green)">Centenas (C)</div>
+            <input type="number" id="sl3_c" min="0" max="9" value="3" oninput="updateBuilder3()" style="border-color:var(--green)">
+            <div class="pos-slot-val" id="sv3_c">300</div>
+          </div>
+          <div class="pos-slot">
+            <div class="pos-slot-label" style="background:var(--accent)">Decenas (D)</div>
+            <input type="number" id="sl3_d" min="0" max="9" value="4" oninput="updateBuilder3()" style="border-color:var(--accent)">
+            <div class="pos-slot-val" id="sv3_d">40</div>
+          </div>
+          <div class="pos-slot">
+            <div class="pos-slot-label" style="background:var(--red)">Unidades (U)</div>
+            <input type="number" id="sl3_u" min="0" max="9" value="5" oninput="updateBuilder3()" style="border-color:var(--red)">
+            <div class="pos-slot-val" id="sv3_u">5</div>
+          </div>
+        </div>
+        <div id="builder3Result" style="margin-top:12px;padding:16px;background:linear-gradient(135deg,#ecfdf5,#d1fae5);border-radius:var(--radius);border:2px solid #6ee7b7;font-size:18px;font-weight:800;color:var(--navy)"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===========================
+  SECCIÓN 3: 5 DÍGITOS - INTERMEDIO
+=========================== -->
+<section id="s3" class="section">
+  <div class="section-hero" style="background:linear-gradient(135deg,#1e3a8a,#1d4ed8,#2563eb)">
+    <div class="hero-badge">🔷 Módulo 3</div>
+    <h2 class="hero-title">Valor Posicional de 5 Dígitos</h2>
+    <p class="hero-desc">Nivel Intermedio — Domina los números hasta 99.999 con decenas y unidades de mil.</p>
+  </div>
+
+  <!-- Video -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#eff6ff">🎬</div>
+      <div><div class="card-title">Video: Valor Posicional de 5 Dígitos</div></div>
+    </div>
+    <div class="video-wrap">
+      <video controls preload="metadata">
+        <source src="vid/val_pos5.mp4" type="video/mp4">
+        <div class="video-placeholder">
+          <div class="play-icon">▶</div>
+          <p>Video: val_pos5.mp4</p>
+          <p style="font-size:12px">Asegúrate de que el archivo esté en la carpeta <code>vid/</code></p>
+        </div>
+      </video>
+    </div>
+  </div>
+
+  <!-- Teoría -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#eff6ff">🧠</div>
+      <div><div class="card-title">Parte Teórica — 5 Posiciones</div></div>
+    </div>
+    <div class="theory-grid">
+      <div class="theory-card tc-purple">
+        <div class="tc-title">🟣 Decena de Mil (DM)</div>
+        <div class="tc-body">5ª posición (izquierda).<br><strong>Vale 10.000 unidades.</strong></div>
+      </div>
+      <div class="theory-card tc-blue">
+        <div class="tc-title">🔵 Unidad de Mil (UM)</div>
+        <div class="tc-body">4ª posición.<br><strong>Vale 1.000 unidades.</strong></div>
+      </div>
+      <div class="theory-card tc-teal">
+        <div class="tc-title">🟦 Centena (C)</div>
+        <div class="tc-body">3ª posición.<br><strong>Vale 100 unidades.</strong></div>
+      </div>
+      <div class="theory-card tc-orange">
+        <div class="tc-title">🟠 Decena (D)</div>
+        <div class="tc-body">2ª posición.<br><strong>Vale 10 unidades.</strong></div>
+      </div>
+      <div class="theory-card tc-red">
+        <div class="tc-title">🔴 Unidad (U)</div>
+        <div class="tc-body">1ª posición (derecha).<br><strong>Vale 1 unidad.</strong></div>
+      </div>
+    </div>
+    <!-- Ejemplo 45328 -->
+    <div class="example-box" style="margin-top:16px">
+      <div class="example-label">✏️ Analicemos el número 45.328</div>
+      <div class="example-number">45.328</div>
+      <div class="decomp-row">
+        <div class="decomp-chip dc-dm">40.000<div class="dc-label">4 DM</div></div>
+        <span class="decomp-plus">+</span>
+        <div class="decomp-chip dc-um">5.000<div class="dc-label">5 UM</div></div>
+        <span class="decomp-plus">+</span>
+        <div class="decomp-chip dc-c">300<div class="dc-label">3 C</div></div>
+        <span class="decomp-plus">+</span>
+        <div class="decomp-chip dc-d">20<div class="dc-label">2 D</div></div>
+        <span class="decomp-plus">+</span>
+        <div class="decomp-chip dc-u">8<div class="dc-label">8 U</div></div>
+        <span class="decomp-eq">=</span>
+        <strong style="font-size:22px;color:var(--navy)">45.328</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ejemplos resueltos -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#eff6ff">✏️</div>
+      <div><div class="card-title">Ejemplos Resueltos</div></div>
+    </div>
+    <div class="grid-2">
+      <div class="example-box">
+        <div class="example-label">Ejemplo 1</div>
+        <div class="example-number">12.345</div>
+        <div style="margin-top:10px">
+          <div style="display:flex;flex-direction:column;gap:4px;font-size:14px">
+            <div><span class="badge badge-blue">1 DM</span> = 10.000</div>
+            <div><span class="badge badge-blue">2 UM</span> = 2.000</div>
+            <div><span class="badge badge-green">3 C</span> = 300</div>
+            <div><span class="badge badge-orange">4 D</span> = 40</div>
+            <div><span class="badge badge-red">5 U</span> = 5</div>
+          </div>
+        </div>
+      </div>
+      <div class="example-box" style="background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#93c5fd">
+        <div class="example-label" style="color:var(--blue)">Ejemplo 2</div>
+        <div class="example-number">80.706</div>
+        <div style="margin-top:10px">
+          <div style="display:flex;flex-direction:column;gap:4px;font-size:14px">
+            <div><span class="badge badge-blue">8 DM</span> = 80.000</div>
+            <div><span class="badge badge-blue">0 UM</span> = 0</div>
+            <div><span class="badge badge-green">7 C</span> = 700</div>
+            <div><span class="badge badge-orange">0 D</span> = 0</div>
+            <div><span class="badge badge-red">6 U</span> = 6</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Canvas interactivo 5 dígitos -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#eff6ff">👁️</div>
+      <div>
+        <div class="card-title">Representación Gráfica — 5 Dígitos</div>
+        <div class="card-subtitle">Ingresa un número de 1 a 99.999</div>
+      </div>
+    </div>
+    <div class="input-row">
+      <div class="input-group">
+        <label class="input-label">Número (1-99999)</label>
+        <input type="number" id="num5Input" min="0" max="99999" value="45328" style="width:160px;font-size:20px;text-align:center">
+      </div>
+      <button class="btn btn-primary" onclick="drawNum5()">🔍 Visualizar</button>
+    </div>
+    <div class="canvas-wrap">
+      <canvas id="canvas5" width="680" height="250"></canvas>
+    </div>
+  </div>
+
+  <!-- Propiedades Mágicas -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#fff7ed">✨</div>
+      <div><div class="card-title">Propiedades Mágicas</div></div>
+    </div>
+    <div class="info-box ib-blue">
+      <span class="ib-icon">🔄</span>
+      <div class="ib-content">
+        <div class="ib-title">¡El patrón se repite!</div>
+        <div class="ib-text">10 Unidades = 1 Decena → 10 Decenas = 1 Centena → 10 Centenas = 1 Unidad de Mil → 10 Unidades de Mil = 1 Decena de Mil. ¡Siempre multiplicamos por 10!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de valor posicional 5 dígitos -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#eff6ff">📊</div>
+      <div><div class="card-title">Tabla de Valor Posicional — Números hasta 99.999</div></div>
+    </div>
+    <div class="pos-table-wrap">
+      <table class="pos-table">
+        <thead>
+          <tr><th>Número</th><th>DM</th><th>UM</th><th>C</th><th>D</th><th>U</th><th>Forma desarrollada</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1.000</td><td>0</td><td class="highlight-cell">1</td><td>0</td><td>0</td><td>0</td><td>1×1.000</td></tr>
+          <tr><td>12.345</td><td class="highlight-cell">1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>10.000 + 2.000 + 300 + 40 + 5</td></tr>
+          <tr><td>45.328</td><td class="highlight-cell">4</td><td>5</td><td>3</td><td>2</td><td>8</td><td>40.000 + 5.000 + 300 + 20 + 8</td></tr>
+          <tr><td>80.706</td><td class="highlight-cell">8</td><td>0</td><td>7</td><td>0</td><td>6</td><td>80.000 + 0 + 700 + 0 + 6</td></tr>
+          <tr><td>99.999</td><td class="highlight-cell">9</td><td>9</td><td>9</td><td>9</td><td>9</td><td>90.000 + 9.000 + 900 + 90 + 9</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Actividades -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#eff6ff">🧩</div>
+      <div><div class="card-title">Actividades Interactivas</div></div>
+    </div>
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('tabs3','tab3-1',this)">🟢 Fácil</button>
+      <button class="tab-btn" onclick="switchTab('tabs3','tab3-2',this)">🟡 Medio</button>
+      <button class="tab-btn" onclick="switchTab('tabs3','tab3-3',this)">🔴 Difícil</button>
+      <button class="tab-btn" onclick="switchTab('tabs3','tab3-4',this)">🎯 Constructor</button>
+    </div>
+    <div id="tab3-1" class="tab-content active" data-tabgroup="tabs3">
+      <div class="activity-card">
+        <div class="activity-title">🟢 Identifica la unidad de mil en 24.568</div>
+        <div class="input-row">
+          <div class="input-group"><label class="input-label">Dígito en UM</label><input type="number" id="a3_1" min="0" max="9" style="width:80px"></div>
+          <button class="btn btn-primary" onclick="checkActivity('a3_1',4,'fb3_1','¡Correcto! En 24.568: 2 DM, 4 UM, 5 C, 6 D, 8 U. La unidad de mil es 4.','Incorrecto. En el número 24.568, el dígito en la posición de unidades de mil (4ª posición desde la derecha) es el 4.')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb3_1"></div>
+      </div>
+      <div class="activity-card">
+        <div class="activity-title">🟢 ¿Cuánto vale el 7 en 57.890?</div>
+        <div class="input-row">
+          <div class="input-group"><label class="input-label">Valor del 7</label><input type="number" id="a3_2" style="width:120px"></div>
+          <button class="btn btn-primary" onclick="checkActivity('a3_2',7000,'fb3_2','¡Excelente! El 7 en 57.890 está en la posición de unidades de mil: 7 × 1.000 = 7.000.','Incorrecto. En 57.890: 5 DM(50.000), 7 UM(7.000), 8 C(800), 9 D(90), 0 U. El 7 vale 7.000.')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb3_2"></div>
+      </div>
+    </div>
+    <div id="tab3-2" class="tab-content" data-tabgroup="tabs3">
+      <div class="activity-card">
+        <div class="activity-title">🟡 Forma el número: 9 DM, 1 UM, 3 C, 0 D y 8 U</div>
+        <div class="input-row">
+          <div class="input-group"><label class="input-label">Número resultante</label><input type="number" id="a3_3" style="width:140px"></div>
+          <button class="btn btn-primary" onclick="checkActivity('a3_3',91308,'fb3_3','¡Perfecto! 9×10.000 + 1×1.000 + 3×100 + 0×10 + 8 = 91.308.','Incorrecto. Calcula: 9DM=90.000 + 1UM=1.000 + 3C=300 + 0D=0 + 8U=8 = 91.308.')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb3_3"></div>
+      </div>
+    </div>
+    <div id="tab3-3" class="tab-content" data-tabgroup="tabs3">
+      <div class="activity-card">
+        <div class="activity-title">🔴 Cambia la decena de mil de 73.482 por 5. ¿Qué número resulta?</div>
+        <div class="input-row">
+          <div class="input-group"><label class="input-label">Nuevo número</label><input type="number" id="a3_4" style="width:140px"></div>
+          <button class="btn btn-primary" onclick="checkActivity('a3_4',53482,'fb3_4','¡Brillante! Cambiamos 7 DM por 5 DM: 50.000 + 3.000 + 400 + 80 + 2 = 53.482.','Incorrecto. En 73.482 cambiamos el 7 (DM) por 5: 5 DM = 50.000. Resultado: 53.482.')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb3_4"></div>
+      </div>
+    </div>
+    <div id="tab3-4" class="tab-content" data-tabgroup="tabs3">
+      <div class="activity-card">
+        <div class="activity-title">🎯 Constructor de Números de 5 Dígitos</div>
+        <div class="pos-builder">
+          <div class="pos-slot">
+            <div class="pos-slot-label" style="background:var(--purple)">DM</div>
+            <input type="number" id="sl5_dm" min="0" max="9" value="4" oninput="updateBuilder5()" style="border-color:var(--purple)">
+            <div class="pos-slot-val" id="sv5_dm">40.000</div>
+          </div>
+          <div class="pos-slot">
+            <div class="pos-slot-label" style="background:var(--blue)">UM</div>
+            <input type="number" id="sl5_um" min="0" max="9" value="5" oninput="updateBuilder5()" style="border-color:var(--blue)">
+            <div class="pos-slot-val" id="sv5_um">5.000</div>
+          </div>
+          <div class="pos-slot">
+            <div class="pos-slot-label" style="background:var(--teal)">C</div>
+            <input type="number" id="sl5_c" min="0" max="9" value="3" oninput="updateBuilder5()" style="border-color:var(--teal)">
+            <div class="pos-slot-val" id="sv5_c">300</div>
+          </div>
+          <div class="pos-slot">
+            <div class="pos-slot-label" style="background:var(--accent)">D</div>
+            <input type="number" id="sl5_d" min="0" max="9" value="2" oninput="updateBuilder5()" style="border-color:var(--accent)">
+            <div class="pos-slot-val" id="sv5_d">20</div>
+          </div>
+          <div class="pos-slot">
+            <div class="pos-slot-label" style="background:var(--red)">U</div>
+            <input type="number" id="sl5_u" min="0" max="9" value="8" oninput="updateBuilder5()" style="border-color:var(--red)">
+            <div class="pos-slot-val" id="sv5_u">8</div>
+          </div>
+        </div>
+        <div id="builder5Result" style="margin-top:12px;padding:16px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:var(--radius);border:2px solid #93c5fd;font-size:18px;font-weight:800;color:var(--navy)"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===========================
+  SECCIÓN 4: 6 DÍGITOS - DIFÍCIL
+=========================== -->
+<section id="s4" class="section">
+  <div class="section-hero" style="background:linear-gradient(135deg,#7c2d12,#b45309,#d97706)">
+    <div class="hero-badge">⭐ Módulo 4</div>
+    <h2 class="hero-title">Valor Posicional de 6 Dígitos</h2>
+    <p class="hero-desc">Nivel Difícil — Domina los números hasta 999.999 incluyendo la centena de mil.</p>
+  </div>
+
+  <!-- Video -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#fff7ed">🎬</div>
+      <div><div class="card-title">Video: Valor Posicional de 6 Dígitos</div></div>
+    </div>
+    <div class="video-wrap">
+      <video controls preload="metadata">
+        <source src="vid/valor_pos6.mp4" type="video/mp4">
+        <div class="video-placeholder">
+          <div class="play-icon">▶</div>
+          <p>Video: val_6dig.mp4</p>
+          <p style="font-size:12px">Asegúrate de que el archivo esté en la carpeta <code>vid/</code></p>
+        </div>
+      </video>
+    </div>
+  </div>
+
+  <!-- Teoría -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#fff7ed">🧠</div>
+      <div><div class="card-title">Parte Teórica — 6 Posiciones</div></div>
+    </div>
+    <div class="theory-grid">
+      <div class="theory-card tc-purple">
+        <div class="tc-title">🟣 Centena de Mil (CM)</div>
+        <div class="tc-body">6ª posición (izquierda).<br><strong>Vale 100.000 unidades.</strong></div>
+      </div>
+      <div class="theory-card tc-blue">
+        <div class="tc-title">🔵 Decena de Mil (DM)</div>
+        <div class="tc-body">5ª posición.<br><strong>Vale 10.000 unidades.</strong></div>
+      </div>
+      <div class="theory-card tc-teal">
+        <div class="tc-title">🟦 Unidad de Mil (UM)</div>
+        <div class="tc-body">4ª posición.<br><strong>Vale 1.000 unidades.</strong></div>
+      </div>
+      <div class="theory-card tc-green">
+        <div class="tc-title">🟩 Centena (C)</div>
+        <div class="tc-body">3ª posición.<br><strong>Vale 100 unidades.</strong></div>
+      </div>
+      <div class="theory-card tc-orange">
+        <div class="tc-title">🟠 Decena (D)</div>
+        <div class="tc-body">2ª posición.<br><strong>Vale 10 unidades.</strong></div>
+      </div>
+      <div class="theory-card tc-red">
+        <div class="tc-title">🔴 Unidad (U)</div>
+        <div class="tc-body">1ª posición (derecha).<br><strong>Vale 1 unidad.</strong></div>
+      </div>
+    </div>
+    <div class="example-box" style="margin-top:16px">
+      <div class="example-label">✏️ Ejemplo General: 325.418</div>
+      <div class="example-number">325.418</div>
+      <div class="decomp-row" style="flex-wrap:wrap">
+        <div class="decomp-chip dc-cm">300.000<div class="dc-label">3 CM</div></div>
+        <span class="decomp-plus">+</span>
+        <div class="decomp-chip dc-dm">20.000<div class="dc-label">2 DM</div></div>
+        <span class="decomp-plus">+</span>
+        <div class="decomp-chip dc-um">5.000<div class="dc-label">5 UM</div></div>
+        <span class="decomp-plus">+</span>
+        <div class="decomp-chip dc-c">400<div class="dc-label">4 C</div></div>
+        <span class="decomp-plus">+</span>
+        <div class="decomp-chip dc-d">10<div class="dc-label">1 D</div></div>
+        <span class="decomp-plus">+</span>
+        <div class="decomp-chip dc-u">8<div class="dc-label">8 U</div></div>
+        <span class="decomp-eq">=</span>
+        <strong style="font-size:22px;color:var(--navy)">325.418</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Canvas 6 dígitos -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#fff7ed">👁️</div>
+      <div>
+        <div class="card-title">Tablero de Valor Posicional hasta el Millón</div>
+        <div class="card-subtitle">Ingresa un número de 1 a 999.999</div>
+      </div>
+    </div>
+    <div class="input-row">
+      <div class="input-group">
+        <label class="input-label">Número (1-999999)</label>
+        <input type="number" id="num6Input" min="0" max="999999" value="325418" style="width:180px;font-size:20px;text-align:center">
+      </div>
+      <button class="btn btn-primary" onclick="drawNum6()">🔍 Visualizar</button>
+    </div>
+    <div class="canvas-wrap">
+      <canvas id="canvas6" width="720" height="270"></canvas>
+    </div>
+  </div>
+
+  <!-- Tabla de valor posicional 6 dígitos -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#eff6ff">📊</div>
+      <div><div class="card-title">Tabla de Valor Posicional — Números hasta el Millón</div></div>
+    </div>
+    <div class="pos-table-wrap">
+      <table class="pos-table">
+        <thead>
+          <tr><th>Número</th><th>CM</th><th>DM</th><th>UM</th><th>C</th><th>D</th><th>U</th><th>Forma desarrollada</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>145.230</td><td class="highlight-cell">1</td><td>4</td><td>5</td><td>2</td><td>3</td><td>0</td><td>100.000+40.000+5.000+200+30+0</td></tr>
+          <tr><td>325.418</td><td class="highlight-cell">3</td><td>2</td><td>5</td><td>4</td><td>1</td><td>8</td><td>300.000+20.000+5.000+400+10+8</td></tr>
+          <tr><td>600.804</td><td class="highlight-cell">6</td><td>0</td><td>0</td><td>8</td><td>0</td><td>4</td><td>600.000+0+0+800+0+4</td></tr>
+          <tr><td>999.999</td><td class="highlight-cell">9</td><td>9</td><td>9</td><td>9</td><td>9</td><td>9</td><td>900.000+90.000+9.000+900+90+9</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Actividades -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#fff7ed">🧩</div>
+      <div><div class="card-title">Actividades Interactivas</div></div>
+    </div>
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('tabs4','tab4-1',this)">🟢 Fácil</button>
+      <button class="tab-btn" onclick="switchTab('tabs4','tab4-2',this)">🟡 Medio</button>
+      <button class="tab-btn" onclick="switchTab('tabs4','tab4-3',this)">🔴 Difícil</button>
+      <button class="tab-btn" onclick="switchTab('tabs4','tab4-4',this)">🎯 Constructor</button>
+    </div>
+    <div id="tab4-1" class="tab-content active" data-tabgroup="tabs4">
+      <div class="activity-card">
+        <div class="activity-title">🟢 Identifica la centena de mil en 234.567</div>
+        <div class="input-row">
+          <div class="input-group"><label class="input-label">Dígito en CM</label><input type="number" id="a4_1" min="0" max="9" style="width:80px"></div>
+          <button class="btn btn-primary" onclick="checkActivity('a4_1',2,'fb4_1','¡Correcto! En 234.567 el primer dígito (2) está en la centena de mil.','Incorrecto. En 234.567: 2=CM, 3=DM, 4=UM, 5=C, 6=D, 7=U. La centena de mil es 2.')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb4_1"></div>
+      </div>
+      <div class="activity-card">
+        <div class="activity-title">🟢 ¿Cuánto vale el 8 en 128.456?</div>
+        <div class="input-row">
+          <div class="input-group"><label class="input-label">Valor del 8</label><input type="number" id="a4_2" style="width:120px"></div>
+          <button class="btn btn-primary" onclick="checkActivity('a4_2',8000,'fb4_2','¡Excelente! El 8 en 128.456 está en la posición de unidades de mil: 8 × 1.000 = 8.000.','Incorrecto. En 128.456: 1=CM(100.000), 2=DM(20.000), 8=UM(8.000), 4=C, 5=D, 6=U. El 8 vale 8.000.')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb4_2"></div>
+      </div>
+    </div>
+    <div id="tab4-2" class="tab-content" data-tabgroup="tabs4">
+      <div class="activity-card">
+        <div class="activity-title">🟡 Forma el número: 7 CM, 2 DM, 4 UM, 5 C, 3 D y 1 U</div>
+        <div class="input-row">
+          <div class="input-group"><label class="input-label">Número resultante</label><input type="number" id="a4_3" style="width:160px"></div>
+          <button class="btn btn-primary" onclick="checkActivity('a4_3',724531,'fb4_3','¡Perfecto! 700.000+20.000+4.000+500+30+1 = 724.531.','Incorrecto. 7CM=700.000 + 2DM=20.000 + 4UM=4.000 + 5C=500 + 3D=30 + 1U=1 = 724.531.')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb4_3"></div>
+      </div>
+    </div>
+    <div id="tab4-3" class="tab-content" data-tabgroup="tabs4">
+      <div class="activity-card">
+        <div class="activity-title">🔴 Cambia la unidad de mil de 456.789 por 0. ¿Qué número resulta?</div>
+        <div class="input-row">
+          <div class="input-group"><label class="input-label">Nuevo número</label><input type="number" id="a4_4" style="width:160px"></div>
+          <button class="btn btn-primary" onclick="checkActivity('a4_4',456089,'fb4_4','¡Brillante! Cambiamos 6 UM por 0: 456.089.','Incorrecto. En 456.789: 4=CM, 5=DM, 6=UM, 7=C, 8=D, 9=U. Cambiamos UM(6) por 0: 456.089.')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb4_4"></div>
+      </div>
+      <div class="activity-card">
+        <div class="activity-title">🔴 Mayor número con los dígitos: 5, 2, 8, 1, 0, 3</div>
+        <div class="activity-desc">Usa todos los dígitos sin repetir para formar el número más grande posible</div>
+        <div class="input-row">
+          <div class="input-group"><label class="input-label">Número mayor</label><input type="number" id="a4_5" style="width:160px"></div>
+          <button class="btn btn-primary" onclick="checkActivity('a4_5',853210,'fb4_5','¡Genial! Ordenando de mayor a menor: 8,5,3,2,1,0 = 853.210.','Incorrecto. Para el número mayor, ordena los dígitos de mayor a menor: 8,5,3,2,1,0 = 853.210.')">✔ Verificar</button>
+        </div>
+        <div class="feedback" id="fb4_5"></div>
+      </div>
+    </div>
+    <div id="tab4-4" class="tab-content" data-tabgroup="tabs4">
+      <div class="activity-card">
+        <div class="activity-title">🎯 Constructor de Números de 6 Dígitos</div>
+        <div class="pos-builder">
+          <div class="pos-slot">
+            <div class="pos-slot-label" style="background:#7c3aed">CM</div>
+            <input type="number" id="sl6_cm" min="0" max="9" value="3" oninput="updateBuilder6()" style="border-color:#7c3aed">
+            <div class="pos-slot-val" id="sv6_cm">300.000</div>
+          </div>
+          <div class="pos-slot">
+            <div class="pos-slot-label" style="background:var(--blue)">DM</div>
+            <input type="number" id="sl6_dm" min="0" max="9" value="2" oninput="updateBuilder6()" style="border-color:var(--blue)">
+            <div class="pos-slot-val" id="sv6_dm">20.000</div>
+          </div>
+          <div class="pos-slot">
+            <div class="pos-slot-label" style="background:var(--teal)">UM</div>
+            <input type="number" id="sl6_um" min="0" max="9" value="5" oninput="updateBuilder6()" style="border-color:var(--teal)">
+            <div class="pos-slot-val" id="sv6_um">5.000</div>
+          </div>
+          <div class="pos-slot">
+            <div class="pos-slot-label" style="background:var(--green)">C</div>
+            <input type="number" id="sl6_c" min="0" max="9" value="4" oninput="updateBuilder6()" style="border-color:var(--green)">
+            <div class="pos-slot-val" id="sv6_c">400</div>
+          </div>
+          <div class="pos-slot">
+            <div class="pos-slot-label" style="background:var(--accent)">D</div>
+            <input type="number" id="sl6_d" min="0" max="9" value="1" oninput="updateBuilder6()" style="border-color:var(--accent)">
+            <div class="pos-slot-val" id="sv6_d">10</div>
+          </div>
+          <div class="pos-slot">
+            <div class="pos-slot-label" style="background:var(--red)">U</div>
+            <input type="number" id="sl6_u" min="0" max="9" value="8" oninput="updateBuilder6()" style="border-color:var(--red)">
+            <div class="pos-slot-val" id="sv6_u">8</div>
+          </div>
+        </div>
+        <div id="builder6Result" style="margin-top:12px;padding:16px;background:linear-gradient(135deg,#fff7ed,#fed7aa);border-radius:var(--radius);border:2px solid #fdba74;font-size:18px;font-weight:800;color:var(--navy)"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===========================
+  SECCIÓN 5: LECTURA DE NÚMEROS
+=========================== -->
+<section id="s5" class="section">
+  <div class="section-hero" style="background:linear-gradient(135deg,#134e4a,#0f766e,#0d9488)">
+    <div class="hero-badge">📖 Módulo 5</div>
+    <h2 class="hero-title">Lectura de Números Naturales</h2>
+    <p class="hero-desc">Aprende a traducir números a palabras y palabras a números con confianza.</p>
+  </div>
+
+  <!-- Video -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#f0fdfa">🎬</div>
+      <div><div class="card-title">Video: Lectura de Números Naturales</div></div>
+    </div>
+    <div class="video-wrap">
+      <video controls preload="metadata">
+        <source src="vid/leer_num.mp4" type="video/mp4">
+        <div class="video-placeholder">
+          <div class="play-icon">▶</div>
+          <p>Video: leer_num.mp4</p>
+          <p style="font-size:12px">Asegúrate de que el archivo esté en la carpeta <code>vid/</code></p>
+        </div>
+      </video>
+    </div>
+  </div>
+
+  <!-- Teoría -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#f0fdfa">🧠</div>
+      <div><div class="card-title">Parte Teórica: ¡El Truco del Punto!</div></div>
+    </div>
+    <p style="color:var(--text2);line-height:1.6;margin-bottom:16px">
+      Leer números grandes es súper fácil si conoces el <strong>truco del punto</strong>. Definición: <em>Leer un número es traducirlo de sus símbolos (dígitos) a palabras</em>.
+    </p>
+    <div class="theory-grid">
+      <div class="theory-card tc-blue">
+        <div class="tc-title">⬅️ Izquierda a Derecha</div>
+        <div class="tc-body">Siempre leemos los números empezando por el <strong>lado izquierdo</strong>.</div>
+      </div>
+      <div class="theory-card tc-green">
+        <div class="tc-title">3️⃣ El Grupo de Tres</div>
+        <div class="tc-body">Agrupamos los números de <strong>tres en tres</strong> empezando por la derecha.</div>
+      </div>
+      <div class="theory-card tc-orange">
+        <div class="tc-title">✨ El Punto Mágico "Mil"</div>
+        <div class="tc-body">El punto que separa las centenas de las unidades de mil se lee literalmente como la palabra <strong>"mil"</strong>.</div>
+      </div>
+    </div>
+    <div class="info-box ib-blue" style="margin-top:12px">
+      <span class="ib-icon">🔢</span>
+      <div class="ib-content">
+        <div class="ib-title">¿Cuándo no se leen los ceros?</div>
+        <div class="ib-text">Los ceros intermedios <strong>no se leen</strong>, simplemente pasamos al siguiente número con valor. Por ejemplo: 12.008 → "doce mil ocho" (no decimos "cero" ni "cero" en el medio).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reglas y propiedades -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#f0fdfa">📜</div>
+      <div><div class="card-title">Propiedades y Reglas de Lectura</div></div>
+    </div>
+    <div class="pos-table-wrap">
+      <table class="pos-table">
+        <thead>
+          <tr><th>Regla</th><th>Descripción</th><th>Ejemplo</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>1 → 19</strong></td><td>Se leen directamente</td><td>15 → "quince"</td></tr>
+          <tr><td><strong>20, 30...</strong></td><td>Decenas exactas</td><td>30 → "treinta"</td></tr>
+          <tr><td><strong>21-99</strong></td><td>Decena + "y" + unidad</td><td>47 → "cuarenta y siete"</td></tr>
+          <tr><td><strong>100</strong></td><td>Cien exacto</td><td>100 → "cien"</td></tr>
+          <tr><td><strong>101-999</strong></td><td>Ciento, doscientos...</td><td>215 → "doscientos quince"</td></tr>
+          <tr><td><strong>1.000</strong></td><td>Mil (sin "un" delante)</td><td>1.000 → "mil"</td></tr>
+          <tr><td><strong>X.000</strong></td><td>Número + "mil"</td><td>15.000 → "quince mil"</td></tr>
+          <tr><td><strong>Ceros intermedios</strong></td><td>No se leen</td><td>12.008 → "doce mil ocho"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Ejemplos -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#f0fdfa">✏️</div>
+      <div><div class="card-title">Ejemplos de Lectura</div></div>
+    </div>
+    <div class="theory-grid">
+      <div class="theory-card tc-teal">
+        <div class="tc-title">4.500</div>
+        <div class="tc-body">"Cuatro mil quinientos"</div>
+      </div>
+      <div class="theory-card tc-blue">
+        <div class="tc-title">12.008</div>
+        <div class="tc-body">"Doce mil ocho" <br>(los ceros no se leen)</div>
+      </div>
+      <div class="theory-card tc-green">
+        <div class="tc-title">99.999</div>
+        <div class="tc-body">"Noventa y nueve mil novecientos noventa y nueve"</div>
+      </div>
+      <div class="theory-card tc-orange">
+        <div class="tc-title">100.000</div>
+        <div class="tc-body">"Cien mil"</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actividades interactivas de lectura -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#f0fdfa">🧩</div>
+      <div><div class="card-title">Actividades Interactivas de Lectura y Escritura</div></div>
+    </div>
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('tabs5','tab5-1',this)">📖 Número → Palabras</button>
+      <button class="tab-btn" onclick="switchTab('tabs5','tab5-2',this)">✍️ Palabras → Número</button>
+      <button class="tab-btn" onclick="switchTab('tabs5','tab5-3',this)">🎮 Práctica Avanzada</button>
+      <button class="tab-btn" onclick="switchTab('tabs5','tab5-4',this)">🔄 Practica Libre</button>
+    </div>
+
+    <!-- Número a palabras -->
+    <div id="tab5-1" class="tab-content active" data-tabgroup="tabs5">
+      <div class="activity-card">
+        <div class="activity-title">📖 Lee estos números y escríbelos con palabras</div>
+        
+        <div style="margin-bottom:16px">
+          <p class="bold" style="margin-bottom:8px;color:var(--teal)">🟢 Nivel Fácil</p>
+          <div class="input-row" style="align-items:flex-start;flex-direction:column;gap:12px">
+            <div>
+              <p style="font-weight:700;margin-bottom:6px">¿Cómo se lee <strong style="font-size:20px;color:var(--navy)">850</strong>?</p>
+              <div class="input-row">
+                <input type="text" id="r5_1" placeholder="Escribe con palabras..." style="width:300px">
+                <button class="btn btn-primary btn-sm" onclick="checkReading('r5_1','ochocientos cincuenta','fr5_1')">✔ Verificar</button>
+              </div>
+              <div class="feedback" id="fr5_1"></div>
+            </div>
+            <div>
+              <p style="font-weight:700;margin-bottom:6px">¿Cómo se lee <strong style="font-size:20px;color:var(--navy)">1.200</strong>?</p>
+              <div class="input-row">
+                <input type="text" id="r5_2" placeholder="Escribe con palabras..." style="width:300px">
+                <button class="btn btn-primary btn-sm" onclick="checkReading('r5_2','mil doscientos','fr5_2')">✔ Verificar</button>
+              </div>
+              <div class="feedback" id="fr5_2"></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:16px">
+          <p class="bold" style="margin-bottom:8px;color:var(--accent)">🟡 Nivel Medio</p>
+          <div class="input-row" style="align-items:flex-start;flex-direction:column;gap:12px">
+            <div>
+              <p style="font-weight:700;margin-bottom:6px">¿Cómo se lee <strong style="font-size:20px;color:var(--navy)">15.040</strong>?</p>
+              <div class="input-row">
+                <input type="text" id="r5_3" placeholder="Escribe con palabras..." style="width:350px">
+                <button class="btn btn-primary btn-sm" onclick="checkReading('r5_3','quince mil cuarenta','fr5_3')">✔ Verificar</button>
+              </div>
+              <div class="feedback" id="fr5_3"></div>
+            </div>
+            <div>
+              <p style="font-weight:700;margin-bottom:6px">¿Cómo se lee <strong style="font-size:20px;color:var(--navy)">7.009</strong>?</p>
+              <div class="input-row">
+                <input type="text" id="r5_4" placeholder="Escribe con palabras..." style="width:350px">
+                <button class="btn btn-primary btn-sm" onclick="checkReading('r5_4','siete mil nueve','fr5_4')">✔ Verificar</button>
+              </div>
+              <div class="feedback" id="fr5_4"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Palabras a número -->
+    <div id="tab5-2" class="tab-content" data-tabgroup="tabs5">
+      <div class="activity-card">
+        <div class="activity-title">✍️ Lee el número y escríbelo con dígitos</div>
+
+        <div style="margin-bottom:16px">
+          <p class="bold" style="margin-bottom:8px;color:var(--red)">🔴 Nivel Difícil</p>
+          <div class="input-row" style="align-items:flex-start;flex-direction:column;gap:12px">
+            <div>
+              <p style="font-weight:700;margin-bottom:6px;font-size:15px">📣 "Treinta y ocho mil doscientos quince"</p>
+              <div class="input-row">
+                <input type="number" id="w5_1" placeholder="Escribe el número..." style="width:160px">
+                <button class="btn btn-primary btn-sm" onclick="checkActivity('w5_1',38215,'fw5_1','¡Correcto! 38.215 → treinta y ocho mil doscientos quince.','Incorrecto. Treinta y ocho mil = 38.000, doscientos quince = 215. Total: 38.215.')">✔ Verificar</button>
+              </div>
+              <div class="feedback" id="fw5_1"></div>
+            </div>
+            <div>
+              <p style="font-weight:700;margin-bottom:6px;font-size:15px">📣 "Noventa mil tres"</p>
+              <div class="input-row">
+                <input type="number" id="w5_2" placeholder="Escribe el número..." style="width:160px">
+                <button class="btn btn-primary btn-sm" onclick="checkActivity('w5_2',90003,'fw5_2','¡Perfecto! 90.003 → noventa mil tres.','Incorrecto. Noventa mil = 90.000, tres = 3. Total: 90.003 (ojo con los ceros intermedios).')">✔ Verificar</button>
+              </div>
+              <div class="feedback" id="fw5_2"></div>
+            </div>
+            <div>
+              <p style="font-weight:700;margin-bottom:6px;font-size:15px">📣 "Doscientos cuarenta y cinco mil seiscientos doce"</p>
+              <div class="input-row">
+                <input type="number" id="w5_3" placeholder="Escribe el número..." style="width:180px">
+                <button class="btn btn-primary btn-sm" onclick="checkActivity('w5_3',245612,'fw5_3','¡Brillante! 245.612 → doscientos cuarenta y cinco mil seiscientos doce.','Incorrecto. Doscientos cuarenta y cinco mil = 245.000, seiscientos doce = 612. Total: 245.612.')">✔ Verificar</button>
+              </div>
+              <div class="feedback" id="fw5_3"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Práctica con opciones múltiples -->
+    <div id="tab5-3" class="tab-content" data-tabgroup="tabs5">
+      <div class="activity-card">
+        <div class="activity-title">🎮 El Sistema te muestra un número — ¡Elige la lectura correcta!</div>
+        <div id="readingGame">
+          <div id="rg-number" class="number-display">---</div>
+          <div id="rg-options" style="display:flex;flex-direction:column;gap:10px;margin:12px 0"></div>
+          <div class="feedback" id="rg-feedback"></div>
+          <button class="btn btn-accent mt-16" onclick="generateReadingQuestion()">🔄 Siguiente número</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Práctica libre -->
+    <div id="tab5-4" class="tab-content" data-tabgroup="tabs5">
+      <div class="activity-card">
+        <div class="activity-title">🔄 Práctica Libre</div>
+        <div class="activity-desc">Escribe cualquier número y el sistema lo escribirá en palabras</div>
+        <div class="input-row">
+          <div class="input-group">
+            <label class="input-label">Ingresa un número (1 - 999.999)</label>
+            <input type="number" id="freeNum" min="1" max="999999" value="12345" style="width:180px;font-size:20px">
+          </div>
+          <button class="btn btn-primary" onclick="showNumberInWords()">📝 Ver en palabras</button>
+        </div>
+        <div class="words-display" id="wordsResult">Ingresa un número arriba y presiona el botón</div>
+        <hr class="divider">
+        <div class="activity-desc" style="margin-top:8px">También puedes practicar al revés: escribe un número en palabras y verifica</div>
+        <p style="font-weight:700;margin-bottom:8px">Número generado: <span id="reverseNum" style="color:var(--navy);font-size:20px;font-weight:900"></span></p>
+        <div class="input-row">
+          <input type="number" id="reverseInput" placeholder="Escribe los dígitos..." style="width:180px">
+          <button class="btn btn-primary" onclick="checkReverse()">✔ Verificar</button>
+          <button class="btn btn-sm" style="background:var(--bg);border:2px solid var(--border)" onclick="generateReverse()">🔄 Nuevo</button>
+        </div>
+        <div class="feedback" id="fb-reverse"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===========================
+  SECCIÓN 6: EVALUACIÓN FINAL
+=========================== -->
+<section id="s6" class="section">
+  <div class="section-hero" style="background:linear-gradient(135deg,#4c1d95,#6d28d9,#7c3aed)">
+    <div class="hero-badge">📝 Evaluación Final</div>
+    <h2 class="hero-title">¡Demuestra lo que has aprendido!</h2>
+    <p class="hero-desc">10 preguntas de opción múltiple. Lee con cuidado y marca la respuesta correcta.</p>
+  </div>
+
+  <!-- Progreso del quiz -->
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="font-weight:800;font-size:14px;color:var(--navy)">Progreso de la Evaluación</span>
+      <span style="font-weight:800;font-size:14px;color:var(--purple)" id="quiz-progress-text">0 / 10 respondidas</span>
+    </div>
+    <div class="progress-bar" style="background:#ede9fe">
+      <div class="progress-fill" id="quiz-progress-bar" style="width:0%;background:linear-gradient(90deg,var(--purple),#8b5cf6)"></div>
+    </div>
+  </div>
+
+  <!-- Preguntas -->
+  <div id="quiz-container">
+
+    <!-- Pregunta 1 -->
+    <div class="quiz-question" id="qq1">
+      <div class="quiz-q-num">📝 Pregunta 1 de 10</div>
+      <div class="quiz-q-text">¿Cuál es el valor posicional del dígito <strong>6</strong> en el número <strong>4.620</strong>?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(1,'a',this)"><span class="quiz-opt-letter">A</span> 6</div>
+        <div class="quiz-opt" onclick="answerQuiz(1,'b',this)"><span class="quiz-opt-letter">B</span> 60</div>
+        <div class="quiz-opt" onclick="answerQuiz(1,'c',this)"><span class="quiz-opt-letter">C</span> 600</div>
+        <div class="quiz-opt" onclick="answerQuiz(1,'d',this)"><span class="quiz-opt-letter">D</span> 6.000</div>
+      </div>
+      <div class="quiz-feedback" id="qfb1"></div>
+    </div>
+
+    <!-- Pregunta 2 -->
+    <div class="quiz-question" id="qq2">
+      <div class="quiz-q-num">📝 Pregunta 2 de 10</div>
+      <div class="quiz-q-text">¿Cómo se lee correctamente el número <strong>15.004</strong>?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(2,'a',this)"><span class="quiz-opt-letter">A</span> Quince mil cuarenta</div>
+        <div class="quiz-opt" onclick="answerQuiz(2,'b',this)"><span class="quiz-opt-letter">B</span> Quince mil cuatrocientos</div>
+        <div class="quiz-opt" onclick="answerQuiz(2,'c',this)"><span class="quiz-opt-letter">C</span> Quince mil cuatro</div>
+        <div class="quiz-opt" onclick="answerQuiz(2,'d',this)"><span class="quiz-opt-letter">D</span> Quinientos cuatro</div>
+      </div>
+      <div class="quiz-feedback" id="qfb2"></div>
+    </div>
+
+    <!-- Pregunta 3 -->
+    <div class="quiz-question" id="qq3">
+      <div class="quiz-q-num">📝 Pregunta 3 de 10</div>
+      <div class="quiz-q-text">Si tienes <strong>3 Decenas de Mil, 0 Unidades de Mil, 5 Centenas, 2 Decenas y 1 Unidad</strong>, ¿Qué número formas?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(3,'a',this)"><span class="quiz-opt-letter">A</span> 3.521</div>
+        <div class="quiz-opt" onclick="answerQuiz(3,'b',this)"><span class="quiz-opt-letter">B</span> 30.521</div>
+        <div class="quiz-opt" onclick="answerQuiz(3,'c',this)"><span class="quiz-opt-letter">C</span> 35.021</div>
+        <div class="quiz-opt" onclick="answerQuiz(3,'d',this)"><span class="quiz-opt-letter">D</span> 300.521</div>
+      </div>
+      <div class="quiz-feedback" id="qfb3"></div>
+    </div>
+
+    <!-- Pregunta 4 -->
+    <div class="quiz-question" id="qq4">
+      <div class="quiz-q-num">📝 Pregunta 4 de 10</div>
+      <div class="quiz-q-text">¿Qué posición ocupa el dígito <strong>8</strong> en el número <strong>82.345</strong>?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(4,'a',this)"><span class="quiz-opt-letter">A</span> Decena de Mil</div>
+        <div class="quiz-opt" onclick="answerQuiz(4,'b',this)"><span class="quiz-opt-letter">B</span> Unidad de Mil</div>
+        <div class="quiz-opt" onclick="answerQuiz(4,'c',this)"><span class="quiz-opt-letter">C</span> Centena</div>
+        <div class="quiz-opt" onclick="answerQuiz(4,'d',this)"><span class="quiz-opt-letter">D</span> Decena</div>
+      </div>
+      <div class="quiz-feedback" id="qfb4"></div>
+    </div>
+
+    <!-- Pregunta 5 -->
+    <div class="quiz-question" id="qq5">
+      <div class="quiz-q-num">📝 Pregunta 5 de 10</div>
+      <div class="quiz-q-text">¿Qué número corresponde a <strong>"Cincuenta y dos mil cien"</strong>?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(5,'a',this)"><span class="quiz-opt-letter">A</span> 52.010</div>
+        <div class="quiz-opt" onclick="answerQuiz(5,'b',this)"><span class="quiz-opt-letter">B</span> 52.100</div>
+        <div class="quiz-opt" onclick="answerQuiz(5,'c',this)"><span class="quiz-opt-letter">C</span> 52.001</div>
+        <div class="quiz-opt" onclick="answerQuiz(5,'d',this)"><span class="quiz-opt-letter">D</span> 50.210</div>
+      </div>
+      <div class="quiz-feedback" id="qfb5"></div>
+    </div>
+
+    <!-- Pregunta 6 -->
+    <div class="quiz-question" id="qq6">
+      <div class="quiz-q-num">📝 Pregunta 6 de 10</div>
+      <div class="quiz-q-text">¿A cuántas Unidades equivale una <strong>Unidad de Mil (1 UM)</strong>?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(6,'a',this)"><span class="quiz-opt-letter">A</span> 10 unidades</div>
+        <div class="quiz-opt" onclick="answerQuiz(6,'b',this)"><span class="quiz-opt-letter">B</span> 100 unidades</div>
+        <div class="quiz-opt" onclick="answerQuiz(6,'c',this)"><span class="quiz-opt-letter">C</span> 1.000 unidades</div>
+        <div class="quiz-opt" onclick="answerQuiz(6,'d',this)"><span class="quiz-opt-letter">D</span> 10.000 unidades</div>
+      </div>
+      <div class="quiz-feedback" id="qfb6"></div>
+    </div>
+
+    <!-- Pregunta 7 -->
+    <div class="quiz-question" id="qq7">
+      <div class="quiz-q-num">📝 Pregunta 7 de 10</div>
+      <div class="quiz-q-text">¿Cuál es el número más grande que puedes formar con los dígitos <strong>4, 1, 8, 3</strong>?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(7,'a',this)"><span class="quiz-opt-letter">A</span> 1.348</div>
+        <div class="quiz-opt" onclick="answerQuiz(7,'b',this)"><span class="quiz-opt-letter">B</span> 8.431</div>
+        <div class="quiz-opt" onclick="answerQuiz(7,'c',this)"><span class="quiz-opt-letter">C</span> 8.341</div>
+        <div class="quiz-opt" onclick="answerQuiz(7,'d',this)"><span class="quiz-opt-letter">D</span> 8.134</div>
+      </div>
+      <div class="quiz-feedback" id="qfb7"></div>
+    </div>
+
+    <!-- Pregunta 8 -->
+    <div class="quiz-question" id="qq8">
+      <div class="quiz-q-num">📝 Pregunta 8 de 10</div>
+      <div class="quiz-q-text">En el número <strong>90.567</strong>, el cero (0) ocupa la posición de:</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(8,'a',this)"><span class="quiz-opt-letter">A</span> Decenas</div>
+        <div class="quiz-opt" onclick="answerQuiz(8,'b',this)"><span class="quiz-opt-letter">B</span> Centenas</div>
+        <div class="quiz-opt" onclick="answerQuiz(8,'c',this)"><span class="quiz-opt-letter">C</span> Unidades de Mil</div>
+        <div class="quiz-opt" onclick="answerQuiz(8,'d',this)"><span class="quiz-opt-letter">D</span> Decenas de Mil</div>
+      </div>
+      <div class="quiz-feedback" id="qfb8"></div>
+    </div>
+
+    <!-- Pregunta 9 -->
+    <div class="quiz-question" id="qq9">
+      <div class="quiz-q-num">📝 Pregunta 9 de 10</div>
+      <div class="quiz-q-text">Al sumar <strong>20.000 + 4.000 + 300 + 5</strong>, obtenemos:</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(9,'a',this)"><span class="quiz-opt-letter">A</span> 24.350</div>
+        <div class="quiz-opt" onclick="answerQuiz(9,'b',this)"><span class="quiz-opt-letter">B</span> 24.305</div>
+        <div class="quiz-opt" onclick="answerQuiz(9,'c',this)"><span class="quiz-opt-letter">C</span> 20.435</div>
+        <div class="quiz-opt" onclick="answerQuiz(9,'d',this)"><span class="quiz-opt-letter">D</span> 24.035</div>
+      </div>
+      <div class="quiz-feedback" id="qfb9"></div>
+    </div>
+
+    <!-- Pregunta 10 -->
+    <div class="quiz-question" id="qq10">
+      <div class="quiz-q-num">📝 Pregunta 10 de 10</div>
+      <div class="quiz-q-text">"Diecinueve mil trescientos doce" se escribe con números así:</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="answerQuiz(10,'a',this)"><span class="quiz-opt-letter">A</span> 19.312</div>
+        <div class="quiz-opt" onclick="answerQuiz(10,'b',this)"><span class="quiz-opt-letter">B</span> 19.321</div>
+        <div class="quiz-opt" onclick="answerQuiz(10,'c',this)"><span class="quiz-opt-letter">C</span> 91.312</div>
+        <div class="quiz-opt" onclick="answerQuiz(10,'d',this)"><span class="quiz-opt-letter">D</span> 19.012</div>
+      </div>
+      <div class="quiz-feedback" id="qfb10"></div>
+    </div>
+
+  </div><!-- end quiz-container -->
+
+  <!-- Resultado final -->
+  <div class="result-panel" id="result-panel">
+    <div class="result-emoji" id="result-emoji">🎉</div>
+    <div class="result-label" id="result-label">¡Evaluación completada!</div>
+    <div class="result-score" id="result-score">0/10</div>
+    <div class="progress-bar" style="max-width:300px;margin:16px auto">
+      <div class="progress-fill" id="result-fill" style="width:0%"></div>
+    </div>
+    <div class="result-msg" id="result-msg"></div>
+    <button class="btn" style="background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.3);margin-top:20px" onclick="resetQuiz()">🔄 Repetir Evaluación</button>
+  </div>
+
+</section>
+
+</main>
+
+<!-- ===========================
+     FOOTER
+=========================== -->
+<footer style="margin-left:var(--sidebar-w);background:var(--navy);color:rgba(255,255,255,.85);text-align:center;padding:20px;font-size:13px;font-weight:600">
+  <span>🧮 Mente Matemática — Plataforma Educativa Interactiva</span>
+  &nbsp;·&nbsp;
+  <span>Tema 4: Valor Posicional y Lectura de Números</span>
+  <br>
+  <span style="opacity:.65;font-size:12px;margin-top:6px;display:block">Créditos: <strong style="opacity:1">Victor Crespo</strong></span>
+</footer>
+
+<script>
+/* ====================================
+   JAVASCRIPT — NAVEGACIÓN Y FUNCIONES
+==================================== */
+
+// --- Puntuación global ---
+let globalScore = 0;
+function addScore(pts){
+  globalScore += pts;
+  document.getElementById('global-score').textContent = globalScore;
+}
+
+// --- Navegación dinámica ---
+function showSection(id){
+  // Ocultar todas las secciones
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  // Desactivar todos los nav items
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  // Activar sección
+  const sec = document.getElementById(id === 'welcome' ? 'welcome' : id);
+  if(sec) sec.classList.add('active');
+  // Activar nav item
+  const nav = document.getElementById('nav-' + id);
+  if(nav) nav.classList.add('active');
+  // Scroll arriba
+  window.scrollTo({top:0,behavior:'smooth'});
+  // Inicializar canvas si es necesario
+  setTimeout(()=>{
+    if(id==='s1') drawBase10();
+    if(id==='s2'){ drawNum3(); updateBuilder3(); }
+    if(id==='s3'){ drawNum5(); updateBuilder5(); }
+    if(id==='s4'){ drawNum6(); updateBuilder6(); }
+    if(id==='s5'){ generateReadingQuestion(); generateReverse(); }
+  }, 100);
+}
+
+// --- Sistema de tabs ---
+function switchTab(group, tabId, btn){
+  document.querySelectorAll(`[data-tabgroup="${group}"]`).forEach(t => t.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  // actualizar botones
+  btn.closest('.tab-nav').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* ====================================
+   RETROALIMENTACIÓN GENÉRICA
+==================================== */
+function showFeedback(fbId, correct, msg){
+  const el = document.getElementById(fbId);
+  el.className = 'feedback show ' + (correct ? 'correct' : 'incorrect');
+  el.innerHTML = (correct ? '✅ ' : '❌ ') + msg;
+  if(correct) addScore(5);
+}
+
+function checkActivity(inputId, expected, fbId, msgOk, msgFail){
+  const val = parseFloat(document.getElementById(inputId).value);
+  showFeedback(fbId, val === expected, val === expected ? msgOk : msgFail);
+}
+
+/* ====================================
+   ACTIVIDADES MÓDULO 2
+==================================== */
+function check2_1(){
+  const c = parseInt(document.getElementById('a2_1c').value)||0;
+  const d = parseInt(document.getElementById('a2_1d').value)||0;
+  const u = parseInt(document.getElementById('a2_1u').value)||0;
+  const ok = c===2 && d===3 && u===4;
+  showFeedback('fb2_1', ok, ok ? '¡Perfecto! 234 = 2 centenas + 3 decenas + 4 unidades = 200 + 30 + 4.' : 'Incorrecto. El número 234: el 2 ocupa las centenas (200), el 3 las decenas (30) y el 4 las unidades (4).');
+}
+
+function check2_3(){
+  const a = parseInt(document.getElementById('a2_3a').value)||0;
+  const b = parseInt(document.getElementById('a2_3b').value)||0;
+  const c = parseInt(document.getElementById('a2_3c').value)||0;
+  const ok = a===300 && b===10 && c===9;
+  showFeedback('fb2_3', ok, ok ? '¡Excelente! 319 = 300 + 10 + 9. ¡Forma desarrollada perfecta!' : 'Incorrecto. 319: 3 centenas = 300, 1 decena = 10, 9 unidades = 9. Entonces: 300 + 10 + 9.');
+}
+
+/* ====================================
+   VERIFICAR LECTURA (texto)
+==================================== */
+function normalize(str){
+  return str.toLowerCase().trim()
+    .replace(/[áäâà]/g,'a').replace(/[éëêè]/g,'e')
+    .replace(/[íïîì]/g,'i').replace(/[óöôò]/g,'o')
+    .replace(/[úüûù]/g,'u')
+    .replace(/\s+/g,' ');
+}
+
+function checkReading(inputId, expected, fbId){
+  const val = normalize(document.getElementById(inputId).value);
+  const exp = normalize(expected);
+  const ok = val === exp;
+  showFeedback(fbId, ok, ok ? `¡Correcto! Se lee: "${expected}".` : `Incorrecto. La respuesta correcta es: "${expected}". Revisa las reglas de lectura.`);
+}
+
+/* ====================================
+   CONVERTIR NÚMERO A PALABRAS
+==================================== */
+function numToWords(n){
+  if(n===0) return 'cero';
+  const ones = ['','uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve',
+    'diez','once','doce','trece','catorce','quince','dieciséis','diecisiete','dieciocho','diecinueve',
+    'veinte','veintiuno','veintidós','veintitrés','veinticuatro','veinticinco','veintiséis','veintisiete','veintiocho','veintinueve'];
+  const tens = ['','','veinte','treinta','cuarenta','cincuenta','sesenta','setenta','ochenta','noventa'];
+  const hundreds = ['','cien','doscientos','trescientos','cuatrocientos','quinientos','seiscientos','setecientos','ochocientos','novecientos'];
+  
+  function twoDigits(n){
+    if(n<30) return ones[n];
+    const t = Math.floor(n/10), u = n%10;
+    return u===0 ? tens[t] : tens[t] + ' y ' + ones[u];
+  }
+  
+  function threeDigits(n){
+    if(n===0) return '';
+    const c = Math.floor(n/100), rest = n%100;
+    if(n===100) return 'cien';
+    if(c>0 && rest===0) return hundreds[c];
+    if(c===0) return twoDigits(rest);
+    return hundreds[c] + ' ' + twoDigits(rest);
+  }
+  
+  if(n<=999) return threeDigits(n);
+  
+  const miles = Math.floor(n/1000), resto = n%1000;
+  let mStr = '';
+  if(miles===1) mStr = 'mil';
+  else mStr = threeDigits(miles) + ' mil';
+  
+  if(resto===0) return mStr;
+  return mStr + ' ' + threeDigits(resto);
+}
+
+function showNumberInWords(){
+  const n = parseInt(document.getElementById('freeNum').value)||0;
+  document.getElementById('wordsResult').textContent = numToWords(n).charAt(0).toUpperCase() + numToWords(n).slice(1);
+}
+
+// Práctica inversa
+let currentReverseNum = 0;
+function generateReverse(){
+  currentReverseNum = Math.floor(Math.random()*99000)+1000;
+  document.getElementById('reverseNum').textContent = numToWords(currentReverseNum).charAt(0).toUpperCase() + numToWords(currentReverseNum).slice(1);
+  document.getElementById('reverseInput').value = '';
+  document.getElementById('fb-reverse').className = 'feedback';
+}
+
+function checkReverse(){
+  const v = parseInt(document.getElementById('reverseInput').value);
+  const ok = v === currentReverseNum;
+  showFeedback('fb-reverse', ok,
+    ok ? `¡Excelente! El número es ${currentReverseNum.toLocaleString('es')}.` :
+    `Incorrecto. El número correcto es ${currentReverseNum.toLocaleString('es')}.`
+  );
+}
+
+/* ====================================
+   JUEGO DE LECTURA (opción múltiple)
+==================================== */
+let rgCorrect = '';
+function generateReadingQuestion(){
+  const num = Math.floor(Math.random()*99000)+1000;
+  const correct = numToWords(num).charAt(0).toUpperCase() + numToWords(num).slice(1);
+  rgCorrect = correct;
+  
+  // Generar distractores
+  const distractors = [];
+  const arr = [num+100, num-100, num+1000, num-1000, num+10, num+10000];
+  arr.filter(x=>x>0 && x<100000).forEach(x=>{
+    const w = numToWords(x).charAt(0).toUpperCase()+numToWords(x).slice(1);
+    if(w!==correct && !distractors.includes(w)) distractors.push(w);
+  });
+  while(distractors.length<3){
+    const r = Math.floor(Math.random()*50000)+1000;
+    const w = numToWords(r).charAt(0).toUpperCase()+numToWords(r).slice(1);
+    if(w!==correct && !distractors.includes(w)) distractors.push(w);
+  }
+  
+  const options = [correct, ...distractors.slice(0,3)].sort(()=>Math.random()-.5);
+  
+  document.getElementById('rg-number').textContent = num.toLocaleString('es');
+  const optsEl = document.getElementById('rg-options');
+  optsEl.innerHTML = '';
+  options.forEach((opt,i)=>{
+    const div = document.createElement('div');
+    div.className = 'quiz-opt';
+    div.innerHTML = `<span class="quiz-opt-letter">${['A','B','C','D'][i]}</span>${opt}`;
+    div.onclick = function(){
+      document.querySelectorAll('#rg-options .quiz-opt').forEach(d=>d.onclick=null);
+      const isOk = opt===correct;
+      div.classList.add(isOk?'correct':'wrong');
+      const fb = document.getElementById('rg-feedback');
+      fb.className = 'feedback show ' + (isOk?'correct':'incorrect');
+      fb.innerHTML = isOk ? '✅ ¡Correcto!' : `❌ La respuesta correcta es: "${correct}"`;
+      if(isOk) addScore(8);
+      // Marcar la correcta si erró
+      if(!isOk){
+        document.querySelectorAll('#rg-options .quiz-opt').forEach(d=>{
+          if(d.textContent.includes(correct)) d.classList.add('correct');
+        });
+      }
+    };
+    optsEl.appendChild(div);
+  });
+  document.getElementById('rg-feedback').className = 'feedback';
+}
+
+/* ====================================
+   EVALUACIÓN FINAL — QUIZ
+==================================== */
+const quizAnswers = {
+  1:'c', 2:'c', 3:'b', 4:'a', 5:'b',
+  6:'c', 7:'b', 8:'c', 9:'b', 10:'a'
+};
+const quizExplanations = {
+  1:'En 4.620, el 6 está en la posición de las centenas: 6 × 100 = 600.',
+  2:'15.004: "quince mil cuatro" (los ceros no se leen).',
+  3:'3 DM = 30.000, 0 UM = 0, 5 C = 500, 2 D = 20, 1 U = 1 → 30.521.',
+  4:'En 82.345, el 8 está en la posición de mayor valor: Decena de Mil (80.000).',
+  5:'Cincuenta y dos mil = 52.000, cien = 100 → 52.100.',
+  6:'1 Unidad de Mil = 1 × 1.000 = 1.000 unidades.',
+  7:'Para el número mayor, ordena los dígitos de mayor a menor: 8,4,3,1 → 8.431.',
+  8:'En 90.567: 9=DM, 0=UM. El 0 ocupa la posición de Unidades de Mil.',
+  9:'20.000 + 4.000 + 300 + 5 = 24.305 (no hay decenas, solo unidades).',
+  10:'Diecinueve mil = 19.000, trescientos doce = 312 → 19.312.'
+};
+
+let quizState = {};
+let quizCount = 0;
+
+function answerQuiz(qNum, answer, el){
+  if(quizState[qNum]) return; // ya respondida
+  quizState[qNum] = answer;
+  quizCount++;
+  
+  const correct = quizAnswers[qNum];
+  const isOk = answer === correct;
+  
+  // Deshabilitar opciones
+  document.querySelectorAll(`#qq${qNum} .quiz-opt`).forEach(opt => opt.onclick = null);
+  
+  // Marcar seleccionada
+  el.classList.add(isOk ? 'correct' : 'wrong');
+  
+  // Marcar correcta si erró
+  if(!isOk){
+    document.querySelectorAll(`#qq${qNum} .quiz-opt`).forEach(opt=>{
+      const letter = opt.querySelector('.quiz-opt-letter').textContent.toLowerCase();
+      if(letter === correct) opt.classList.add('correct');
+    });
+  }
+  
+  // Feedback
+  const fb = document.getElementById('qfb' + qNum);
+  fb.className = 'quiz-feedback show ' + (isOk ? 'qf-correct' : 'qf-wrong');
+  fb.innerHTML = (isOk ? '✅ ¡Correcto! ' : '❌ Incorrecto. ') + quizExplanations[qNum];
+  
+  // Borde de la tarjeta
+  document.getElementById('qq'+qNum).classList.add(isOk ? 'answered-correct' : 'answered-wrong');
+  
+  if(isOk) addScore(10);
+  
+  // Actualizar progreso
+  updateQuizProgress();
+  
+  // Mostrar resultado si terminó
+  if(quizCount === 10) showResult();
+}
+
+function updateQuizProgress(){
+  const answered = Object.keys(quizState).length;
+  const pct = (answered/10)*100;
+  document.getElementById('quiz-progress-text').textContent = `${answered} / 10 respondidas`;
+  document.getElementById('quiz-progress-bar').style.width = pct + '%';
+}
+
+function showResult(){
+  const correct = Object.entries(quizState).filter(([q,a])=>a===quizAnswers[q]).length;
+  const pct = (correct/10)*100;
+  const panel = document.getElementById('result-panel');
+  panel.classList.add('show');
+  document.getElementById('result-score').textContent = correct + '/10';
+  document.getElementById('result-fill').style.width = pct+'%';
+  
+  let emoji, label, msg;
+  if(pct===100){ emoji='🏆'; label='¡Perfecto! ¡Eres un genio!'; msg='Obtuviste el puntaje máximo. ¡Dominas el valor posicional!'; }
+  else if(pct>=80){ emoji='⭐'; label='¡Excelente trabajo!'; msg='Muy bien hecho. Tienes una comprensión sólida del tema.'; }
+  else if(pct>=60){ emoji='👍'; label='¡Bien hecho!'; msg='Buen trabajo. Repasa los módulos donde tuviste dificultades.'; }
+  else if(pct>=40){ emoji='📚'; label='Sigue practicando'; msg='Revisa los módulos de teoría y vuelve a intentarlo.'; }
+  else { emoji='💪'; label='¡No te rindas!'; msg='Repasa todos los módulos desde el inicio. ¡Tú puedes!'; }
+  
+  document.getElementById('result-emoji').textContent = emoji;
+  document.getElementById('result-label').textContent = label;
+  document.getElementById('result-msg').textContent = msg;
+  
+  panel.scrollIntoView({behavior:'smooth'});
+}
+
+function resetQuiz(){
+  quizState = {};
+  quizCount = 0;
+  // Restaurar preguntas
+  for(let i=1;i<=10;i++){
+    const qq = document.getElementById('qq'+i);
+    qq.classList.remove('answered-correct','answered-wrong');
+    qq.querySelectorAll('.quiz-opt').forEach(opt=>{
+      opt.classList.remove('correct','wrong','selected');
+    });
+    document.getElementById('qfb'+i).className='quiz-feedback';
+    // Re-asignar onclick
+    qq.querySelectorAll('.quiz-opt').forEach(opt=>{
+      const letter = opt.querySelector('.quiz-opt-letter').textContent.toLowerCase();
+      opt.onclick = function(){ answerQuiz(i, letter, opt); };
+    });
+  }
+  document.getElementById('result-panel').classList.remove('show');
+  updateQuizProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ====================================
+   CONSTRUCTORES DE NÚMEROS
+==================================== */
+function fmt(n){ return n.toLocaleString('es'); }
+
+function updateBuilder3(){
+  const c = parseInt(document.getElementById('sl3_c').value)||0;
+  const d = parseInt(document.getElementById('sl3_d').value)||0;
+  const u = parseInt(document.getElementById('sl3_u').value)||0;
+  document.getElementById('sv3_c').textContent = fmt(c*100);
+  document.getElementById('sv3_d').textContent = fmt(d*10);
+  document.getElementById('sv3_u').textContent = fmt(u);
+  const total = c*100+d*10+u;
+  document.getElementById('builder3Result').innerHTML =
+    `<span style="color:var(--text2)">Número formado:</span> <span style="font-size:28px;color:var(--blue);font-family:'Raleway',sans-serif">${fmt(total)}</span>
+     <br><span style="font-size:14px;color:var(--text3)">${fmt(c*100)} + ${fmt(d*10)} + ${fmt(u)} = ${fmt(total)}</span>
+     <br><span style="font-size:14px;color:var(--teal);margin-top:4px;display:block">${numToWords(total).charAt(0).toUpperCase()+numToWords(total).slice(1)}</span>`;
+}
+
+function updateBuilder5(){
+  const dm=parseInt(document.getElementById('sl5_dm').value)||0;
+  const um=parseInt(document.getElementById('sl5_um').value)||0;
+  const c=parseInt(document.getElementById('sl5_c').value)||0;
+  const d=parseInt(document.getElementById('sl5_d').value)||0;
+  const u=parseInt(document.getElementById('sl5_u').value)||0;
+  document.getElementById('sv5_dm').textContent = fmt(dm*10000);
+  document.getElementById('sv5_um').textContent = fmt(um*1000);
+  document.getElementById('sv5_c').textContent = fmt(c*100);
+  document.getElementById('sv5_d').textContent = fmt(d*10);
+  document.getElementById('sv5_u').textContent = fmt(u);
+  const total = dm*10000+um*1000+c*100+d*10+u;
+  document.getElementById('builder5Result').innerHTML =
+    `<span style="color:var(--text2)">Número formado:</span> <span style="font-size:28px;color:var(--blue);font-family:'Raleway',sans-serif">${fmt(total)}</span>
+     <br><span style="font-size:13px;color:var(--text3)">${fmt(dm*10000)} + ${fmt(um*1000)} + ${fmt(c*100)} + ${fmt(d*10)} + ${fmt(u)}</span>
+     <br><span style="font-size:14px;color:var(--teal);margin-top:4px;display:block">${numToWords(total).charAt(0).toUpperCase()+numToWords(total).slice(1)}</span>`;
+}
+
+function updateBuilder6(){
+  const cm=parseInt(document.getElementById('sl6_cm').value)||0;
+  const dm=parseInt(document.getElementById('sl6_dm').value)||0;
+  const um=parseInt(document.getElementById('sl6_um').value)||0;
+  const c=parseInt(document.getElementById('sl6_c').value)||0;
+  const d=parseInt(document.getElementById('sl6_d').value)||0;
+  const u=parseInt(document.getElementById('sl6_u').value)||0;
+  document.getElementById('sv6_cm').textContent = fmt(cm*100000);
+  document.getElementById('sv6_dm').textContent = fmt(dm*10000);
+  document.getElementById('sv6_um').textContent = fmt(um*1000);
+  document.getElementById('sv6_c').textContent = fmt(c*100);
+  document.getElementById('sv6_d').textContent = fmt(d*10);
+  document.getElementById('sv6_u').textContent = fmt(u);
+  const total = cm*100000+dm*10000+um*1000+c*100+d*10+u;
+  document.getElementById('builder6Result').innerHTML =
+    `<span style="color:var(--text2)">Número formado:</span> <span style="font-size:28px;color:var(--navy);font-family:'Raleway',sans-serif">${fmt(total)}</span>
+     <br><span style="font-size:12px;color:var(--text3)">${fmt(cm*100000)} + ${fmt(dm*10000)} + ${fmt(um*1000)} + ${fmt(c*100)} + ${fmt(d*10)} + ${fmt(u)}</span>
+     <br><span style="font-size:14px;color:var(--teal);margin-top:4px;display:block">${numToWords(total).charAt(0).toUpperCase()+numToWords(total).slice(1)}</span>`;
+}
+
+/* ====================================
+   CANVAS: BASE 10 (Sección 1)
+==================================== */
+function drawBase10(){
+  const canvas = document.getElementById('base10Canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+  
+  const colors = ['#ef4444','#f59e0b','#10b981','#2563eb','#7c3aed'];
+  const labels = ['1 Unidad','1 Decena\n(= 10 U)','1 Centena\n(= 100 U)','1 Unidad de Mil\n(= 1.000 U)','1 Decena de Mil\n(= 10.000 U)'];
+  const values = ['1','10','100','1.000','10.000'];
+  const w = W/5-16, bh = 130, y = (H-bh)/2;
+  
+  labels.forEach((lbl,i)=>{
+    const x = i*(W/5)+8;
+    // Caja
+    ctx.fillStyle = colors[i];
+    ctx.globalAlpha = .12;
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, bh, 10);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = colors[i];
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, bh, 10);
+    ctx.stroke();
+    
+    // Valor grande
+    ctx.fillStyle = colors[i];
+    ctx.font = 'bold 22px Raleway,sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(values[i], x+w/2, y+36);
+    
+    // Etiqueta
+    ctx.font = '600 11px Nunito,sans-serif';
+    ctx.fillStyle = '#1e293b';
+    lbl.split('\n').forEach((line,j)=>{
+      ctx.fillText(line, x+w/2, y+60+j*16);
+    });
+    
+    // Flecha entre cajas
+    if(i<4){
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = 'bold 18px sans-serif';
+      ctx.fillText('×10', (i+1)*(W/5)-6, H/2+6);
+    }
+  });
+}
+
+/* ====================================
+   CANVAS: NÚMERO 3 DÍGITOS
+==================================== */
+function drawNum3(){
+  const num = parseInt(document.getElementById('num3Input').value)||345;
+  const n = Math.min(Math.max(num,0),999);
+  
+  const c = Math.floor(n/100);
+  const d = Math.floor((n%100)/10);
+  const u = n%10;
+  
+  const canvas = document.getElementById('canvas3');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+  
+  const slots = [
+    {label:'Centenas (C)', val:c, color:'#10b981', mult:100},
+    {label:'Decenas (D)', val:d, color:'#f59e0b', mult:10},
+    {label:'Unidades (U)', val:u, color:'#ef4444', mult:1}
+  ];
+  
+  const sw = W/3 - 20;
+  
+  slots.forEach((s,i)=>{
+    const x = i*(W/3)+10;
+    const y = 20;
+    const bh = H-40;
+    
+    // Fondo
+    ctx.fillStyle = s.color;
+    ctx.globalAlpha = .1;
+    ctx.beginPath();
+    ctx.roundRect(x, y, sw, bh, 12);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = s.color;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.roundRect(x, y, sw, bh, 12);
+    ctx.stroke();
+    
+    // Posición label
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(x+10, y+10, sw-20, 28);
+    ctx.fillStyle = s.color;
+    ctx.font = 'bold 13px Nunito,sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(s.label, x+sw/2, y+29);
+    
+    // Dígito grande
+    ctx.fillStyle = s.color;
+    ctx.font = 'bold 64px Raleway,sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(s.val, x+sw/2, y+bh/2+20);
+    
+    // Valor posicional
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 16px Nunito,sans-serif';
+    ctx.fillText(s.val + ' × ' + s.mult + ' = ' + fmt(s.val*s.mult), x+sw/2, y+bh-18);
+  });
+  
+  // Número completo centrado
+  ctx.fillStyle = '#1e293b';
+  ctx.font = 'bold 14px Nunito,sans-serif';
+  ctx.textAlign = 'center';
+}
+
+/* ====================================
+   CANVAS: NÚMERO 5 DÍGITOS
+==================================== */
+function drawNum5(){
+  const num = parseInt(document.getElementById('num5Input').value)||45328;
+  const n = Math.min(Math.max(num,0),99999);
+  
+  const dm = Math.floor(n/10000);
+  const um = Math.floor((n%10000)/1000);
+  const c = Math.floor((n%1000)/100);
+  const d = Math.floor((n%100)/10);
+  const u = n%10;
+  
+  const canvas = document.getElementById('canvas5');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+  
+  const slots = [
+    {label:'DM', val:dm, color:'#7c3aed', mult:10000},
+    {label:'UM', val:um, color:'#2563eb', mult:1000},
+    {label:'C',  val:c,  color:'#0891b2', mult:100},
+    {label:'D',  val:d,  color:'#f59e0b', mult:10},
+    {label:'U',  val:u,  color:'#ef4444', mult:1}
+  ];
+  
+  const sw = W/5 - 14;
+  
+  slots.forEach((s,i)=>{
+    const x = i*(W/5)+7;
+    const y = 15;
+    const bh = H-30;
+    
+    ctx.fillStyle = s.color;
+    ctx.globalAlpha = .12;
+    ctx.beginPath();
+    ctx.roundRect(x,y,sw,bh,10);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = s.color;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect(x,y,sw,bh,10);
+    ctx.stroke();
+    
+    ctx.fillStyle = s.color;
+    ctx.font = 'bold 12px Nunito,sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(s.label, x+sw/2, y+18);
+    
+    ctx.font = 'bold 48px Raleway,sans-serif';
+    ctx.fillText(s.val, x+sw/2, y+bh/2+16);
+    
+    ctx.fillStyle = '#475569';
+    ctx.font = '600 11px Nunito,sans-serif';
+    ctx.fillText(fmt(s.val*s.mult), x+sw/2, y+bh-14);
+  });
+}
+
+/* ====================================
+   CANVAS: NÚMERO 6 DÍGITOS
+==================================== */
+function drawNum6(){
+  const num = parseInt(document.getElementById('num6Input').value)||325418;
+  const n = Math.min(Math.max(num,0),999999);
+  
+  const cm = Math.floor(n/100000);
+  const dm = Math.floor((n%100000)/10000);
+  const um = Math.floor((n%10000)/1000);
+  const c  = Math.floor((n%1000)/100);
+  const d  = Math.floor((n%100)/10);
+  const u  = n%10;
+  
+  const canvas = document.getElementById('canvas6');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+  
+  const slots = [
+    {label:'CM',  val:cm, color:'#7c3aed', mult:100000},
+    {label:'DM',  val:dm, color:'#2563eb', mult:10000},
+    {label:'UM',  val:um, color:'#0891b2', mult:1000},
+    {label:'C',   val:c,  color:'#10b981', mult:100},
+    {label:'D',   val:d,  color:'#f59e0b', mult:10},
+    {label:'U',   val:u,  color:'#ef4444', mult:1}
+  ];
+  
+  const sw = W/6 - 12;
+  
+  slots.forEach((s,i)=>{
+    const x = i*(W/6)+6;
+    const y = 15;
+    const bh = H-30;
+    
+    ctx.fillStyle = s.color;
+    ctx.globalAlpha = .12;
+    ctx.beginPath();
+    ctx.roundRect(x,y,sw,bh,8);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = s.color;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect(x,y,sw,bh,8);
+    ctx.stroke();
+    
+    ctx.fillStyle = s.color;
+    ctx.font = 'bold 12px Nunito,sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(s.label, x+sw/2, y+18);
+    
+    ctx.font = 'bold 42px Raleway,sans-serif';
+    ctx.fillText(s.val, x+sw/2, y+bh/2+14);
+    
+    ctx.fillStyle = '#475569';
+    ctx.font = '600 10px Nunito,sans-serif';
+    ctx.fillText(fmt(s.val*s.mult), x+sw/2, y+bh-14);
+  });
+  
+  // Número total debajo
+  const words = numToWords(n).charAt(0).toUpperCase()+numToWords(n).slice(1);
+}
+
+/* ====================================
+   INICIALIZACIÓN
+==================================== */
+window.addEventListener('DOMContentLoaded', ()=>{
+  // Iniciar en welcome
+  showSection('welcome');
+  
+  // Inicializar quiz onclick
+  for(let i=1;i<=10;i++){
+    const qq = document.getElementById('qq'+i);
+    if(qq){
+      qq.querySelectorAll('.quiz-opt').forEach((opt,j)=>{
+        const letter = ['a','b','c','d'][j];
+        opt.onclick = function(){ answerQuiz(i, letter, opt); };
+      });
+    }
+  }
+  
+  // Inicializar práctica de lectura
+  generateReadingQuestion();
+  generateReverse();
+});
+
+// Listener para inicializar cuando se cargan canvases
+document.addEventListener('click', function(e){
+  if(e.target.closest('#nav-s1')) setTimeout(drawBase10, 150);
+  if(e.target.closest('#nav-s2')) setTimeout(()=>{ drawNum3(); updateBuilder3(); }, 150);
+  if(e.target.closest('#nav-s3')) setTimeout(()=>{ drawNum5(); updateBuilder5(); }, 150);
+  if(e.target.closest('#nav-s4')) setTimeout(()=>{ drawNum6(); updateBuilder6(); }, 150);
+});
+</script>
+</body>
+</html>

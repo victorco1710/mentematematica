@@ -1,0 +1,2268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- ============================================================
+     MENTE MATEMÁTICA - Suma Vertical
+     Plataforma educativa interactiva para estudiantes 9-15 años
+     Autor: MenteMatemáticaI © 2026 VC
+     ============================================================ -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suma Vertical | Mente Matemática</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<!-- ============================================================
+     ESTILOS CSS GLOBALES
+     ============================================================ -->
+<style>
+/* ─── Variables de color ─── */
+:root {
+  --navy:       #0d2b6e;
+  --navy-dark:  #071a4a;
+  --blue:       #1a56db;
+  --blue-light: #3b82f6;
+  --sky:        #e8f0fe;
+  --accent:     #f59e0b;
+  --accent2:    #10b981;
+  --danger:     #ef4444;
+  --success:    #22c55e;
+  --purple:     #7c3aed;
+  --bg:         #f0f4f8;
+  --white:      #ffffff;
+  --card:       #ffffff;
+  --text:       #1e293b;
+  --muted:      #64748b;
+  --border:     #e2e8f0;
+  --sidebar-w:  260px;
+  --header-h:   70px;
+}
+
+/* ─── Reset & Base ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── HEADER ─── */
+#site-header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  height: var(--header-h);
+  background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 50%, #1a3a8f 100%);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  box-shadow: 0 4px 20px rgba(7,26,74,.4);
+}
+.header-logo {
+  display: flex; align-items: center; gap: 12px;
+  text-decoration: none;
+}
+.logo-icon {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, var(--accent), #f97316);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; color: #fff; font-weight: 900;
+  box-shadow: 0 4px 12px rgba(245,158,11,.4);
+  font-family: 'Baloo 2', sans-serif;
+}
+.logo-text {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 1.4rem; font-weight: 800;
+  color: #fff; line-height: 1.1;
+  letter-spacing: -.3px;
+}
+.logo-text span { color: var(--accent); }
+.logo-sub { font-size: .65rem; color: rgba(255,255,255,.6); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+.header-right { display: flex; align-items: center; gap: 14px; }
+.btn-menu-back {
+  background: linear-gradient(135deg, var(--accent), #f97316);
+  color: #fff; border: none; border-radius: 10px;
+  padding: 9px 18px; font-family: 'Nunito', sans-serif;
+  font-size: .85rem; font-weight: 800; cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  box-shadow: 0 4px 12px rgba(245,158,11,.35);
+  transition: transform .2s, box-shadow .2s;
+}
+.btn-menu-back:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(245,158,11,.5); }
+.header-badge {
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+  border-radius: 20px; padding: 5px 14px;
+  font-size: .78rem; color: rgba(255,255,255,.85); font-weight: 700;
+}
+
+/* ─── LAYOUT ─── */
+#app-layout {
+  display: flex;
+  padding-top: var(--header-h);
+  min-height: 100vh;
+}
+
+/* ─── SIDEBAR ─── */
+#sidebar {
+  position: fixed; top: var(--header-h); left: 0;
+  width: var(--sidebar-w); height: calc(100vh - var(--header-h));
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  overflow-y: auto; z-index: 900;
+  box-shadow: 2px 0 12px rgba(0,0,0,.06);
+  padding: 16px 0 32px;
+}
+.sidebar-title {
+  font-size: .68rem; font-weight: 900; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--muted);
+  padding: 6px 20px 10px; margin-bottom: 4px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 20px; cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: background .15s, border-color .15s;
+  text-decoration: none; color: var(--text);
+}
+.nav-item:hover { background: var(--sky); }
+.nav-item.active {
+  background: linear-gradient(90deg, #e8f0fe 0%, #f0f4f8 100%);
+  border-left-color: var(--blue);
+  color: var(--navy);
+}
+.nav-icon {
+  width: 34px; height: 34px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; flex-shrink: 0;
+  transition: transform .2s;
+}
+.nav-item:hover .nav-icon, .nav-item.active .nav-icon { transform: scale(1.1); }
+.nav-label { font-size: .88rem; font-weight: 700; line-height: 1.2; }
+.nav-label small { display: block; font-size: .7rem; font-weight: 600; color: var(--muted); }
+.nav-divider { height: 1px; background: var(--border); margin: 10px 20px; }
+
+/* ─── MAIN CONTENT ─── */
+#main-content {
+  margin-left: var(--sidebar-w);
+  flex: 1; padding: 32px;
+  min-height: calc(100vh - var(--header-h));
+}
+
+/* ─── SECTION PANELS ─── */
+.section-panel { display: none; animation: fadeSlide .35s ease; }
+.section-panel.active { display: block; }
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── CARDS ─── */
+.card {
+  background: var(--card); border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+  padding: 28px; margin-bottom: 24px;
+  border: 1px solid var(--border);
+}
+.card-title {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 1.3rem; font-weight: 800; color: var(--navy);
+  margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+}
+.card-title .icon { font-size: 1.4rem; }
+
+/* ─── SECTION HEADERS ─── */
+.section-header {
+  background: linear-gradient(135deg, var(--navy), var(--blue));
+  border-radius: 16px; padding: 28px 32px; margin-bottom: 28px;
+  color: #fff; position: relative; overflow: hidden;
+}
+.section-header::before {
+  content: ''; position: absolute; top: -40%; right: -5%;
+  width: 260px; height: 260px;
+  background: rgba(255,255,255,.06); border-radius: 50%;
+}
+.section-header::after {
+  content: ''; position: absolute; bottom: -50%; right: 8%;
+  width: 180px; height: 180px;
+  background: rgba(255,255,255,.05); border-radius: 50%;
+}
+.section-header h1 {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 1.8rem; font-weight: 800; margin-bottom: 6px;
+}
+.section-header p { opacity: .85; font-size: .95rem; font-weight: 600; }
+
+/* ─── BADGES & PILLS ─── */
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border-radius: 20px;
+  font-size: .75rem; font-weight: 800;
+}
+.badge-blue { background: #dbeafe; color: var(--blue); }
+.badge-green { background: #dcfce7; color: #16a34a; }
+.badge-orange { background: #fef3c7; color: #d97706; }
+.badge-purple { background: #ede9fe; color: var(--purple); }
+
+/* ─── VIDEO CONTAINER ─── */
+.video-wrapper {
+  background: #000; border-radius: 12px; overflow: hidden;
+  aspect-ratio: 16/9; margin: 16px 0;
+}
+.video-wrapper video {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.video-placeholder {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  border-radius: 12px; padding: 40px; text-align: center;
+  margin: 16px 0; border: 2px dashed rgba(255,255,255,.15);
+}
+.video-placeholder .play-icon { font-size: 3rem; margin-bottom: 12px; }
+.video-placeholder p { color: rgba(255,255,255,.7); font-size: .9rem; }
+.video-placeholder strong { color: var(--accent); font-size: 1.05rem; }
+
+/* ─── VERTICAL SUM DISPLAY ─── */
+.sum-display {
+  display: inline-flex; flex-direction: column; align-items: flex-end;
+  background: linear-gradient(135deg, #f8fafc, #e8f0fe);
+  border: 2px solid var(--border); border-radius: 14px;
+  padding: 20px 30px; font-family: 'Baloo 2', sans-serif;
+  font-size: 2rem; font-weight: 800; color: var(--navy);
+  box-shadow: 0 4px 16px rgba(0,0,0,.08);
+  position: relative; min-width: 140px;
+}
+.sum-display .addend { color: #1e40af; }
+.sum-display .operator {
+  position: absolute; left: 14px;
+  font-size: 1.8rem; color: var(--blue);
+  font-weight: 900;
+}
+.sum-display .sum-line {
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--navy));
+  border-radius: 2px; margin: 6px 0;
+}
+.sum-display .result { color: var(--success); font-size: 2.2rem; }
+
+/* ─── LABELS (sumando / suma) ─── */
+.label-tag {
+  display: inline-block; font-size: .65rem; font-weight: 800;
+  padding: 2px 8px; border-radius: 6px; margin-left: 8px;
+  text-transform: uppercase; letter-spacing: .5px;
+  vertical-align: middle;
+}
+.label-addend { background: #dbeafe; color: var(--blue); }
+.label-result { background: #dcfce7; color: #16a34a; }
+.label-op { background: #fef3c7; color: #d97706; }
+
+/* ─── GRID ─── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 900px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+/* ─── INFO BOX ─── */
+.info-box {
+  border-radius: 12px; padding: 16px 20px; margin: 14px 0;
+  display: flex; gap: 14px; align-items: flex-start;
+}
+.info-box .ib-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+.info-box p { font-size: .93rem; font-weight: 600; line-height: 1.6; }
+.info-blue  { background: #eff6ff; border-left: 4px solid var(--blue-light); }
+.info-green { background: #f0fdf4; border-left: 4px solid var(--success); }
+.info-orange{ background: #fffbeb; border-left: 4px solid var(--accent); }
+.info-purple{ background: #f5f3ff; border-left: 4px solid var(--purple); }
+
+/* ─── BUTTONS ─── */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 22px; border-radius: 10px; border: none;
+  font-family: 'Nunito', sans-serif; font-size: .9rem; font-weight: 800;
+  cursor: pointer; transition: all .2s;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--blue), var(--navy));
+  color: #fff; box-shadow: 0 4px 14px rgba(26,86,219,.35);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,86,219,.45); }
+.btn-success {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #fff; box-shadow: 0 4px 14px rgba(34,197,94,.3);
+}
+.btn-success:hover { transform: translateY(-2px); }
+.btn-orange {
+  background: linear-gradient(135deg, var(--accent), #f97316);
+  color: #fff; box-shadow: 0 4px 14px rgba(245,158,11,.3);
+}
+.btn-orange:hover { transform: translateY(-2px); }
+.btn-outline {
+  background: transparent; color: var(--navy);
+  border: 2px solid var(--navy); box-shadow: none;
+}
+.btn-outline:hover { background: var(--sky); }
+.btn-danger {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff; box-shadow: 0 4px 14px rgba(239,68,68,.3);
+}
+.btn-sm { padding: 7px 16px; font-size: .82rem; border-radius: 8px; }
+
+/* ─── CANVAS AREA ─── */
+canvas { display: block; border-radius: 12px; }
+.canvas-wrap {
+  background: #f8fafc; border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px; margin: 16px 0; text-align: center;
+}
+
+/* ─── QUIZ / PRACTICE ─── */
+.question-card {
+  background: var(--card); border-radius: 16px;
+  padding: 28px; border: 2px solid var(--border);
+  box-shadow: 0 4px 16px rgba(0,0,0,.08);
+  margin-bottom: 20px;
+}
+.question-text {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 1.15rem; font-weight: 700; color: var(--navy);
+  margin-bottom: 18px; line-height: 1.5;
+}
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.option-btn {
+  padding: 14px 18px; border-radius: 12px;
+  border: 2px solid var(--border); background: var(--white);
+  font-family: 'Nunito', sans-serif; font-size: .95rem; font-weight: 700;
+  cursor: pointer; text-align: left; transition: all .2s;
+  display: flex; align-items: center; gap: 10px;
+}
+.option-btn:hover:not(:disabled) { border-color: var(--blue); background: var(--sky); }
+.option-btn.correct  { border-color: var(--success) !important; background: #f0fdf4 !important; color: #16a34a !important; }
+.option-btn.wrong    { border-color: var(--danger)  !important; background: #fef2f2 !important; color: #dc2626 !important; }
+.option-btn.disabled { opacity: .6; cursor: not-allowed; }
+.option-letter {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: var(--sky); color: var(--blue);
+  font-size: .82rem; font-weight: 900; display: flex;
+  align-items: center; justify-content: center; flex-shrink: 0;
+}
+.feedback-box {
+  padding: 14px 18px; border-radius: 12px; margin-top: 14px;
+  font-weight: 700; font-size: .92rem;
+  display: flex; align-items: center; gap: 10px;
+}
+.feedback-correct { background: #f0fdf4; color: #16a34a; border: 1px solid #86efac; }
+.feedback-wrong   { background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; }
+
+/* ─── SCOREBOARD ─── */
+.score-display {
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  padding: 20px 24px; border-radius: 14px;
+  background: linear-gradient(135deg, var(--navy), var(--blue));
+  color: #fff; margin-bottom: 24px;
+}
+.score-item { text-align: center; }
+.score-num { font-family: 'Baloo 2', sans-serif; font-size: 2rem; font-weight: 900; line-height: 1; }
+.score-label { font-size: .72rem; font-weight: 700; opacity: .75; text-transform: uppercase; letter-spacing: .5px; }
+.score-divider { width: 1px; height: 44px; background: rgba(255,255,255,.2); }
+
+/* ─── TIMER ─── */
+#practice-timer {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 2.2rem; font-weight: 900;
+  width: 72px; height: 72px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--white); color: var(--navy);
+  box-shadow: 0 4px 16px rgba(0,0,0,.15);
+  transition: color .3s, background .3s;
+}
+#practice-timer.warning { color: var(--danger); background: #fef2f2; animation: pulse .5s infinite alternate; }
+@keyframes pulse { from { transform: scale(1); } to { transform: scale(1.08); } }
+
+/* ─── INPUT FIELD ─── */
+.answer-input {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 1.8rem; font-weight: 800; text-align: center;
+  width: 140px; height: 64px; border-radius: 12px;
+  border: 3px solid var(--border); color: var(--navy);
+  outline: none; transition: border-color .2s;
+  background: #f8fafc;
+}
+.answer-input:focus { border-color: var(--blue); background: var(--sky); }
+.answer-input.correct-border { border-color: var(--success) !important; background: #f0fdf4 !important; }
+.answer-input.wrong-border   { border-color: var(--danger)  !important; background: #fef2f2 !important; }
+
+/* ─── PROGRESS BAR ─── */
+.progress-bar-wrap {
+  background: var(--border); border-radius: 999px; height: 10px;
+  overflow: hidden; margin: 10px 0;
+}
+.progress-bar-fill {
+  height: 100%; border-radius: 999px;
+  background: linear-gradient(90deg, var(--blue), var(--accent));
+  transition: width .4s ease;
+}
+
+/* ─── WORKSHEET ─── */
+.ws-controls { display: flex; gap: 14px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 24px; }
+.ws-control label {
+  display: block; font-size: .8rem; font-weight: 800;
+  color: var(--muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: .5px;
+}
+.ws-control select, .ws-control input[type="number"] {
+  padding: 9px 14px; border-radius: 10px; border: 2px solid var(--border);
+  font-family: 'Nunito', sans-serif; font-size: .9rem; font-weight: 700;
+  background: var(--white); color: var(--text); outline: none;
+  transition: border-color .2s; min-width: 100px;
+}
+.ws-control select:focus, .ws-control input:focus { border-color: var(--blue); }
+#worksheet-area {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 20px; margin-top: 20px;
+}
+.ws-problem {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px 22px;
+  font-family: 'Baloo 2', sans-serif; font-size: 1.5rem; font-weight: 800;
+  color: var(--navy); text-align: right;
+  display: flex; flex-direction: column; align-items: flex-end;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+.ws-problem .ws-addend { color: #1e40af; }
+.ws-problem .ws-line {
+  width: 100%; height: 2px; background: var(--text);
+  margin: 6px 0;
+}
+.ws-problem .ws-answer-line {
+  width: 70%; height: 2px; background: var(--muted);
+  margin-top: 4px; border-bottom: 2px solid var(--muted);
+}
+.ws-num { font-size: .7rem; color: var(--muted); font-weight: 700; margin-bottom: 6px; align-self: flex-start; }
+
+/* ─── FINAL SCORE ─── */
+#final-score-display {
+  border-radius: 20px; padding: 40px; text-align: center;
+  margin-bottom: 24px; animation: fadeSlide .4s ease;
+}
+.final-grade {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 5rem; font-weight: 900; line-height: 1;
+  margin-bottom: 8px;
+}
+.final-msg { font-size: 1.2rem; font-weight: 700; margin-bottom: 6px; }
+
+/* ─── WELCOME SCREEN ─── */
+#welcome-panel {
+  min-height: 70vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  padding: 40px 20px;
+}
+.welcome-icon { font-size: 5rem; margin-bottom: 20px; animation: bounce 1.5s ease infinite; }
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+.welcome-title {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 2.8rem; font-weight: 900; color: var(--navy);
+  margin-bottom: 14px; line-height: 1.1;
+}
+.welcome-title span { color: var(--blue); }
+.welcome-sub { font-size: 1.1rem; color: var(--muted); max-width: 540px; font-weight: 600; margin-bottom: 32px; }
+.welcome-cards { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 36px; }
+.wc-card {
+  background: var(--white); border-radius: 14px;
+  padding: 20px 22px; min-width: 140px; max-width: 160px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.08);
+  border: 1px solid var(--border); cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+  text-align: center;
+}
+.wc-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,.13); }
+.wc-card .wc-icon { font-size: 2.2rem; margin-bottom: 8px; }
+.wc-card p { font-size: .82rem; font-weight: 700; color: var(--navy); }
+
+/* ─── INTERACTIVE CANVAS DEMO ─── */
+#demo-canvas { cursor: pointer; }
+.demo-controls { display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+
+/* ─── FOOTER ─── */
+#site-footer {
+  margin-left: var(--sidebar-w);
+  background: var(--navy-dark); color: rgba(255,255,255,.7);
+  text-align: center; padding: 20px;
+  font-size: .82rem; font-weight: 600;
+}
+#site-footer span { color: var(--accent); }
+
+/* ─── TOOLTIP ─── */
+.tooltip-label {
+  font-size: .78rem; font-weight: 700; color: var(--muted);
+  margin-bottom: 4px; text-transform: uppercase; letter-spacing: .5px;
+}
+
+/* ─── TABLE ─── */
+table { width: 100%; border-collapse: collapse; margin: 14px 0; }
+th { background: var(--navy); color: #fff; padding: 10px 14px; text-align: left; font-size: .85rem; }
+td { padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: .9rem; font-weight: 600; }
+tr:nth-child(even) td { background: #f8fafc; }
+
+/* ─── STEP-BOX ─── */
+.step-box {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 16px; border-radius: 12px;
+  background: var(--sky); border: 1px solid #bfdbfe;
+  margin-bottom: 12px;
+}
+.step-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--blue); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Baloo 2', sans-serif; font-size: 1rem; font-weight: 900;
+  flex-shrink: 0;
+}
+.step-content p { font-size: .92rem; font-weight: 600; line-height: 1.6; }
+.step-content strong { color: var(--navy); }
+
+/* ─── ACTIVITY INLINE ─── */
+.activity-box {
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border: 2px solid #86efac; border-radius: 14px;
+  padding: 22px; margin: 18px 0;
+}
+.activity-title {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 1.05rem; font-weight: 800; color: #16a34a; margin-bottom: 14px;
+}
+.act-sum-display {
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+}
+.act-input {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 1.6rem; font-weight: 800; text-align: center;
+  width: 110px; height: 56px; border-radius: 10px;
+  border: 3px solid #86efac; color: var(--navy);
+  outline: none; background: #fff;
+  transition: border-color .2s;
+}
+.act-input:focus { border-color: var(--blue); }
+.act-result-text { font-size: .95rem; font-weight: 700; margin-top: 10px; }
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  :root { --sidebar-w: 0px; }
+  #sidebar { transform: translateX(-260px); width: 260px; transition: transform .3s; }
+  #sidebar.open { transform: translateX(0); --sidebar-w: 260px; }
+  #main-content, #site-footer { margin-left: 0; }
+  .welcome-title { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header id="site-header">
+  <a class="header-logo" href="#" onclick="showSection('welcome')">
+    <div class="logo-icon">M²</div>
+    <div>
+      <div class="logo-text">Mente <span>Matemática</span></div>
+      <div class="logo-sub">Plataforma Educativa</div>
+    </div>
+  </a>
+  <div class="header-right">
+    <span class="header-badge">📐 Suma Vertical</span>
+    <a href="temario.html" class="btn-menu-back">🏠 Volver al menú</a>
+  </div>
+</header>
+
+<!-- ============================================================
+     APP LAYOUT
+     ============================================================ -->
+<div id="app-layout">
+
+  <!-- SIDEBAR -->
+  <nav id="sidebar">
+    <div class="sidebar-title">Módulos</div>
+
+    <div class="nav-item active" onclick="showSection('welcome')" id="nav-welcome">
+      <div class="nav-icon" style="background:#e8f0fe">🏠</div>
+      <div class="nav-label">Inicio<small>Bienvenida</small></div>
+    </div>
+    <div class="nav-item" onclick="showSection('intro')" id="nav-intro">
+      <div class="nav-icon" style="background:#fef3c7">🎬</div>
+      <div class="nav-label">¿Qué aprenderemos?<small>Introducción</small></div>
+    </div>
+
+    <div class="nav-divider"></div>
+    <div class="sidebar-title" style="margin-top:6px">Contenido</div>
+
+    <div class="nav-item" onclick="showSection('concepto')" id="nav-concepto">
+      <div class="nav-icon" style="background:#ede9fe">💡</div>
+      <div class="nav-label">1. Concepto de Suma<small>Definición y teoría</small></div>
+    </div>
+    <div class="nav-item" onclick="showSection('elementos')" id="nav-elementos">
+      <div class="nav-icon" style="background:#dcfce7">🔢</div>
+      <div class="nav-label">2. Elementos de la Suma<small>Forma vertical</small></div>
+    </div>
+    <div class="nav-item" onclick="showSection('digitos')" id="nav-digitos">
+      <div class="nav-icon" style="background:#fce7f3">🏗️</div>
+      <div class="nav-label">3. Suma de 2+ Dígitos<small>Práctica guiada</small></div>
+    </div>
+
+    <div class="nav-divider"></div>
+    <div class="sidebar-title" style="margin-top:6px">Actividades</div>
+
+    <div class="nav-item" onclick="showSection('practica')" id="nav-practica">
+      <div class="nav-icon" style="background:#fef9c3">⚡</div>
+      <div class="nav-label">4. Práctica Interactiva<small>10 ejercicios cronometrados</small></div>
+    </div>
+    <div class="nav-item" onclick="showSection('generador')" id="nav-generador">
+      <div class="nav-icon" style="background:#e0e7ff">📄</div>
+      <div class="nav-label">5. Hoja de Ejercicios<small>Generador + PDF</small></div>
+    </div>
+    <div class="nav-item" onclick="showSection('evaluacion')" id="nav-evaluacion">
+      <div class="nav-icon" style="background:#fce7f3">📝</div>
+      <div class="nav-label">6. Evaluación Final<small>10 preguntas</small></div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main id="main-content">
+
+    <!-- ════════════════════════════════════════
+         PANEL 0: BIENVENIDA
+         ════════════════════════════════════════ -->
+    <section id="panel-welcome" class="section-panel active">
+      <div id="welcome-panel">
+        <div class="welcome-icon">🧮</div>
+        <h1 class="welcome-title">¡Bienvenido a<br><span>Suma Vertical!</span></h1>
+        <p class="welcome-sub">Aprende a sumar números enteros positivos de manera vertical paso a paso, con ejemplos interactivos y actividades divertidas.</p>
+        <div class="welcome-cards">
+          <div class="wc-card" onclick="showSection('intro')">
+            <div class="wc-icon">🎬</div><p>¿Qué aprenderemos?</p>
+          </div>
+          <div class="wc-card" onclick="showSection('concepto')">
+            <div class="wc-icon">💡</div><p>Concepto de Suma</p>
+          </div>
+          <div class="wc-card" onclick="showSection('elementos')">
+            <div class="wc-icon">🔢</div><p>Elementos</p>
+          </div>
+          <div class="wc-card" onclick="showSection('digitos')">
+            <div class="wc-icon">🏗️</div><p>Suma de Dígitos</p>
+          </div>
+          <div class="wc-card" onclick="showSection('practica')">
+            <div class="wc-icon">⚡</div><p>Práctica</p>
+          </div>
+          <div class="wc-card" onclick="showSection('evaluacion')">
+            <div class="wc-icon">📝</div><p>Evaluación</p>
+          </div>
+        </div>
+        <button class="btn btn-primary" style="font-size:1.05rem;padding:14px 32px" onclick="showSection('intro')">
+          🚀 ¡Comenzar a aprender!
+        </button>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════
+         PANEL INTRO: ¿QUÉ APRENDEREMOS?
+         ════════════════════════════════════════ -->
+    <section id="panel-intro" class="section-panel">
+      <div class="section-header">
+        <div class="badge badge-orange" style="margin-bottom:10px">🎬 Introducción</div>
+        <h1>🎬 ¿Qué aprenderemos?</h1>
+        <p>Descubre todo lo que exploraremos en esta plataforma educativa sobre la suma vertical.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🎯</span> Objetivos de Aprendizaje</div>
+        <div class="grid-2">
+          <div class="info-box info-blue">
+            <span class="ib-icon">💡</span>
+            <p><strong>Comprender</strong> el concepto de suma y sus propiedades fundamentales con números enteros positivos.</p>
+          </div>
+          <div class="info-box info-green">
+            <span class="ib-icon">🔢</span>
+            <p><strong>Identificar</strong> los elementos de la suma (sumandos, signo y resultado) en su forma vertical.</p>
+          </div>
+          <div class="info-box info-orange">
+            <span class="ib-icon">🏗️</span>
+            <p><strong>Realizar</strong> sumas de 2 o más dígitos en forma vertical, alineando correctamente las cifras.</p>
+          </div>
+          <div class="info-box info-purple">
+            <span class="ib-icon">⚡</span>
+            <p><strong>Practicar</strong> con ejercicios interactivos cronometrados y evaluaciones automáticas.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📚</span> Contenido del Curso</div>
+        <table>
+          <tr><th>#</th><th>Módulo</th><th>Contenido</th></tr>
+          <tr><td>1</td><td>💡 Concepto de Suma</td><td>Definición, símbolo (+), elemento neutro, propiedades</td></tr>
+          <tr><td>2</td><td>🔢 Elementos</td><td>Sumandos, signo de suma, resultado / total</td></tr>
+          <tr><td>3</td><td>🏗️ Suma de 2+ Dígitos</td><td>Suma de 2, 3 y más cifras en forma vertical</td></tr>
+          <tr><td>4</td><td>⚡ Práctica</td><td>10 ejercicios cronometrados con puntaje acumulado</td></tr>
+          <tr><td>5</td><td>📄 Hoja de Ejercicios</td><td>Generador personalizado exportable a PDF</td></tr>
+          <tr><td>6</td><td>📝 Evaluación</td><td>10 preguntas de opción múltiple con retroalimentación</td></tr>
+        </table>
+      </div>
+
+      <!-- Canvas animado de introducción -->
+      <div class="card">
+        <div class="card-title"><span class="icon">✨</span> Visualización Interactiva</div>
+        <div class="canvas-wrap">
+          <canvas id="intro-canvas" width="600" height="200"></canvas>
+          <p style="font-size:.82rem;color:var(--muted);margin-top:8px">Haz clic en el canvas para ver la animación</p>
+        </div>
+        <div class="demo-controls">
+          <button class="btn btn-primary btn-sm" onclick="animateIntroCanvas()">▶ Animar</button>
+          <button class="btn btn-outline btn-sm" onclick="resetIntroCanvas()">↺ Reiniciar</button>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:24px">
+        <button class="btn btn-primary" onclick="showSection('concepto')">
+          Comenzar: Concepto de Suma 💡 →
+        </button>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════
+         PANEL 1: CONCEPTO DE SUMA
+         ════════════════════════════════════════ -->
+    <section id="panel-concepto" class="section-panel">
+      <div class="section-header">
+        <div class="badge badge-purple" style="margin-bottom:10px">💡 Módulo 1</div>
+        <h1>💡 Concepto de Suma</h1>
+        <p>Adición de números enteros positivos en forma vertical</p>
+      </div>
+
+      <!-- VIDEO 1 -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🎬</span> Video Explicativo</div>
+        <div class="video-wrapper">
+          <video controls poster="">
+            <source src="/vid/suma2cif.mp4" type="video/mp4">
+            <p>Tu navegador no soporta video HTML5.</p>
+          </video>
+        </div>
+        <div class="info-box info-blue" style="margin-top:12px">
+          <span class="ib-icon">ℹ️</span>
+          <p>Si el video no carga, asegúrate de que el archivo <strong>/vid/suma2cif.mp4</strong> está disponible en el servidor.</p>
+        </div>
+      </div>
+
+      <!-- DEFINICIÓN -->
+      <div class="card">
+        <div class="card-title"><span class="icon">📖</span> ¿Qué es la Suma?</div>
+        <div class="info-box info-blue">
+          <span class="ib-icon">💡</span>
+          <p><strong>La suma</strong> es una de las operaciones matemáticas más básicas. Sumar es <strong>juntar o combinar</strong> dos o más números para obtener un total. Cuando sumamos números enteros positivos, siempre obtenemos otro número entero positivo.</p>
+        </div>
+
+        <div class="grid-2" style="margin-top:16px">
+          <div>
+            <div class="tooltip-label">Suma horizontal</div>
+            <div style="font-family:'Baloo 2',sans-serif;font-size:1.8rem;font-weight:800;color:var(--navy);padding:14px;background:#f8fafc;border-radius:10px;border:1px solid var(--border)">
+              3 + 5 = 8
+            </div>
+          </div>
+          <div>
+            <div class="tooltip-label">Suma vertical</div>
+            <div class="sum-display" style="font-size:1.8rem">
+              <span class="addend">3 <span class="label-tag label-addend">1.er sumando</span></span>
+              <span style="position:relative;padding-left:28px" class="addend">
+                <span class="operator">+</span>5 <span class="label-tag label-addend">2.do sumando</span>
+              </span>
+              <div class="sum-line"></div>
+              <span class="result">8 <span class="label-tag label-result">Suma / Total</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SÍMBOLO -->
+      <div class="card">
+        <div class="card-title"><span class="icon">➕</span> Símbolo de la Suma (+)</div>
+        <p style="margin-bottom:14px;font-weight:600">Para sumar, usamos el símbolo <strong style="color:var(--blue);font-size:1.3rem">+</strong> entre los números. En la suma vertical, el símbolo aparece a la izquierda del último sumando.</p>
+        <div class="grid-3">
+          <div style="text-align:center;padding:16px;background:#f0f9ff;border-radius:12px;border:1px solid #bae6fd">
+            <div style="font-size:2.5rem;font-weight:900;color:var(--blue);font-family:'Baloo 2',sans-serif">+</div>
+            <p style="font-size:.85rem;font-weight:700;color:var(--muted)">Signo de suma</p>
+          </div>
+          <div style="text-align:center;padding:16px;background:#f0fdf4;border-radius:12px;border:1px solid #86efac">
+            <div style="font-size:2.5rem;font-weight:900;color:var(--success);font-family:'Baloo 2',sans-serif">=</div>
+            <p style="font-size:.85rem;font-weight:700;color:var(--muted)">Signo igual</p>
+          </div>
+          <div style="text-align:center;padding:16px;background:#fffbeb;border-radius:12px;border:1px solid #fde68a">
+            <div style="font-size:2.5rem;font-weight:900;color:var(--accent);font-family:'Baloo 2',sans-serif">Σ</div>
+            <p style="font-size:.85rem;font-weight:700;color:var(--muted)">Sigma (sumatoria)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ELEMENTO NEUTRO -->
+      <div class="card">
+        <div class="card-title"><span class="icon">0️⃣</span> Elemento Neutro (Cero)</div>
+        <div class="info-box info-orange">
+          <span class="ib-icon">⭐</span>
+          <p><strong>Propiedad importante:</strong> Si sumamos cualquier número con el cero, el resultado siempre será el mismo número. El cero es el <strong>elemento neutro</strong> de la suma.</p>
+        </div>
+        <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:14px">
+          <div class="sum-display" style="font-size:1.6rem">
+            <span class="addend">9</span>
+            <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.5rem">+</span>0</span>
+            <div class="sum-line"></div>
+            <span class="result">9</span>
+          </div>
+          <div class="sum-display" style="font-size:1.6rem">
+            <span class="addend">15</span>
+            <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.5rem">+</span>0</span>
+            <div class="sum-line"></div>
+            <span class="result">15</span>
+          </div>
+          <div class="sum-display" style="font-size:1.6rem">
+            <span class="addend">0</span>
+            <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.5rem">+</span>42</span>
+            <div class="sum-line"></div>
+            <span class="result">42</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROPIEDADES -->
+      <div class="card">
+        <div class="card-title"><span class="icon">📐</span> Propiedades de la Suma</div>
+        <div class="grid-2">
+          <div>
+            <div class="step-box">
+              <div class="step-num">C</div>
+              <div class="step-content">
+                <p><strong>Propiedad Conmutativa</strong><br>El orden de los sumandos no altera el resultado.</p>
+                <p style="margin-top:6px;font-family:'Baloo 2',sans-serif;color:var(--blue);font-weight:800">3 + 5 = 5 + 3 = 8</p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="step-box" style="background:#f0fdf4;border-color:#86efac">
+              <div class="step-num" style="background:var(--success)">A</div>
+              <div class="step-content">
+                <p><strong>Propiedad Asociativa</strong><br>Cómo agrupemos los sumandos no cambia el resultado.</p>
+                <p style="margin-top:6px;font-family:'Baloo 2',sans-serif;color:var(--success);font-weight:800">(2+3)+4 = 2+(3+4) = 9</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Canvas interactivo -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🎮</span> Visualización Interactiva: Bloques de suma</div>
+        <div class="canvas-wrap">
+          <canvas id="concepto-canvas" width="600" height="200" onclick="animateConceptCanvas()"></canvas>
+        </div>
+        <div class="demo-controls">
+          <button class="btn btn-primary btn-sm" onclick="animateConceptCanvas()">▶ Visualizar Suma</button>
+          <button class="btn btn-outline btn-sm" onclick="resetConceptCanvas()">↺ Reiniciar</button>
+        </div>
+        <p style="font-size:.82rem;color:var(--muted);margin-top:8px">Haz clic en "Visualizar Suma" para ver cómo se combinan los bloques.</p>
+      </div>
+
+      <div style="text-align:center;margin-top:16px">
+        <button class="btn btn-primary" onclick="showSection('elementos')">
+          Siguiente: Elementos de la Suma 🔢 →
+        </button>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════
+         PANEL 2: ELEMENTOS DE LA SUMA
+         ════════════════════════════════════════ -->
+    <section id="panel-elementos" class="section-panel">
+      <div class="section-header" style="background:linear-gradient(135deg,#064e3b,#059669)">
+        <div class="badge badge-green" style="margin-bottom:10px">🔢 Módulo 2</div>
+        <h1>🔢 Elementos de la Suma Vertical</h1>
+        <p>Identifica cada parte de una suma en su forma vertical</p>
+      </div>
+
+      <!-- VIDEO 2 -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🎬</span> Videos Explicativos</div>
+        <div class="grid-2">
+          <div>
+            <div class="tooltip-label">Suma con 2 cifras</div>
+            <div class="video-wrapper">
+              <video controls>
+                <source src="/vid/suma3cif.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+          <div>
+            <div class="tooltip-label">Suma con 4 cifras</div>
+            <div class="video-wrapper">
+              <video controls>
+                <source src="/vid/suma4cif.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ELEMENTOS PRINCIPALES -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🔍</span> ¿Cuáles son los elementos?</div>
+        <p style="font-weight:600;margin-bottom:20px">En una suma vertical reconocemos <strong>3 elementos principales</strong>:</p>
+
+        <div class="grid-3">
+          <div style="background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:14px;padding:20px;border:2px solid #93c5fd;text-align:center">
+            <div style="font-size:2.5rem;margin-bottom:8px">1️⃣</div>
+            <div style="font-family:'Baloo 2',sans-serif;font-size:1.2rem;font-weight:900;color:var(--blue);margin-bottom:6px">SUMANDOS</div>
+            <p style="font-size:.88rem;font-weight:600;color:var(--muted)">Los números que se van a sumar. Puede haber dos o más.</p>
+            <div style="margin-top:10px;font-family:'Baloo 2',sans-serif;font-size:1.5rem;font-weight:800;color:var(--blue)">34, 21</div>
+          </div>
+          <div style="background:linear-gradient(135deg,#fffbeb,#fef3c7);border-radius:14px;padding:20px;border:2px solid #fbbf24;text-align:center">
+            <div style="font-size:2.5rem;margin-bottom:8px">➕</div>
+            <div style="font-family:'Baloo 2',sans-serif;font-size:1.2rem;font-weight:900;color:#d97706;margin-bottom:6px">SIGNO +</div>
+            <p style="font-size:.88rem;font-weight:600;color:var(--muted)">El símbolo de adición (+) que indica la operación.</p>
+            <div style="margin-top:10px;font-family:'Baloo 2',sans-serif;font-size:2rem;font-weight:900;color:#d97706">+</div>
+          </div>
+          <div style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-radius:14px;padding:20px;border:2px solid #86efac;text-align:center">
+            <div style="font-size:2.5rem;margin-bottom:8px">✅</div>
+            <div style="font-family:'Baloo 2',sans-serif;font-size:1.2rem;font-weight:900;color:#16a34a;margin-bottom:6px">SUMA / TOTAL</div>
+            <p style="font-size:.88rem;font-weight:600;color:var(--muted)">El resultado de combinar todos los sumandos.</p>
+            <div style="margin-top:10px;font-family:'Baloo 2',sans-serif;font-size:1.5rem;font-weight:800;color:#16a34a">= 55</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIAGRAMA ANOTADO -->
+      <div class="card">
+        <div class="card-title"><span class="icon">📌</span> Diagrama Anotado</div>
+        <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+          <div style="position:relative">
+            <div class="sum-display" style="font-size:2rem;min-width:180px">
+              <span class="addend" style="position:relative">
+                3 4
+                <span style="position:absolute;left:-130px;top:2px;white-space:nowrap;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:800;color:var(--blue);background:#dbeafe;padding:3px 9px;border-radius:6px">1.er Sumando →</span>
+              </span>
+              <span style="position:relative;padding-left:32px" class="addend">
+                <span class="operator" style="font-size:1.8rem">+</span>
+                2 1
+                <span style="position:absolute;left:-130px;top:2px;white-space:nowrap;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:800;color:var(--blue);background:#dbeafe;padding:3px 9px;border-radius:6px">2.do Sumando →</span>
+              </span>
+              <div class="sum-line"></div>
+              <span class="result" style="position:relative">
+                5 5
+                <span style="position:absolute;left:-110px;top:2px;white-space:nowrap;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:800;color:#16a34a;background:#dcfce7;padding:3px 9px;border-radius:6px">Suma →</span>
+              </span>
+            </div>
+          </div>
+          <div style="flex:1;min-width:220px">
+            <div class="info-box info-blue">
+              <span class="ib-icon">📐</span>
+              <p><strong>Alineación importante:</strong> En la suma vertical, las cifras deben alinearse por su valor posicional: <strong>unidades con unidades, decenas con decenas, centenas con centenas</strong>.</p>
+            </div>
+            <div class="info-box info-green" style="margin-top:10px">
+              <span class="ib-icon">🖊️</span>
+              <p>El símbolo <strong>+</strong> siempre se escribe a la <strong>izquierda</strong> del último sumando, y debajo de todos los sumandos se traza una <strong>línea horizontal</strong> antes de escribir el resultado.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MÁS EJEMPLOS -->
+      <div class="card">
+        <div class="card-title"><span class="icon">📋</span> Más Ejemplos</div>
+        <div style="display:flex;gap:24px;flex-wrap:wrap">
+          <div>
+            <div class="tooltip-label">Ejemplo 1: dos sumandos de 1 dígito</div>
+            <div class="sum-display" style="font-size:2rem;min-width:120px">
+              <span class="addend">7</span>
+              <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.8rem">+</span>8</span>
+              <div class="sum-line"></div>
+              <span class="result">15</span>
+            </div>
+          </div>
+          <div>
+            <div class="tooltip-label">Ejemplo 2: dos sumandos de 2 dígitos</div>
+            <div class="sum-display" style="font-size:2rem;min-width:140px">
+              <span class="addend">45</span>
+              <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.8rem">+</span>32</span>
+              <div class="sum-line"></div>
+              <span class="result">77</span>
+            </div>
+          </div>
+          <div>
+            <div class="tooltip-label">Ejemplo 3: tres sumandos</div>
+            <div class="sum-display" style="font-size:1.9rem;min-width:140px">
+              <span class="addend">12</span>
+              <span class="addend">20</span>
+              <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.8rem">+</span>15</span>
+              <div class="sum-line"></div>
+              <span class="result">47</span>
+            </div>
+          </div>
+          <div>
+            <div class="tooltip-label">Ejemplo 4: con cero</div>
+            <div class="sum-display" style="font-size:2rem;min-width:130px">
+              <span class="addend">23</span>
+              <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.8rem">+</span>0</span>
+              <div class="sum-line"></div>
+              <span class="result">23</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Canvas interactivo elementos -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🎮</span> Identifica los Elementos</div>
+        <div class="canvas-wrap">
+          <canvas id="elementos-canvas" width="600" height="240" onclick="animateElementosCanvas()"></canvas>
+        </div>
+        <div class="demo-controls">
+          <button class="btn btn-success btn-sm" onclick="animateElementosCanvas()">🎨 Animar Elementos</button>
+          <button class="btn btn-outline btn-sm" onclick="resetElementosCanvas()">↺ Reiniciar</button>
+        </div>
+      </div>
+
+      <!-- ACTIVIDAD INLINE 1 -->
+      <div class="activity-box">
+        <div class="activity-title">🎯 Actividad 1: Completa la suma vertical</div>
+        <p style="font-weight:600;margin-bottom:16px">Calcula el resultado de cada suma y escríbelo en el cuadro:</p>
+        <div style="display:flex;gap:28px;flex-wrap:wrap">
+          <div id="act1-1">
+            <div class="sum-display" style="font-size:1.7rem;min-width:130px">
+              <span class="addend">13</span>
+              <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.5rem">+</span>24</span>
+              <div class="sum-line"></div>
+              <input class="act-input" id="act1-ans1" type="number" placeholder="?" onkeyup="checkInlineAct(1,1,37)">
+            </div>
+            <div id="act1-fb1" style="height:22px;margin-top:6px"></div>
+          </div>
+          <div id="act1-2">
+            <div class="sum-display" style="font-size:1.7rem;min-width:130px">
+              <span class="addend">30</span>
+              <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.5rem">+</span>15</span>
+              <div class="sum-line"></div>
+              <input class="act-input" id="act1-ans2" type="number" placeholder="?" onkeyup="checkInlineAct(1,2,45)">
+            </div>
+            <div id="act1-fb2" style="height:22px;margin-top:6px"></div>
+          </div>
+          <div id="act1-3">
+            <div class="sum-display" style="font-size:1.7rem;min-width:130px">
+              <span class="addend">11</span>
+              <span class="addend">22</span>
+              <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.5rem">+</span>33</span>
+              <div class="sum-line"></div>
+              <input class="act-input" id="act1-ans3" type="number" placeholder="?" onkeyup="checkInlineAct(1,3,66)">
+            </div>
+            <div id="act1-fb3" style="height:22px;margin-top:6px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:16px">
+        <button class="btn btn-primary" onclick="showSection('digitos')">
+          Siguiente: Suma de 2+ Dígitos 🏗️ →
+        </button>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════
+         PANEL 3: SUMA DE 2 Y MÁS DÍGITOS
+         ════════════════════════════════════════ -->
+    <section id="panel-digitos" class="section-panel">
+      <div class="section-header" style="background:linear-gradient(135deg,#4a1d96,#7c3aed)">
+        <div class="badge badge-purple" style="margin-bottom:10px">🏗️ Módulo 3</div>
+        <h1>🏗️ Suma de 2 y Más Dígitos</h1>
+        <p>Aprende a sumar números de dos, tres y más cifras paso a paso</p>
+      </div>
+
+      <!-- SUMA DE 2 CIFRAS -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🔷</span> Suma de 2 Cifras</div>
+        <div class="info-box info-purple">
+          <span class="ib-icon">📌</span>
+          <p>Para sumar dos números de 2 cifras, <strong>alineamos</strong> las unidades con las unidades y las decenas con las decenas. Luego sumamos <strong>columna por columna de derecha a izquierda.</strong></p>
+        </div>
+        <div class="grid-2" style="margin-top:16px">
+          <div>
+            <div class="step-box">
+              <div class="step-num">1</div>
+              <div class="step-content"><p><strong>Escribe los números alineados</strong> por la derecha (unidades debajo de unidades, decenas debajo de decenas).</p></div>
+            </div>
+            <div class="step-box" style="background:#f5f3ff;border-color:#c4b5fd">
+              <div class="step-num" style="background:var(--purple)">2</div>
+              <div class="step-content"><p><strong>Suma las unidades</strong>: columna derecha. Si el resultado es ≥ 10, escribe la unidad y "lleva" la decena.</p></div>
+            </div>
+            <div class="step-box" style="background:#fdf4ff;border-color:#e9d5ff">
+              <div class="step-num" style="background:#9333ea">3</div>
+              <div class="step-content"><p><strong>Suma las decenas</strong>: columna izquierda. Agrega la que "llevaste" si aplica.</p></div>
+            </div>
+          </div>
+          <div>
+            <div class="tooltip-label">Ejemplo: 47 + 35</div>
+            <div class="sum-display" style="font-size:2rem;min-width:160px">
+              <span class="addend">4 7</span>
+              <span style="position:relative;padding-left:30px" class="addend"><span class="operator" style="font-size:1.8rem">+</span>3 5</span>
+              <div class="sum-line"></div>
+              <span class="result">8 2</span>
+            </div>
+            <div style="font-size:.82rem;color:var(--muted);margin-top:8px;font-weight:600">
+              7+5=12 → escribo 2, llevo 1<br>4+3+1=8 → resultado: <strong>82</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MÁS EJEMPLOS 2 CIFRAS -->
+      <div class="card">
+        <div class="card-title"><span class="icon">📋</span> Más Ejemplos de 2 Cifras</div>
+        <div style="display:flex;gap:24px;flex-wrap:wrap">
+          <div>
+            <div class="tooltip-label">Sin llevar: 23 + 41</div>
+            <div class="sum-display" style="font-size:1.9rem;min-width:140px">
+              <span class="addend">23</span>
+              <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.6rem">+</span>41</span>
+              <div class="sum-line"></div>
+              <span class="result">64</span>
+            </div>
+          </div>
+          <div>
+            <div class="tooltip-label">Con llevar: 56 + 37</div>
+            <div class="sum-display" style="font-size:1.9rem;min-width:140px">
+              <span class="addend">56</span>
+              <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.6rem">+</span>37</span>
+              <div class="sum-line"></div>
+              <span class="result">93</span>
+            </div>
+          </div>
+          <div>
+            <div class="tooltip-label">Con doble llevada: 78 + 64</div>
+            <div class="sum-display" style="font-size:1.9rem;min-width:150px">
+              <span class="addend">78</span>
+              <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.6rem">+</span>64</span>
+              <div class="sum-line"></div>
+              <span class="result">142</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUMA DE 3 CIFRAS -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🔶</span> Suma de 3 Cifras</div>
+        <div class="info-box info-orange">
+          <span class="ib-icon">📌</span>
+          <p>Con 3 cifras, aplicamos el mismo principio: sumamos <strong>de derecha a izquierda</strong>, columna por columna, y llevamos cuando es necesario.</p>
+        </div>
+        <div style="display:flex;gap:24px;flex-wrap:wrap;margin-top:16px">
+          <div>
+            <div class="tooltip-label">Ejemplo 1: 234 + 151</div>
+            <div class="sum-display" style="font-size:1.9rem;min-width:160px">
+              <span class="addend">234</span>
+              <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.6rem">+</span>151</span>
+              <div class="sum-line"></div>
+              <span class="result">385</span>
+            </div>
+          </div>
+          <div>
+            <div class="tooltip-label">Ejemplo 2: 456 + 278</div>
+            <div class="sum-display" style="font-size:1.9rem;min-width:160px">
+              <span class="addend">456</span>
+              <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.6rem">+</span>278</span>
+              <div class="sum-line"></div>
+              <span class="result">734</span>
+            </div>
+          </div>
+          <div>
+            <div class="tooltip-label">Tres sumandos</div>
+            <div class="sum-display" style="font-size:1.9rem;min-width:160px">
+              <span class="addend">123</span>
+              <span class="addend">210</span>
+              <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.6rem">+</span>145</span>
+              <div class="sum-line"></div>
+              <span class="result">478</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUMA DE 4+ CIFRAS -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🔺</span> Suma de 4 y Más Cifras</div>
+        <div class="grid-2">
+          <div>
+            <div class="tooltip-label">4 cifras: 1235 + 2341</div>
+            <div class="sum-display" style="font-size:1.7rem;min-width:180px">
+              <span class="addend">1 2 3 5</span>
+              <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.5rem">+</span>2 3 4 1</span>
+              <div class="sum-line"></div>
+              <span class="result">3 5 7 6</span>
+            </div>
+          </div>
+          <div>
+            <div class="tooltip-label">4 cifras con llevadas: 3785 + 4639</div>
+            <div class="sum-display" style="font-size:1.7rem;min-width:180px">
+              <span class="addend">3 7 8 5</span>
+              <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.5rem">+</span>4 6 3 9</span>
+              <div class="sum-line"></div>
+              <span class="result">8 4 2 4</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Canvas paso a paso -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🎮</span> Visualización Paso a Paso</div>
+        <div class="canvas-wrap">
+          <canvas id="digitos-canvas" width="600" height="280"></canvas>
+        </div>
+        <div class="demo-controls">
+          <button class="btn btn-orange btn-sm" id="btn-step" onclick="stepDigitosCanvas()">▶ Paso 1</button>
+          <button class="btn btn-outline btn-sm" onclick="resetDigitosCanvas()">↺ Reiniciar</button>
+        </div>
+        <p style="font-size:.82rem;color:var(--muted);margin-top:8px">Haz clic en "Paso" para ver la suma paso a paso.</p>
+      </div>
+
+      <!-- ACTIVIDAD INLINE 2 -->
+      <div class="activity-box" style="background:linear-gradient(135deg,#f5f3ff,#ede9fe);border-color:#c4b5fd">
+        <div class="activity-title" style="color:var(--purple)">🎯 Actividad 2: Suma de múltiples dígitos</div>
+        <p style="font-weight:600;margin-bottom:16px">Escribe el resultado correcto:</p>
+        <div style="display:flex;gap:28px;flex-wrap:wrap">
+          <div>
+            <div class="sum-display" style="font-size:1.5rem;min-width:150px">
+              <span class="addend">125</span>
+              <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.4rem">+</span>243</span>
+              <div class="sum-line"></div>
+              <input class="act-input" id="act2-ans1" type="number" placeholder="?" style="width:130px;font-size:1.4rem" onkeyup="checkInlineAct(2,1,368)">
+            </div>
+            <div id="act2-fb1" style="height:22px;margin-top:6px"></div>
+          </div>
+          <div>
+            <div class="sum-display" style="font-size:1.5rem;min-width:150px">
+              <span class="addend">347</span>
+              <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.4rem">+</span>485</span>
+              <div class="sum-line"></div>
+              <input class="act-input" id="act2-ans2" type="number" placeholder="?" style="width:130px;font-size:1.4rem" onkeyup="checkInlineAct(2,2,832)">
+            </div>
+            <div id="act2-fb2" style="height:22px;margin-top:6px"></div>
+          </div>
+          <div>
+            <div class="sum-display" style="font-size:1.5rem;min-width:160px">
+              <span class="addend">1025</span>
+              <span style="position:relative;padding-left:26px" class="addend"><span class="operator" style="font-size:1.4rem">+</span>2348</span>
+              <div class="sum-line"></div>
+              <input class="act-input" id="act2-ans3" type="number" placeholder="?" style="width:130px;font-size:1.4rem" onkeyup="checkInlineAct(2,3,3373)">
+            </div>
+            <div id="act2-fb3" style="height:22px;margin-top:6px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:16px">
+        <button class="btn btn-primary" onclick="showSection('practica')">
+          Siguiente: Práctica Interactiva ⚡ →
+        </button>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════
+         PANEL 4: PRÁCTICA INTERACTIVA
+         ════════════════════════════════════════ -->
+    <section id="panel-practica" class="section-panel">
+      <div class="section-header" style="background:linear-gradient(135deg,#78350f,#d97706)">
+        <div class="badge badge-orange" style="margin-bottom:10px">⚡ Módulo 4</div>
+        <h1>⚡ Práctica Interactiva</h1>
+        <p>10 ejercicios cronometrados · Responde antes de que termine el tiempo</p>
+      </div>
+
+      <!-- SCOREBOARD -->
+      <div class="score-display">
+        <div class="score-item">
+          <div class="score-num" id="prac-score">0</div>
+          <div class="score-label">Puntaje</div>
+        </div>
+        <div class="score-divider"></div>
+        <div class="score-item">
+          <div class="score-num" id="prac-correct">0</div>
+          <div class="score-label">Correctas</div>
+        </div>
+        <div class="score-divider"></div>
+        <div class="score-item">
+          <div class="score-num" id="prac-q">0/10</div>
+          <div class="score-label">Pregunta</div>
+        </div>
+        <div style="flex:1"></div>
+        <div id="practice-timer">15</div>
+      </div>
+
+      <!-- Barra de progreso -->
+      <div class="progress-bar-wrap" style="margin-bottom:20px">
+        <div class="progress-bar-fill" id="prac-progress" style="width:0%"></div>
+      </div>
+
+      <!-- Zona de ejercicio -->
+      <div id="prac-start-screen" class="card" style="text-align:center;padding:40px">
+        <div style="font-size:3rem;margin-bottom:16px">🏋️</div>
+        <div class="card-title" style="justify-content:center;font-size:1.5rem">¡Listo para practicar?</div>
+        <p style="color:var(--muted);font-weight:600;margin-bottom:24px">Tendrás <strong>15 segundos</strong> por pregunta. Puedes escribir la respuesta o elegir una opción. ¡Suma rápido!</p>
+        <button class="btn btn-orange" style="font-size:1.1rem;padding:14px 32px" onclick="startPractice()">🚀 ¡Comenzar!</button>
+      </div>
+
+      <div id="prac-question-area" style="display:none">
+        <div class="question-card" id="prac-card">
+          <!-- Llenado por JS -->
+        </div>
+      </div>
+
+      <div id="prac-finished" style="display:none">
+        <div class="card" style="text-align:center;padding:40px">
+          <div style="font-size:3.5rem;margin-bottom:12px" id="prac-fin-emoji">🎉</div>
+          <div class="card-title" style="justify-content:center;font-size:1.6rem" id="prac-fin-title">¡Práctica completada!</div>
+          <p style="font-size:1.1rem;font-weight:700;color:var(--muted);margin:10px 0 24px" id="prac-fin-msg"></p>
+          <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+            <button class="btn btn-orange" onclick="startPractice()">🔄 Nuevos ejercicios</button>
+            <button class="btn btn-outline" onclick="showSection('evaluacion')">📝 Ir a Evaluación</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════
+         PANEL 5: GENERADOR DE HOJAS
+         ════════════════════════════════════════ -->
+    <section id="panel-generador" class="section-panel">
+      <div class="section-header" style="background:linear-gradient(135deg,#1e3a5f,#2563eb)">
+        <div class="badge badge-blue" style="margin-bottom:10px">📄 Módulo 5</div>
+        <h1>📄 Generador de Hojas de Ejercicios</h1>
+        <p>Crea fichas personalizadas de suma vertical y expórtalas en PDF</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">⚙️</span> Configurar Hoja</div>
+        <div class="ws-controls">
+          <div class="ws-control">
+            <label>Nº de ejercicios</label>
+            <select id="ws-count">
+              <option value="5">5</option>
+              <option value="10" selected>10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>
+          </div>
+          <div class="ws-control">
+            <label>Nº de sumandos</label>
+            <select id="ws-addends">
+              <option value="2" selected>2 sumandos</option>
+              <option value="3">3 sumandos</option>
+              <option value="4">4 sumandos</option>
+            </select>
+          </div>
+          <div class="ws-control">
+            <label>Nº de dígitos</label>
+            <select id="ws-digits">
+              <option value="1">1 dígito (1-9)</option>
+              <option value="2" selected>2 dígitos (10-99)</option>
+              <option value="3">3 dígitos (100-999)</option>
+              <option value="4">4 dígitos (1000-9999)</option>
+            </select>
+          </div>
+          <div class="ws-control">
+            <label>Mostrar resultados</label>
+            <select id="ws-show-ans">
+              <option value="no" selected>No (solo ejercicios)</option>
+              <option value="yes">Sí (con respuestas)</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" onclick="generateWorksheet()">🔄 Generar</button>
+          <button class="btn btn-success" onclick="exportPDF()">📥 Exportar PDF</button>
+        </div>
+        <div class="info-box info-blue">
+          <span class="ib-icon">ℹ️</span>
+          <p>La exportación PDF usa la función de impresión del navegador. En el diálogo de impresión, selecciona <strong>"Guardar como PDF"</strong> como destino.</p>
+        </div>
+      </div>
+
+      <div id="worksheet-preview" class="card" style="display:none">
+        <div class="card-title"><span class="icon">📋</span> Vista Previa de la Hoja</div>
+        <div id="ws-header-info" style="margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+            <div>
+              <div style="font-family:'Baloo 2',sans-serif;font-size:1.1rem;font-weight:800;color:var(--navy)">🧮 Mente Matemática — Práctica de Suma Vertical</div>
+              <div style="font-size:.8rem;color:var(--muted);font-weight:600">Nombre: _________________________ &nbsp;&nbsp; Fecha: __________</div>
+            </div>
+            <div id="ws-info-badge" class="badge badge-blue"></div>
+          </div>
+        </div>
+        <div id="worksheet-area"></div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════
+         PANEL 6: EVALUACIÓN FINAL
+         ════════════════════════════════════════ -->
+    <section id="panel-evaluacion" class="section-panel">
+      <div class="section-header" style="background:linear-gradient(135deg,#4a1d96,#c026d3)">
+        <div class="badge badge-purple" style="margin-bottom:10px">📝 Módulo 6</div>
+        <h1>📝 Evaluación Final</h1>
+        <p>10 preguntas de opción múltiple · Calificación automática</p>
+      </div>
+
+      <!-- Score evaluacion -->
+      <div id="eval-score-bar" style="display:none" class="score-display">
+        <div class="score-item">
+          <div class="score-num" id="eval-score-num">0</div>
+          <div class="score-label">Correctas</div>
+        </div>
+        <div class="score-divider"></div>
+        <div class="score-item">
+          <div class="score-num" id="eval-q-num">0/10</div>
+          <div class="score-label">Pregunta</div>
+        </div>
+        <div style="flex:1"></div>
+        <div style="text-align:right">
+          <div style="font-size:.75rem;opacity:.7;font-weight:700">Progreso</div>
+          <div class="progress-bar-wrap" style="width:180px;margin-top:4px">
+            <div class="progress-bar-fill" id="eval-progress" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="eval-start" class="card" style="text-align:center;padding:40px">
+        <div style="font-size:3rem;margin-bottom:16px">🏆</div>
+        <div class="card-title" style="justify-content:center;font-size:1.5rem">Evaluación Final</div>
+        <p style="color:var(--muted);font-weight:600;margin-bottom:24px">Responde <strong>10 preguntas</strong> de opción múltiple sobre suma vertical. Recibirás retroalimentación inmediata por cada pregunta.</p>
+        <button class="btn btn-primary" style="font-size:1.1rem;padding:14px 32px" onclick="startEval()">📝 Comenzar Evaluación</button>
+      </div>
+
+      <div id="eval-area" style="display:none">
+        <div id="eval-question-container"></div>
+        <div style="text-align:center;margin-top:8px">
+          <button class="btn btn-primary" id="btn-next-eval" style="display:none" onclick="nextEvalQuestion()">Siguiente pregunta →</button>
+        </div>
+      </div>
+
+      <div id="eval-results" style="display:none">
+        <div id="final-score-display">
+          <!-- Llenado por JS -->
+        </div>
+        <div id="eval-detail" class="card">
+          <div class="card-title"><span class="icon">📋</span> Revisión de Respuestas</div>
+          <div id="eval-answers-review"></div>
+        </div>
+        <div style="text-align:center;margin-top:16px">
+          <button class="btn btn-primary" onclick="startEval()">🔄 Intentar de nuevo</button>
+        </div>
+      </div>
+    </section>
+
+  </main><!-- end main-content -->
+</div><!-- end app-layout -->
+
+<!-- FOOTER -->
+<footer id="site-footer">
+  © 2026 <span>MenteMatemáticaI</span>. Todos los derechos reservados <span>VC</span>.
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+/* ──────────────────────────────────────────────
+   NAVEGACIÓN DINÁMICA
+   ────────────────────────────────────────────── */
+const panels = ['welcome','intro','concepto','elementos','digitos','practica','generador','evaluacion'];
+
+function showSection(id) {
+  panels.forEach(p => {
+    const panel = document.getElementById('panel-'+p);
+    const nav   = document.getElementById('nav-'+p);
+    if (panel) panel.classList.remove('active');
+    if (nav)   nav.classList.remove('active');
+  });
+  const target = document.getElementById('panel-'+id);
+  const navTarget = document.getElementById('nav-'+id);
+  if (target)    { target.classList.add('active'); }
+  if (navTarget) { navTarget.classList.add('active'); }
+  window.scrollTo(0, 0);
+
+  // Inicializar canvas cuando se muestre su sección
+  requestAnimationFrame(() => {
+    if (id === 'intro')     { resetIntroCanvas(); }
+    if (id === 'concepto')  { resetConceptCanvas(); }
+    if (id === 'elementos') { resetElementosCanvas(); }
+    if (id === 'digitos')   { resetDigitosCanvas(); }
+  });
+}
+
+/* ──────────────────────────────────────────────
+   CANVAS 1 – INTRO: Números animados
+   ────────────────────────────────────────────── */
+let introAnimFrame = null;
+function resetIntroCanvas() {
+  const c = document.getElementById('intro-canvas');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.fillStyle = '#f0f4f8';
+  ctx.fillRect(0,0,c.width,c.height);
+  ctx.font = 'bold 18px Nunito';
+  ctx.fillStyle = '#64748b';
+  ctx.textAlign = 'center';
+  ctx.fillText('Haz clic en "Animar" para ver una visualización de suma', c.width/2, c.height/2);
+}
+
+function animateIntroCanvas() {
+  const c = document.getElementById('intro-canvas');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  if (introAnimFrame) cancelAnimationFrame(introAnimFrame);
+
+  const nums = [
+    {val:3, x:-60, y:100, color:'#1a56db'},
+    {val:5, x:-60, y:100, color:'#10b981'},
+    {val:8, x:-60, y:100, color:'#f59e0b', isResult:true}
+  ];
+  const targets = [{x:120,y:100},{x:300,y:100},{x:480,y:100}];
+  let t = 0;
+
+  function frame() {
+    ctx.clearRect(0,0,c.width,c.height);
+    // Fondo
+    ctx.fillStyle = '#f0f4f8'; ctx.fillRect(0,0,c.width,c.height);
+
+    const p = Math.min(t/80, 1);
+    const ease = p < 0.5 ? 2*p*p : -1+(4-2*p)*p;
+
+    // Dibujar números
+    nums.forEach((n, i) => {
+      if (i === 2 && p < 0.9) return; // Resultado aparece al final
+      const cx = -60 + (targets[i].x - (-60)) * ease;
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, targets[i].y, 38, 0, Math.PI*2);
+      ctx.fillStyle = n.color;
+      ctx.shadowColor = n.color;
+      ctx.shadowBlur = 16;
+      ctx.fill();
+      ctx.restore();
+      ctx.font = 'bold 32px "Baloo 2"';
+      ctx.fillStyle = '#fff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(n.val, cx, targets[i].y);
+    });
+
+    // Símbolos
+    if (p > 0.5) {
+      const alpha = Math.min((p-0.5)/0.3, 1);
+      ctx.globalAlpha = alpha;
+      ctx.font = 'bold 28px "Baloo 2"';
+      ctx.fillStyle = '#0d2b6e';
+      ctx.textAlign = 'center';
+      ctx.fillText('+', 210, 100);
+      if (p > 0.85) ctx.fillText('=', 390, 100);
+      ctx.globalAlpha = 1;
+    }
+
+    t++;
+    if (t < 120) introAnimFrame = requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+/* ──────────────────────────────────────────────
+   CANVAS 2 – CONCEPTO: Bloques de suma
+   ────────────────────────────────────────────── */
+let conceptAnim = null, conceptPhase = 0;
+function resetConceptCanvas() {
+  const c = document.getElementById('concepto-canvas');
+  if (!c) return;
+  if (conceptAnim) cancelAnimationFrame(conceptAnim);
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.fillStyle = '#f0f4f8'; ctx.fillRect(0,0,c.width,c.height);
+  drawConceptStatic(ctx, c.width, c.height, 0, 0);
+  conceptPhase = 0;
+}
+
+function drawConceptStatic(ctx, w, h, group1Count, group2Count) {
+  const blockSize = 30, gap = 6;
+  const colors1 = '#1a56db', colors2 = '#10b981', resultColor = '#f59e0b';
+
+  // Grupo 1
+  ctx.font = '700 14px Nunito'; ctx.fillStyle = '#64748b'; ctx.textAlign = 'left';
+  ctx.fillText('Grupo A (4 bloques)', 20, 26);
+  for (let i = 0; i < 4; i++) {
+    const alpha = i < group1Count ? 1 : 0.18;
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = colors1;
+    ctx.beginPath();
+    ctx.roundRect(20 + i*(blockSize+gap), 36, blockSize, blockSize, 6);
+    ctx.fill();
+  }
+
+  // Signo +
+  ctx.globalAlpha = 1;
+  ctx.font = '900 28px "Baloo 2"'; ctx.fillStyle = '#0d2b6e'; ctx.textAlign = 'center';
+  ctx.fillText('+', w/2, 60);
+
+  // Grupo 2
+  ctx.font = '700 14px Nunito'; ctx.fillStyle = '#64748b'; ctx.textAlign = 'left';
+  ctx.fillText('Grupo B (3 bloques)', w/2+30, 26);
+  for (let i = 0; i < 3; i++) {
+    const alpha = i < group2Count ? 1 : 0.18;
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = colors2;
+    ctx.beginPath();
+    ctx.roundRect(w/2+30 + i*(blockSize+gap), 36, blockSize, blockSize, 6);
+    ctx.fill();
+  }
+
+  // Línea
+  ctx.globalAlpha = 0.5;
+  ctx.strokeStyle = '#0d2b6e'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(20, 100); ctx.lineTo(w-20, 100); ctx.stroke();
+
+  // Resultado
+  ctx.globalAlpha = 1;
+  ctx.font = '700 14px Nunito'; ctx.fillStyle = '#64748b'; ctx.textAlign = 'left';
+  ctx.fillText('Resultado (7 bloques en total)', 20, 120);
+  const total = Math.min(group1Count + group2Count, 7);
+  for (let i = 0; i < 7; i++) {
+    const alpha = i < total ? 1 : 0.1;
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = i < 4 ? colors1 : colors2;
+    ctx.beginPath();
+    ctx.roundRect(20 + i*(blockSize+gap), 128, blockSize, blockSize, 6);
+    ctx.fill();
+  }
+  if (total === 7) {
+    ctx.globalAlpha = 1;
+    ctx.font = '900 20px "Baloo 2"'; ctx.fillStyle = resultColor; ctx.textAlign = 'center';
+    ctx.fillText('4 + 3 = 7 ✓', w/2, 185);
+  }
+  ctx.globalAlpha = 1;
+}
+
+function animateConceptCanvas() {
+  const c = document.getElementById('concepto-canvas');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  if (conceptAnim) cancelAnimationFrame(conceptAnim);
+  let step = 0;
+  const stages = [
+    ()=>drawConceptStatic(ctx,c.width,c.height,1,0),
+    ()=>drawConceptStatic(ctx,c.width,c.height,2,0),
+    ()=>drawConceptStatic(ctx,c.width,c.height,3,0),
+    ()=>drawConceptStatic(ctx,c.width,c.height,4,0),
+    ()=>drawConceptStatic(ctx,c.width,c.height,4,1),
+    ()=>drawConceptStatic(ctx,c.width,c.height,4,2),
+    ()=>drawConceptStatic(ctx,c.width,c.height,4,3),
+  ];
+  function next() {
+    if (step < stages.length) {
+      ctx.clearRect(0,0,c.width,c.height);
+      ctx.fillStyle='#f0f4f8'; ctx.fillRect(0,0,c.width,c.height);
+      stages[step](); step++;
+      conceptAnim = setTimeout(next, 400);
+    }
+  }
+  next();
+}
+
+/* ──────────────────────────────────────────────
+   CANVAS 3 – ELEMENTOS: Suma etiquetada
+   ────────────────────────────────────────────── */
+let elemAnim = null;
+function resetElementosCanvas() {
+  const c = document.getElementById('elementos-canvas');
+  if (!c) return;
+  if (elemAnim) clearInterval(elemAnim);
+  const ctx = c.getContext('2d');
+  drawElementosBase(ctx, c.width, c.height, []);
+}
+
+function drawElementosBase(ctx, w, h, highlighted) {
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle = '#f8fafc'; ctx.fillRect(0,0,w,h);
+
+  const cx = w/2 - 30, top = 30;
+  const font = '900 48px "Baloo 2"';
+  const items = [
+    {text:'3 4', y: top+50,    label:'1.er Sumando', color:'#1a56db', labelX: cx+130},
+    {text:'+', x: cx-50, y: top+110, label:'Signo +', color:'#d97706', labelX: cx+130, isOp:true},
+    {text:'2 1', y: top+110,   label:'2.do Sumando', color:'#1a56db', labelX: cx+130},
+    {text:'────', y: top+130,  isSep:true},
+    {text:'5 5', y: top+185,   label:'Suma / Total', color:'#16a34a', labelX: cx+130},
+  ];
+
+  ctx.font = font;
+  ctx.textAlign = 'right';
+
+  items.forEach((item, i) => {
+    if (item.isSep) {
+      ctx.strokeStyle = '#0d2b6e'; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(cx-80, top+138); ctx.lineTo(cx+20, top+138); ctx.stroke();
+      return;
+    }
+    const hl = highlighted.includes(i);
+    if (item.isOp) {
+      ctx.font = '900 44px "Baloo 2"'; ctx.fillStyle = hl ? item.color : '#888';
+      ctx.textAlign = 'center';
+      ctx.fillText(item.text, cx-50, item.y);
+      ctx.textAlign = 'right';
+    } else {
+      ctx.font = font; ctx.fillStyle = hl ? item.color : '#1e293b';
+      ctx.fillText(item.text, cx+20, item.y);
+    }
+    if (hl && item.label) {
+      ctx.font = '700 13px Nunito'; ctx.fillStyle = item.color;
+      ctx.textAlign = 'left';
+      ctx.fillText('← ' + item.label, item.labelX, item.y - 8);
+      ctx.textAlign = 'right';
+    }
+  });
+}
+
+function animateElementosCanvas() {
+  const c = document.getElementById('elementos-canvas');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  if (elemAnim) clearInterval(elemAnim);
+  let step = 0;
+  const sequence = [[0],[0,1],[0,1,2],[0,1,2,4]];
+  elemAnim = setInterval(() => {
+    if (step < sequence.length) {
+      drawElementosBase(ctx, c.width, c.height, sequence[step]); step++;
+    } else clearInterval(elemAnim);
+  }, 800);
+}
+
+/* ──────────────────────────────────────────────
+   CANVAS 4 – DÍGITOS: Paso a paso
+   ────────────────────────────────────────────── */
+let digitStep = 0;
+const digitSteps = [
+  { carry: null, highlight: null, msg: 'Escribe los números alineados: 47 + 35' },
+  { carry: null, highlight: 'units', msg: 'Paso 1: Sumamos unidades → 7 + 5 = 12' },
+  { carry: '1',  highlight: 'units', msg: 'Paso 2: Escribimos 2 y llevamos 1 a las decenas' },
+  { carry: '1',  highlight: 'tens',  msg: 'Paso 3: Sumamos decenas → 4 + 3 + 1 (llevada) = 8' },
+  { carry: null,  highlight: 'result', msg: '✅ Resultado: 82 ¡Correcto!' },
+];
+
+function resetDigitosCanvas() {
+  digitStep = 0;
+  document.getElementById('btn-step').textContent = '▶ Paso 1';
+  drawDigitosStep(0);
+}
+
+function stepDigitosCanvas() {
+  digitStep = Math.min(digitStep + 1, digitSteps.length - 1);
+  document.getElementById('btn-step').textContent =
+    digitStep < digitSteps.length - 1 ? `▶ Paso ${digitStep+1}` : '✅ Completado';
+  drawDigitosStep(digitStep);
+}
+
+function drawDigitosStep(idx) {
+  const c = document.getElementById('digitos-canvas');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  const s = digitSteps[idx];
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.fillStyle = '#f8fafc'; ctx.fillRect(0,0,c.width,c.height);
+
+  const cx = c.width/2, top = 30, col = 60;
+  ctx.font = '900 52px "Baloo 2"'; ctx.textAlign = 'center';
+
+  // Colores
+  const hU = s.highlight === 'units';
+  const hT = s.highlight === 'tens';
+  const hR = s.highlight === 'result';
+
+  // 47
+  ctx.fillStyle = hT ? '#1a56db' : '#1e293b';
+  ctx.fillText('4', cx - col, top + 60);
+  ctx.fillStyle = hU ? '#1a56db' : '#1e293b';
+  ctx.fillText('7', cx, top + 60);
+
+  // +35
+  ctx.fillStyle = '#d97706'; ctx.font = '900 44px "Baloo 2"';
+  ctx.fillText('+', cx - col*2 + 10, top + 120);
+  ctx.font = '900 52px "Baloo 2"';
+  ctx.fillStyle = hT ? '#1a56db' : '#1e293b';
+  ctx.fillText('3', cx - col, top + 120);
+  ctx.fillStyle = hU ? '#10b981' : '#1e293b';
+  ctx.fillText('5', cx, top + 120);
+
+  // Línea
+  ctx.strokeStyle = '#0d2b6e'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(cx - col*2 + 20, top + 132); ctx.lineTo(cx + 40, top + 132); ctx.stroke();
+
+  // Carry
+  if (s.carry) {
+    ctx.font = '700 22px "Baloo 2"'; ctx.fillStyle = '#ef4444';
+    ctx.fillText('¹', cx - col + 10, top + 42);
+    ctx.font = '700 14px Nunito'; ctx.fillStyle = '#ef4444';
+    ctx.fillText('Llevada', cx - col + 40, top + 42);
+  }
+
+  // Resultado
+  if (hR || idx === 4) {
+    ctx.font = '900 56px "Baloo 2"'; ctx.fillStyle = '#16a34a';
+    ctx.fillText('8', cx - col, top + 185);
+    ctx.fillText('2', cx, top + 185);
+  } else {
+    ctx.font = '900 52px "Baloo 2"'; ctx.fillStyle = '#ccc';
+    ctx.fillText('?', cx - col, top + 185);
+    ctx.fillText('?', cx, top + 185);
+  }
+
+  // Mensaje
+  ctx.font = '700 15px Nunito'; ctx.fillStyle = '#0d2b6e'; ctx.textAlign = 'center';
+  ctx.fillRect(40, top + 215, c.width - 80, 44);
+  ctx.fillStyle = '#fff'; ctx.fillRect(42, top + 217, c.width - 84, 40);
+  ctx.fillStyle = '#0d2b6e';
+  ctx.fillText(s.msg, cx, top + 242);
+}
+
+/* ──────────────────────────────────────────────
+   ACTIVIDADES INLINE (checkInlineAct)
+   ────────────────────────────────────────────── */
+function checkInlineAct(section, num, correct) {
+  const inp = document.getElementById(`act${section}-ans${num}`);
+  const fb  = document.getElementById(`act${section}-fb${num}`);
+  if (!inp || !fb) return;
+  const val = parseInt(inp.value);
+  if (inp.value === '') { fb.innerHTML=''; inp.className='act-input'; return; }
+  if (val === correct) {
+    inp.style.borderColor = '#22c55e'; inp.style.background = '#f0fdf4';
+    fb.innerHTML = `<span style="color:#16a34a;font-weight:800;font-size:.85rem">✅ ¡Correcto! = ${correct}</span>`;
+  } else {
+    inp.style.borderColor = '#ef4444'; inp.style.background = '#fef2f2';
+    fb.innerHTML = `<span style="color:#dc2626;font-weight:800;font-size:.85rem">❌ Inténtalo de nuevo</span>`;
+  }
+}
+
+/* ──────────────────────────────────────────────
+   MÓDULO 4 – PRÁCTICA INTERACTIVA
+   ────────────────────────────────────────────── */
+let pracScore = 0, pracCorrect = 0, pracQ = 0, pracTimer = null, pracSeconds = 15;
+let pracCurrentAnswer = 0, pracMode = 'input', pracAnswered = false;
+
+function randInt(min, max) { return Math.floor(Math.random()*(max-min+1))+min; }
+
+function generatePracProblem() {
+  const mode = Math.random() > 0.5 ? 'input' : 'options';
+  let a, b, digits;
+  const d = randInt(1, 3);
+  if (d === 1) { digits=9; a=randInt(1,9); b=randInt(1,9); }
+  else if (d === 2) { a=randInt(10,99); b=randInt(10,99); }
+  else { a=randInt(100,999); b=randInt(100,999); }
+  const result = a + b;
+  return { a, b, result, mode };
+}
+
+function startPractice() {
+  pracScore = 0; pracCorrect = 0; pracQ = 0;
+  document.getElementById('prac-score').textContent = '0';
+  document.getElementById('prac-correct').textContent = '0';
+  document.getElementById('prac-progress').style.width = '0%';
+  document.getElementById('prac-start-screen').style.display = 'none';
+  document.getElementById('prac-finished').style.display = 'none';
+  document.getElementById('prac-question-area').style.display = 'block';
+  showNextPracQuestion();
+}
+
+function showNextPracQuestion() {
+  if (pracQ >= 10) { endPractice(); return; }
+  pracQ++;
+  pracAnswered = false;
+  document.getElementById('prac-q').textContent = pracQ + '/10';
+  document.getElementById('prac-progress').style.width = ((pracQ-1)/10*100) + '%';
+  const prob = generatePracProblem();
+  pracCurrentAnswer = prob.result;
+  pracMode = prob.mode;
+
+  const timer = document.getElementById('practice-timer');
+  timer.classList.remove('warning');
+  pracSeconds = 15;
+  timer.textContent = pracSeconds;
+  if (pracTimer) clearInterval(pracTimer);
+  pracTimer = setInterval(() => {
+    pracSeconds--;
+    timer.textContent = pracSeconds;
+    if (pracSeconds <= 5) timer.classList.add('warning');
+    if (pracSeconds <= 0) {
+      clearInterval(pracTimer);
+      if (!pracAnswered) { pracAnswered = true; showPracFeedback(false, prob.result); }
+    }
+  }, 1000);
+
+  // Renderizar
+  const card = document.getElementById('prac-card');
+  const sumHTML = `
+    <div style="display:inline-flex;flex-direction:column;align-items:flex-end;font-family:'Baloo 2',sans-serif;font-size:2.2rem;font-weight:900;color:var(--navy);padding:20px 28px;background:#f8fafc;border-radius:12px;border:2px solid var(--border);min-width:160px">
+      <span style="color:#1e40af">${prob.a}</span>
+      <span style="position:relative;padding-left:34px;color:#1e40af"><span style="position:absolute;left:8px;color:#1a56db">+</span>${prob.b}</span>
+      <div style="width:100%;height:3px;background:linear-gradient(90deg,var(--blue),var(--navy));border-radius:2px;margin:6px 0"></div>
+      <span style="color:#16a34a">?</span>
+    </div>`;
+
+  if (prob.mode === 'input') {
+    card.innerHTML = `
+      <div class="question-text">Pregunta ${pracQ}/10 — Calcula la suma vertical:</div>
+      ${sumHTML}
+      <div style="margin-top:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <input class="answer-input" id="prac-input" type="number" placeholder="?" autofocus>
+        <button class="btn btn-success" onclick="submitPracInput()">✅ Verificar</button>
+      </div>
+      <div id="prac-feedback" style="margin-top:12px"></div>`;
+    document.getElementById('prac-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') submitPracInput();
+    });
+  } else {
+    // Opciones múltiples
+    const correct = prob.result;
+    let opts = [correct];
+    while (opts.length < 4) {
+      const w = correct + randInt(-15, 15);
+      if (w !== correct && w > 0 && !opts.includes(w)) opts.push(w);
+    }
+    opts.sort(() => Math.random() - 0.5);
+    const letters = ['A','B','C','D'];
+    const optsHTML = opts.map((o,i) => `
+      <button class="option-btn" id="prac-opt-${i}" onclick="submitPracOption(${o}, this)">
+        <span class="option-letter">${letters[i]}</span>${o}
+      </button>`).join('');
+    card.innerHTML = `
+      <div class="question-text">Pregunta ${pracQ}/10 — ¿Cuál es el resultado?</div>
+      ${sumHTML}
+      <div class="options-grid" style="margin-top:20px">${optsHTML}</div>
+      <div id="prac-feedback" style="margin-top:12px"></div>`;
+  }
+}
+
+function submitPracInput() {
+  if (pracAnswered) return;
+  const inp = document.getElementById('prac-input');
+  if (!inp || inp.value === '') return;
+  const val = parseInt(inp.value);
+  pracAnswered = true;
+  clearInterval(pracTimer);
+  showPracFeedback(val === pracCurrentAnswer, pracCurrentAnswer, val);
+  if (inp) {
+    inp.disabled = true;
+    inp.className = val === pracCurrentAnswer ? 'answer-input correct-border' : 'answer-input wrong-border';
+  }
+}
+
+function submitPracOption(chosen, btn) {
+  if (pracAnswered) return;
+  pracAnswered = true;
+  clearInterval(pracTimer);
+  // Deshabilitar todos
+  document.querySelectorAll('[id^=prac-opt-]').forEach(b => { b.disabled = true; b.classList.add('disabled'); });
+  btn.classList.remove('disabled');
+  btn.classList.add(chosen === pracCurrentAnswer ? 'correct' : 'wrong');
+  // Mostrar correcta
+  if (chosen !== pracCurrentAnswer) {
+    document.querySelectorAll('[id^=prac-opt-]').forEach(b => {
+      if (parseInt(b.textContent.replace(/[^0-9]/g,'')) === pracCurrentAnswer) b.classList.add('correct');
+    });
+  }
+  showPracFeedback(chosen === pracCurrentAnswer, pracCurrentAnswer, chosen);
+}
+
+function showPracFeedback(correct, answer, given) {
+  const fb = document.getElementById('prac-feedback');
+  if (!fb) return;
+  if (correct) {
+    pracCorrect++; pracScore += 10;
+    document.getElementById('prac-score').textContent = pracScore;
+    document.getElementById('prac-correct').textContent = pracCorrect;
+    fb.innerHTML = `<div class="feedback-box feedback-correct">✅ ¡Correcto! La respuesta es <strong>${answer}</strong>. +10 puntos</div>`;
+  } else {
+    fb.innerHTML = `<div class="feedback-box feedback-wrong">❌ Incorrecto. La respuesta correcta era <strong>${answer}</strong>${given!==undefined?' — tú respondiste '+given:''}. ¡Sigue intentando!</div>`;
+  }
+  setTimeout(() => {
+    if (pracQ < 10) showNextPracQuestion();
+    else endPractice();
+  }, 2200);
+}
+
+function endPractice() {
+  clearInterval(pracTimer);
+  document.getElementById('prac-question-area').style.display = 'none';
+  document.getElementById('prac-finished').style.display = 'block';
+  document.getElementById('prac-progress').style.width = '100%';
+  const pct = Math.round(pracCorrect/10*100);
+  const emoji = pct >= 80 ? '🏆' : pct >= 60 ? '😊' : '💪';
+  const msg = pct >= 80 ? `¡Excelente! Acertaste ${pracCorrect} de 10 (${pct}%). ¡Sigue así!`
+            : pct >= 60 ? `¡Bien hecho! Acertaste ${pracCorrect} de 10. ¡Puedes mejorar!`
+            : `Acertaste ${pracCorrect} de 10. Repasa los módulos y vuelve a intentarlo.`;
+  document.getElementById('prac-fin-emoji').textContent = emoji;
+  document.getElementById('prac-fin-title').textContent = `Puntaje: ${pracScore}/100`;
+  document.getElementById('prac-fin-msg').textContent = msg;
+}
+
+/* ──────────────────────────────────────────────
+   MÓDULO 5 – GENERADOR DE HOJAS
+   ────────────────────────────────────────────── */
+let currentWorksheet = [];
+
+function generateWorksheet() {
+  const count   = parseInt(document.getElementById('ws-count').value);
+  const addends = parseInt(document.getElementById('ws-addends').value);
+  const digits  = parseInt(document.getElementById('ws-digits').value);
+  const showAns = document.getElementById('ws-show-ans').value === 'yes';
+
+  const min = Math.pow(10, digits - 1);
+  const max = Math.pow(10, digits) - 1;
+
+  currentWorksheet = [];
+  const area = document.getElementById('worksheet-area');
+  area.innerHTML = '';
+
+  for (let i = 0; i < count; i++) {
+    const nums = Array.from({length: addends}, () => randInt(min, max));
+    const result = nums.reduce((a,b) => a+b, 0);
+    currentWorksheet.push({nums, result});
+
+    const div = document.createElement('div');
+    div.className = 'ws-problem';
+    let html = `<div class="ws-num">Nº ${i+1}</div>`;
+    nums.forEach((n, ni) => {
+      if (ni === nums.length - 1) {
+        html += `<div style="position:relative;padding-left:28px;width:100%;display:flex;justify-content:flex-end"><span style="position:absolute;left:0;color:#1a56db;font-weight:900">+</span><span class="ws-addend">${n}</span></div>`;
+      } else {
+        html += `<span class="ws-addend">${n}</span>`;
+      }
+    });
+    html += '<div class="ws-line"></div>';
+    html += showAns
+      ? `<span style="color:#16a34a">${result}</span>`
+      : '<div class="ws-answer-line"></div>';
+    div.innerHTML = html;
+    area.appendChild(div);
+  }
+
+  document.getElementById('ws-info-badge').textContent =
+    `${count} ej. · ${addends} sumandos · ${digits} dígito(s)`;
+  document.getElementById('worksheet-preview').style.display = 'block';
+}
+
+function exportPDF() {
+  if (!currentWorksheet.length) { generateWorksheet(); }
+  window.print();
+}
+
+/* ──────────────────────────────────────────────
+   MÓDULO 6 – EVALUACIÓN FINAL
+   ────────────────────────────────────────────── */
+const evalQuestions = [
+  {
+    q: '¿Cuál es el resultado de la suma vertical de 23 + 45?',
+    opts: ['A) 67', 'B) 68', 'C) 78', 'D) 59'],
+    correct: 1,
+    explain: '23 + 45 = 68. Sumamos unidades: 3+5=8. Decenas: 2+4=6. Resultado: 68.'
+  },
+  {
+    q: '¿Cómo se llaman los números que se suman en una adición?',
+    opts: ['A) Factores', 'B) Sumandos', 'C) Dividendos', 'D) Multiplicandos'],
+    correct: 1,
+    explain: 'Los números que se suman se llaman SUMANDOS. El resultado se llama SUMA o TOTAL.'
+  },
+  {
+    q: '¿Cuál es el elemento neutro de la suma?',
+    opts: ['A) El número 1', 'B) El número 10', 'C) El número 0', 'D) El número -1'],
+    correct: 2,
+    explain: 'El CERO (0) es el elemento neutro. Cualquier número + 0 = el mismo número.'
+  },
+  {
+    q: 'En la suma vertical, ¿cómo deben alinearse los números?',
+    opts: ['A) Por la izquierda', 'B) Al centro', 'C) Por el valor posicional (derecha)', 'D) De cualquier forma'],
+    correct: 2,
+    explain: 'Los números se alinean por su valor posicional: unidades con unidades, decenas con decenas.'
+  },
+  {
+    q: '¿Cuánto es 135 + 248?',
+    opts: ['A) 373', 'B) 383', 'C) 483', 'D) 363'],
+    correct: 1,
+    explain: '135 + 248 = 383. Unidades: 5+8=13 (escribo 3, llevo 1). Decenas: 3+4+1=8. Centenas: 1+2=3.'
+  },
+  {
+    q: '¿Cuál propiedad establece que 4 + 7 = 7 + 4?',
+    opts: ['A) Distributiva', 'B) Asociativa', 'C) Conmutativa', 'D) Identidad'],
+    correct: 2,
+    explain: 'La propiedad CONMUTATIVA dice que el orden de los sumandos no altera el resultado.'
+  },
+  {
+    q: '¿Cuántos sumandos tiene la operación: 12 + 34 + 56?',
+    opts: ['A) Uno', 'B) Dos', 'C) Tres', 'D) Cuatro'],
+    correct: 2,
+    explain: 'La operación tiene TRES sumandos: 12, 34 y 56. El resultado sería 102.'
+  },
+  {
+    q: '¿Cuál es el resultado de 999 + 1?',
+    opts: ['A) 1000', 'B) 998', 'C) 1001', 'D) 100'],
+    correct: 0,
+    explain: '999 + 1 = 1000. Se suman todas las columnas con llevada: 9+1=10, se lleva en cascada.'
+  },
+  {
+    q: 'Si el resultado de una suma es 50 y uno de los sumandos es 23, ¿cuánto es el otro?',
+    opts: ['A) 28', 'B) 27', 'C) 33', 'D) 25'],
+    correct: 1,
+    explain: '50 - 23 = 27. Si a + 23 = 50, entonces a = 50 - 23 = 27.'
+  },
+  {
+    q: '¿Cuál es el resultado de 2345 + 1234?',
+    opts: ['A) 3579', 'B) 3578', 'C) 3489', 'D) 3669'],
+    correct: 0,
+    explain: '2345 + 1234 = 3579. Unidades: 5+4=9. Decenas: 4+3=7. Centenas: 3+2=5. Millares: 2+1=3.'
+  }
+];
+
+let evalCurrent = 0, evalCorrect = 0, evalAnswered = false, evalUserAnswers = [];
+
+function startEval() {
+  evalCurrent = 0; evalCorrect = 0; evalAnswered = false; evalUserAnswers = [];
+  document.getElementById('eval-start').style.display = 'none';
+  document.getElementById('eval-results').style.display = 'none';
+  document.getElementById('eval-area').style.display = 'block';
+  document.getElementById('eval-score-bar').style.display = 'flex';
+  document.getElementById('eval-score-num').textContent = '0';
+  document.getElementById('eval-q-num').textContent = '1/10';
+  document.getElementById('eval-progress').style.width = '0%';
+  showEvalQuestion(0);
+}
+
+function showEvalQuestion(idx) {
+  evalAnswered = false;
+  document.getElementById('btn-next-eval').style.display = 'none';
+  document.getElementById('eval-q-num').textContent = (idx+1)+'/10';
+  document.getElementById('eval-progress').style.width = (idx/10*100)+'%';
+
+  const q = evalQuestions[idx];
+  const letters = ['A','B','C','D'];
+  const optsHTML = q.opts.map((o,i) => `
+    <button class="option-btn" id="eval-opt-${i}" onclick="selectEvalOption(${i})">
+      <span class="option-letter">${letters[i]}</span>${o.substring(3)}
+    </button>`).join('');
+
+  document.getElementById('eval-question-container').innerHTML = `
+    <div class="question-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <span class="badge badge-purple">Pregunta ${idx+1} de 10</span>
+        <span class="badge badge-blue">📝 Evaluación Final</span>
+      </div>
+      <div class="question-text">${q.q}</div>
+      <div class="options-grid">${optsHTML}</div>
+      <div id="eval-feedback" style="margin-top:12px"></div>
+    </div>`;
+}
+
+function selectEvalOption(chosen) {
+  if (evalAnswered) return;
+  evalAnswered = true;
+  const q = evalQuestions[evalCurrent];
+  const correct = chosen === q.correct;
+  evalUserAnswers.push({q: evalCurrent, chosen, correct});
+
+  document.querySelectorAll('[id^=eval-opt-]').forEach(b => { b.disabled=true; b.classList.add('disabled'); });
+  document.getElementById('eval-opt-'+chosen).classList.remove('disabled');
+  document.getElementById('eval-opt-'+chosen).classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) {
+    document.getElementById('eval-opt-'+q.correct).classList.remove('disabled');
+    document.getElementById('eval-opt-'+q.correct).classList.add('correct');
+  }
+
+  const fb = document.getElementById('eval-feedback');
+  fb.innerHTML = `<div class="feedback-box ${correct?'feedback-correct':'feedback-wrong'}">
+    ${correct ? '✅ ¡Correcto!' : '❌ Incorrecto.'} <strong>${q.explain}</strong>
+  </div>`;
+
+  if (correct) {
+    evalCorrect++;
+    document.getElementById('eval-score-num').textContent = evalCorrect;
+  }
+
+  evalCurrent++;
+  if (evalCurrent < 10) {
+    document.getElementById('btn-next-eval').style.display = 'inline-flex';
+  } else {
+    setTimeout(showEvalResults, 1800);
+  }
+}
+
+function nextEvalQuestion() {
+  document.getElementById('btn-next-eval').style.display = 'none';
+  showEvalQuestion(evalCurrent);
+}
+
+function showEvalResults() {
+  document.getElementById('eval-area').style.display = 'none';
+  document.getElementById('eval-results').style.display = 'block';
+  document.getElementById('eval-progress').style.width = '100%';
+
+  const pct = Math.round(evalCorrect/10*100);
+  let grade, msg, emoji, bg;
+  if (pct >= 90)      { grade='10'; msg='¡Excelente! Dominaste el tema.'; emoji='🏆'; bg='linear-gradient(135deg,#f0fdf4,#dcfce7)'; }
+  else if (pct >= 80) { grade='8-9'; msg='¡Muy bien! Tienes buen dominio.'; emoji='🎉'; bg='linear-gradient(135deg,#eff6ff,#dbeafe)'; }
+  else if (pct >= 60) { grade='6-7'; msg='Bien, pero puedes mejorar repasando.'; emoji='😊'; bg='linear-gradient(135deg,#fffbeb,#fef3c7)'; }
+  else                { grade='< 6'; msg='Necesitas repasar los módulos.'; emoji='💪'; bg='linear-gradient(135deg,#fef2f2,#fee2e2)'; }
+
+  document.getElementById('final-score-display').style.background = bg;
+  document.getElementById('final-score-display').innerHTML = `
+    <div style="font-size:4rem;margin-bottom:10px">${emoji}</div>
+    <div class="final-grade" style="color:${pct>=80?'#16a34a':pct>=60?'#d97706':'#dc2626'}">${evalCorrect}/10</div>
+    <div class="final-msg" style="color:#1e293b">${pct}% — ${msg}</div>
+    <div style="font-size:.9rem;color:var(--muted);font-weight:600">${evalCorrect} respuestas correctas de 10</div>`;
+
+  // Revisión
+  const rev = document.getElementById('eval-answers-review');
+  rev.innerHTML = evalUserAnswers.map((ans, i) => {
+    const q = evalQuestions[ans.q];
+    return `<div style="padding:12px 14px;border-radius:10px;margin-bottom:8px;background:${ans.correct?'#f0fdf4':'#fef2f2'};border:1px solid ${ans.correct?'#86efac':'#fca5a5'}">
+      <strong style="color:${ans.correct?'#16a34a':'#dc2626'}">${ans.correct?'✅':'❌'} P${ans.q+1}:</strong>
+      ${q.q}<br>
+      <span style="font-size:.82rem;font-weight:600;color:var(--muted)">${q.explain}</span>
+    </div>`;
+  }).join('');
+}
+
+/* ──────────────────────────────────────────────
+   INICIALIZACIÓN
+   ────────────────────────────────────────────── */
+window.addEventListener('load', () => {
+  resetIntroCanvas();
+  // Generar hoja por defecto
+  setTimeout(generateWorksheet, 200);
+});
+
+// Estilos de impresión para PDF
+const printStyle = document.createElement('style');
+printStyle.textContent = `
+@media print {
+  #site-header, #sidebar, #site-footer,
+  .card:not(#worksheet-preview), 
+  .section-header, .ws-controls { display: none !important; }
+  #site-footer { display: none !important; }
+  #main-content { margin-left: 0 !important; padding: 0 !important; }
+  #panel-generador { display: block !important; }
+  #worksheet-preview { box-shadow: none !important; border: none !important; }
+  .ws-problem { break-inside: avoid; }
+  #app-layout { display: block !important; }
+  body { background: #fff !important; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}`;
+document.head.appendChild(printStyle);
+</script>
+</body>
+</html>

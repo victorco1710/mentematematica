@@ -1,0 +1,2320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orden y Comparación de Números Enteros | Mente Matemática</title>
+
+  <!-- ===== GOOGLE FONTS ===== -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       CSS VARIABLES & RESET
+    ============================================================ */
+    :root {
+      --navy:       #0d2b5e;
+      --navy-dark:  #081a3e;
+      --navy-mid:   #1a3d7c;
+      --blue:       #2563eb;
+      --blue-light: #3b82f6;
+      --cyan:       #06b6d4;
+      --green:      #10b981;
+      --green-light:#d1fae5;
+      --red:        #ef4444;
+      --red-light:  #fee2e2;
+      --amber:      #f59e0b;
+      --amber-light:#fef3c7;
+      --purple:     #7c3aed;
+      --purple-light:#ede9fe;
+      --bg:         #f0f4f8;
+      --sidebar-w:  260px;
+      --header-h:   70px;
+      --white:      #ffffff;
+      --text:       #1e293b;
+      --text-muted: #64748b;
+      --border:     #e2e8f0;
+      --shadow:     0 4px 20px rgba(0,0,0,0.08);
+      --shadow-md:  0 8px 30px rgba(0,0,0,0.12);
+      --radius:     14px;
+      --radius-sm:  8px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ============================================================
+       HEADER
+    ============================================================ */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-mid) 60%, #1e4d9b 100%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 1000;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, var(--cyan), var(--blue-light));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 4px 12px rgba(6,182,212,0.4);
+    }
+
+    .logo-text {
+      font-family: 'Baloo 2', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text span { color: var(--cyan); }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .header-title {
+      color: rgba(255,255,255,0.75);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .btn-menu {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex; align-items: center; gap: 6px;
+      transition: all .2s;
+    }
+    .btn-menu:hover { background: rgba(255,255,255,0.25); }
+
+    /* ============================================================
+       LAYOUT
+    ============================================================ */
+    .layout {
+      display: flex;
+      margin-top: var(--header-h);
+      min-height: calc(100vh - var(--header-h));
+    }
+
+    /* ============================================================
+       SIDEBAR
+    ============================================================ */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--white);
+      position: fixed;
+      top: var(--header-h);
+      left: 0;
+      bottom: 0;
+      overflow-y: auto;
+      border-right: 1px solid var(--border);
+      padding: 16px 12px 24px;
+      box-shadow: 2px 0 12px rgba(0,0,0,0.06);
+      z-index: 900;
+    }
+
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .sidebar-label {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--text-muted);
+      padding: 8px 12px 6px;
+      margin-top: 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 14px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      margin-bottom: 3px;
+      transition: all .2s;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border: 2px solid transparent;
+    }
+
+    .nav-item:hover {
+      background: #f1f5f9;
+      color: var(--navy);
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, #eff6ff, #e0f2fe);
+      color: var(--navy);
+      border-color: var(--blue-light);
+    }
+
+    .nav-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      background: #f1f5f9;
+    }
+
+    .nav-item.active .nav-icon {
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+    }
+
+    .progress-bar-wrap {
+      margin: 16px 12px;
+      background: #f1f5f9;
+      border-radius: 99px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      border-radius: 99px;
+      transition: width .5s ease;
+      width: 0%;
+    }
+    .progress-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 700;
+      padding: 0 12px;
+      display: flex; justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    /* ============================================================
+       MAIN CONTENT
+    ============================================================ */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      padding: 32px 40px 60px;
+      max-width: calc(100% - var(--sidebar-w));
+    }
+
+    /* ============================================================
+       SECTIONS (shown/hidden)
+    ============================================================ */
+    .section { display: none; animation: fadeIn .4s ease; }
+    .section.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ============================================================
+       TYPOGRAPHY HELPERS
+    ============================================================ */
+    .page-title {
+      font-family: 'Baloo 2', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 6px;
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    .page-subtitle {
+      color: var(--text-muted);
+      font-size: 15px;
+      margin-bottom: 28px;
+      font-weight: 600;
+    }
+
+    /* ============================================================
+       CARDS
+    ============================================================ */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+
+    .card-title {
+      font-family: 'Baloo 2', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .card-title .icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+
+    p { line-height: 1.7; font-size: 15px; margin-bottom: 12px; }
+
+    /* ============================================================
+       HIGHLIGHT BOXES
+    ============================================================ */
+    .highlight {
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 14px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 15px;
+    }
+
+    .highlight-blue  { background: #eff6ff; border-left: 4px solid var(--blue); }
+    .highlight-green { background: var(--green-light); border-left: 4px solid var(--green); }
+    .highlight-amber { background: var(--amber-light); border-left: 4px solid var(--amber); }
+    .highlight-red   { background: var(--red-light); border-left: 4px solid var(--red); }
+    .highlight-purple{ background: var(--purple-light); border-left: 4px solid var(--purple); }
+
+    .highlight-icon { font-size: 22px; margin-top: 2px; flex-shrink: 0; }
+
+    /* ============================================================
+       SIGN TABLE
+    ============================================================ */
+    .sign-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+      margin: 18px 0;
+    }
+
+    .sign-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border: 2px solid transparent;
+      transition: all .2s;
+    }
+
+    .sign-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+    .sign-symbol {
+      font-size: 40px;
+      font-weight: 900;
+      font-family: 'Baloo 2', sans-serif;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .sign-name { font-weight: 700; font-size: 16px; color: var(--navy); margin-bottom: 6px; }
+    .sign-example { font-size: 13px; color: var(--text-muted); font-weight: 600; }
+
+    /* ============================================================
+       RULES LIST
+    ============================================================ */
+    .rules-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .rules-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      background: #f8fafc;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.5;
+      border-left: 4px solid var(--blue-light);
+    }
+
+    .rule-num {
+      min-width: 28px; height: 28px;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      margin-top: 2px;
+    }
+
+    /* ============================================================
+       VIDEO CONTAINER
+    ============================================================ */
+    .video-wrap {
+      background: #0f172a;
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: 20px 0;
+      box-shadow: var(--shadow-md);
+    }
+
+    .video-label {
+      background: linear-gradient(90deg, var(--navy), var(--navy-mid));
+      color: #fff;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .video-wrap video {
+      width: 100%;
+      display: block;
+      max-height: 400px;
+      background: #000;
+    }
+
+    /* ============================================================
+       CANVAS SECTION
+    ============================================================ */
+    .canvas-wrap {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin: 20px 0;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+      max-width: 100%;
+    }
+
+    /* ============================================================
+       INTERACTIVE ACTIVITIES
+    ============================================================ */
+    .activity-card {
+      background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+      border: 2px solid #bae6fd;
+      border-radius: var(--radius);
+      padding: 24px;
+      margin: 20px 0;
+    }
+
+    .activity-title {
+      font-family: 'Baloo 2', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .input-row input, .input-row select {
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--navy);
+      background: #fff;
+      outline: none;
+      transition: border-color .2s;
+      min-width: 80px;
+    }
+
+    .input-row input:focus, .input-row select:focus {
+      border-color: var(--blue);
+    }
+
+    .btn {
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      border: none;
+      transition: all .2s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(37,99,235,0.4); }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: var(--navy);
+    }
+    .btn-secondary:hover { background: #e2e8f0; }
+
+    .btn-green {
+      background: linear-gradient(135deg, var(--green), #059669);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+    }
+    .btn-green:hover { transform: translateY(-1px); }
+
+    .feedback {
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      display: none;
+    }
+
+    .feedback.correct { background: var(--green-light); color: #065f46; display: block; }
+    .feedback.wrong   { background: var(--red-light);   color: #991b1b; display: block; }
+    .feedback.info    { background: var(--amber-light);  color: #92400e; display: block; }
+
+    /* ============================================================
+       COMPARISON ACTIVITY
+    ============================================================ */
+    .compare-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .num-box {
+      width: 64px; height: 64px;
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      color: #fff;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      font-weight: 900;
+      font-family: 'Baloo 2', sans-serif;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+    }
+
+    .sign-select {
+      width: 70px; height: 64px;
+      border: 3px solid var(--blue-light);
+      border-radius: 12px;
+      font-size: 24px;
+      font-weight: 900;
+      text-align: center;
+      color: var(--navy);
+      background: #fff;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .sign-select:focus { border-color: var(--blue); outline: none; }
+
+    /* ============================================================
+       PREDECESSOR / SUCCESSOR
+    ============================================================ */
+    .pred-succ-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 12px;
+      align-items: center;
+      margin: 16px 0;
+    }
+
+    .ps-box {
+      background: #f8fafc;
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .ps-label { font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 8px; }
+    .ps-value { font-size: 32px; font-weight: 900; font-family: 'Baloo 2', sans-serif; }
+
+    .ps-center {
+      text-align: center;
+    }
+
+    .ps-number { font-size: 40px; font-weight: 900; font-family: 'Baloo 2', sans-serif; color: var(--blue); }
+
+    /* ============================================================
+       QUIZ
+    ============================================================ */
+    .quiz-progress {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .quiz-dot {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800;
+      color: var(--text-muted);
+      transition: all .3s;
+    }
+
+    .quiz-dot.current { background: var(--blue); color: #fff; box-shadow: 0 0 0 4px rgba(37,99,235,0.2); }
+    .quiz-dot.correct { background: var(--green); color: #fff; }
+    .quiz-dot.wrong   { background: var(--red);   color: #fff; }
+
+    .quiz-question {
+      font-family: 'Baloo 2', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 600px) { .quiz-options { grid-template-columns: 1fr; } }
+
+    .quiz-option {
+      padding: 14px 18px;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      background: var(--white);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      text-align: left;
+      font-family: 'Nunito', sans-serif;
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .quiz-option:hover:not(:disabled) { border-color: var(--blue); background: #eff6ff; }
+    .quiz-option.correct  { border-color: var(--green); background: var(--green-light); color: #065f46; }
+    .quiz-option.wrong    { border-color: var(--red);   background: var(--red-light);   color: #991b1b; }
+    .quiz-option:disabled { cursor: default; }
+
+    .option-letter {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      background: #f1f5f9;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    .quiz-feedback {
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .quiz-feedback.show { display: block; animation: fadeIn .3s ease; }
+    .quiz-feedback.correct { background: var(--green-light); color: #065f46; border-left: 4px solid var(--green); }
+    .quiz-feedback.wrong   { background: var(--red-light);   color: #991b1b; border-left: 4px solid var(--red);   }
+
+    /* ============================================================
+       RESULT SCREEN
+    ============================================================ */
+    .result-screen {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .result-emoji { font-size: 72px; margin-bottom: 16px; }
+
+    .result-score {
+      font-family: 'Baloo 2', sans-serif;
+      font-size: 64px;
+      font-weight: 900;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .result-label {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .result-bar-wrap {
+      max-width: 400px;
+      margin: 0 auto 24px;
+      background: #e2e8f0;
+      border-radius: 99px;
+      height: 18px;
+      overflow: hidden;
+    }
+
+    .result-bar {
+      height: 100%;
+      border-radius: 99px;
+      transition: width 1s ease;
+    }
+
+    .result-msg {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    /* ============================================================
+       WELCOME SCREEN
+    ============================================================ */
+    .welcome-hero {
+      background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-mid) 50%, #1e4d9b 100%);
+      border-radius: 20px;
+      padding: 48px 40px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 260px; height: 260px;
+      background: rgba(6,182,212,0.15);
+      border-radius: 50%;
+    }
+
+    .welcome-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -40px;
+      width: 200px; height: 200px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
+
+    .welcome-badge {
+      background: rgba(6,182,212,0.25);
+      border: 1px solid rgba(6,182,212,0.5);
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 6px 16px;
+      border-radius: 99px;
+      margin-bottom: 16px;
+    }
+
+    .welcome-title {
+      font-family: 'Baloo 2', sans-serif;
+      font-size: 40px;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .welcome-title span { color: var(--cyan); }
+
+    .welcome-desc {
+      font-size: 16px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.8);
+      max-width: 580px;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .welcome-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .welcome-module {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 20px;
+      cursor: pointer;
+      transition: all .25s;
+      box-shadow: var(--shadow);
+      border: 2px solid transparent;
+      text-align: center;
+    }
+
+    .welcome-module:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--blue-light);
+    }
+
+    .welcome-module .wm-icon { font-size: 36px; margin-bottom: 10px; }
+    .welcome-module .wm-title { font-family: 'Baloo 2', sans-serif; font-weight: 700; color: var(--navy); font-size: 15px; }
+    .welcome-module .wm-desc  { font-size: 12px; color: var(--text-muted); margin-top: 4px; font-weight: 600; }
+
+    /* ============================================================
+       ORDERING ACTIVITY
+    ============================================================ */
+    .drag-area {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 16px;
+      background: #f8fafc;
+      border-radius: 10px;
+      border: 2px dashed var(--border);
+      min-height: 60px;
+      margin-bottom: 10px;
+    }
+
+    .drag-num {
+      padding: 10px 18px;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: #fff;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 18px;
+      cursor: grab;
+      box-shadow: 0 3px 8px rgba(37,99,235,0.3);
+      transition: transform .15s;
+      font-family: 'Baloo 2', sans-serif;
+    }
+
+    .drag-num:hover { transform: scale(1.06); }
+    .drag-num.dragging { opacity: 0.5; cursor: grabbing; }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background: var(--navy-dark);
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      padding: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    footer span { color: var(--cyan); font-weight: 800; }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 768px) {
+      .sidebar { width: 200px; }
+      .main    { margin-left: 200px; padding: 20px 16px 48px; max-width: calc(100% - 200px); }
+      .main { padding: 16px; }
+      .welcome-title { font-size: 28px; }
+      .quiz-options  { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================================
+       MISC HELPERS
+    ============================================================ */
+    .divider {
+      border: none;
+      border-top: 2px solid var(--border);
+      margin: 20px 0;
+    }
+
+    .example-box {
+      background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+      border-radius: 10px;
+      padding: 18px;
+      margin: 12px 0;
+      border-left: 4px solid var(--cyan);
+    }
+
+    .example-box .ex-title {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--cyan);
+      margin-bottom: 8px;
+    }
+
+    .example-box .ex-content {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .tag-blue   { background: #dbeafe; color: #1e40af; }
+    .tag-green  { background: var(--green-light); color: #065f46; }
+    .tag-red    { background: var(--red-light); color: #991b1b; }
+    .tag-amber  { background: var(--amber-light); color: #92400e; }
+
+    .number-line-container {
+      overflow-x: auto;
+      padding: 10px 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- =============================================
+     HEADER
+============================================= -->
+<header>
+  <a class="logo" href="#">
+    <div class="logo-icon">🧮</div>
+    <div class="logo-text">Mente <span>Matemática</span></div>
+  </a>
+  <div class="header-right">
+    <div class="header-title">📐 Tema 3 — Números Enteros</div>
+    <a class="btn-menu" href="temario.html">⬅ Volver al menú</a>
+  </div>
+</header>
+
+<!-- =============================================
+     MAIN LAYOUT
+============================================= -->
+<div class="layout">
+
+  <!-- =============================================
+       SIDEBAR NAVIGATION
+  ============================================= -->
+  <nav class="sidebar">
+    <div class="progress-label">
+      <span>🎯 Progreso</span>
+      <span id="progressPct">0%</span>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+
+    <div class="sidebar-label">Módulos</div>
+
+    <div class="nav-item active" onclick="showSection('welcome')">
+      <div class="nav-icon">🏠</div>
+      Inicio
+    </div>
+
+    <div class="nav-item" onclick="showSection('aprendizaje')">
+      <div class="nav-icon">🎬</div>
+      ¿Qué aprenderemos?
+    </div>
+
+    <div class="nav-item" onclick="showSection('comparar')">
+      <div class="nav-icon">⚖️</div>
+      Comparar Enteros
+    </div>
+
+    <div class="nav-item" onclick="showSection('ordenar')">
+      <div class="nav-icon">📊</div>
+      Ordenar Enteros
+    </div>
+
+    <div class="nav-item" onclick="showSection('antsuces')">
+      <div class="nav-icon">↔️</div>
+      Antecesor y Sucesor
+    </div>
+
+    <div class="sidebar-label">Evaluación</div>
+
+    <div class="nav-item" onclick="showSection('quiz')">
+      <div class="nav-icon">📝</div>
+      Evaluación Final
+    </div>
+  </nav>
+
+  <!-- =============================================
+       MAIN CONTENT AREA
+  ============================================= -->
+  <main class="main">
+
+    <!-- ==========================================
+         SECTION: BIENVENIDA
+    =========================================== -->
+    <section id="sec-welcome" class="section active">
+
+      <div class="welcome-hero">
+        <div class="welcome-badge">📐 Matemáticas · Tema 3</div>
+        <h1 class="welcome-title">Orden y <span>Comparación</span> de<br>Números Enteros</h1>
+        <p class="welcome-desc">
+          Bienvenido/a a esta plataforma de aprendizaje interactivo. Explorarás los números enteros,
+          aprenderás a compararlos, ordenarlos y encontrar antecesores y sucesores de una manera
+          dinámica y entretenida. ¡Comencemos!
+        </p>
+        <button class="btn btn-primary" style="font-size:16px; padding:14px 32px;" onclick="showSection('aprendizaje')">
+          🚀 Comenzar a aprender
+        </button>
+      </div>
+
+      <div class="welcome-grid">
+        <div class="welcome-module" onclick="showSection('aprendizaje')">
+          <div class="wm-icon">🎬</div>
+          <div class="wm-title">¿Qué aprenderemos?</div>
+          <div class="wm-desc">Introducción y objetivos</div>
+        </div>
+        <div class="welcome-module" onclick="showSection('comparar')">
+          <div class="wm-icon">⚖️</div>
+          <div class="wm-title">Comparar Enteros</div>
+          <div class="wm-desc">Mayor, menor, igual</div>
+        </div>
+        <div class="welcome-module" onclick="showSection('ordenar')">
+          <div class="wm-icon">📊</div>
+          <div class="wm-title">Ordenar Enteros</div>
+          <div class="wm-desc">Recta numérica y orden</div>
+        </div>
+        <div class="welcome-module" onclick="showSection('antsuces')">
+          <div class="wm-icon">↔️</div>
+          <div class="wm-title">Antecesor y Sucesor</div>
+          <div class="wm-desc">Números consecutivos</div>
+        </div>
+        <div class="welcome-module" onclick="showSection('quiz')">
+          <div class="wm-icon">🏆</div>
+          <div class="wm-title">Evaluación Final</div>
+          <div class="wm-desc">10 preguntas · Tiempo real</div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==========================================
+         SECTION 1: ¿QUÉ APRENDEREMOS?
+    =========================================== -->
+    <section id="sec-aprendizaje" class="section">
+
+      <div class="page-title">🎬 ¿Qué aprenderemos?</div>
+      <div class="page-subtitle">Objetivos de aprendizaje del Tema 3</div>
+
+      <div class="card">
+        <div class="card-title"><div class="icon" style="background:linear-gradient(135deg,#3b82f6,#06b6d4)">📌</div> Descripción General</div>
+        <p>
+          En esta lección aprenderemos a <strong>establecer relaciones de tamaño y posición entre los números enteros</strong>
+          (positivos, negativos y el cero). Entenderemos cómo leer e interpretar los símbolos matemáticos que nos
+          indican si un número es mayor o menor que otro, cómo ubicar estos números correctamente para saber su
+          valor real y cómo identificar qué número va exactamente antes o después de cualquier otro, especialmente
+          cuando trabajamos con números negativos.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="icon" style="background:linear-gradient(135deg,#10b981,#059669)">🎯</div> Objetivos de Aprendizaje</div>
+
+        <ul class="rules-list">
+          <li>
+            <div class="rule-num">1</div>
+            Comparar dos números enteros usando los símbolos &gt;, &lt; e = de forma correcta.
+          </li>
+          <li>
+            <div class="rule-num">2</div>
+            Ubicar y leer números enteros en la recta numérica para determinar su posición relativa.
+          </li>
+          <li>
+            <div class="rule-num">3</div>
+            Ordenar conjuntos de números enteros de menor a mayor y de mayor a menor.
+          </li>
+          <li>
+            <div class="rule-num">4</div>
+            Identificar el antecesor y el sucesor de cualquier número entero, incluyendo negativos.
+          </li>
+          <li>
+            <div class="rule-num">5</div>
+            Aplicar las reglas de orden: positivos, negativos y cero en la recta numérica.
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="icon" style="background:linear-gradient(135deg,#7c3aed,#a855f7)">🔢</div> ¿Qué son los Números Enteros?</div>
+        <p>
+          El conjunto de los <strong>números enteros</strong> incluye los números naturales (positivos), el cero y los números
+          negativos. Se representan en una recta numérica donde:
+        </p>
+
+        <div class="highlight highlight-blue">
+          <div class="highlight-icon">ℹ️</div>
+          <div>
+            Los números a la <strong>derecha del cero</strong> son positivos (+), los que están a la
+            <strong>izquierda del cero</strong> son negativos (−).
+            Cuanto más a la derecha está un número, <strong>mayor</strong> es su valor.
+          </div>
+        </div>
+
+        <!-- Canvas: Recta numérica introductoria -->
+        <div class="canvas-wrap">
+          <canvas id="canvas-intro" width="700" height="100"></canvas>
+        </div>
+
+        <div class="highlight highlight-green">
+          <div class="highlight-icon">💡</div>
+          <div>
+            <strong>Es como una línea de metro:</strong> las estaciones a la derecha tienen números más altos y las de la izquierda
+            tienen números más bajos (incluso negativos). El centro siempre es el cero.
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:12px; flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showSection('comparar')">Siguiente: Comparar Enteros ➜</button>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 2: COMPARAR NÚMEROS ENTEROS
+    =========================================== -->
+    <section id="sec-comparar" class="section">
+
+      <div class="page-title">⚖️ Comparar 2 Números Enteros</div>
+      <div class="page-subtitle">Aprende a usar los signos &gt;, &lt; e =</div>
+
+      <!-- VIDEO -->
+      <div class="video-wrap">
+        <div class="video-label">🎬 Video: Números Enteros — Comparación</div>
+        <video controls>
+          <source src="vid/ma_men.mp4" type="video/mp4" />
+          Tu navegador no soporta la reproducción de video. Puedes verlo en la ruta: /vid/ma_men.mp4
+        </video>
+      </div>
+
+      <!-- SIGNOS DE DESIGUALDAD -->
+      <div class="card">
+        <div class="card-title"><div class="icon" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">📐</div> Signos de Desigualdad Matemática</div>
+        <p>
+          Las desigualdades son símbolos que usamos para <strong>comparar dos números o cantidades</strong>.
+          Nos dicen si una cantidad es mayor, menor o igual que otra:
+        </p>
+
+        <div class="sign-grid">
+          <div class="sign-card" style="border-color:#3b82f6">
+            <div class="sign-symbol" style="color:#3b82f6">&gt;</div>
+            <div class="sign-name">Mayor que</div>
+            <div class="sign-example">Ejemplo: 7 &gt; 3</div>
+          </div>
+          <div class="sign-card" style="border-color:#ef4444">
+            <div class="sign-symbol" style="color:#ef4444">&lt;</div>
+            <div class="sign-name">Menor que</div>
+            <div class="sign-example">Ejemplo: 4 &lt; 9</div>
+          </div>
+          <div class="sign-card" style="border-color:#10b981">
+            <div class="sign-symbol" style="color:#10b981">=</div>
+            <div class="sign-name">Igual que</div>
+            <div class="sign-example">Ejemplo: 5 = 5</div>
+          </div>
+          <div class="sign-card" style="border-color:#f59e0b">
+            <div class="sign-symbol" style="color:#f59e0b">≥</div>
+            <div class="sign-name">Mayor o igual</div>
+            <div class="sign-example">Ejemplo: 6 ≥ 6</div>
+          </div>
+          <div class="sign-card" style="border-color:#7c3aed">
+            <div class="sign-symbol" style="color:#7c3aed">≤</div>
+            <div class="sign-name">Menor o igual</div>
+            <div class="sign-example">Ejemplo: 3 ≤ 5</div>
+          </div>
+        </div>
+
+        <div class="highlight highlight-amber">
+          <div class="highlight-icon">🍬</div>
+          <div>
+            <strong>¡Truco para recordar!</strong> Es como cuando comparas la cantidad de dulces con tus amigos:
+            a veces tienes más, a veces tienes menos, o tal vez tienen la misma cantidad.
+            La "boca" del signo siempre apunta hacia el número <strong>mayor</strong>.
+          </div>
+        </div>
+      </div>
+
+      <!-- RECTA NUMÉRICA -->
+      <div class="card">
+        <div class="card-title"><div class="icon" style="background:linear-gradient(135deg,#06b6d4,#0ea5e9)">📏</div> Comparar en la Recta Numérica</div>
+        <p>
+          Comparar números enteros significa conocer cuál es mayor o menor que el otro.
+          Los números situados <strong>más hacia la derecha</strong> en la recta siempre son
+          <strong>mayores</strong> que los situados a su izquierda.
+        </p>
+
+        <div class="number-line-container">
+          <canvas id="canvas-compare-line" width="700" height="110"></canvas>
+        </div>
+
+        <div class="example-box">
+          <div class="ex-title">📌 Ejemplo 1</div>
+          <div class="ex-content">
+            ¿Cuál es mayor, el <strong>−8</strong> o el <strong>−3</strong>?<br>
+            Mientras el número negativo esté más lejos del "0", ese número será menor.<br>
+            Por lo tanto: <strong>−8 &lt; −3</strong>
+          </div>
+        </div>
+
+        <div class="example-box">
+          <div class="ex-title">📌 Ejemplo 2</div>
+          <div class="ex-content">
+            ¿Cuál es mayor, el <strong>−3</strong> o el <strong>5</strong>?<br>
+            El +5 es mayor, pues es un número positivo y los positivos siempre son mayores que cualquier negativo.<br>
+            Por lo tanto: <strong>−3 &lt; 5</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- REGLAS PARA RECORDAR -->
+      <div class="card">
+        <div class="card-title"><div class="icon" style="background:linear-gradient(135deg,#10b981,#06b6d4)">⭐</div> Para Recordar</div>
+
+        <ul class="rules-list">
+          <li><div class="rule-num">1</div>Todo número <strong>negativo</strong> es <strong>menor</strong> que cualquier número positivo.</li>
+          <li><div class="rule-num">2</div>Todo número <strong>negativo</strong> es <strong>menor</strong> que cero.</li>
+          <li><div class="rule-num">3</div>Todo número <strong>positivo</strong> es <strong>mayor</strong> que cero.</li>
+          <li><div class="rule-num">4</div>Entre dos negativos, el que está <strong>más lejos del cero</strong> es el <strong>menor</strong>.</li>
+        </ul>
+      </div>
+
+      <!-- ACTIVIDAD INTERACTIVA 1: Comparador visual -->
+      <div class="activity-card">
+        <div class="activity-title">🎮 Actividad 1: Comparador de Números</div>
+        <p style="font-size:14px; margin-bottom:14px">Ingresa dos números enteros y descubre cuál es mayor en la recta numérica.</p>
+
+        <div class="input-row">
+          <input type="number" id="cmp-a" value="-5" style="width:90px" />
+          <select class="sign-select" id="cmp-sign">
+            <option>&gt;</option>
+            <option>&lt;</option>
+            <option>=</option>
+          </select>
+          <input type="number" id="cmp-b" value="3" style="width:90px" />
+          <button class="btn btn-primary" onclick="checkCompare()">✅ Verificar</button>
+          <button class="btn btn-secondary" onclick="generateCompare()">🔀 Nuevo</button>
+        </div>
+
+        <div class="number-line-container">
+          <canvas id="canvas-act-compare" width="680" height="100"></canvas>
+        </div>
+        <div class="feedback" id="fb-compare"></div>
+      </div>
+
+      <!-- ACTIVIDAD INTERACTIVA 2: Completar signos -->
+      <div class="activity-card">
+        <div class="activity-title">✏️ Actividad 2: Coloca el signo correcto</div>
+        <p style="font-size:14px; margin-bottom:14px">Selecciona el signo de desigualdad correcto para cada par de números.</p>
+
+        <div id="sign-exercises"></div>
+
+        <button class="btn btn-green" onclick="checkSignExercises()" style="margin-top:8px">🏁 Comprobar respuestas</button>
+        <button class="btn btn-secondary" onclick="generateSignExercises()" style="margin-top:8px; margin-left:8px">🔄 Nuevos ejercicios</button>
+
+        <div class="feedback" id="fb-sign"></div>
+      </div>
+
+      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:16px">
+        <button class="btn btn-secondary" onclick="showSection('aprendizaje')">← Anterior</button>
+        <button class="btn btn-primary" onclick="showSection('ordenar')">Siguiente: Ordenar Enteros ➜</button>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 3: ORDENAR NÚMEROS ENTEROS
+    =========================================== -->
+    <section id="sec-ordenar" class="section">
+
+      <div class="page-title">📊 Ordenar Números Enteros</div>
+      <div class="page-subtitle">Aprende a ordenar enteros en la recta numérica</div>
+
+      <!-- VIDEO -->
+      <div class="video-wrap">
+        <div class="video-label">🎬 Video: Números Enteros — Ordenar</div>
+        <video controls>
+          <source src="vid/ord_num.mp4" type="video/mp4" />
+          Tu navegador no soporta la reproducción de video. Puedes verlo en la ruta: /vid/ord_num.mp4
+        </video>
+      </div>
+
+      <!-- CONTENIDO -->
+      <div class="card">
+        <div class="card-title"><div class="icon" style="background:linear-gradient(135deg,#7c3aed,#a855f7)">📖</div> ¿Cómo se ordenan los Números Enteros?</div>
+        <p>
+          El conjunto de los números enteros incluye los números naturales (positivos), el cero y los números negativos.
+          Para ordenarlos y compararlos, la herramienta más útil es la <strong>recta numérica</strong>.
+        </p>
+
+        <div class="number-line-container">
+          <canvas id="canvas-order-line" width="700" height="110"></canvas>
+        </div>
+      </div>
+
+      <!-- REGLAS BÁSICAS -->
+      <div class="card">
+        <div class="card-title"><div class="icon" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">📋</div> Reglas Básicas de Orden</div>
+
+        <ul class="rules-list">
+          <li>
+            <div class="rule-num">1</div>
+            <div>Cualquier número positivo es mayor que cualquier número negativo.<br>
+            <span class="tag tag-blue">Ejemplo</span> <code>1 &gt; −100</code></div>
+          </li>
+          <li>
+            <div class="rule-num">2</div>
+            <div>El cero es mayor que cualquier número negativo, pero menor que cualquier número positivo.<br>
+            <span class="tag tag-green">Ejemplos</span> <code>0 &gt; −5</code> y <code>0 &lt; 3</code></div>
+          </li>
+          <li>
+            <div class="rule-num">3</div>
+            <div>Entre dos números positivos, es mayor el que está más lejos del cero.<br>
+            <span class="tag tag-blue">Ejemplo</span> <code>8 &gt; 4</code></div>
+          </li>
+          <li>
+            <div class="rule-num">4</div>
+            <div>Entre dos números negativos, es mayor el que está más <em>cerca</em> del cero.
+            <span class="tag tag-amber">¡Confuso!</span><br>
+            <span class="tag tag-red">Ejemplo</span> <code>−2 &gt; −9</code> (−2 está más cerca del 0)</div>
+          </li>
+        </ul>
+
+        <div class="highlight highlight-purple">
+          <div class="highlight-icon">🔑</div>
+          <div>
+            <strong>La regla más importante:</strong> En la recta numérica, siempre vale la dirección.
+            El número que está más a la <strong>derecha</strong> es el <strong>mayor</strong>.
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVIDAD: Arrastrar y ordenar -->
+      <div class="activity-card">
+        <div class="activity-title">🎮 Actividad 1: Ordena de menor a mayor</div>
+        <p style="font-size:14px; margin-bottom:14px">Haz clic en los números en el orden correcto (de menor a mayor).</p>
+
+        <div style="margin-bottom:8px; font-size:13px; font-weight:700; color:var(--text-muted)">Números disponibles:</div>
+        <div class="drag-area" id="sort-source"></div>
+
+        <div style="margin-bottom:8px; margin-top:16px; font-size:13px; font-weight:700; color:var(--text-muted)">Tu orden (de menor a mayor):</div>
+        <div class="drag-area" id="sort-target" style="min-height:60px; border-color:#3b82f6; background:#eff6ff;"></div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
+          <button class="btn btn-green" onclick="checkSortOrder()">✅ Verificar orden</button>
+          <button class="btn btn-secondary" onclick="initSortActivity()">🔄 Reiniciar</button>
+        </div>
+
+        <div class="feedback" id="fb-sort"></div>
+
+        <div class="number-line-container" style="margin-top:16px">
+          <canvas id="canvas-sort-result" width="680" height="100"></canvas>
+        </div>
+      </div>
+
+      <!-- ACTIVIDAD: Desigualdades contextuales -->
+      <div class="activity-card">
+        <div class="activity-title">🌡️ Actividad 2: Situaciones de la Vida Real</div>
+        <p style="font-size:14px; margin-bottom:14px">Completa las desigualdades con el signo correcto.</p>
+
+        <div class="example-box" style="margin-bottom:14px">
+          <div class="ex-title">📌 Temperatura</div>
+          <div class="ex-content">La temperatura hoy es de −2°C y ayer fue de 3°C.
+          <br>Hoy: −2°C <select id="temp-sign" style="width:60px; font-size:18px; border:2px solid #ccc; border-radius:6px"><option>&gt;</option><option>&lt;</option><option>=</option></select> Ayer: 3°C</div>
+        </div>
+
+        <div class="example-box" style="margin-bottom:14px">
+          <div class="ex-title">👦 Edad</div>
+          <div class="ex-content">Juan tiene 15 años y María tiene 12 años.
+          <br>Juan: 15 <select id="age-sign" style="width:60px; font-size:18px; border:2px solid #ccc; border-radius:6px"><option>&gt;</option><option>&lt;</option><option>=</option></select> María: 12</div>
+        </div>
+
+        <div class="example-box">
+          <div class="ex-title">💰 Dinero</div>
+          <div class="ex-content">Tengo 5 bolivianos y mi amigo tiene 8 bolivianos.
+          <br>Yo: 5 <select id="money-sign" style="width:60px; font-size:18px; border:2px solid #ccc; border-radius:6px"><option>&gt;</option><option>&lt;</option><option>=</option></select> Amigo: 8</div>
+        </div>
+
+        <button class="btn btn-green" onclick="checkContextual()" style="margin-top:14px">✅ Verificar</button>
+        <div class="feedback" id="fb-context"></div>
+      </div>
+
+      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:16px">
+        <button class="btn btn-secondary" onclick="showSection('comparar')">← Anterior</button>
+        <button class="btn btn-primary" onclick="showSection('antsuces')">Siguiente: Antecesor y Sucesor ➜</button>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 4: ANTECESOR Y SUCESOR
+    =========================================== -->
+    <section id="sec-antsuces" class="section">
+
+      <div class="page-title">↔️ Antecesor y Sucesor</div>
+      <div class="page-subtitle">Números inmediatamente anterior y posterior</div>
+
+      <!-- VIDEO -->
+      <div class="video-wrap">
+        <div class="video-label">🎬 Video: Antecesor y Sucesor de un Número</div>
+        <video controls>
+          <source src="vid/ant_suces.mp4" type="video/mp4" />
+          Tu navegador no soporta la reproducción de video. Puedes verlo en la ruta: /vid/ant_suces.mp4
+        </video>
+      </div>
+
+      <!-- CONTENIDO -->
+      <div class="card">
+        <div class="card-title"><div class="icon" style="background:linear-gradient(135deg,#06b6d4,#7c3aed)">📖</div> ¿Qué son el Antecesor y Sucesor?</div>
+        <p>
+          Todos los números enteros tienen un <strong>orden consecutivo</strong>. Esto significa que cada número
+          tiene uno que va justo antes y otro que va justo después.
+        </p>
+
+        <div class="highlight highlight-blue">
+          <div class="highlight-icon">⬅️</div>
+          <div>
+            El <strong>Antecesor</strong> de un número es el valor inmediato <strong>anterior (−1)</strong>,
+            situado a la <strong>izquierda</strong> en la recta numérica.
+            <br>Fórmula: <code>Antecesor(n) = n − 1</code>
+          </div>
+        </div>
+
+        <div class="highlight highlight-green">
+          <div class="highlight-icon">➡️</div>
+          <div>
+            El <strong>Sucesor</strong> de un número es el valor inmediato <strong>posterior (+1)</strong>,
+            ubicado a la <strong>derecha</strong> en la recta numérica.
+            <br>Fórmula: <code>Sucesor(n) = n + 1</code>
+          </div>
+        </div>
+
+        <div class="number-line-container">
+          <canvas id="canvas-antsuces-line" width="700" height="110"></canvas>
+        </div>
+      </div>
+
+      <!-- EJEMPLOS -->
+      <div class="card">
+        <div class="card-title"><div class="icon" style="background:linear-gradient(135deg,#10b981,#059669)">💡</div> Ejemplos</div>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:14px; margin-bottom:16px">
+          <div class="example-box">
+            <div class="ex-title">Número 5</div>
+            <div class="ex-content">⬅️ Antecesor: <strong>4</strong><br>➡️ Sucesor: <strong>6</strong></div>
+          </div>
+          <div class="example-box">
+            <div class="ex-title">Número 100</div>
+            <div class="ex-content">⬅️ Antecesor: <strong>99</strong><br>➡️ Sucesor: <strong>101</strong></div>
+          </div>
+          <div class="example-box">
+            <div class="ex-title">Número −4 ⚠️</div>
+            <div class="ex-content">⬅️ Antecesor: <strong>−5</strong><br>➡️ Sucesor: <strong>−3</strong></div>
+          </div>
+          <div class="example-box">
+            <div class="ex-title">Número −11</div>
+            <div class="ex-content">⬅️ Antecesor: <strong>−12</strong><br>➡️ Sucesor: <strong>−10</strong></div>
+          </div>
+        </div>
+
+        <div class="highlight highlight-amber">
+          <div class="highlight-icon">⚠️</div>
+          <div>
+            <strong>¡Atención con los negativos!</strong>
+            Para −4: Al restarle 1 nos movemos más a la izquierda → −5 (antecesor).
+            Al sumarle 1 nos acercamos al cero → −3 (sucesor).
+            ¡El sucesor es SIEMPRE mayor que el número original!
+          </div>
+        </div>
+      </div>
+
+      <!-- CALCULADORA INTERACTIVA -->
+      <div class="activity-card">
+        <div class="activity-title">🔢 Calculadora Interactiva</div>
+        <p style="font-size:14px; margin-bottom:14px">Ingresa un número y visualiza su antecesor y sucesor en la recta numérica.</p>
+
+        <div class="input-row">
+          <input type="number" id="ps-input" value="5" style="width:100px" oninput="updatePS()" />
+          <button class="btn btn-primary" onclick="updatePS()">🔍 Ver en recta</button>
+        </div>
+
+        <div class="pred-succ-grid" id="ps-display">
+          <div class="ps-box">
+            <div class="ps-label">⬅️ Antecesor</div>
+            <div class="ps-value" id="ps-ant" style="color:var(--red)">4</div>
+          </div>
+          <div class="ps-center">
+            <div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px">Número</div>
+            <div class="ps-number" id="ps-num">5</div>
+          </div>
+          <div class="ps-box">
+            <div class="ps-label">Sucesor ➡️</div>
+            <div class="ps-value" id="ps-suc" style="color:var(--green)">6</div>
+          </div>
+        </div>
+
+        <div class="number-line-container">
+          <canvas id="canvas-ps-line" width="680" height="100"></canvas>
+        </div>
+      </div>
+
+      <!-- ACTIVIDAD PRÁCTICA -->
+      <div class="activity-card">
+        <div class="activity-title">✏️ Actividad: Completa el Antecesor y Sucesor</div>
+        <p style="font-size:14px; margin-bottom:14px">Escribe el antecesor y sucesor de cada número.</p>
+
+        <div id="ps-exercises"></div>
+
+        <button class="btn btn-green" onclick="checkPSExercises()" style="margin-top:12px">✅ Verificar</button>
+        <button class="btn btn-secondary" onclick="generatePSExercises()" style="margin-top:12px; margin-left:8px">🔄 Nuevos</button>
+        <div class="feedback" id="fb-ps"></div>
+      </div>
+
+      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:16px">
+        <button class="btn btn-secondary" onclick="showSection('ordenar')">← Anterior</button>
+        <button class="btn btn-primary" onclick="showSection('quiz')">📝 Ir a la Evaluación Final ➜</button>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 5: QUIZ EVALUACIÓN FINAL
+    =========================================== -->
+    <section id="sec-quiz" class="section">
+
+      <div class="page-title">📝 Evaluación Final</div>
+      <div class="page-subtitle">10 preguntas de opción múltiple</div>
+
+      <!-- QUIZ CONTAINER -->
+      <div class="card" id="quiz-container">
+        <div class="quiz-progress" id="quiz-dots"></div>
+
+        <div id="quiz-question-area">
+          <!-- Populated by JS -->
+        </div>
+
+        <div id="quiz-result-area" style="display:none">
+          <!-- Result shown here -->
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Créditos: <span>Victor Crespo</span> &nbsp;·&nbsp; Mente Matemática &nbsp;·&nbsp; Tema 3: Orden y Comparación de Números Enteros</p>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+/* ============================================================
+   NAVIGATION
+============================================================ */
+const sections = ['welcome','aprendizaje','comparar','ordenar','antsuces','quiz'];
+const visitedSections = new Set(['welcome']);
+
+function showSection(id) {
+  // Hide all
+  sections.forEach(s => {
+    const el = document.getElementById('sec-' + s);
+    if (el) el.classList.remove('active');
+    // Update nav items
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(ni => ni.classList.remove('active'));
+  });
+
+  // Show selected
+  const target = document.getElementById('sec-' + id);
+  if (target) target.classList.add('active');
+
+  // Activate nav item
+  const allNav = document.querySelectorAll('.nav-item');
+  allNav.forEach(ni => {
+    if (ni.getAttribute('onclick') && ni.getAttribute('onclick').includes("'" + id + "'")) {
+      ni.classList.add('active');
+    }
+  });
+
+  visitedSections.add(id);
+  updateProgress();
+
+  // Render canvases for section
+  setTimeout(() => {
+    if (id === 'aprendizaje') drawIntroLine();
+    if (id === 'comparar') { drawCompareLine(); drawActCompare(); generateSignExercises(); }
+    if (id === 'ordenar')  { drawOrderLine(); initSortActivity(); }
+    if (id === 'antsuces') { drawAntSuccesLine(5); updatePS(); generatePSExercises(); }
+    if (id === 'quiz')     { initQuiz(); }
+  }, 50);
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+  const pct = Math.round((visitedSections.size / sections.length) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+
+/* ============================================================
+   CANVAS UTILITIES
+============================================================ */
+function drawNumberLine(canvasId, nums, highlights, markedNums, opts) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  opts = opts || {};
+  const minN = opts.min !== undefined ? opts.min : -10;
+  const maxN = opts.max !== undefined ? opts.max : 10;
+  const pad = 50;
+  const lineY = H * 0.55;
+
+  const toX = n => pad + (n - minN) / (maxN - minN) * (W - 2 * pad);
+
+  // Main line
+  ctx.strokeStyle = '#94a3b8';
+  ctx.lineWidth = 2.5;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(pad - 10, lineY);
+  ctx.lineTo(W - pad + 10, lineY);
+  ctx.stroke();
+
+  // Arrows
+  ctx.fillStyle = '#94a3b8';
+  [[W - pad + 10, lineY, 1], [pad - 10, lineY, -1]].forEach(([x, y, dir]) => {
+    ctx.beginPath();
+    ctx.moveTo(x + dir * 12, y);
+    ctx.lineTo(x + dir * 4, y - 5);
+    ctx.lineTo(x + dir * 4, y + 5);
+    ctx.closePath();
+    ctx.fill();
+  });
+
+  // Tick marks
+  for (let n = minN; n <= maxN; n++) {
+    const x = toX(n);
+    ctx.strokeStyle = n === 0 ? '#1e293b' : '#cbd5e1';
+    ctx.lineWidth = n === 0 ? 2.5 : 1.5;
+    ctx.beginPath();
+    ctx.moveTo(x, lineY - (n === 0 ? 10 : 6));
+    ctx.lineTo(x, lineY + (n === 0 ? 10 : 6));
+    ctx.stroke();
+
+    // Labels
+    if ((maxN - minN) <= 22 || n % 2 === 0 || n === 0) {
+      ctx.fillStyle = n === 0 ? '#1e293b' : '#64748b';
+      ctx.font = `${n === 0 ? 'bold' : 'normal'} 12px Nunito, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText(n, x, lineY + 22);
+    }
+  }
+
+  // Highlights (colored dots)
+  if (highlights) {
+    highlights.forEach(h => {
+      const x = toX(h.n);
+      ctx.fillStyle = h.color || '#3b82f6';
+      ctx.beginPath();
+      ctx.arc(x, lineY, 8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      if (h.label) {
+        ctx.fillStyle = h.color || '#3b82f6';
+        ctx.font = 'bold 13px Nunito, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(h.label, x, lineY - 18);
+      }
+    });
+  }
+
+  // Marked number labels above
+  if (markedNums) {
+    markedNums.forEach((mn, i) => {
+      const x = toX(mn.n);
+      const colors = ['#3b82f6','#06b6d4','#10b981','#f59e0b','#7c3aed','#ef4444'];
+      ctx.fillStyle = colors[i % colors.length];
+      ctx.beginPath();
+      ctx.arc(x, lineY, 9, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 10px Nunito, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(mn.n, x, lineY);
+      ctx.textBaseline = 'alphabetic';
+    });
+  }
+}
+
+/* ============================================================
+   CANVAS: INTRO LINE (Section 1)
+============================================================ */
+function drawIntroLine() {
+  drawNumberLine('canvas-intro', null, null, null, { min: -6, max: 6 });
+  const canvas = document.getElementById('canvas-intro');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const lineY = H * 0.55;
+  const toX = n => 50 + (n + 6) / 12 * (W - 100);
+
+  // Shade negative area
+  ctx.fillStyle = 'rgba(239,68,68,0.1)';
+  ctx.fillRect(50, lineY - 12, toX(0) - 50, 24);
+
+  // Shade positive area
+  ctx.fillStyle = 'rgba(16,185,129,0.1)';
+  ctx.fillRect(toX(0), lineY - 12, W - 50 - toX(0), 24);
+
+  // Labels
+  ctx.fillStyle = '#ef4444';
+  ctx.font = 'bold 12px Nunito';
+  ctx.textAlign = 'center';
+  ctx.fillText('NEGATIVOS ←', toX(-3), 18);
+
+  ctx.fillStyle = '#10b981';
+  ctx.fillText('→ POSITIVOS', toX(3), 18);
+}
+
+/* ============================================================
+   CANVAS: COMPARE LINE (Section 2)
+============================================================ */
+function drawCompareLine() {
+  drawNumberLine('canvas-compare-line', null, [
+    { n: -8, color: '#ef4444', label: '-8' },
+    { n: -3, color: '#3b82f6', label: '-3' },
+    { n: 5,  color: '#10b981', label: '5'  }
+  ], null, { min: -10, max: 8 });
+}
+
+/* ============================================================
+   CANVAS: ORDER LINE (Section 3)
+============================================================ */
+function drawOrderLine() {
+  const canvas = document.getElementById('canvas-order-line');
+  if (!canvas) return;
+  drawNumberLine('canvas-order-line', null, null, null, { min: -8, max: 8 });
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const lineY = H * 0.55;
+  const toX = n => 50 + (n + 8) / 16 * (W - 100);
+
+  // Arrow showing direction of increase
+  ctx.strokeStyle = '#3b82f6';
+  ctx.lineWidth = 3;
+  ctx.setLineDash([]);
+  const sx = toX(-7), ex = toX(7);
+  ctx.beginPath();
+  ctx.moveTo(sx, lineY - 28);
+  ctx.lineTo(ex, lineY - 28);
+  ctx.stroke();
+  // Arrowhead
+  ctx.fillStyle = '#3b82f6';
+  ctx.beginPath();
+  ctx.moveTo(ex + 10, lineY - 28);
+  ctx.lineTo(ex, lineY - 24);
+  ctx.lineTo(ex, lineY - 32);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.fillStyle = '#3b82f6';
+  ctx.font = 'bold 12px Nunito';
+  ctx.textAlign = 'center';
+  ctx.fillText('Mayor →', toX(4), lineY - 32);
+  ctx.fillText('← Menor', toX(-4), lineY - 32);
+}
+
+/* ============================================================
+   CANVAS: ANT/SUCES LINE (Section 4)
+============================================================ */
+function drawAntSuccesLine(n) {
+  const canvas = document.getElementById('canvas-antsuces-line');
+  if (!canvas) return;
+  const mn = Math.max(-10, n - 5), mx = Math.min(10, n + 5);
+  const adjMin = Math.min(mn, n-2), adjMax = Math.max(mx, n+2);
+
+  drawNumberLine('canvas-antsuces-line', null, [
+    { n: n-1,  color: '#ef4444', label: 'Ant.' },
+    { n: n,    color: '#2563eb', label: '⭐'    },
+    { n: n+1,  color: '#10b981', label: 'Suc.'  }
+  ], null, { min: adjMin - 1, max: adjMax + 1 });
+}
+
+/* ============================================================
+   CANVAS: PS LINE (dynamic)
+============================================================ */
+function drawPSLine(n) {
+  const canvas = document.getElementById('canvas-ps-line');
+  if (!canvas) return;
+  const pad = 3;
+  const lo = n - pad - 1, hi = n + pad + 1;
+  drawNumberLine('canvas-ps-line', null, [
+    { n: n-1, color: '#ef4444', label: (n-1).toString() },
+    { n: n,   color: '#2563eb', label: n.toString()      },
+    { n: n+1, color: '#10b981', label: (n+1).toString()  }
+  ], null, { min: lo, max: hi });
+}
+
+/* ============================================================
+   SECTION 2: COMPARE ACTIVITY
+============================================================ */
+function drawActCompare() {
+  const a = parseInt(document.getElementById('cmp-a').value) || 0;
+  const b = parseInt(document.getElementById('cmp-b').value) || 0;
+  const lo = Math.min(a, b) - 3, hi = Math.max(a, b) + 3;
+  const canvas = document.getElementById('canvas-act-compare');
+  if (!canvas) return;
+  canvas.width = 680;
+  drawNumberLine('canvas-act-compare', null, [
+    { n: a, color: '#3b82f6', label: a.toString() },
+    { n: b, color: '#ef4444', label: b.toString() }
+  ], null, { min: lo, max: hi });
+}
+
+function checkCompare() {
+  const a = parseInt(document.getElementById('cmp-a').value) || 0;
+  const b = parseInt(document.getElementById('cmp-b').value) || 0;
+  const sel = document.getElementById('cmp-sign').value;
+  const fb  = document.getElementById('fb-compare');
+  drawActCompare();
+
+  let correct;
+  if (a > b) correct = '>';
+  else if (a < b) correct = '<';
+  else correct = '=';
+
+  if (sel === correct) {
+    fb.className = 'feedback correct';
+    fb.innerHTML = `✅ ¡Correcto! ${a} ${correct} ${b}. ${a > b ? a + ' está a la derecha de ' + b : (a < b ? a + ' está a la izquierda de ' + b : 'Ambos son iguales')} en la recta numérica.`;
+  } else {
+    fb.className = 'feedback wrong';
+    fb.innerHTML = `❌ No es correcto. La respuesta correcta es: <strong>${a} ${correct} ${b}</strong>. Recuerda: el número más a la derecha en la recta es el mayor.`;
+  }
+}
+
+function generateCompare() {
+  const a = Math.floor(Math.random() * 21) - 10;
+  let b;
+  do { b = Math.floor(Math.random() * 21) - 10; } while (b === a);
+  document.getElementById('cmp-a').value = a;
+  document.getElementById('cmp-b').value = b;
+  document.getElementById('cmp-sign').value = '>';
+  document.getElementById('fb-compare').className = 'feedback';
+  drawActCompare();
+}
+
+/* ============================================================
+   SECTION 2: SIGN EXERCISES
+============================================================ */
+const signPairs = [
+  [7,5],[10,15],[8,8],[6,6],[3,7],[12,12],[5,9],[14,14],[20,18],[4,6],
+  [-3,5],[-8,-3],[0,-4],[-2,-7],[15,-15],[-1,0],[6,-6],[-9,-2],[0,0],[-5,-5]
+];
+
+let currentSignPairs = [];
+
+function generateSignExercises() {
+  currentSignPairs = [];
+  const pool = [...signPairs];
+  for (let i = 0; i < 5; i++) {
+    const idx = Math.floor(Math.random() * pool.length);
+    currentSignPairs.push(pool.splice(idx, 1)[0]);
+  }
+  const container = document.getElementById('sign-exercises');
+  container.innerHTML = '';
+  currentSignPairs.forEach((pair, i) => {
+    const [a, b] = pair;
+    container.innerHTML += `
+      <div class="compare-row" style="margin-bottom:10px">
+        <div class="num-box">${a}</div>
+        <select class="sign-select" id="sign-ex-${i}">
+          <option>&gt;</option><option>&lt;</option><option>=</option>
+        </select>
+        <div class="num-box">${b}</div>
+      </div>
+    `;
+  });
+  document.getElementById('fb-sign').className = 'feedback';
+}
+
+function checkSignExercises() {
+  let correct = 0;
+  currentSignPairs.forEach((pair, i) => {
+    const [a, b] = pair;
+    const sel = document.getElementById('sign-ex-' + i).value;
+    const exp = a > b ? '>' : (a < b ? '<' : '=');
+    if (sel === exp) correct++;
+  });
+  const fb = document.getElementById('fb-sign');
+  if (correct === currentSignPairs.length) {
+    fb.className = 'feedback correct';
+    fb.innerHTML = `🏆 ¡Perfecto! Todas las respuestas son correctas (${correct}/${currentSignPairs.length}).`;
+  } else {
+    const wrong = currentSignPairs.map((pair, i) => {
+      const [a, b] = pair;
+      const sel = document.getElementById('sign-ex-' + i).value;
+      const exp = a > b ? '>' : (a < b ? '<' : '=');
+      return sel !== exp ? `${a} ${exp} ${b}` : null;
+    }).filter(Boolean).join(', ');
+    fb.className = 'feedback wrong';
+    fb.innerHTML = `❌ ${correct}/${currentSignPairs.length} correctas. Respuestas correctas: ${wrong}.`;
+  }
+}
+
+/* ============================================================
+   SECTION 3: SORT ACTIVITY
+============================================================ */
+let sortNumbers = [];
+let sortSelected = [];
+
+function initSortActivity() {
+  const sets = [
+    [-6,3,-2,7,-8,0,5],
+    [2,-3,0,4,-1],
+    [-5,1,-9,6,0,-2,8],
+    [10,-10,0,5,-5]
+  ];
+  const chosen = sets[Math.floor(Math.random() * sets.length)];
+  sortNumbers = [...chosen].sort(() => Math.random() - 0.5);
+  sortSelected = [];
+
+  const src = document.getElementById('sort-source');
+  const tgt = document.getElementById('sort-target');
+  src.innerHTML = '';
+  tgt.innerHTML = '';
+
+  sortNumbers.forEach(n => {
+    const btn = document.createElement('div');
+    btn.className = 'drag-num';
+    btn.textContent = n;
+    btn.dataset.n = n;
+    btn.onclick = function() {
+      if (!this.classList.contains('used')) {
+        sortSelected.push(parseInt(this.dataset.n));
+        this.classList.add('used');
+        this.style.opacity = '0.4';
+        this.style.cursor = 'default';
+
+        const tbox = document.createElement('div');
+        tbox.className = 'drag-num';
+        tbox.textContent = n;
+        tbox.style.background = 'linear-gradient(135deg,#7c3aed,#a855f7)';
+        tbox.style.cursor = 'pointer';
+        tbox.dataset.idx = sortSelected.length - 1;
+        tbox.onclick = function() {
+          // Remove last added (undo)
+          const idx = parseInt(this.dataset.idx);
+          if (idx === sortSelected.length - 1) {
+            sortSelected.pop();
+            this.remove();
+            // Re-enable source btn
+            const srcBtns = document.querySelectorAll('#sort-source .drag-num');
+            srcBtns.forEach(sb => {
+              if (parseInt(sb.dataset.n) === n) {
+                sb.classList.remove('used');
+                sb.style.opacity = '1';
+                sb.style.cursor = 'grab';
+              }
+            });
+          }
+        };
+        tgt.appendChild(tbox);
+      }
+    };
+    src.appendChild(btn);
+  });
+
+  document.getElementById('fb-sort').className = 'feedback';
+
+  // Clear canvas
+  const canvas = document.getElementById('canvas-sort-result');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+}
+
+function checkSortOrder() {
+  if (sortSelected.length !== sortNumbers.length) {
+    const fb = document.getElementById('fb-sort');
+    fb.className = 'feedback info';
+    fb.innerHTML = `⚠️ Selecciona todos los ${sortNumbers.length} números antes de verificar. Te faltan ${sortNumbers.length - sortSelected.length}.`;
+    return;
+  }
+
+  const sorted = [...sortNumbers].sort((a,b) => a - b);
+  const correct = sortSelected.every((n, i) => n === sorted[i]);
+  const fb = document.getElementById('fb-sort');
+
+  if (correct) {
+    fb.className = 'feedback correct';
+    fb.innerHTML = `🏆 ¡Excelente! El orden correcto de menor a mayor es: <strong>${sorted.join(' < ')}</strong>`;
+    // Draw on canvas
+    const lo = sorted[0] - 2, hi = sorted[sorted.length-1] + 2;
+    drawNumberLine('canvas-sort-result', null,
+      sorted.map((n,i) => ({ n, color: ['#3b82f6','#06b6d4','#10b981','#f59e0b','#7c3aed','#ef4444','#f43f5e'][i % 7], label: n.toString() })),
+      null, { min: lo, max: hi });
+  } else {
+    fb.className = 'feedback wrong';
+    fb.innerHTML = `❌ No es correcto. Tu orden: <strong>${sortSelected.join(', ')}</strong>. El correcto es: <strong>${sorted.join(' < ')}</strong>. ¡Inténtalo de nuevo!`;
+  }
+}
+
+/* ============================================================
+   SECTION 3: CONTEXTUAL EXERCISES
+============================================================ */
+function checkContextual() {
+  const t  = document.getElementById('temp-sign').value;
+  const a  = document.getElementById('age-sign').value;
+  const m  = document.getElementById('money-sign').value;
+  let score = 0;
+  let details = [];
+
+  if (t === '<') score++;
+  else details.push('Temperatura: −2°C &lt; 3°C (hoy fue más fría)');
+  if (a === '>') score++;
+  else details.push('Edad: 15 &gt; 12 (Juan es mayor)');
+  if (m === '<') score++;
+  else details.push('Dinero: 5 &lt; 8 (mi amigo tiene más)');
+
+  const fb = document.getElementById('fb-context');
+  if (score === 3) {
+    fb.className = 'feedback correct';
+    fb.innerHTML = '✅ ¡Perfecto! Las tres desigualdades son correctas.';
+  } else {
+    fb.className = 'feedback wrong';
+    fb.innerHTML = `❌ ${score}/3 correctas.<br>Correcciones: ${details.join('<br>')}`;
+  }
+}
+
+/* ============================================================
+   SECTION 4: PS CALCULATOR
+============================================================ */
+function updatePS() {
+  const n = parseInt(document.getElementById('ps-input').value) || 0;
+  document.getElementById('ps-ant').textContent = n - 1;
+  document.getElementById('ps-num').textContent = n;
+  document.getElementById('ps-suc').textContent = n + 1;
+  drawPSLine(n);
+}
+
+/* ============================================================
+   SECTION 4: PS EXERCISES
+============================================================ */
+let psExercises = [];
+
+function generatePSExercises() {
+  const nums = [];
+  for (let i = 0; i < 5; i++) {
+    nums.push(Math.floor(Math.random() * 41) - 20);
+  }
+  psExercises = nums;
+
+  const container = document.getElementById('ps-exercises');
+  container.innerHTML = '';
+  nums.forEach((n, i) => {
+    container.innerHTML += `
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px; flex-wrap:wrap">
+        <div style="min-width:160px; font-weight:700; font-size:15px; color:var(--navy)">Número: <strong>${n}</strong></div>
+        <div style="display:flex; align-items:center; gap:8px">
+          <span style="font-size:13px; color:var(--text-muted); font-weight:700">Antecesor:</span>
+          <input type="number" id="ps-ant-${i}" style="width:80px; border:2px solid #e2e8f0; border-radius:8px; padding:8px; font-size:15px; font-weight:700; font-family:Nunito,sans-serif" />
+          <span style="font-size:13px; color:var(--text-muted); font-weight:700">Sucesor:</span>
+          <input type="number" id="ps-suc-${i}" style="width:80px; border:2px solid #e2e8f0; border-radius:8px; padding:8px; font-size:15px; font-weight:700; font-family:Nunito,sans-serif" />
+        </div>
+      </div>
+    `;
+  });
+  document.getElementById('fb-ps').className = 'feedback';
+}
+
+function checkPSExercises() {
+  let correct = 0, details = [];
+  psExercises.forEach((n, i) => {
+    const antInput = parseInt(document.getElementById('ps-ant-' + i).value);
+    const sucInput = parseInt(document.getElementById('ps-suc-' + i).value);
+    const antOk = antInput === n - 1;
+    const sucOk = sucInput === n + 1;
+    if (antOk && sucOk) {
+      correct++;
+    } else {
+      details.push(`Número ${n}: ant.=${n-1}, suc.=${n+1}`);
+    }
+  });
+
+  const fb = document.getElementById('fb-ps');
+  if (correct === psExercises.length) {
+    fb.className = 'feedback correct';
+    fb.innerHTML = `🏆 ¡Perfecto! Todas correctas (${correct}/${psExercises.length}).`;
+  } else {
+    fb.className = 'feedback wrong';
+    fb.innerHTML = `❌ ${correct}/${psExercises.length} correctas. Respuestas: ${details.join(' | ')}`;
+  }
+}
+
+/* ============================================================
+   QUIZ DATA
+============================================================ */
+const quizData = [
+  {
+    q: '1. ¿Qué significa el símbolo ">" en matemáticas?',
+    opts: ['Menor que', 'Igual que', 'Mayor que', 'Desigual'],
+    ans: 2,
+    exp: 'El símbolo > significa "mayor que". La boca del símbolo apunta hacia el número mayor.'
+  },
+  {
+    q: '2. En la representación gráfica sobre la recta numérica, los números situados más hacia la derecha siempre son:',
+    opts: ['Iguales a los de la izquierda', 'Menores que los situados a su izquierda', 'Mayores que los situados a su izquierda', 'Equivalentes a cero'],
+    ans: 2,
+    exp: 'En la recta numérica, los números más a la derecha siempre son mayores.'
+  },
+  {
+    q: '3. ¿Cuál de las siguientes afirmaciones es CORRECTA al comparar diferentes tipos de números?',
+    opts: ['Todo número negativo es mayor que cualquier número positivo.', 'Cualquier número positivo es mayor que cualquier número negativo.', 'Los positivos y negativos son iguales si tienen el mismo valor absoluto.', 'Un número negativo es mayor dependiendo de qué tan lejos esté del cero.'],
+    ans: 1,
+    exp: 'Siempre: todo positivo > todo negativo. El 1 > −1000.'
+  },
+  {
+    q: '4. ¿Cuál es la relación correcta del número cero con respecto a los números negativos?',
+    opts: ['El cero es menor que cualquier número negativo.', 'El cero es igual a los números negativos.', 'El cero es mayor que cualquier número negativo.', 'El cero no se puede comparar con los números negativos.'],
+    ans: 2,
+    exp: 'El cero (0) es mayor que cualquier número negativo. Por ejemplo: 0 > −5.'
+  },
+  {
+    q: '5. Si comparamos dos números negativos en la recta numérica, ¿cuál de los dos es el MAYOR?',
+    opts: ['El que está más lejos del cero.', 'El que es más grande numéricamente sin contar el signo.', 'El que está más cerca del cero.', 'Siempre son iguales.'],
+    ans: 2,
+    exp: 'Entre dos negativos, el que está más cerca del cero es el mayor. Ejemplo: −2 > −9.'
+  },
+  {
+    q: '6. ¿Cuál es el resultado correcto al comparar los números enteros −8 y −3?',
+    opts: ['−8 > −3', '−8 < −3', '−8 = −3', '−3 < −8'],
+    ans: 1,
+    exp: '−8 < −3 porque −8 está más lejos del 0 (más a la izquierda en la recta numérica).'
+  },
+  {
+    q: '7. ¿Dónde se ubica el ANTECESOR de un número entero?',
+    opts: ['Es el valor inmediato posterior (+1), ubicado a la derecha.', 'Es el valor inmediato anterior (−1), situado a la izquierda.', 'Es el mismo número pero con signo contrario.', 'Es el número cero.'],
+    ans: 1,
+    exp: 'El antecesor es n − 1, siempre a la izquierda del número en la recta numérica.'
+  },
+  {
+    q: '8. En relación con su número original, el SUCESOR siempre es:',
+    opts: ['Menor que el número original.', 'Igual al número original.', 'Mayor que el número original.', 'Un número negativo.'],
+    ans: 2,
+    exp: 'El sucesor es n + 1, siempre mayor que el número original.'
+  },
+  {
+    q: '9. ¿Cuál es el antecesor y sucesor del número 5, respectivamente?',
+    opts: ['Antecesor 4, Sucesor 6', 'Antecesor 6, Sucesor 4', 'Antecesor −5, Sucesor +5', 'Antecesor 0, Sucesor 10'],
+    ans: 0,
+    exp: 'Antecesor de 5 = 5 − 1 = 4 · Sucesor de 5 = 5 + 1 = 6.'
+  },
+  {
+    q: '10. Para el número −4, ¿cuál es su antecesor y su sucesor respectivamente?',
+    opts: ['Antecesor −3, Sucesor −5', 'Antecesor −5, Sucesor −3', 'Antecesor 4, Sucesor 5', 'Antecesor −4, Sucesor −4'],
+    ans: 1,
+    exp: 'Antecesor de −4 = −4 − 1 = −5 (más a la izquierda). Sucesor = −4 + 1 = −3 (más cerca del 0).'
+  }
+];
+
+/* ============================================================
+   QUIZ LOGIC
+============================================================ */
+let quizState = {
+  current: 0,
+  answers: [],
+  answered: false
+};
+
+function initQuiz() {
+  quizState = { current: 0, answers: Array(10).fill(null), answered: false };
+  document.getElementById('quiz-result-area').style.display = 'none';
+  document.getElementById('quiz-question-area').style.display = 'block';
+  renderQuestion();
+}
+
+function renderDots() {
+  const container = document.getElementById('quiz-dots');
+  container.innerHTML = '';
+  quizData.forEach((q, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'quiz-dot';
+    dot.textContent = i + 1;
+    if (i === quizState.current) dot.classList.add('current');
+    if (quizState.answers[i] !== null) {
+      dot.classList.add(quizState.answers[i] === quizData[i].ans ? 'correct' : 'wrong');
+    }
+    container.appendChild(dot);
+  });
+}
+
+function renderQuestion() {
+  const q = quizData[quizState.current];
+  quizState.answered = quizState.answers[quizState.current] !== null;
+
+  const area = document.getElementById('quiz-question-area');
+  area.innerHTML = `
+    <div class="quiz-question">${q.q}</div>
+    <div class="quiz-options" id="quiz-opts"></div>
+    <div class="quiz-feedback" id="quiz-fb"></div>
+    <div style="display:flex; gap:10px; flex-wrap:wrap">
+      ${quizState.current > 0 ? '<button class="btn btn-secondary" onclick="quizNav(-1)">← Anterior</button>' : ''}
+      ${quizState.current < 9 ? '<button class="btn btn-primary" id="btn-next" onclick="quizNav(1)">Siguiente →</button>' : '<button class="btn btn-green" onclick="showQuizResult()">🏁 Ver resultado</button>'}
+    </div>
+  `;
+
+  const optsContainer = document.getElementById('quiz-opts');
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.innerHTML = `<span class="option-letter">${'ABCD'[i]}</span> ${opt}`;
+    btn.disabled = quizState.answered;
+
+    if (quizState.answered) {
+      if (i === q.ans) btn.classList.add('correct');
+      else if (i === quizState.answers[quizState.current]) btn.classList.add('wrong');
+    }
+
+    btn.onclick = () => selectAnswer(i);
+    optsContainer.appendChild(btn);
+  });
+
+  if (quizState.answered) {
+    showQuizFeedback();
+  }
+
+  renderDots();
+}
+
+function selectAnswer(i) {
+  if (quizState.answered) return;
+  quizState.answers[quizState.current] = i;
+  quizState.answered = true;
+  renderQuestion();
+}
+
+function showQuizFeedback() {
+  const q = quizData[quizState.current];
+  const chosen = quizState.answers[quizState.current];
+  const fb = document.getElementById('quiz-fb');
+  if (fb) {
+    const isCorrect = chosen === q.ans;
+    fb.className = `quiz-feedback show ${isCorrect ? 'correct' : 'wrong'}`;
+    fb.innerHTML = `${isCorrect ? '✅ ¡Correcto!' : '❌ Incorrecto.'} ${q.exp}`;
+  }
+}
+
+function quizNav(dir) {
+  quizState.current += dir;
+  if (quizState.current < 0) quizState.current = 0;
+  if (quizState.current >= quizData.length) quizState.current = quizData.length - 1;
+  renderQuestion();
+}
+
+function showQuizResult() {
+  const score = quizState.answers.filter((a, i) => a === quizData[i].ans).length;
+  const pct = (score / 10) * 100;
+
+  document.getElementById('quiz-question-area').style.display = 'none';
+  renderDots();
+
+  let emoji, msg, color;
+  if (score === 10)      { emoji = '🏆'; msg = '¡Perfecto! Dominas por completo este tema.'; color = 'var(--green)'; }
+  else if (score >= 8)   { emoji = '⭐'; msg = '¡Excelente! Muy buen manejo de los números enteros.'; color = 'var(--blue)'; }
+  else if (score >= 6)   { emoji = '👍'; msg = '¡Bien hecho! Revisa los conceptos que fallaste.'; color = 'var(--amber)'; }
+  else if (score >= 4)   { emoji = '📚'; msg = 'Necesitas repasar el contenido. ¡Tú puedes!'; color = 'var(--amber)'; }
+  else                   { emoji = '💪'; msg = 'Necesitas más práctica. ¡Vuelve a estudiar los módulos!'; color = 'var(--red)'; }
+
+  const result = document.getElementById('quiz-result-area');
+  result.style.display = 'block';
+  result.innerHTML = `
+    <div class="result-screen">
+      <div class="result-emoji">${emoji}</div>
+      <div class="result-score" style="color:${color}">${score}/10</div>
+      <div class="result-label">${pct}% de respuestas correctas</div>
+      <div class="result-bar-wrap">
+        <div class="result-bar" style="width:0%; background:${color}" id="res-bar"></div>
+      </div>
+      <div class="result-msg" style="color:${color}">${msg}</div>
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:8px">
+        <button class="btn btn-primary" onclick="initQuiz()">🔄 Reintentar evaluación</button>
+        <button class="btn btn-secondary" onclick="showSection('aprendizaje')">📖 Repasar contenido</button>
+      </div>
+    </div>
+  `;
+
+  setTimeout(() => {
+    const bar = document.getElementById('res-bar');
+    if (bar) bar.style.width = pct + '%';
+  }, 100);
+}
+
+/* ============================================================
+   INIT ON LOAD
+============================================================ */
+window.addEventListener('load', () => {
+  // Draw intro canvas
+  setTimeout(drawIntroLine, 100);
+  updateProgress();
+});
+</script>
+
+</body>
+</html>

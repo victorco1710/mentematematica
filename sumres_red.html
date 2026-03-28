@@ -1,0 +1,2075 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cálculo Mental – Suma y Resta con Redondeo | Mente Matemática</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet" />
+
+  <!-- =====================================================================
+       CSS GENERAL & VARIABLES
+       ===================================================================== -->
+  <style>
+    :root {
+      --navy:      #0d2b55;
+      --navy2:     #1a3f7a;
+      --blue:      #1e6fc0;
+      --blue-lt:   #4a9fe8;
+      --accent:    #f5a623;
+      --green:     #27ae60;
+      --red:       #e74c3c;
+      --gray-bg:   #f0f4f8;
+      --card-bg:   #ffffff;
+      --text:      #1c2d40;
+      --text-lt:   #5a6e82;
+      --sidebar-w: 260px;
+      --header-h:  68px;
+      --radius:    14px;
+      --shadow:    0 4px 20px rgba(0,0,0,.08);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--gray-bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: var(--header-h);
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 60%, var(--blue) 100%);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px 0 0;
+      box-shadow: 0 2px 16px rgba(0,0,0,.25);
+    }
+    .logo-wrap {
+      display: flex; align-items: center; gap: 12px;
+      padding: 0 20px;
+    }
+    .logo-icon {
+      width: 44px; height: 44px;
+      background: var(--accent);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 2px 8px rgba(245,166,35,.4);
+    }
+    .logo-text { color: #fff; }
+    .logo-text strong { font-family: 'Baloo 2', sans-serif; font-size: 20px; letter-spacing: 0.5px; }
+    .logo-text small { display: block; font-size: 11px; opacity: .75; }
+    .header-title {
+      color: #fff; font-size: 15px; font-weight: 700;
+      text-align: center; flex: 1;
+      text-transform: uppercase; letter-spacing: 1.5px;
+      opacity: .9;
+    }
+    .btn-back {
+      background: rgba(255,255,255,.15);
+      border: 1.5px solid rgba(255,255,255,.4);
+      color: #fff; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700;
+      padding: 8px 18px; border-radius: 24px; cursor: pointer;
+      transition: all .2s; white-space: nowrap;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-back:hover { background: rgba(255,255,255,.3); transform: translateY(-1px); }
+
+    /* ── LAYOUT ── */
+    .layout {
+      display: flex;
+      margin-top: var(--header-h);
+      min-height: calc(100vh - var(--header-h) - 50px);
+    }
+
+    /* ── SIDEBAR ── */
+    aside {
+      width: var(--sidebar-w);
+      min-width: var(--sidebar-w);
+      background: #fff;
+      position: sticky;
+      top: var(--header-h);
+      height: calc(100vh - var(--header-h));
+      overflow-y: auto;
+      box-shadow: 2px 0 12px rgba(0,0,0,.07);
+      z-index: 100;
+    }
+    .sidebar-header {
+      padding: 18px 16px 12px;
+      font-size: 11px; font-weight: 800;
+      color: var(--text-lt);
+      text-transform: uppercase; letter-spacing: 1.2px;
+      border-bottom: 1px solid #eef1f5;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 18px;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: all .2s;
+      font-size: 13.5px; font-weight: 600;
+      color: var(--text-lt);
+    }
+    .nav-item:hover { background: #f5f9ff; color: var(--blue); border-left-color: var(--blue-lt); }
+    .nav-item.active { background: #eaf2ff; color: var(--blue); border-left-color: var(--blue); }
+    .nav-item .nav-icon { font-size: 18px; flex-shrink: 0; }
+    .nav-item .nav-label { line-height: 1.3; }
+    .nav-item .nav-num {
+      margin-left: auto;
+      background: var(--blue);
+      color: #fff;
+      font-size: 10px; font-weight: 800;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-divider { height: 1px; background: #eef1f5; margin: 6px 16px; }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      flex: 1;
+      padding: 28px 32px 48px;
+      overflow-x: hidden;
+    }
+
+    /* ── SECTIONS ── */
+    .section { display: none; animation: fadeIn .4s ease; }
+    .section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px 28px;
+      margin-bottom: 24px;
+    }
+    .card-title {
+      font-family: 'Baloo 2', sans-serif;
+      font-size: 19px; font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .card-subtitle {
+      font-size: 14px; color: var(--text-lt);
+      margin-bottom: 16px;
+    }
+
+    /* ── PAGE HERO ── */
+    .section-hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+      border-radius: var(--radius);
+      padding: 32px 36px;
+      color: #fff;
+      margin-bottom: 26px;
+      position: relative; overflow: hidden;
+    }
+    .section-hero::before {
+      content: '';
+      position: absolute; top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.06);
+    }
+    .section-hero h1 {
+      font-family: 'Baloo 2', sans-serif;
+      font-size: 26px; margin-bottom: 8px;
+    }
+    .section-hero p { font-size: 15px; opacity: .88; max-width: 580px; }
+    .section-hero .emoji-big { font-size: 52px; position: absolute; right: 36px; top: 50%; transform: translateY(-50%); opacity: .3; }
+
+    /* ── VIDEO WRAPPER ── */
+    .video-wrapper {
+      background: #111;
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: 16px 0;
+      box-shadow: 0 6px 24px rgba(0,0,0,.2);
+    }
+    .video-wrapper video {
+      width: 100%; max-height: 420px;
+      display: block;
+    }
+
+    /* ── STEP CARDS ── */
+    .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 18px 0; }
+    .step-card {
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+      background: linear-gradient(135deg, #eef6ff, #e0eeff);
+      border: 1.5px solid #c3daf9;
+    }
+    .step-card .step-num {
+      width: 36px; height: 36px;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 16px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .step-card h4 { font-size: 14px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+    .step-card p { font-size: 13px; color: var(--text-lt); line-height: 1.5; }
+
+    /* ── EXAMPLE BLOCK ── */
+    .example-block {
+      background: #fffbf0;
+      border-left: 5px solid var(--accent);
+      border-radius: 0 10px 10px 0;
+      padding: 16px 20px;
+      margin: 12px 0;
+      font-size: 15px;
+    }
+    .example-block .ex-eq {
+      font-family: 'Baloo 2', sans-serif;
+      font-size: 18px; font-weight: 800;
+      color: var(--navy);
+    }
+    .example-block .ex-steps { color: var(--text-lt); font-size: 14px; margin-top: 4px; }
+    .example-block .ex-result { color: var(--green); font-weight: 800; font-size: 17px; }
+
+    .examples-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+
+    /* ── HIGHLIGHT BOX ── */
+    .highlight-box {
+      background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+      border: 1.5px solid #81c784;
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin: 16px 0;
+    }
+    .highlight-box.blue {
+      background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+      border-color: #64b5f6;
+    }
+    .highlight-box.orange {
+      background: linear-gradient(135deg, #fff8e1, #ffecb3);
+      border-color: #ffb74d;
+    }
+
+    /* ── FORMULA BOX ── */
+    .formula {
+      background: var(--navy);
+      color: #fff;
+      border-radius: 10px;
+      padding: 16px 22px;
+      font-family: 'Baloo 2', sans-serif;
+      font-size: 17px;
+      text-align: center;
+      margin: 16px 0;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── CANVAS SECTION ── */
+    .canvas-wrap {
+      background: #f7fbff;
+      border: 1.5px solid #d0e8ff;
+      border-radius: var(--radius);
+      padding: 16px;
+      margin: 16px 0;
+      text-align: center;
+    }
+    .canvas-wrap canvas { max-width: 100%; display: block; margin: 0 auto; }
+    .canvas-controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      padding: 10px 22px;
+      border: none; border-radius: 8px;
+      font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700;
+      cursor: pointer; transition: all .2s;
+    }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-primary:hover { background: var(--navy2); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(30,111,192,.3); }
+    .btn-success { background: var(--green); color: #fff; }
+    .btn-success:hover { background: #219a52; }
+    .btn-accent { background: var(--accent); color: #fff; }
+    .btn-accent:hover { background: #e0951a; }
+    .btn-outline { background: transparent; border: 2px solid var(--blue); color: var(--blue); }
+    .btn-outline:hover { background: var(--blue); color: #fff; }
+
+    /* ── INTERACTIVE ACTIVITY ── */
+    .activity-box {
+      background: linear-gradient(135deg, #f0f8ff, #e8f4fd);
+      border: 2px solid #b3d9f7;
+      border-radius: var(--radius);
+      padding: 22px;
+      margin: 18px 0;
+    }
+    .activity-box h3 { font-size: 16px; color: var(--navy); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .activity-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 10px 0; }
+    .activity-problem { font-family: 'Baloo 2', sans-serif; font-size: 20px; font-weight: 800; color: var(--navy); min-width: 120px; }
+    .activity-input {
+      width: 100px; padding: 10px 14px;
+      border: 2px solid #b3d9f7; border-radius: 8px;
+      font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 700;
+      color: var(--text); outline: none; transition: border-color .2s;
+    }
+    .activity-input:focus { border-color: var(--blue); }
+    .activity-input.correct { border-color: var(--green); background: #f0fff4; }
+    .activity-input.wrong { border-color: var(--red); background: #fff5f5; }
+    .feedback-msg { font-size: 14px; font-weight: 700; padding: 6px 12px; border-radius: 6px; }
+    .feedback-msg.ok { background: #d4edda; color: #155724; }
+    .feedback-msg.fail { background: #f8d7da; color: #721c24; }
+    .hint-text { font-size: 13px; color: var(--text-lt); margin-top: 8px; font-style: italic; }
+
+    /* ── TIMER ── */
+    #timer-circle-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .timer-svg { transform: rotate(-90deg); }
+    .timer-num {
+      font-family: 'Baloo 2', sans-serif;
+      font-size: 32px; font-weight: 800;
+      color: var(--navy);
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .timer-wrap { position: relative; display: inline-flex; }
+    .practice-problem {
+      font-family: 'Baloo 2', sans-serif;
+      font-size: 40px; font-weight: 900;
+      color: var(--navy);
+      text-align: center;
+      margin: 20px 0;
+      letter-spacing: 1px;
+    }
+    .practice-input {
+      width: 160px; padding: 14px 18px;
+      border: 3px solid var(--blue); border-radius: 12px;
+      font-family: 'Baloo 2', sans-serif; font-size: 26px; font-weight: 800;
+      text-align: center; color: var(--navy); outline: none;
+      transition: all .2s;
+    }
+    .practice-input:focus { box-shadow: 0 0 0 3px rgba(30,111,192,.2); }
+    .score-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--blue); color: #fff;
+      padding: 8px 18px; border-radius: 24px;
+      font-weight: 800; font-size: 15px;
+    }
+    #practice-feedback {
+      font-size: 18px; font-weight: 800;
+      text-align: center; min-height: 28px;
+      padding: 8px 0;
+    }
+    #practice-feedback.ok { color: var(--green); }
+    #practice-feedback.fail { color: var(--red); }
+
+    /* ── EVAL ── */
+    .eval-q {
+      background: #fff;
+      border-radius: 12px;
+      border: 1.5px solid #e2edf5;
+      padding: 20px 24px;
+      margin: 14px 0;
+      transition: border-color .2s;
+    }
+    .eval-q.answered-ok { border-color: var(--green); background: #f0fff4; }
+    .eval-q.answered-fail { border-color: var(--red); background: #fff5f5; }
+    .eval-q .q-text { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: var(--navy); }
+    .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .opt-btn {
+      padding: 10px 14px; border-radius: 8px;
+      border: 2px solid #d0e5f7; background: #f5faff;
+      font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 600;
+      cursor: pointer; text-align: left; transition: all .2s;
+    }
+    .opt-btn:hover:not(:disabled) { border-color: var(--blue); background: #eaf2ff; }
+    .opt-btn.selected-ok { border-color: var(--green); background: #d4edda; color: #155724; font-weight: 800; }
+    .opt-btn.selected-fail { border-color: var(--red); background: #f8d7da; color: #721c24; font-weight: 800; }
+    .opt-btn.correct-reveal { border-color: var(--green); background: #d4edda; color: #155724; }
+    .q-feedback { font-size: 13px; margin-top: 10px; padding: 8px 12px; border-radius: 6px; font-weight: 600; }
+    .q-feedback.ok { background: #d4edda; color: #155724; }
+    .q-feedback.fail { background: #f8d7da; color: #721c24; }
+
+    /* ── SCORE DISPLAY ── */
+    .score-display {
+      text-align: center; padding: 32px 24px;
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      border-radius: var(--radius); color: #fff; margin: 20px 0;
+    }
+    .score-display .big-num {
+      font-family: 'Baloo 2', sans-serif;
+      font-size: 72px; font-weight: 900; line-height: 1;
+    }
+    .score-display p { font-size: 18px; opacity: .9; margin-top: 8px; }
+    .score-bar-outer { background: rgba(255,255,255,.2); border-radius: 8px; height: 12px; margin: 16px auto; max-width: 340px; }
+    .score-bar-inner { height: 12px; border-radius: 8px; background: var(--accent); transition: width 1s ease; }
+
+    /* ── WELCOME ── */
+    .welcome-wrap { max-width: 720px; margin: 0 auto; text-align: center; padding: 40px 20px; }
+    .welcome-wrap .big-emoji { font-size: 80px; margin-bottom: 18px; }
+    .welcome-wrap h1 { font-family: 'Baloo 2', sans-serif; font-size: 34px; color: var(--navy); margin-bottom: 12px; }
+    .welcome-wrap p { font-size: 16px; color: var(--text-lt); line-height: 1.7; margin-bottom: 20px; }
+    .objectives-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin: 24px 0; text-align: left; }
+    .obj-card {
+      background: #fff; border-radius: 12px; padding: 16px 18px;
+      box-shadow: var(--shadow); border-top: 4px solid var(--blue);
+      font-size: 14px; font-weight: 600; color: var(--text);
+    }
+    .obj-card .obj-icon { font-size: 24px; margin-bottom: 8px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,.7);
+      text-align: center;
+      padding: 14px 20px;
+      font-size: 13px;
+    }
+
+    /* ── PROGRESS TRACKER ── */
+    .module-progress {
+      display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 20px;
+    }
+    .prog-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: #d0e5f7;
+      transition: background .3s;
+    }
+    .prog-dot.done { background: var(--green); }
+
+    /* ── TABLE ── */
+    .info-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .info-table th { background: var(--navy); color: #fff; padding: 10px 14px; text-align: left; }
+    .info-table td { padding: 10px 14px; border-bottom: 1px solid #e8eef5; }
+    .info-table tr:nth-child(even) td { background: #f5f9ff; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      aside { position: fixed; left: -270px; top: var(--header-h); transition: left .3s; z-index: 150; }
+      aside.open { left: 0; }
+      main { padding: 20px 16px 40px; }
+      .header-title { display: none; }
+      .options-grid { grid-template-columns: 1fr; }
+    }
+
+    /* scrollbar */
+    aside::-webkit-scrollbar { width: 5px; }
+    aside::-webkit-scrollbar-thumb { background: #d0e5f7; border-radius: 4px; }
+
+    /* practice status indicator */
+    #practice-status { font-size: 15px; color: var(--text-lt); text-align: center; margin-bottom: 8px; }
+    
+    /* table step visualization */
+    .step-table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+    .step-table td { padding: 8px 14px; border: 1px solid #d0e5f7; font-size: 14px; }
+    .step-table .step-label { background: var(--navy); color: #fff; font-weight: 700; width: 80px; }
+    .step-table .step-val { background: #f5faff; font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 16px; }
+    .step-table .step-note { color: var(--text-lt); font-style: italic; font-size: 13px; }
+  </style>
+</head>
+<body>
+
+<!-- =====================================================================
+     HEADER
+     ===================================================================== -->
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">🧮</div>
+    <div class="logo-text">
+      <strong>Mente Matemática</strong>
+      <small>Plataforma de Aprendizaje</small>
+    </div>
+  </div>
+  <div class="header-title">Cálculo Mental – Suma y Resta con Redondeo</div>
+  <a href="temario.html" class="btn-back">← Volver al menú</a>
+</header>
+
+<!-- =====================================================================
+     LAYOUT
+     ===================================================================== -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <div class="sidebar-header">📚 Módulos de Aprendizaje</div>
+
+    <div class="nav-item active" onclick="showSection('welcome')">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Bienvenida</span>
+    </div>
+    <div class="nav-item" onclick="showSection('aprenderemos')">
+      <span class="nav-icon">🎬</span>
+      <span class="nav-label">¿Qué aprenderemos?</span>
+    </div>
+
+    <div class="nav-divider"></div>
+    <div style="padding:6px 18px;font-size:11px;font-weight:800;color:var(--text-lt);text-transform:uppercase;letter-spacing:1px;">Módulos</div>
+
+    <div class="nav-item" onclick="showSection('m1')">
+      <span class="nav-icon">🧠</span>
+      <span class="nav-label">1. El Método de la Manipulación</span>
+      <span class="nav-num">1</span>
+    </div>
+    <div class="nav-item" onclick="showSection('m2')">
+      <span class="nav-icon">🔢</span>
+      <span class="nav-label">2. Suma de 2 Dígitos</span>
+      <span class="nav-num">2</span>
+    </div>
+    <div class="nav-item" onclick="showSection('m3')">
+      <span class="nav-icon">🏗️</span>
+      <span class="nav-label">3. Suma de 3 y 4 Dígitos</span>
+      <span class="nav-num">3</span>
+    </div>
+    <div class="nav-item" onclick="showSection('m4')">
+      <span class="nav-icon">➖</span>
+      <span class="nav-label">4. Resta de 2 Dígitos</span>
+      <span class="nav-num">4</span>
+    </div>
+    <div class="nav-item" onclick="showSection('m5')">
+      <span class="nav-icon">🏗️</span>
+      <span class="nav-label">5. Resta de 3 y 4 Dígitos</span>
+      <span class="nav-num">5</span>
+    </div>
+    <div class="nav-item" onclick="showSection('m6')">
+      <span class="nav-icon">⚡</span>
+      <span class="nav-label">6. Práctica con Tiempo</span>
+      <span class="nav-num">6</span>
+    </div>
+
+    <div class="nav-divider"></div>
+    <div class="nav-item" onclick="showSection('eval')">
+      <span class="nav-icon">📝</span>
+      <span class="nav-label">Evaluación Final</span>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         BIENVENIDA
+         ═══════════════════════════════════════════════════════════════ -->
+    <div id="welcome" class="section active">
+      <div class="welcome-wrap">
+        <div class="big-emoji">🧮</div>
+        <h1>¡Hola, Genio/a de las Matemáticas! 👋</h1>
+        <p>
+          ¿Alguna vez has deseado sumar y restar números grandes tan rápido como una calculadora?
+          ¡Hoy vas a aprender el <strong>«truco secreto»</strong> de los expertos! No se trata de sufrir,
+          sino de <strong>jugar con los números</strong>.
+        </p>
+        <p>
+          Imagina que los números son piezas de construcción que puedes desarmar y volver a armar
+          a tu antojo para que sean más fáciles de manejar. ¡Prepárate para sorprender a todos con
+          tu velocidad mental! 🚀
+        </p>
+
+        <div class="objectives-grid">
+          <div class="obj-card">
+            <div class="obj-icon">🎯</div>
+            Transformar números difíciles en números «amigables» (terminados en 0)
+          </div>
+          <div class="obj-card">
+            <div class="obj-icon">⚡</div>
+            Realizar cálculos mentales de 2, 3 y 4 dígitos sin usar calculadora
+          </div>
+          <div class="obj-card">
+            <div class="obj-icon">🏆</div>
+            Desarrollar agilidad mental para resolver problemas de la vida diaria
+          </div>
+          <div class="obj-card">
+            <div class="obj-icon">🎮</div>
+            Practicar con actividades interactivas y evaluación automática
+          </div>
+        </div>
+
+        <button class="btn btn-primary" style="font-size:16px;padding:14px 32px;" onclick="showSection('aprenderemos')">
+          ¡Comenzar el aprendizaje! →
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         ¿QUÉ APRENDEREMOS?
+         ═══════════════════════════════════════════════════════════════ -->
+    <div id="aprenderemos" class="section">
+      <div class="section-hero">
+        <h1>🎬 ¿Qué aprenderemos?</h1>
+        <p>Conoce el mapa completo de este módulo y prepárate para dominar el cálculo mental</p>
+        <div class="emoji-big">🗺️</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🎯 Objetivo General</div>
+        <div class="highlight-box blue">
+          Aprender y aplicar la técnica de <strong>redondeo y compensación</strong> para realizar
+          sumas y restas de varias cifras de forma mental y eficiente.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🗺️ Mapa del Aprendizaje</div>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <h4>🧠 El Método</h4>
+            <p>Aprende los 4 pasos para manipular números</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <h4>🔢 Suma 2 dígitos</h4>
+            <p>Aplica la técnica con números pequeños</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <h4>🏗️ Suma 3-4 dígitos</h4>
+            <p>Escala la técnica a números grandes</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <h4>➖ Resta 2 dígitos</h4>
+            <p>Aplica el método en operaciones de resta</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">5</div>
+            <h4>🏗️ Resta 3-4 dígitos</h4>
+            <p>Domina restas con números grandes</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">6</div>
+            <h4>⚡ Práctica Cronometrada</h4>
+            <p>¡6 segundos para demostrar tu velocidad!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">💡 La Idea Central: Redondeo y Compensación</div>
+        <p style="margin-bottom:16px;line-height:1.7;">
+          La idea es muy simple: en lugar de operar con números «difíciles», los convertimos
+          en números «amigables» (terminados en 0, 00 o 000) y luego <strong>compensamos</strong>
+          la diferencia.
+        </p>
+        <div class="formula">
+          Número difícil → Redondear → Operar fácil → Compensar = ¡Resultado!
+        </div>
+        <div class="highlight-box orange">
+          <strong>Ejemplo rápido:</strong> 39 + 45<br/>
+          → Redondeo 39 a 40 (le sumo 1)<br/>
+          → 40 + 45 = 85<br/>
+          → Compenso: resto el 1 que añadí → 85 − 1 = <strong>84 ✅</strong>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:20px;">
+        <button class="btn btn-primary" onclick="showSection('m1')">Ir al Módulo 1 →</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         MÓDULO 1: EL MÉTODO DE LA MANIPULACIÓN
+         ═══════════════════════════════════════════════════════════════ -->
+    <div id="m1" class="section">
+      <div class="section-hero">
+        <h1>🧠 Módulo 1: El Método de la Manipulación</h1>
+        <p>Aprende los 4 pasos para convertir cualquier cálculo en algo sencillo</p>
+        <div class="emoji-big">🔮</div>
+      </div>
+
+      <!-- VIDEO -->
+      <div class="card">
+        <div class="card-title">🎬 Video explicativo</div>
+        <div class="video-wrapper">
+          <video controls preload="metadata">
+            <source src="vid/sumxred .mp4" type="video/mp4" />
+            <p style="color:#aaa;padding:20px;text-align:center;">
+              📹 Video no disponible. Coloca el archivo <strong>vid/sumxred.mp4</strong> en la misma carpeta que este HTML.
+            </p>
+          </video>
+        </div>
+      </div>
+
+      <!-- CONCEPTO -->
+      <div class="card">
+        <div class="card-title">📚 ¿En qué consiste la técnica?</div>
+        <p style="line-height:1.8;margin-bottom:16px;">
+          La técnica consiste en <strong>modificar una de las cantidades</strong> para convertirla
+          en un número redondo (como 20, 80, 100 o 1000) que sea más fácil de sumar o restar,
+          y luego <strong>compensar</strong> la diferencia.
+        </p>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <h4>🔍 Observar</h4>
+            <p>Identifica el número que esté más cerca de una decena o centena redonda</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <h4>✏️ Modificar</h4>
+            <p>Suma o resta mentalmente lo necesario para redondear ese número</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <h4>🧮 Operar</h4>
+            <p>Realiza la suma o resta con el nuevo número amigable</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <h4>⚖️ Compensar</h4>
+            <p>Si añadiste antes, ahora quita (o viceversa) para volver al valor original</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CANVAS INTERACTIVO: Línea numérica -->
+      <div class="card">
+        <div class="card-title">🎨 Visualización Interactiva: Línea Numérica</div>
+        <p class="card-subtitle">Escribe un número del 1 al 99 y observa cómo se redondea a la decena más cercana</p>
+        <div class="canvas-wrap">
+          <canvas id="canvas-numline" width="680" height="160"></canvas>
+          <div class="canvas-controls">
+            <input type="number" id="nl-input" placeholder="Ej: 37" min="1" max="99"
+              style="width:90px;padding:8px 12px;border:2px solid var(--blue);border-radius:8px;font-size:16px;font-weight:700;outline:none;" />
+            <button class="btn btn-primary" onclick="drawNumberLine()">Visualizar →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- EJEMPLOS DETALLADOS -->
+      <div class="card">
+        <div class="card-title">💡 Ejemplos Detallados con Tabla de Pasos</div>
+        <div class="example-block">
+          <div class="ex-eq">Ejemplo: 18 + 34</div>
+          <table class="step-table">
+            <tr><td class="step-label">Observar</td><td class="step-val">18</td><td class="step-note">Está cerca de 20 (le faltan 2)</td></tr>
+            <tr><td class="step-label">Modificar</td><td class="step-val">18 → 20</td><td class="step-note">Sumamos 2 para llegar a 20</td></tr>
+            <tr><td class="step-label">Operar</td><td class="step-val">20 + 34 = 54</td><td class="step-note">¡Fácil con número redondo!</td></tr>
+            <tr><td class="step-label">Compensar</td><td class="step-val">54 − 2 = <strong>52</strong></td><td class="step-note">Quitamos los 2 que añadimos</td></tr>
+          </table>
+        </div>
+        <div class="example-block">
+          <div class="ex-eq">Ejemplo: 97 + 46</div>
+          <table class="step-table">
+            <tr><td class="step-label">Observar</td><td class="step-val">97</td><td class="step-note">Está cerca de 100 (le faltan 3)</td></tr>
+            <tr><td class="step-label">Modificar</td><td class="step-val">97 → 100</td><td class="step-note">Sumamos 3 para llegar a 100</td></tr>
+            <tr><td class="step-label">Operar</td><td class="step-val">100 + 46 = 146</td><td class="step-note">Suma sencilla</td></tr>
+            <tr><td class="step-label">Compensar</td><td class="step-val">146 − 3 = <strong>143</strong></td><td class="step-note">Quitamos los 3 que añadimos</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- ACTIVIDAD -->
+      <div class="activity-box">
+        <h3>🎮 Actividad: Practica el método</h3>
+        <p style="font-size:14px;margin-bottom:12px;color:var(--text-lt);">¿Cuál es el número redondeado más cercano (a decenas) de estos números?</p>
+        <div id="m1-activities"></div>
+        <button class="btn btn-accent" style="margin-top:10px;" onclick="generateM1Activities()">🔄 Nuevos ejercicios</button>
+      </div>
+
+      <div style="text-align:right;margin-top:16px;">
+        <button class="btn btn-primary" onclick="showSection('m2')">Siguiente módulo →</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         MÓDULO 2: SUMA DE 2 DÍGITOS
+         ═══════════════════════════════════════════════════════════════ -->
+    <div id="m2" class="section">
+      <div class="section-hero">
+        <h1>🔢 Módulo 2: Suma de 2 Dígitos</h1>
+        <p>Descomposición paso a paso aplicando redondeo</p>
+        <div class="emoji-big">➕</div>
+      </div>
+
+      <!-- VIDEO -->
+      <div class="card">
+        <div class="card-title">🎬 Video explicativo</div>
+        <div class="video-wrapper">
+          <video controls preload="metadata">
+            <source src="vid/sumxred .mp4" type="video/mp4" />
+            <p style="color:#aaa;padding:20px;text-align:center;">
+              📹 Video no disponible. Coloca el archivo <strong>vid/2sumxred.mp4</strong> en la misma carpeta.
+            </p>
+          </video>
+        </div>
+      </div>
+
+      <!-- EJEMPLOS DEL DOCUMENTO -->
+      <div class="card">
+        <div class="card-title">📖 Ejemplos del libro (técnica de redondeo)</div>
+        <div class="examples-grid">
+          <div class="example-block">
+            <div class="ex-eq">18 + 34</div>
+            <div class="ex-steps">(20 − 2) + 34 → 54 − 2</div>
+            <div class="ex-result">= 52 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">77 + 64</div>
+            <div class="ex-steps">(80 − 3) + 64 → 144 − 3</div>
+            <div class="ex-result">= 141 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">49 + 25</div>
+            <div class="ex-steps">(50 − 1) + 25 → 75 − 1</div>
+            <div class="ex-result">= 74 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">38 + 47</div>
+            <div class="ex-steps">(40 − 2) + 47 → 87 − 2</div>
+            <div class="ex-result">= 85 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">17 + 55</div>
+            <div class="ex-steps">(20 − 3) + 55 → 75 − 3</div>
+            <div class="ex-result">= 72 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">44 + 28</div>
+            <div class="ex-steps">44 + (30 − 2) → 74 − 2</div>
+            <div class="ex-result">= 72 ✓</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EJEMPLOS ADICIONALES -->
+      <div class="card">
+        <div class="card-title">🌟 Más ejemplos ilustrativos</div>
+        <div class="examples-grid">
+          <div class="example-block">
+            <div class="ex-eq">29 + 46</div>
+            <div class="ex-steps">(30 − 1) + 46 → 76 − 1</div>
+            <div class="ex-result">= 75 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">57 + 38</div>
+            <div class="ex-steps">57 + (40 − 2) → 97 − 2</div>
+            <div class="ex-result">= 95 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">68 + 25</div>
+            <div class="ex-steps">(70 − 2) + 25 → 95 − 2</div>
+            <div class="ex-result">= 93 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">87 + 44</div>
+            <div class="ex-steps">(90 − 3) + 44 → 134 − 3</div>
+            <div class="ex-result">= 131 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">48 + 48</div>
+            <div class="ex-steps">(50 − 2) + 48 → 98 − 2</div>
+            <div class="ex-result">= 96 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">19 + 84</div>
+            <div class="ex-steps">(20 − 1) + 84 → 104 − 1</div>
+            <div class="ex-result">= 103 ✓</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CANVAS ANIMADO -->
+      <div class="card">
+        <div class="card-title">🎨 Visualizador Interactivo de Suma</div>
+        <p class="card-subtitle">Escribe dos números de 2 dígitos para ver los pasos de descomposición</p>
+        <div class="canvas-wrap">
+          <canvas id="canvas-sum2" width="680" height="200"></canvas>
+          <div class="canvas-controls">
+            <input type="number" id="s2a" placeholder="Ej: 47" min="10" max="99" style="width:80px;padding:8px;border:2px solid var(--blue);border-radius:8px;font-size:15px;font-weight:700;outline:none;" />
+            <span style="font-size:20px;font-weight:800;color:var(--navy)">+</span>
+            <input type="number" id="s2b" placeholder="Ej: 35" min="10" max="99" style="width:80px;padding:8px;border:2px solid var(--blue);border-radius:8px;font-size:15px;font-weight:700;outline:none;" />
+            <button class="btn btn-primary" onclick="drawSum2Canvas()">Mostrar pasos →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVIDADES -->
+      <div class="activity-box">
+        <h3>🎮 Actividad: Suma con redondeo</h3>
+        <p style="font-size:14px;margin-bottom:14px;color:var(--text-lt);">Resuelve usando la técnica de redondeo:</p>
+        <div id="m2-activities"></div>
+        <button class="btn btn-accent" style="margin-top:10px;" onclick="generateM2Activities()">🔄 Nuevos ejercicios</button>
+      </div>
+
+      <div style="text-align:right;margin-top:16px;">
+        <button class="btn btn-primary" onclick="showSection('m3')">Siguiente módulo →</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         MÓDULO 3: SUMA DE 3 Y 4 DÍGITOS
+         ═══════════════════════════════════════════════════════════════ -->
+    <div id="m3" class="section">
+      <div class="section-hero">
+        <h1>🏗️ Módulo 3: Suma de 3 y 4 Dígitos</h1>
+        <p>Descomposición completa con números grandes</p>
+        <div class="emoji-big">🔭</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📚 Principio clave para 3 y 4 dígitos</div>
+        <div class="highlight-box blue">
+          El mismo método funciona con números más grandes: redondeamos a la
+          <strong>centena o millar</strong> más cercana, operamos y compensamos.
+        </div>
+        <div class="formula">A + B → Redondear A a centena/millar → Operar → Compensar</div>
+      </div>
+
+      <!-- EJEMPLOS DEL DOCUMENTO -->
+      <div class="card">
+        <div class="card-title">📖 Ejemplos del libro</div>
+        <div class="examples-grid">
+          <div class="example-block">
+            <div class="ex-eq">796 + 537</div>
+            <div class="ex-steps">(800 − 4) + 537 → 1337 − 4</div>
+            <div class="ex-result">= 1333 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">998 + 450</div>
+            <div class="ex-steps">(1000 − 2) + 450 → 1450 − 2</div>
+            <div class="ex-result">= 1448 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">2495 + 1100</div>
+            <div class="ex-steps">(2500 − 5) + 1100 → 3600 − 5</div>
+            <div class="ex-result">= 3595 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">490 + 320</div>
+            <div class="ex-steps">(500 − 10) + 320 → 820 − 10</div>
+            <div class="ex-result">= 810 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">5997 + 2000</div>
+            <div class="ex-steps">(6000 − 3) + 2000 → 8000 − 3</div>
+            <div class="ex-result">= 7997 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">880 + 125</div>
+            <div class="ex-steps">(900 − 20) + 125 → 1025 − 20</div>
+            <div class="ex-result">= 1005 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">399 + 601</div>
+            <div class="ex-steps">(400 − 1) + 601 → 1001 − 1</div>
+            <div class="ex-result">= 1000 ✓</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EJEMPLOS ADICIONALES -->
+      <div class="card">
+        <div class="card-title">🌟 Más ejemplos con números grandes</div>
+        <div class="examples-grid">
+          <div class="example-block">
+            <div class="ex-eq">1250 + 995</div>
+            <div class="ex-steps">1250 + (1000 − 5) → 2250 − 5</div>
+            <div class="ex-result">= 2245 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">795 + 210</div>
+            <div class="ex-steps">(800 − 5) + 210 → 1010 − 5</div>
+            <div class="ex-result">= 1005 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">399 + 150</div>
+            <div class="ex-steps">(400 − 1) + 150 → 550 − 1</div>
+            <div class="ex-result">= 549 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">180 + 345</div>
+            <div class="ex-steps">(200 − 20) + 345 → 545 − 20</div>
+            <div class="ex-result">= 525 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">499 + 499</div>
+            <div class="ex-steps">(500 − 1) + (500 − 1) → 1000 − 2</div>
+            <div class="ex-result">= 998 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">3997 + 1500</div>
+            <div class="ex-steps">(4000 − 3) + 1500 → 5500 − 3</div>
+            <div class="ex-result">= 5497 ✓</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CANVAS -->
+      <div class="card">
+        <div class="card-title">🎨 Visualizador de Suma 3-4 Dígitos</div>
+        <div class="canvas-wrap">
+          <canvas id="canvas-sum34" width="680" height="200"></canvas>
+          <div class="canvas-controls">
+            <input type="number" id="s34a" placeholder="Ej: 796" min="100" max="9999" style="width:100px;padding:8px;border:2px solid var(--blue);border-radius:8px;font-size:15px;font-weight:700;outline:none;" />
+            <span style="font-size:20px;font-weight:800;color:var(--navy)">+</span>
+            <input type="number" id="s34b" placeholder="Ej: 537" min="100" max="9999" style="width:100px;padding:8px;border:2px solid var(--blue);border-radius:8px;font-size:15px;font-weight:700;outline:none;" />
+            <button class="btn btn-primary" onclick="drawSum34Canvas()">Ver pasos →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVIDADES -->
+      <div class="activity-box">
+        <h3>🎮 Actividad: Suma de números grandes</h3>
+        <div id="m3-activities"></div>
+        <button class="btn btn-accent" style="margin-top:10px;" onclick="generateM3Activities()">🔄 Nuevos ejercicios</button>
+      </div>
+
+      <div style="text-align:right;margin-top:16px;">
+        <button class="btn btn-primary" onclick="showSection('m4')">Siguiente módulo →</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         MÓDULO 4: RESTA DE 2 DÍGITOS
+         ═══════════════════════════════════════════════════════════════ -->
+    <div id="m4" class="section">
+      <div class="section-hero">
+        <h1>➖ Módulo 4: Resta de 2 Dígitos</h1>
+        <p>Domina la resta aplicando el método de redondeo</p>
+        <div class="emoji-big">🔍</div>
+      </div>
+
+      <!-- VIDEO -->
+      <div class="card">
+        <div class="card-title">🎬 Video explicativo</div>
+        <div class="video-wrapper">
+          <video controls preload="metadata">
+            <source src="vid/resxdes.mp4" type="video/mp4" />
+            <p style="color:#aaa;padding:20px;text-align:center;">
+              📹 Video no disponible. Coloca el archivo <strong>vid/resxdes.mp4</strong> en la misma carpeta.
+            </p>
+          </video>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📚 Técnica de Resta con Redondeo</div>
+        <p style="line-height:1.8;margin-bottom:16px;">
+          Para la resta, <strong>redondeamos el sustraendo</strong> (el número que restamos) a la
+          decena o centena más cercana. Si lo aumentamos para redondear, luego
+          <strong>devolvemos</strong> esa diferencia.
+        </p>
+        <div class="formula">A − B → Redondear B → A − B_redondeado → Compensar (sumar diferencia)</div>
+        <div class="highlight-box orange">
+          <strong>Truco clave:</strong> Si le sumaste al sustraendo para redondearlo, entonces
+          al final debes <em>sumar</em> ese valor al resultado (no restar).
+        </div>
+      </div>
+
+      <!-- EJEMPLOS DEL DOCUMENTO -->
+      <div class="card">
+        <div class="card-title">📖 Ejemplos del libro</div>
+        <div class="examples-grid">
+          <div class="example-block">
+            <div class="ex-eq">56 − 27</div>
+            <div class="ex-steps">56 − (30 − 3) → 26 + 3</div>
+            <div class="ex-result">= 29 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">93 − 76</div>
+            <div class="ex-steps">93 − (80 − 4) → 13 + 4</div>
+            <div class="ex-result">= 17 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">89 − 45</div>
+            <div class="ex-steps">(90 − 1) − 45 → 45 − 1</div>
+            <div class="ex-result">= 44 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">62 − 39</div>
+            <div class="ex-steps">62 − (40 − 1) → 22 + 1</div>
+            <div class="ex-result">= 23 ✓</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EJEMPLOS ADICIONALES -->
+      <div class="card">
+        <div class="card-title">🌟 Más ejemplos de 2 dígitos</div>
+        <div class="examples-grid">
+          <div class="example-block">
+            <div class="ex-eq">64 − 19</div>
+            <div class="ex-steps">64 − (20 − 1) → 44 + 1</div>
+            <div class="ex-result">= 45 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">82 − 38</div>
+            <div class="ex-steps">82 − (40 − 2) → 42 + 2</div>
+            <div class="ex-result">= 44 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">55 − 27</div>
+            <div class="ex-steps">55 − (30 − 3) → 25 + 3</div>
+            <div class="ex-result">= 28 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">91 − 49</div>
+            <div class="ex-steps">91 − (50 − 1) → 41 + 1</div>
+            <div class="ex-result">= 42 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">73 − 56</div>
+            <div class="ex-steps">73 − (60 − 4) → 13 + 4</div>
+            <div class="ex-result">= 17 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">85 − 67</div>
+            <div class="ex-steps">85 − (70 − 3) → 15 + 3</div>
+            <div class="ex-result">= 18 ✓</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CANVAS -->
+      <div class="card">
+        <div class="card-title">🎨 Visualizador de Resta 2 Dígitos</div>
+        <div class="canvas-wrap">
+          <canvas id="canvas-sub2" width="680" height="200"></canvas>
+          <div class="canvas-controls">
+            <input type="number" id="sub2a" placeholder="Ej: 73" min="10" max="99" style="width:80px;padding:8px;border:2px solid var(--blue);border-radius:8px;font-size:15px;font-weight:700;outline:none;" />
+            <span style="font-size:20px;font-weight:800;color:var(--navy)">−</span>
+            <input type="number" id="sub2b" placeholder="Ej: 46" min="10" max="99" style="width:80px;padding:8px;border:2px solid var(--blue);border-radius:8px;font-size:15px;font-weight:700;outline:none;" />
+            <button class="btn btn-primary" onclick="drawSub2Canvas()">Ver pasos →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVIDADES -->
+      <div class="activity-box">
+        <h3>🎮 Actividad: Resta de 2 dígitos</h3>
+        <div id="m4-activities"></div>
+        <button class="btn btn-accent" style="margin-top:10px;" onclick="generateM4Activities()">🔄 Nuevos ejercicios</button>
+      </div>
+
+      <div style="text-align:right;margin-top:16px;">
+        <button class="btn btn-primary" onclick="showSection('m5')">Siguiente módulo →</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         MÓDULO 5: RESTA DE 3 Y 4 DÍGITOS
+         ═══════════════════════════════════════════════════════════════ -->
+    <div id="m5" class="section">
+      <div class="section-hero">
+        <h1>🏗️ Módulo 5: Resta de 3 y 4 Dígitos</h1>
+        <p>Descomposición completa para restas con números grandes</p>
+        <div class="emoji-big">🧱</div>
+      </div>
+
+      <!-- VIDEO -->
+      <div class="card">
+        <div class="card-title">🎬 Video explicativo</div>
+        <div class="video-wrapper">
+          <video controls preload="metadata">
+            <source src="vid/2resxdes.mp4" type="video/mp4" />
+            <p style="color:#aaa;padding:20px;text-align:center;">
+              📹 Video no disponible. Coloca el archivo <strong>vid/2resxdes.mp4</strong> en la misma carpeta.
+            </p>
+          </video>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📚 Estrategia para números grandes</div>
+        <div class="formula">A − B → Redondear B a centena/millar → Calcular → Sumar diferencia</div>
+        <div class="highlight-box">
+          Con números de 3 y 4 dígitos, usamos <strong>centenas o millares redondos</strong>.
+          El proceso es exactamente igual, solo cambia la magnitud del redondeo.
+        </div>
+      </div>
+
+      <!-- EJEMPLOS DEL DOCUMENTO -->
+      <div class="card">
+        <div class="card-title">📖 Ejemplos del libro</div>
+        <div class="examples-grid">
+          <div class="example-block">
+            <div class="ex-eq">796 − 537</div>
+            <div class="ex-steps">796 − (540 − 3) → 256 + 3</div>
+            <div class="ex-result">= 259 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">1200 − 895</div>
+            <div class="ex-steps">1200 − (900 − 5) → 300 + 5</div>
+            <div class="ex-result">= 305 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">150 − 97</div>
+            <div class="ex-steps">150 − (100 − 3) → 50 + 3</div>
+            <div class="ex-result">= 53 ✓</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EJEMPLOS ADICIONALES -->
+      <div class="card">
+        <div class="card-title">🌟 Más ejemplos ampliados</div>
+        <div class="examples-grid">
+          <div class="example-block">
+            <div class="ex-eq">150 − 88</div>
+            <div class="ex-steps">150 − (90 − 2) → 60 + 2</div>
+            <div class="ex-result">= 62 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">1000 − 397</div>
+            <div class="ex-steps">1000 − (400 − 3) → 600 + 3</div>
+            <div class="ex-result">= 603 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">420 − 95</div>
+            <div class="ex-steps">420 − (100 − 5) → 320 + 5</div>
+            <div class="ex-result">= 325 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">560 − 398</div>
+            <div class="ex-steps">560 − (400 − 2) → 160 + 2</div>
+            <div class="ex-result">= 162 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">234 − 198</div>
+            <div class="ex-steps">234 − (200 − 2) → 34 + 2</div>
+            <div class="ex-result">= 36 ✓</div>
+          </div>
+          <div class="example-block">
+            <div class="ex-eq">1005 − 997</div>
+            <div class="ex-steps">1005 − (1000 − 3) → 5 + 3</div>
+            <div class="ex-result">= 8 ✓</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CANVAS -->
+      <div class="card">
+        <div class="card-title">🎨 Visualizador de Resta 3-4 Dígitos</div>
+        <div class="canvas-wrap">
+          <canvas id="canvas-sub34" width="680" height="200"></canvas>
+          <div class="canvas-controls">
+            <input type="number" id="sub34a" placeholder="Ej: 1200" min="100" max="9999" style="width:100px;padding:8px;border:2px solid var(--blue);border-radius:8px;font-size:15px;font-weight:700;outline:none;" />
+            <span style="font-size:20px;font-weight:800;color:var(--navy)">−</span>
+            <input type="number" id="sub34b" placeholder="Ej: 895" min="100" max="9999" style="width:100px;padding:8px;border:2px solid var(--blue);border-radius:8px;font-size:15px;font-weight:700;outline:none;" />
+            <button class="btn btn-primary" onclick="drawSub34Canvas()">Ver pasos →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVIDADES -->
+      <div class="activity-box">
+        <h3>🎮 Actividad: Resta de números grandes</h3>
+        <div id="m5-activities"></div>
+        <button class="btn btn-accent" style="margin-top:10px;" onclick="generateM5Activities()">🔄 Nuevos ejercicios</button>
+      </div>
+
+      <div style="text-align:right;margin-top:16px;">
+        <button class="btn btn-primary" onclick="showSection('m6')">Siguiente módulo →</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         MÓDULO 6: PRÁCTICA CRONOMETRADA
+         ═══════════════════════════════════════════════════════════════ -->
+    <div id="m6" class="section">
+      <div class="section-hero">
+        <h1>⚡ Módulo 6: Práctica con Cronómetro</h1>
+        <p>¡Tienes 10 segundos por pregunta! Demuestra tu velocidad mental</p>
+        <div class="emoji-big">⏱️</div>
+      </div>
+
+      <!-- VIDEO -->
+      <div class="card">
+        <div class="card-title">🎬 Video de referencia</div>
+        <div class="video-wrapper">
+          <video controls preload="metadata">
+            <source src="vid/Sum-rest_mental.mp4" type="video/mp4" />
+            <p style="color:#aaa;padding:20px;text-align:center;">
+              📹 Video no disponible. Coloca <strong>vid/Sum-rest_mental.mp4</strong> en la misma carpeta.
+            </p>
+          </video>
+        </div>
+      </div>
+
+      <!-- PRÁCTICA -->
+      <div class="card">
+        <div class="card-title">⚡ Ejercicio Cronometrado</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+          <div class="score-badge">🏆 Puntos: <span id="practice-score">0</span> / <span id="practice-total">0</span></div>
+          <div style="font-size:14px;color:var(--text-lt);">Ejercicio <span id="practice-num">1</span> de 20</div>
+        </div>
+
+        <div id="practice-status">Pulsa «Comenzar» para iniciar la práctica</div>
+
+        <div id="practice-area" style="display:none;">
+          <div class="practice-problem" id="practice-prob">47 + 38 = ?</div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+            <!-- Timer circle -->
+            <div class="timer-wrap">
+              <svg class="timer-svg" width="90" height="90">
+                <circle cx="45" cy="45" r="38" fill="none" stroke="#e0eeff" stroke-width="7"/>
+                <circle id="timer-arc" cx="45" cy="45" r="38" fill="none" stroke="var(--blue)"
+                  stroke-width="7" stroke-linecap="round"
+                  stroke-dasharray="239" stroke-dashoffset="0"
+                  style="transition:stroke-dashoffset .1s linear,stroke .3s;"/>
+              </svg>
+              <div class="timer-num" id="timer-num">6</div>
+            </div>
+
+            <input type="number" id="practice-answer" class="practice-input" placeholder="?" autocomplete="off"
+              onkeydown="if(event.key==='Enter')checkPractice()" />
+
+            <div style="display:flex;gap:12px;">
+              <button class="btn btn-success" onclick="checkPractice()">✓ Confirmar</button>
+              <button class="btn btn-outline" onclick="skipPractice()">Saltar ⟶</button>
+            </div>
+
+            <div id="practice-feedback"></div>
+          </div>
+        </div>
+
+        <div id="practice-result" style="display:none;"></div>
+
+        <div style="text-align:center;margin-top:20px;">
+          <button class="btn btn-primary" id="start-practice-btn" onclick="startPractice()" style="font-size:16px;padding:14px 32px;">
+            🚀 Comenzar práctica
+          </button>
+        </div>
+      </div>
+
+      <!-- TIPS -->
+      <div class="card">
+        <div class="card-title">💡 Consejos rápidos para las prácticas</div>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-num">💨</div>
+            <h4>Redondea al instante</h4>
+            <p>Identifica el número cercano a decena/centena en menos de 1 segundo</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">🎯</div>
+            <h4>Suma mentalmente</h4>
+            <p>Opera con el número redondo (¡es fácil!) en 2 segundos</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">⚖️</div>
+            <h4>Compensa rápido</h4>
+            <p>Solo tienes que sumar o restar un número pequeño</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:right;margin-top:16px;">
+        <button class="btn btn-primary" onclick="showSection('eval')">Ir a Evaluación Final →</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         EVALUACIÓN FINAL
+         ═══════════════════════════════════════════════════════════════ -->
+    <div id="eval" class="section">
+      <div class="section-hero">
+        <h1>📝 Evaluación Final</h1>
+        <p>10 preguntas de selección múltiple. ¡Demuestra todo lo que aprendiste!</p>
+        <div class="emoji-big">🎓</div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+          <div>
+            <div class="card-title" style="margin-bottom:4px;">📊 Instrucciones</div>
+            <p style="font-size:14px;color:var(--text-lt);">
+              Selecciona la respuesta correcta. Recibirás retroalimentación inmediata en cada pregunta.
+            </p>
+          </div>
+          <div class="score-badge">✅ <span id="eval-score">0</span> / 10</div>
+        </div>
+
+        <div id="eval-questions"></div>
+
+        <div id="eval-result" style="display:none;margin-top:24px;"></div>
+
+        <div style="text-align:center;margin-top:20px;">
+          <button class="btn btn-accent" id="eval-submit-btn" onclick="finishEval()" style="font-size:16px;padding:14px 36px;display:none;">
+            📊 Ver Resultado Final
+          </button>
+          <button class="btn btn-outline" onclick="resetEval()" style="margin-left:12px;font-size:14px;padding:10px 22px;">
+            🔄 Reintentar
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  © 2026 MenteMatematicaI. Todos los derechos reservados VC.
+</footer>
+
+<!-- =====================================================================
+     JAVASCRIPT
+     ===================================================================== -->
+<script>
+/* ─────────────────────────────────────────────────────────────────────────
+   NAVIGATION
+   ───────────────────────────────────────────────────────────────────────── */
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+
+  const sectionToNav = {
+    welcome: 0, aprenderemos: 1, m1: 2, m2: 3, m3: 4, m4: 5, m5: 6, m6: 7, eval: 8
+  };
+  const items = document.querySelectorAll('.nav-item');
+  const idx = sectionToNav[id];
+  if (idx !== undefined && items[idx]) items[idx].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Init canvases / activities on first visit
+  setTimeout(() => {
+    if (id === 'm1') { drawNumberLine(); generateM1Activities(); }
+    if (id === 'm2') { drawSum2Canvas(); generateM2Activities(); }
+    if (id === 'm3') { drawSum34Canvas(); generateM3Activities(); }
+    if (id === 'm4') { drawSub2Canvas(); generateM4Activities(); }
+    if (id === 'm5') { drawSub34Canvas(); generateM5Activities(); }
+    if (id === 'eval') buildEval();
+  }, 100);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   CANVAS UTILITIES
+   ───────────────────────────────────────────────────────────────────────── */
+function clearCanvas(id) {
+  const canvas = document.getElementById(id);
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  return { canvas, ctx };
+}
+
+function roundedRect(ctx, x, y, w, h, r, fill, stroke) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+  if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+  if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 2; ctx.stroke(); }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   CANVAS: NUMBER LINE (Módulo 1)
+   ───────────────────────────────────────────────────────────────────────── */
+function drawNumberLine() {
+  const val = parseInt(document.getElementById('nl-input').value) || 37;
+  const { canvas, ctx } = clearCanvas('canvas-numline');
+  const W = canvas.width, H = canvas.height;
+  const dec = Math.floor(val / 10) * 10;
+  const nextDec = dec + 10;
+  const nearest = (val - dec <= 5) ? dec : nextDec;
+  const diff = nearest - val;
+
+  // Background
+  ctx.fillStyle = '#f7fbff'; ctx.fillRect(0, 0, W, H);
+
+  // Number line
+  const lineY = H / 2 + 10;
+  const startX = 60, endX = W - 60;
+  ctx.strokeStyle = '#b3d9f7'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(startX, lineY); ctx.lineTo(endX, lineY); ctx.stroke();
+
+  // Ticks and labels
+  const range = [dec - 10, dec, nextDec, nextDec + 10];
+  const positions = [startX + 30, startX + (endX - startX) * 0.28,
+                     startX + (endX - startX) * 0.62, endX - 30];
+  range.forEach((n, i) => {
+    ctx.strokeStyle = '#7ab4e0'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(positions[i], lineY - 10); ctx.lineTo(positions[i], lineY + 10); ctx.stroke();
+    ctx.fillStyle = '#5a6e82'; ctx.font = 'bold 13px Nunito, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(n, positions[i], lineY + 26);
+  });
+
+  // Nearest decena markers (highlight)
+  const nearPos = (nearest === dec) ? positions[1] : positions[2];
+  ctx.strokeStyle = '#27ae60'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(nearPos, lineY - 16); ctx.lineTo(nearPos, lineY + 16); ctx.stroke();
+  roundedRect(ctx, nearPos - 26, lineY + 28, 52, 22, 6, '#d4edda', '#27ae60');
+  ctx.fillStyle = '#155724'; ctx.font = 'bold 12px Nunito, sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('Redondeo', nearPos, lineY + 43);
+
+  // Original number marker
+  const origX = positions[1] + (val - dec) / 10 * (positions[2] - positions[1]);
+  ctx.fillStyle = '#e74c3c';
+  ctx.beginPath(); ctx.arc(origX, lineY, 8, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 10px Nunito'; ctx.textAlign = 'center';
+  ctx.fillText(val, origX, lineY + 4);
+
+  // Arrow
+  ctx.strokeStyle = '#e0951a'; ctx.lineWidth = 2.5;
+  ctx.setLineDash([5, 4]);
+  ctx.beginPath(); ctx.moveTo(origX, lineY - 18); ctx.lineTo(nearPos, lineY - 18); ctx.stroke();
+  ctx.setLineDash([]);
+  // Arrow head
+  const dir = nearPos > origX ? 1 : -1;
+  ctx.fillStyle = '#e0951a';
+  ctx.beginPath();
+  ctx.moveTo(nearPos, lineY - 18);
+  ctx.lineTo(nearPos - dir * 10, lineY - 23);
+  ctx.lineTo(nearPos - dir * 10, lineY - 13);
+  ctx.closePath(); ctx.fill();
+
+  // Label
+  ctx.fillStyle = '#0d2b55'; ctx.font = 'bold 14px Nunito';
+  ctx.textAlign = 'center';
+  const midX = (origX + nearPos) / 2;
+  const sign = diff > 0 ? '+' : '';
+  ctx.fillText(sign + diff, midX, lineY - 28);
+
+  // Info text
+  ctx.fillStyle = '#1a3f7a'; ctx.font = 'bold 16px Nunito';
+  ctx.textAlign = 'center';
+  ctx.fillText(`${val} → ${nearest}   (diferencia: ${diff > 0 ? '+' : ''}${diff})`, W / 2, H - 14);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   CANVAS: SUMA 2 DÍGITOS (Módulo 2)
+   ───────────────────────────────────────────────────────────────────────── */
+function drawSum2Canvas() {
+  const a = parseInt(document.getElementById('s2a').value) || 47;
+  const b = parseInt(document.getElementById('s2b').value) || 35;
+  drawOperationCanvas('canvas-sum2', a, b, '+');
+}
+
+function drawOperationCanvas(canvasId, a, b, op) {
+  const { canvas, ctx } = clearCanvas(canvasId);
+  const W = canvas.width, H = canvas.height;
+  ctx.fillStyle = '#f7fbff'; ctx.fillRect(0, 0, W, H);
+
+  let rounded, diff, intermediate, result, sign, compensation;
+  if (op === '+') {
+    const nearA = roundToNearest(a);
+    diff = nearA - a;
+    rounded = nearA;
+    intermediate = rounded + b;
+    result = a + b;
+    compensation = -diff;
+  } else {
+    const nearB = roundToNearest(b);
+    diff = nearB - b;
+    rounded = nearB;
+    intermediate = a - rounded;
+    result = a - b;
+    compensation = diff;
+  }
+
+  const boxes = [
+    { label: 'Original', val: `${a} ${op} ${b}`, color: '#0d2b55', bg: '#e0eeff' },
+    { label: 'Redondear', val: `${diff >= 0 ? '(' + rounded + ' − ' + diff + ')' : '(' + rounded + ' + ' + (-diff) + ')'}`, color: '#8b4513', bg: '#fff8e1' },
+    { label: 'Operar', val: `${op === '+' ? rounded + ' + ' + b : a + ' − ' + rounded} = ${intermediate}`, color: '#155724', bg: '#d4edda' },
+    { label: 'Compensar', val: `${intermediate} ${compensation >= 0 ? '+' : ''}${compensation} = ${result}`, color: '#721c24', bg: '#f8d7da' },
+  ];
+
+  const bW = 142, bH = 70, gap = 20;
+  const totalW = boxes.length * bW + (boxes.length - 1) * gap;
+  let x = (W - totalW) / 2;
+  const y = (H - bH) / 2;
+
+  boxes.forEach((box, i) => {
+    roundedRect(ctx, x, y, bW, bH, 10, box.bg, box.color);
+    ctx.fillStyle = box.color; ctx.font = 'bold 11px Nunito'; ctx.textAlign = 'center';
+    ctx.fillText(box.label, x + bW / 2, y + 18);
+    ctx.font = 'bold 13px Nunito';
+    ctx.fillText(box.val, x + bW / 2, y + 42);
+
+    if (i < boxes.length - 1) {
+      // Arrow
+      ctx.strokeStyle = '#7ab4e0'; ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x + bW + 2, y + bH / 2);
+      ctx.lineTo(x + bW + gap - 2, y + bH / 2);
+      ctx.stroke();
+      ctx.fillStyle = '#7ab4e0';
+      ctx.beginPath();
+      ctx.moveTo(x + bW + gap, y + bH / 2);
+      ctx.lineTo(x + bW + gap - 8, y + bH / 2 - 5);
+      ctx.lineTo(x + bW + gap - 8, y + bH / 2 + 5);
+      ctx.closePath(); ctx.fill();
+    }
+    x += bW + gap;
+  });
+
+  // Result banner
+  ctx.fillStyle = '#0d2b55'; ctx.font = 'bold 16px Nunito'; ctx.textAlign = 'center';
+  ctx.fillText(`Resultado: ${a} ${op} ${b} = ${result}`, W / 2, H - 12);
+}
+
+function roundToNearest(n) {
+  return Math.round(n / 10) * 10 || 10;
+}
+
+function drawSum34Canvas() {
+  const a = parseInt(document.getElementById('s34a').value) || 796;
+  const b = parseInt(document.getElementById('s34b').value) || 537;
+  drawOp34Canvas('canvas-sum34', a, b, '+');
+}
+
+function drawSub2Canvas() {
+  const a = parseInt(document.getElementById('sub2a').value) || 73;
+  const b = parseInt(document.getElementById('sub2b').value) || 46;
+  if (a > b) drawOperationCanvas('canvas-sub2', a, b, '−');
+  else { const { ctx, canvas } = clearCanvas('canvas-sub2'); ctx.fillStyle='#fdd';ctx.fillRect(0,0,canvas.width,canvas.height); ctx.fillStyle='#c00';ctx.font='bold 18px Nunito';ctx.textAlign='center'; ctx.fillText('El primer número debe ser mayor', canvas.width/2, canvas.height/2); }
+}
+
+function drawSub34Canvas() {
+  const a = parseInt(document.getElementById('sub34a').value) || 1200;
+  const b = parseInt(document.getElementById('sub34b').value) || 895;
+  if (a > b) drawOp34Canvas('canvas-sub34', a, b, '−');
+  else { const { ctx, canvas } = clearCanvas('canvas-sub34'); ctx.fillStyle='#fdd';ctx.fillRect(0,0,canvas.width,canvas.height); ctx.fillStyle='#c00';ctx.font='bold 18px Nunito';ctx.textAlign='center'; ctx.fillText('El primer número debe ser mayor', canvas.width/2, canvas.height/2); }
+}
+
+function drawOp34Canvas(canvasId, a, b, op) {
+  const { canvas, ctx } = clearCanvas(canvasId);
+  const W = canvas.width, H = canvas.height;
+  ctx.fillStyle = '#f7fbff'; ctx.fillRect(0, 0, W, H);
+
+  // Round to nearest 10/100/1000
+  const magnitude = Math.pow(10, Math.floor(Math.log10(op === '+' ? a : b)));
+  const base = op === '+' ? a : b;
+  const rounded = Math.round(base / magnitude) * magnitude || magnitude;
+  const diff = rounded - base;
+
+  let intermediate, result, compensation;
+  if (op === '+') {
+    intermediate = rounded + b;
+    result = a + b;
+    compensation = -diff;
+  } else {
+    intermediate = a - rounded;
+    result = a - b;
+    compensation = diff;
+  }
+
+  const boxes = [
+    { label: 'Paso 1: Original', val: `${a} ${op} ${b}`, color: '#0d2b55', bg: '#e0eeff' },
+    { label: 'Paso 2: Redondear', val: `${op === '+' ? a : b} → ${rounded}`, color: '#8b4513', bg: '#fff8e1' },
+    { label: 'Paso 3: Operar', val: `${op === '+' ? rounded + '+' + b : a + '−' + rounded} = ${intermediate}`, color: '#155724', bg: '#d4edda' },
+    { label: 'Paso 4: Compensar', val: `${intermediate}${compensation >= 0 ? '+' : ''}${compensation} = ${result}`, color: '#721c24', bg: '#f8d7da' },
+  ];
+
+  const bW = 148, bH = 72, gap = 16;
+  const totalW = boxes.length * bW + (boxes.length - 1) * gap;
+  let x = (W - totalW) / 2;
+  const y = (H - bH) / 2 - 10;
+
+  boxes.forEach((box, i) => {
+    roundedRect(ctx, x, y, bW, bH, 10, box.bg, box.color);
+    ctx.fillStyle = box.color; ctx.font = 'bold 10.5px Nunito'; ctx.textAlign = 'center';
+    ctx.fillText(box.label, x + bW / 2, y + 18);
+    ctx.font = 'bold 12.5px Nunito';
+    ctx.fillText(box.val, x + bW / 2, y + 44);
+    if (i < boxes.length - 1) {
+      ctx.strokeStyle = '#7ab4e0'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(x + bW + 2, y + bH/2); ctx.lineTo(x + bW + gap - 2, y + bH/2); ctx.stroke();
+      ctx.fillStyle = '#7ab4e0'; ctx.beginPath();
+      ctx.moveTo(x + bW + gap, y + bH/2);
+      ctx.lineTo(x + bW + gap - 8, y + bH/2 - 5);
+      ctx.lineTo(x + bW + gap - 8, y + bH/2 + 5);
+      ctx.closePath(); ctx.fill();
+    }
+    x += bW + gap;
+  });
+  ctx.fillStyle = '#0d2b55'; ctx.font = 'bold 15px Nunito'; ctx.textAlign = 'center';
+  ctx.fillText(`${a} ${op} ${b} = ${result}`, W / 2, H - 12);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   ACTIVITIES: Generic activity builder
+   ───────────────────────────────────────────────────────────────────────── */
+function buildActivities(containerId, problems) {
+  const cont = document.getElementById(containerId);
+  cont.innerHTML = '';
+  problems.forEach((p, i) => {
+    const row = document.createElement('div');
+    row.className = 'activity-row';
+    row.innerHTML = `
+      <div class="activity-problem">${p.label} =</div>
+      <input type="number" class="activity-input" id="${containerId}-inp-${i}" placeholder="?" autocomplete="off"
+        onkeydown="if(event.key==='Enter')checkActivity('${containerId}',${i},${p.answer},'${p.hint}')" />
+      <button class="btn btn-success" onclick="checkActivity('${containerId}',${i},${p.answer},'${p.hint}')">✓</button>
+      <span id="${containerId}-fb-${i}"></span>
+    `;
+    cont.appendChild(row);
+    const hint = document.createElement('div');
+    hint.className = 'hint-text'; hint.id = `${containerId}-hint-${i}`;
+    cont.appendChild(hint);
+  });
+}
+
+function checkActivity(contId, i, answer, hint) {
+  const input = document.getElementById(`${contId}-inp-${i}`);
+  const fb = document.getElementById(`${contId}-fb-${i}`);
+  const hintEl = document.getElementById(`${contId}-hint-${i}`);
+  const val = parseInt(input.value);
+  if (isNaN(val)) { fb.innerHTML = '<span class="feedback-msg fail">Escribe un número</span>'; return; }
+  if (val === answer) {
+    input.classList.add('correct'); input.classList.remove('wrong');
+    fb.innerHTML = '<span class="feedback-msg ok">✅ ¡Correcto!</span>';
+    hintEl.textContent = '';
+  } else {
+    input.classList.add('wrong'); input.classList.remove('correct');
+    fb.innerHTML = `<span class="feedback-msg fail">❌ Era ${answer}</span>`;
+    hintEl.textContent = '💡 ' + hint;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   ACTIVITY GENERATORS
+   ───────────────────────────────────────────────────────────────────────── */
+const m1Pool = [
+  {label:'¿Decena más cercana a 37?', answer:40, hint:'37 → 40 (le faltan 3)'},
+  {label:'¿Decena más cercana a 53?', answer:50, hint:'53 → 50 (le sobran 3)'},
+  {label:'¿Decena más cercana a 78?', answer:80, hint:'78 → 80 (le faltan 2)'},
+  {label:'¿Centena más cercana a 295?', answer:300, hint:'295 → 300 (le faltan 5)'},
+  {label:'¿Centena más cercana a 648?', answer:600, hint:'648 → 600 (le sobran 48)'},
+  {label:'¿Decena más cercana a 45?', answer:50, hint:'45 → 50 (convenio, se sube)'},
+  {label:'¿Decena más cercana a 61?', answer:60, hint:'61 → 60 (le sobra 1)'},
+  {label:'¿Centena más cercana a 850?', answer:900, hint:'850 → 900 (le faltan 50)'},
+];
+
+const m2Pool = [
+  {label:'29 + 46', answer:75, hint:'(30−1)+46 → 76−1'},
+  {label:'57 + 38', answer:95, hint:'57+(40−2) → 97−2'},
+  {label:'19 + 84', answer:103, hint:'(20−1)+84 → 104−1'},
+  {label:'68 + 25', answer:93, hint:'(70−2)+25 → 95−2'},
+  {label:'87 + 44', answer:131, hint:'(90−3)+44 → 134−3'},
+  {label:'48 + 48', answer:96, hint:'(50−2)+48 → 98−2'},
+  {label:'99 + 99', answer:198, hint:'(100−1)+(100−1) → 200−2'},
+  {label:'77 + 64', answer:141, hint:'(80−3)+64 → 144−3'},
+];
+
+const m3Pool = [
+  {label:'399 + 150', answer:549, hint:'(400−1)+150 → 550−1'},
+  {label:'795 + 210', answer:1005, hint:'(800−5)+210 → 1010−5'},
+  {label:'180 + 345', answer:525, hint:'(200−20)+345 → 545−20'},
+  {label:'998 + 450', answer:1448, hint:'(1000−2)+450 → 1450−2'},
+  {label:'499 + 499', answer:998, hint:'(500−1)+(500−1) → 1000−2'},
+  {label:'880 + 125', answer:1005, hint:'(900−20)+125 → 1025−20'},
+  {label:'2495 + 1100', answer:3595, hint:'(2500−5)+1100 → 3600−5'},
+];
+
+const m4Pool = [
+  {label:'64 − 19', answer:45, hint:'64−(20−1) → 44+1'},
+  {label:'82 − 38', answer:44, hint:'82−(40−2) → 42+2'},
+  {label:'55 − 27', answer:28, hint:'55−(30−3) → 25+3'},
+  {label:'91 − 49', answer:42, hint:'91−(50−1) → 41+1'},
+  {label:'73 − 56', answer:17, hint:'73−(60−4) → 13+4'},
+  {label:'85 − 67', answer:18, hint:'85−(70−3) → 15+3'},
+  {label:'93 − 76', answer:17, hint:'93−(80−4) → 13+4'},
+  {label:'62 − 39', answer:23, hint:'62−(40−1) → 22+1'},
+];
+
+const m5Pool = [
+  {label:'150 − 88', answer:62, hint:'150−(90−2) → 60+2'},
+  {label:'1000 − 397', answer:603, hint:'1000−(400−3) → 600+3'},
+  {label:'420 − 95', answer:325, hint:'420−(100−5) → 320+5'},
+  {label:'560 − 398', answer:162, hint:'560−(400−2) → 160+2'},
+  {label:'234 − 198', answer:36, hint:'234−(200−2) → 34+2'},
+  {label:'1200 − 895', answer:305, hint:'1200−(900−5) → 300+5'},
+  {label:'1005 − 997', answer:8, hint:'1005−(1000−3) → 5+3'},
+];
+
+function shuffle(arr) { return arr.slice().sort(() => Math.random() - 0.5); }
+
+function generateM1Activities() { buildActivities('m1-activities', shuffle(m1Pool).slice(0, 4)); }
+function generateM2Activities() { buildActivities('m2-activities', shuffle(m2Pool).slice(0, 4)); }
+function generateM3Activities() { buildActivities('m3-activities', shuffle(m3Pool).slice(0, 4)); }
+function generateM4Activities() { buildActivities('m4-activities', shuffle(m4Pool).slice(0, 4)); }
+function generateM5Activities() { buildActivities('m5-activities', shuffle(m5Pool).slice(0, 4)); }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   PRÁCTICA CRONOMETRADA (Módulo 6)
+   ───────────────────────────────────────────────────────────────────────── */
+const allProblems = [
+  // SUMAS
+  {q:'29 + 46', a:75}, {q:'57 + 38', a:95}, {q:'19 + 84', a:103},
+  {q:'68 + 25', a:93}, {q:'87 + 44', a:131}, {q:'48 + 48', a:96},
+  {q:'99 + 99', a:198}, {q:'180 + 345', a:525}, {q:'399 + 150', a:549},
+  {q:'795 + 210', a:1005},
+  // RESTAS
+  {q:'64 − 19', a:45}, {q:'82 − 38', a:44}, {q:'55 − 27', a:28},
+  {q:'91 − 49', a:42}, {q:'150 − 88', a:62}, {q:'73 − 56', a:17},
+  {q:'1000 − 397', a:603}, {q:'420 − 95', a:325}, {q:'85 − 67', a:18},
+  {q:'234 − 198', a:36},
+];
+
+let practiceQueue = [], practiceIdx = 0, practiceScore = 0;
+let practiceTimer = null, practiceSeconds = 6, practiceDone = false;
+const TIMER_MAX = 15;
+
+function startPractice() {
+  practiceQueue = shuffle(allProblems);
+  practiceIdx = 0; practiceScore = 0; practiceDone = false;
+  document.getElementById('practice-score').textContent = 0;
+  document.getElementById('practice-total').textContent = 0;
+  document.getElementById('practice-result').style.display = 'none';
+  document.getElementById('practice-area').style.display = 'block';
+  document.getElementById('start-practice-btn').style.display = 'none';
+  document.getElementById('practice-status').textContent = '';
+  loadNextPractice();
+}
+
+function loadNextPractice() {
+  if (practiceIdx >= practiceQueue.length) { endPractice(); return; }
+  const p = practiceQueue[practiceIdx];
+  document.getElementById('practice-prob').textContent = p.q + ' = ?';
+  document.getElementById('practice-answer').value = '';
+  document.getElementById('practice-answer').disabled = false;
+  document.getElementById('practice-answer').focus();
+  document.getElementById('practice-feedback').textContent = '';
+  document.getElementById('practice-feedback').className = '';
+  document.getElementById('practice-num').textContent = practiceIdx + 1;
+  startTimer();
+}
+
+function startTimer() {
+  clearInterval(practiceTimer);
+  practiceSeconds = TIMER_MAX;
+  updateTimerUI(practiceSeconds);
+  practiceTimer = setInterval(() => {
+    practiceSeconds--;
+    updateTimerUI(practiceSeconds);
+    if (practiceSeconds <= 0) {
+      clearInterval(practiceTimer);
+      timeOut();
+    }
+  }, 1000);
+}
+
+function updateTimerUI(s) {
+  const arc = document.getElementById('timer-arc');
+  const num = document.getElementById('timer-num');
+  if (!arc || !num) return;
+  const pct = s / TIMER_MAX;
+  const circ = 2 * Math.PI * 38;
+  arc.style.strokeDashoffset = circ * (1 - pct);
+  arc.style.stroke = s > 3 ? 'var(--blue)' : s > 1 ? 'var(--accent)' : 'var(--red)';
+  num.textContent = s;
+}
+
+function timeOut() {
+  const ans = parseInt(document.getElementById('practice-answer').value);
+  const correct = practiceQueue[practiceIdx].a;
+  const fb = document.getElementById('practice-feedback');
+  document.getElementById('practice-answer').disabled = true;
+  if (!isNaN(ans) && ans === correct) {
+    practiceScore++;
+    fb.textContent = '✅ ¡Correcto!'; fb.className = 'ok';
+  } else {
+    fb.textContent = `⏰ Tiempo! La respuesta era ${correct}`; fb.className = 'fail';
+  }
+  document.getElementById('practice-score').textContent = practiceScore;
+  document.getElementById('practice-total').textContent = practiceIdx + 1;
+  practiceIdx++;
+  setTimeout(loadNextPractice, 1600);
+}
+
+function checkPractice() {
+  clearInterval(practiceTimer);
+  timeOut();
+}
+
+function skipPractice() {
+  clearInterval(practiceTimer);
+  const fb = document.getElementById('practice-feedback');
+  fb.textContent = `→ Saltado. Era ${practiceQueue[practiceIdx].a}`; fb.className = 'fail';
+  document.getElementById('practice-total').textContent = practiceIdx + 1;
+  practiceIdx++;
+  setTimeout(loadNextPractice, 1400);
+}
+
+function endPractice() {
+  clearInterval(practiceTimer);
+  document.getElementById('practice-area').style.display = 'none';
+  const total = practiceQueue.length;
+  const pct = Math.round(practiceScore / total * 100);
+  let msg = pct >= 80 ? '🏆 ¡Excelente! Eres un genio del cálculo mental!' :
+            pct >= 60 ? '👍 ¡Muy bien! Sigue practicando.' :
+            '💪 Sigue intentándolo, ¡tú puedes!';
+  document.getElementById('practice-result').style.display = 'block';
+  document.getElementById('practice-result').innerHTML = `
+    <div class="score-display">
+      <div class="big-num">${practiceScore}/${total}</div>
+      <p>${msg}</p>
+      <div class="score-bar-outer"><div class="score-bar-inner" style="width:${pct}%"></div></div>
+      <p style="font-size:14px;margin-top:8px;">${pct}% de aciertos</p>
+    </div>
+  `;
+  document.getElementById('start-practice-btn').style.display = 'inline-block';
+  document.getElementById('start-practice-btn').textContent = '🔄 Intentar de nuevo';
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   EVALUACIÓN FINAL
+   ───────────────────────────────────────────────────────────────────────── */
+const evalQuestions = [
+  {
+    q: '1. ¿Cuánto es 39 + 45?',
+    opts: ['a) 74', 'b) 84', 'c) 85', 'd) 79'],
+    correct: 1,
+    hint: '(40−1)+45 = 85−1 = 84'
+  },
+  {
+    q: '2. ¿Cuál es el resultado de 88 − 29?',
+    opts: ['a) 59', 'b) 60', 'c) 61', 'd) 58'],
+    correct: 0,
+    hint: '88−(30−1) = 58+1 = 59'
+  },
+  {
+    q: '3. Si redondeas 197 para sumar 197 + 50, ¿qué operación mental es más fácil?',
+    opts: ['a) 200 + 50 − 3', 'b) 190 + 50 + 7', 'c) 200 + 50 + 3', 'd) 197 + 3'],
+    correct: 0,
+    hint: 'Se redondea a la centena más cercana (200) y se resta la diferencia (3)'
+  },
+  {
+    q: '4. Resuelve mentalmente: 145 + 99.',
+    opts: ['a) 245', 'b) 244', 'c) 246', 'd) 234'],
+    correct: 1,
+    hint: '145 + (100−1) = 245−1 = 244'
+  },
+  {
+    q: '5. Calcula: 560 − 398.',
+    opts: ['a) 160', 'b) 164', 'c) 162', 'd) 158'],
+    correct: 2,
+    hint: '560−(400−2) = 160+2 = 162'
+  },
+  {
+    q: '6. ¿Cuánto es 18 + 18 + 18?',
+    opts: ['a) 54', 'b) 56', 'c) 52', 'd) 60'],
+    correct: 0,
+    hint: '(20−2)×3 = 60−6 = 54'
+  },
+  {
+    q: '7. Resuelve: 1250 + 995.',
+    opts: ['a) 2250', 'b) 2245', 'c) 2255', 'd) 2240'],
+    correct: 1,
+    hint: '1250 + (1000−5) = 2250−5 = 2245'
+  },
+  {
+    q: '8. Si tengo 75 y le resto 38, mentalmente puedo hacer:',
+    opts: ['a) 75 − 40 − 2', 'b) 75 − 40 + 2', 'c) 70 − 30 + 5', 'd) 80 − 38'],
+    correct: 1,
+    hint: 'Restar 40 es más fácil; luego se devuelven los 2 que se restaron de más'
+  },
+  {
+    q: '9. Resultado de 499 + 499:',
+    opts: ['a) 1000', 'b) 999', 'c) 998', 'd) 997'],
+    correct: 2,
+    hint: '(500−1)+(500−1) = 1000−2 = 998'
+  },
+  {
+    q: '10. ¿Cuánto es 1005 − 997?',
+    opts: ['a) 8', 'b) 12', 'c) 5', 'd) 10'],
+    correct: 0,
+    hint: '1005−(1000−3) = 5+3 = 8'
+  },
+];
+
+let evalAnswered = new Array(evalQuestions.length).fill(false);
+let evalScore = 0;
+let evalBuilt = false;
+
+function buildEval() {
+  if (evalBuilt) return;
+  evalBuilt = true;
+  const cont = document.getElementById('eval-questions');
+  cont.innerHTML = '';
+  evalQuestions.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'eval-q'; div.id = `eq-${i}`;
+    div.innerHTML = `
+      <div class="q-text">${q.q}</div>
+      <div class="options-grid">
+        ${q.opts.map((o, j) => `
+          <button class="opt-btn" id="opt-${i}-${j}" onclick="selectEvalOpt(${i},${j})">
+            ${o}
+          </button>`).join('')}
+      </div>
+      <div id="qfb-${i}" class="q-feedback" style="display:none;"></div>
+    `;
+    cont.appendChild(div);
+  });
+}
+
+function selectEvalOpt(qi, oi) {
+  if (evalAnswered[qi]) return;
+  evalAnswered[qi] = true;
+  const q = evalQuestions[qi];
+  const isCorrect = oi === q.correct;
+  if (isCorrect) { evalScore++; document.getElementById('eval-score').textContent = evalScore; }
+
+  for (let j = 0; j < q.opts.length; j++) {
+    const btn = document.getElementById(`opt-${qi}-${j}`);
+    btn.disabled = true;
+    if (j === oi && isCorrect) btn.className = 'opt-btn selected-ok';
+    else if (j === oi && !isCorrect) btn.className = 'opt-btn selected-fail';
+    else if (j === q.correct) btn.className = 'opt-btn correct-reveal';
+  }
+
+  const fb = document.getElementById(`qfb-${qi}`);
+  fb.style.display = 'block';
+  fb.className = 'q-feedback ' + (isCorrect ? 'ok' : 'fail');
+  fb.textContent = isCorrect ? `✅ ¡Correcto! ${q.hint}` : `❌ Incorrecto. ${q.hint}`;
+
+  const card = document.getElementById(`eq-${qi}`);
+  card.className = 'eval-q ' + (isCorrect ? 'answered-ok' : 'answered-fail');
+
+  if (evalAnswered.every(Boolean)) {
+    document.getElementById('eval-submit-btn').style.display = 'inline-block';
+    setTimeout(finishEval, 300);
+  }
+}
+
+function finishEval() {
+  const total = evalQuestions.length;
+  const pct = Math.round(evalScore / total * 100);
+  const msg = pct === 100 ? '🏆 ¡Perfecto! ¡100% correcto, eres increíble!' :
+              pct >= 80  ? '🌟 ¡Excelente! Dominas el cálculo mental.' :
+              pct >= 60  ? '👍 ¡Bien! Sigue practicando un poco más.' :
+              '📚 Repasa los módulos y vuelve a intentarlo.';
+  const res = document.getElementById('eval-result');
+  res.style.display = 'block';
+  res.innerHTML = `
+    <div class="score-display">
+      <p style="font-size:14px;opacity:.8;margin-bottom:4px;">Tu puntaje final</p>
+      <div class="big-num">${evalScore}/${total}</div>
+      <p>${msg}</p>
+      <div class="score-bar-outer"><div class="score-bar-inner" style="width:${pct}%"></div></div>
+      <p style="font-size:14px;margin-top:8px;">${pct}% de respuestas correctas</p>
+    </div>
+  `;
+  res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function resetEval() {
+  evalAnswered = new Array(evalQuestions.length).fill(false);
+  evalScore = 0; evalBuilt = false;
+  document.getElementById('eval-score').textContent = 0;
+  document.getElementById('eval-result').style.display = 'none';
+  document.getElementById('eval-submit-btn').style.display = 'none';
+  buildEval();
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   INIT
+   ───────────────────────────────────────────────────────────────────────── */
+window.addEventListener('load', () => {
+  showSection('welcome');
+});
+</script>
+
+</body>
+</html>

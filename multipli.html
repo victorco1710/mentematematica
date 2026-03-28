@@ -1,0 +1,2837 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multiplicación de Números Enteros – Mente Matemática</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <!--===== ESTILOS GLOBALES =====-->
+  <style>
+    :root {
+      --navy:    #1a3a6b;
+      --blue:    #2563eb;
+      --sky:     #38bdf8;
+      --amber:   #f59e0b;
+      --green:   #10b981;
+      --red:     #ef4444;
+      --purple:  #7c3aed;
+      --bg:      #f1f5f9;
+      --white:   #ffffff;
+      --card-shadow: 0 4px 18px rgba(0,0,0,.10);
+      --sidebar-w: 240px;
+      --header-h: 64px;
+      --radius: 14px;
+    }
+
+    /* ---- RESET & BASE ---- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      color: #1e293b;
+      overflow-x: hidden;
+    }
+    a { color: var(--blue); text-decoration: none; }
+
+    /* ---- HEADER ---- */
+    header {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      background: linear-gradient(135deg, #0f2556 0%, #1a3a6b 50%, #1e4d9e 100%);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px 0 16px;
+      z-index: 1000;
+      box-shadow: 0 2px 12px rgba(0,0,0,.3);
+    }
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .logo-icon {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, var(--amber), #fb923c);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .logo-text { font-family: 'Fredoka One', cursive; color: #fff; font-size: 1.4rem; letter-spacing: .5px; }
+    .logo-sub  { color: var(--sky); font-size: .7rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-top:-4px; }
+
+    .back-btn {
+      background: rgba(255,255,255,.15);
+      color: #fff; border: 1.5px solid rgba(255,255,255,.3);
+      padding: 7px 16px; border-radius: 8px;
+      font-family: 'Nunito', sans-serif; font-weight: 700; font-size: .82rem;
+      cursor: pointer; transition: background .2s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .back-btn:hover { background: rgba(255,255,255,.28); }
+
+    /* ---- SIDEBAR ---- */
+    #sidebar {
+      position: fixed; top: var(--header-h); left: 0; bottom: 0;
+      width: var(--sidebar-w);
+      background: var(--white);
+      border-right: 1px solid #e2e8f0;
+      overflow-y: auto;
+      z-index: 900;
+      padding: 12px 0 20px;
+    }
+    .sidebar-title {
+      font-size: .68rem; font-weight: 800; color: #94a3b8;
+      text-transform: uppercase; letter-spacing: 1.2px;
+      padding: 8px 18px 6px;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 18px; cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: all .18s; font-size: .85rem; font-weight: 600;
+      color: #475569; margin: 1px 0;
+    }
+    .nav-item:hover { background: #eff6ff; color: var(--blue); border-left-color: #93c5fd; }
+    .nav-item.active { background: #dbeafe; color: var(--blue); border-left-color: var(--blue); }
+    .nav-icon { font-size: 1.1rem; width: 22px; text-align:center; flex-shrink: 0; }
+
+    /* ---- MAIN CONTENT ---- */
+    #main {
+      margin-left: var(--sidebar-w);
+      padding: calc(var(--header-h) + 24px) 28px 40px;
+      min-height: 100vh;
+    }
+
+    /* ---- SECTION WRAPPER ---- */
+    .section { display: none; animation: fadeIn .35s ease; }
+    .section.active { display: block; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+
+    /* ---- CARDS ---- */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      padding: 24px;
+      margin-bottom: 22px;
+    }
+    .card-accent {
+      border-left: 5px solid var(--blue);
+    }
+    .card-amber  { border-left: 5px solid var(--amber); }
+    .card-green  { border-left: 5px solid var(--green); }
+    .card-purple { border-left: 5px solid var(--purple); }
+
+    /* ---- PAGE TITLE ---- */
+    .page-title {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 22px;
+    }
+    .page-title h1 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.9rem; color: var(--navy);
+      line-height: 1.15;
+    }
+    .page-title .title-icon {
+      font-size: 2rem; background: linear-gradient(135deg,#dbeafe,#bfdbfe);
+      width: 54px; height: 54px; border-radius: 14px;
+      display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    }
+
+    h2.section-h { font-family:'Fredoka One',cursive; color:var(--navy); font-size:1.25rem; margin-bottom:10px; }
+    h3.sub-h     { font-weight:800; color:var(--blue); font-size:1rem; margin:12px 0 7px; }
+    p.body-text  { line-height:1.65; color:#334155; font-size:.93rem; }
+
+    /* ---- BADGE ---- */
+    .badge {
+      display:inline-flex; align-items:center; gap:5px;
+      padding:3px 11px; border-radius:20px;
+      font-size:.75rem; font-weight:700;
+    }
+    .badge-blue   { background:#dbeafe; color:var(--blue); }
+    .badge-green  { background:#d1fae5; color:#065f46; }
+    .badge-amber  { background:#fef3c7; color:#92400e; }
+    .badge-red    { background:#fee2e2; color:#991b1b; }
+    .badge-purple { background:#ede9fe; color:#5b21b6; }
+
+    /* ---- RULE BOX ---- */
+    .rule-box {
+      background: linear-gradient(135deg,#eff6ff,#dbeafe);
+      border:1.5px solid #bfdbfe; border-radius: 12px;
+      padding:14px 18px; margin:14px 0;
+    }
+    .rule-box.amber { background:linear-gradient(135deg,#fffbeb,#fef3c7); border-color:#fde68a; }
+    .rule-box.green { background:linear-gradient(135deg,#ecfdf5,#d1fae5); border-color:#6ee7b7; }
+    .rule-box p { font-size:.9rem; line-height:1.6; }
+
+    /* ---- SIGN TABLE ---- */
+    .sign-table { border-collapse: collapse; width:100%; margin:10px 0; }
+    .sign-table th, .sign-table td {
+      border: 1.5px solid #e2e8f0;
+      padding: 8px 14px;
+      text-align: center; font-size:.88rem;
+    }
+    .sign-table th { background:#1a3a6b; color:#fff; font-family:'Fredoka One',cursive; }
+    .sign-table tr:nth-child(even) td { background:#f8fafc; }
+    .sign-pos { color: var(--green); font-weight:800; }
+    .sign-neg { color: var(--red);   font-weight:800; }
+
+    /* ---- VERTICAL MULT DISPLAY ---- */
+    .vmult {
+      font-family: 'Fredoka One', cursive;
+      background: #f8fafc;
+      border:1.5px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 14px 20px;
+      display:inline-block; min-width:140px;
+      text-align:right; font-size:1.3rem; color:var(--navy);
+      line-height:1.8;
+    }
+    .vmult .op-line { border-top:2.5px solid var(--navy); }
+    .vmult .result  { color:var(--blue); font-size:1.4rem; }
+    .vmult .partial { color: var(--purple); }
+    .vmult .carries { font-size:.75rem; color: var(--amber); vertical-align:super; }
+
+    /* ---- ACTIVITY AREA ---- */
+    .activity-box {
+      background: #f8fafc;
+      border: 1.5px dashed #94a3b8;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin:14px 0;
+    }
+    .activity-box h3 { color:var(--purple); margin-bottom:10px; }
+
+    .problem-item {
+      display:flex; align-items:center; gap:10px;
+      margin:8px 0; flex-wrap:wrap;
+    }
+    .problem-label { font-weight:700; font-size:.95rem; min-width:120px; }
+    .answer-input {
+      width:80px; padding:6px 10px;
+      border:2px solid #cbd5e1; border-radius:8px;
+      font-size:1rem; font-family:'Nunito',sans-serif; font-weight:700;
+      text-align:center; transition: border .2s;
+    }
+    .answer-input:focus { outline:none; border-color:var(--blue); }
+    .answer-input.correct { border-color:var(--green); background:#d1fae5; }
+    .answer-input.wrong   { border-color:var(--red);   background:#fee2e2; }
+    .feedback-icon { font-size:1.2rem; }
+    .check-btn {
+      padding: 8px 20px; background:var(--blue); color:#fff;
+      border:none; border-radius:8px; font-family:'Nunito',sans-serif;
+      font-weight:700; cursor:pointer; font-size:.88rem;
+      transition: background .2s, transform .1s;
+      display:flex; align-items:center; gap:6px;
+    }
+    .check-btn:hover  { background:#1d4ed8; }
+    .check-btn:active { transform:scale(.97); }
+    .reset-btn {
+      padding: 8px 16px; background:#f1f5f9; color:#475569;
+      border:1.5px solid #cbd5e1; border-radius:8px;
+      font-family:'Nunito',sans-serif; font-weight:700;
+      cursor:pointer; font-size:.85rem; transition:all .2s;
+    }
+    .reset-btn:hover { background:#e2e8f0; }
+
+    /* ---- VIDEO WRAPPER ---- */
+    .video-wrap {
+      background:#0f172a; border-radius:12px;
+      overflow:hidden; margin:14px 0;
+      position:relative;
+    }
+    .video-wrap video {
+      width:100%; display:block; max-height:380px;
+    }
+    .video-fallback {
+      padding: 40px 20px; text-align:center; color:#94a3b8;
+    }
+    .video-fallback .vf-icon { font-size:3rem; margin-bottom:8px; }
+
+    /* ---- CANVAS CONTAINERS ---- */
+    .canvas-wrap {
+      background:#fff; border:1.5px solid #e2e8f0;
+      border-radius:12px; overflow:hidden; margin:14px 0;
+      display:flex; flex-direction:column; align-items:center;
+    }
+    canvas { display:block; }
+    .canvas-controls {
+      display:flex; gap:8px; padding:10px; flex-wrap:wrap; justify-content:center;
+    }
+    .ctrl-btn {
+      padding:6px 14px; border-radius:8px; border:1.5px solid #e2e8f0;
+      background:#f8fafc; font-family:'Nunito',sans-serif; font-weight:700;
+      font-size:.82rem; cursor:pointer; transition:all .18s;
+    }
+    .ctrl-btn:hover  { background:var(--blue); color:#fff; border-color:var(--blue); }
+    .ctrl-btn.active { background:var(--blue); color:#fff; border-color:var(--blue); }
+    .ctrl-slider { width:140px; }
+
+    /* ---- GAMIFIED TABLES ---- */
+    #tables-game {
+      background: linear-gradient(135deg,#1a3a6b,#1e4d9e);
+      border-radius:16px; padding:24px; color:#fff;
+    }
+    #tables-game h2 { font-family:'Fredoka One',cursive; font-size:1.3rem; margin-bottom:14px; }
+    .table-selector {
+      display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px;
+    }
+    .tbl-btn {
+      width:36px; height:36px; border-radius:8px;
+      border:2px solid rgba(255,255,255,.3);
+      background:rgba(255,255,255,.12); color:#fff;
+      font-weight:800; cursor:pointer; transition:all .15s;
+      display:flex; align-items:center; justify-content:center;
+      font-size:.9rem;
+    }
+    .tbl-btn:hover, .tbl-btn.sel { background:var(--amber); border-color:var(--amber); color:#1a3a6b; }
+    .game-question {
+      background:rgba(255,255,255,.12);
+      border-radius:12px; padding:18px;
+      text-align:center; margin-bottom:14px;
+    }
+    .game-question .q-text { font-family:'Fredoka One',cursive; font-size:2.2rem; margin-bottom:10px; }
+    .game-options { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+    .game-opt {
+      padding:10px 22px; border-radius:10px;
+      background:rgba(255,255,255,.18); border:2px solid rgba(255,255,255,.25);
+      color:#fff; font-weight:800; font-size:1.1rem; cursor:pointer;
+      transition:all .15s; min-width:70px; text-align:center;
+    }
+    .game-opt:hover { background:rgba(255,255,255,.35); }
+    .game-opt.opt-correct { background:var(--green); border-color:var(--green); }
+    .game-opt.opt-wrong   { background:var(--red);   border-color:var(--red); }
+    .game-score {
+      display:flex; gap:18px; align-items:center; justify-content:center;
+      margin-top:12px; font-size:.88rem; font-weight:700;
+    }
+    .game-score span { background:rgba(255,255,255,.15); padding:4px 14px; border-radius:20px; }
+
+    /* ---- EVAL QUIZ ---- */
+    .quiz-q {
+      background:#f8fafc; border:1.5px solid #e2e8f0;
+      border-radius:12px; padding:16px 18px; margin-bottom:14px;
+    }
+    .quiz-q .q-num { font-size:.72rem; font-weight:800; color:#94a3b8; text-transform:uppercase; margin-bottom:4px; }
+    .quiz-q .q-text{ font-weight:700; font-size:.95rem; margin-bottom:10px; }
+    .quiz-options { display:flex; flex-direction:column; gap:7px; }
+    .quiz-opt {
+      display:flex; align-items:center; gap:10px;
+      padding:9px 14px; border-radius:9px;
+      border:1.5px solid #e2e8f0; background:#fff;
+      cursor:pointer; font-size:.88rem; font-weight:600;
+      transition:all .15s;
+    }
+    .quiz-opt:hover { border-color:var(--blue); background:#eff6ff; }
+    .quiz-opt.selected      { border-color:var(--blue); background:#dbeafe; }
+    .quiz-opt.opt-c { border-color:var(--green); background:#d1fae5; color:#065f46; }
+    .quiz-opt.opt-w { border-color:var(--red);   background:#fee2e2; color:#991b1b; }
+    .opt-letter {
+      width:24px; height:24px; border-radius:50%;
+      background:#e2e8f0; color:#475569;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:800; font-size:.8rem; flex-shrink:0;
+    }
+    .quiz-opt.selected .opt-letter   { background:var(--blue); color:#fff; }
+    .quiz-opt.opt-c    .opt-letter   { background:var(--green); color:#fff; }
+    .quiz-opt.opt-w    .opt-letter   { background:var(--red); color:#fff; }
+    .quiz-feedback { margin-top:8px; font-size:.83rem; font-weight:700; padding:6px 10px; border-radius:7px; }
+    .quiz-feedback.fb-c { background:#d1fae5; color:#065f46; }
+    .quiz-feedback.fb-w { background:#fee2e2; color:#991b1b; }
+    .score-display {
+      background: linear-gradient(135deg,var(--navy),var(--blue));
+      color:#fff; border-radius:16px; padding:28px;
+      text-align:center; margin-top:20px;
+    }
+    .score-display h2 { font-family:'Fredoka One',cursive; font-size:1.6rem; margin-bottom:8px; }
+    .score-big { font-family:'Fredoka One',cursive; font-size:3.5rem; color:var(--amber); }
+    .score-bar-wrap { background:rgba(255,255,255,.2); border-radius:20px; height:14px; margin:12px 0; overflow:hidden; }
+    .score-bar { height:100%; background:var(--amber); border-radius:20px; transition:width 1s ease; }
+
+    /* ---- GENERATOR ---- */
+    .gen-controls { display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; margin-bottom:18px; }
+    .gen-field { display:flex; flex-direction:column; gap:5px; }
+    .gen-field label { font-size:.82rem; font-weight:700; color:#475569; }
+    .gen-field select, .gen-field input[type=number] {
+      padding:8px 12px; border:1.5px solid #cbd5e1; border-radius:9px;
+      font-size:.9rem; font-family:'Nunito',sans-serif; font-weight:600;
+      background:#fff; min-width:80px;
+    }
+    .gen-field select:focus, .gen-field input:focus { outline:none; border-color:var(--blue); }
+    .gen-btn {
+      padding:9px 20px; background:var(--blue); color:#fff;
+      border:none; border-radius:9px; font-family:'Nunito',sans-serif;
+      font-weight:700; cursor:pointer; font-size:.9rem; transition:background .2s;
+    }
+    .gen-btn:hover { background:#1d4ed8; }
+    .gen-btn.pdf-btn { background:var(--red); }
+    .gen-btn.pdf-btn:hover { background:#b91c1c; }
+    #exercise-sheet {
+      display:grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap:16px;
+    }
+    .ex-card {
+      background:#fff; border:1.5px solid #e2e8f0;
+      border-radius:10px; padding:14px 16px;
+      text-align:right; font-family:'Fredoka One',cursive;
+      font-size:1.1rem; color:var(--navy); line-height:1.9;
+    }
+    .ex-card .ex-num { font-size:.72rem; font-weight:800; color:#94a3b8; text-align:left; margin-bottom:4px; font-family:'Nunito',sans-serif; }
+    .ex-card .ex-line { border-top:2px solid var(--navy); margin-top:2px; }
+    .ex-card .ex-ans  { color:transparent; border-bottom:1.5px solid #cbd5e1; min-width:80px; display:inline-block; }
+
+    /* ---- WELCOME OVERLAY ---- */
+    #welcome-overlay {
+      position:fixed; inset:0; z-index:2000;
+      background: linear-gradient(135deg,#0f2556,#1a3a6b,#1e4d9e);
+      display:flex; align-items:center; justify-content:center;
+      flex-direction:column; gap:16px;
+    }
+    #welcome-overlay .wc-box {
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.15);
+      border-radius:24px; padding:40px 50px; text-align:center;
+      max-width:520px; width:90%;
+      animation: popIn .5s cubic-bezier(.17,.89,.32,1.27);
+    }
+    @keyframes popIn { from{opacity:0;transform:scale(.8)} to{opacity:1;transform:none} }
+    .wc-emoji { font-size:4rem; margin-bottom:10px; }
+    .wc-title { font-family:'Fredoka One',cursive; color:#fff; font-size:2rem; margin-bottom:8px; }
+    .wc-sub   { color:#93c5fd; font-size:.95rem; line-height:1.6; margin-bottom:20px; }
+    .wc-btn   {
+      background:var(--amber); color:#1a3a6b;
+      padding:13px 36px; border-radius:12px; border:none;
+      font-family:'Fredoka One',cursive; font-size:1.1rem;
+      cursor:pointer; transition:transform .15s, box-shadow .15s;
+      box-shadow:0 4px 18px rgba(245,158,11,.4);
+    }
+    .wc-btn:hover { transform:scale(1.04); box-shadow:0 6px 24px rgba(245,158,11,.5); }
+
+    /* ---- INFO HIGHLIGHT ---- */
+    .highlight-box {
+      background: linear-gradient(135deg,#fef3c7,#fffbeb);
+      border:1.5px solid #fde68a; border-radius:12px;
+      padding:14px 18px; display:flex; gap:12px; align-items:flex-start;
+    }
+    .highlight-box .hi-icon { font-size:1.4rem; flex-shrink:0; }
+
+    /* ---- STEP BOXES ---- */
+    .steps-list { list-style:none; margin:12px 0; }
+    .steps-list li {
+      display:flex; gap:12px; align-items:flex-start;
+      margin-bottom:12px;
+    }
+    .step-num {
+      width:28px; height:28px; border-radius:50%;
+      background:var(--blue); color:#fff;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:800; font-size:.85rem; flex-shrink:0; margin-top:2px;
+    }
+
+    /* ---- EXAMPLES GRID ---- */
+    .examples-grid {
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+      gap:12px; margin:12px 0;
+    }
+    .ex-item {
+      background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:10px;
+      padding:12px 16px; text-align:right;
+    }
+    .ex-item .ex-op   { font-size:.78rem; color:#64748b; margin-bottom:2px; }
+    .ex-item .ex-body { font-family:'Fredoka One',cursive; font-size:1.15rem; color:var(--navy); line-height:1.7; }
+    .ex-item .ex-body .carry { color:var(--amber); font-size:.75rem; vertical-align:super; }
+    .ex-item .ex-sep  { border-top:2px solid var(--navy); }
+    .ex-item .ex-res  { color:var(--blue); }
+    .ex-item .ex-part { color:var(--purple); }
+
+    /* ---- PROGRESS BAR ---- */
+    .prog-wrap { background:#e2e8f0; border-radius:20px; height:8px; margin:10px 0; overflow:hidden; }
+    .prog-fill { height:100%; background:linear-gradient(90deg,var(--blue),var(--sky)); border-radius:20px; transition:width .4s; }
+
+    /* ---- FOOTER ---- */
+    footer {
+      background: linear-gradient(135deg,#0f2556,#1a3a6b);
+      color:#93c5fd; text-align:center;
+      padding:18px; font-size:.82rem;
+      margin-left: var(--sidebar-w);
+    }
+    footer strong { color:#fff; }
+
+    /* ---- ARCADE GAME ---- */
+    #arcade-wrapper {
+      background: linear-gradient(160deg, #0a1628 0%, #0f2556 50%, #1a1040 100%);
+      border-radius: 20px;
+      padding: 30px 20px;
+      text-align: center;
+      min-height: 480px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      margin-bottom: 22px;
+    }
+    #arcade-wrapper::before {
+      content:''; position:absolute; inset:0;
+      background: radial-gradient(ellipse at 20% 20%, rgba(99,102,241,.15) 0%, transparent 50%),
+                  radial-gradient(ellipse at 80% 80%, rgba(245,158,11,.1) 0%, transparent 50%);
+      pointer-events:none;
+    }
+    #arcade-start, #arcade-over { max-width:440px; width:100%; position:relative; z-index:1; }
+    .arc-title { font-family:'Fredoka One',cursive; color:#fff; font-size:1.8rem; margin-bottom:8px; }
+    .arc-subtitle { color:#93c5fd; font-size:.88rem; line-height:1.6; margin-bottom:4px; }
+    .arc-play-btn {
+      background: linear-gradient(135deg,#f59e0b,#f97316);
+      color:#1a1a1a; border:none; padding:12px 34px;
+      border-radius:12px; font-family:'Fredoka One',cursive; font-size:1.1rem;
+      cursor:pointer; transition:transform .15s, box-shadow .15s;
+      box-shadow:0 4px 20px rgba(245,158,11,.4); margin-top:8px;
+    }
+    .arc-play-btn:hover { transform:scale(1.05); box-shadow:0 6px 26px rgba(245,158,11,.55); }
+    .arc-tbl-btn {
+      width:38px; height:38px; border-radius:9px;
+      background:rgba(255,255,255,.08); border:2px solid rgba(255,255,255,.2);
+      color:#cbd5e1; font-weight:800; cursor:pointer; font-size:.9rem;
+      transition:all .15s;
+    }
+    .arc-tbl-btn.on { background:linear-gradient(135deg,#f59e0b,#f97316); border-color:#f59e0b; color:#1a1a1a; }
+    .arc-diff-btn {
+      padding:7px 18px; border-radius:9px;
+      background:rgba(255,255,255,.08); border:2px solid rgba(255,255,255,.15);
+      color:#cbd5e1; font-weight:700; cursor:pointer; font-size:.82rem;
+      transition:all .15s; font-family:'Nunito',sans-serif;
+    }
+    .arc-diff-btn.active { background:linear-gradient(135deg,#6366f1,#8b5cf6); border-color:#8b5cf6; color:#fff; }
+    #arcade-game { width:100%; max-width:600px; position:relative; z-index:1; }
+    #arc-hud {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:8px 12px; background:rgba(0,0,0,.35); border-radius:12px 12px 0 0;
+      flex-wrap:wrap; gap:6px;
+    }
+    .arc-hud-item { color:#e2e8f0; font-size:.88rem; font-weight:700; display:flex; align-items:center; gap:5px; }
+    #arcade-canvas {
+      display:block; border-radius:0 0 12px 12px;
+      cursor:pointer; width:100%; max-width:600px;
+    }
+    .arc-over-emoji { font-size:3.5rem; margin-bottom:6px; }
+    .arc-stat {
+      background:rgba(255,255,255,.08); border-radius:10px;
+      padding:10px 18px; display:flex; flex-direction:column; align-items:center; gap:2px;
+    }
+    .arc-stat span { font-size:1rem; }
+    .arc-stat strong { font-family:'Fredoka One',cursive; font-size:1.6rem; color:#fbbf24; }
+
+    /* ---- GAME SCORE (old, kept for other sections) ---- */
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-track { background:#f1f5f9; }
+    ::-webkit-scrollbar-thumb { background:#94a3b8; border-radius:3px; }
+
+    /* ---- PRINT STYLES FOR PDF GENERATOR ---- */
+    @media print {
+      #welcome-overlay, header, #sidebar, .gen-controls, .back-btn,
+      footer, .check-btn, .reset-btn, nav { display:none !important; }
+      #main { margin:0; padding:10px; }
+      .section { display:block !important; }
+      .section:not(#sec-generator) { display:none !important; }
+      #sec-generator .section.active { display:block !important; }
+      body { background:#fff; }
+      #exercise-sheet { grid-template-columns: repeat(4, 1fr); }
+      .ex-card { break-inside: avoid; }
+      .print-header { display:block !important; text-align:center; margin-bottom:16px; }
+    }
+    .print-header { display:none; }
+
+    /* ---- RESPONSIVE ---- */
+    @media(max-width:700px){
+      :root{ --sidebar-w:0px; }
+      #sidebar{ transform:translateX(-240px); width:240px; transition:transform .25s; }
+      #sidebar.open{ transform:none; }
+      #main{ margin-left:0; padding:calc(var(--header-h)+16px) 14px 30px; }
+      footer{ margin-left:0; }
+      .vmult{ font-size:1rem; }
+    }
+
+    /* ---- ELEMENTS DIAGRAM ---- */
+    .elem-diagram {
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:center;
+      margin:18px 0;
+    }
+    .elem-box {
+      border-radius:12px; padding:10px 18px; text-align:center; font-weight:800;
+    }
+    .elem-box .el-label { font-size:.68rem; text-transform:uppercase; letter-spacing:.8px; margin-bottom:3px; }
+    .elem-box .el-val   { font-family:'Fredoka One',cursive; font-size:1.8rem; }
+    .elem-multiplicando { background:#dbeafe; color:var(--blue); border:2px solid #93c5fd; }
+    .elem-signo         { background:#f1f5f9; color:#475569; font-size:1.5rem; padding:10px 10px; display:flex; align-items:center; }
+    .elem-multiplicador { background:#ede9fe; color:var(--purple); border:2px solid #c4b5fd; }
+    .elem-igual         { background:#f1f5f9; color:#475569; font-size:1.5rem; padding:10px 10px; display:flex; align-items:center; }
+    .elem-producto      { background:#d1fae5; color:#065f46; border:2px solid #6ee7b7; }
+
+    /* ---- INTERACTIVE VMULT DEMO ---- */
+    #vmult-demo-wrap {
+      background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:12px;
+      padding:20px; margin:14px 0;
+    }
+    .demo-inputs { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:12px; }
+    .demo-inputs label { font-weight:700; font-size:.85rem; color:#475569; }
+    .demo-inputs input {
+      width:90px; padding:8px 10px; border:2px solid #cbd5e1; border-radius:8px;
+      font-size:1.1rem; font-weight:700; font-family:'Fredoka One',cursive;
+      text-align:center; color:var(--navy);
+    }
+    .demo-inputs input:focus { outline:none; border-color:var(--blue); }
+    #vmult-steps { margin-top:12px; }
+    .step-row {
+      display:flex; gap:8px; align-items:center;
+      padding:8px 12px; border-radius:9px; margin-bottom:6px;
+      animation: slideIn .3s ease;
+    }
+    @keyframes slideIn{ from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:none} }
+    .step-row .sr-num { font-size:.75rem; font-weight:800; color:#94a3b8; min-width:80px; }
+    .step-row .sr-calc{ font-family:'Fredoka One',cursive; font-size:1rem; color:var(--navy); }
+    .step-row .sr-eq  { color:#94a3b8; }
+    .step-row .sr-res { font-weight:800; color:var(--blue); }
+    .step-row.step-final { background:#dbeafe; }
+    .step-row.step-partial { background:#ede9fe; }
+  </style>
+</head>
+<body>
+
+<!--===== WELCOME OVERLAY =====-->
+<div id="welcome-overlay">
+  <div class="wc-box">
+    <div class="wc-emoji">🧮</div>
+    <div class="wc-title">¡Bienvenido/a a<br>Mente Matemática!</div>
+    <p class="wc-sub">
+      Hoy aprenderás a <strong style="color:#fff">multiplicar números enteros</strong>.<br>
+      Prepárate para explorar, practicar y ¡demostrar tus habilidades!
+    </p>
+    <button class="wc-btn" onclick="closeWelcome()">¡Comenzar ahora! 🚀</button>
+  </div>
+</div>
+
+<!--===== HEADER =====-->
+<header>
+  <div class="logo">
+    <div class="logo-icon">🧮</div>
+    <div>
+      <div class="logo-text">Mente Matemática</div>
+      <div class="logo-sub">Plataforma Educativa</div>
+    </div>
+  </div>
+  <a href="temario.html" class="back-btn">⬅ Volver al menú</a>
+</header>
+
+<!--===== SIDEBAR =====-->
+<nav id="sidebar">
+  <div class="sidebar-title">Módulos</div>
+
+  <div class="nav-item active" data-sec="sec-intro"  onclick="goTo(this)">
+    <span class="nav-icon">🎬</span> ¿Qué aprenderemos?
+  </div>
+  <div class="nav-item" data-sec="sec-concepto" onclick="goTo(this)">
+    <span class="nav-icon">💡</span> 1. Concepto
+  </div>
+  <div class="nav-item" data-sec="sec-tablas" onclick="goTo(this)">
+    <span class="nav-icon">🎮</span> 2. Repaso de Tablas
+  </div>
+  <div class="nav-item" data-sec="sec-1cifra" onclick="goTo(this)">
+    <span class="nav-icon">🔢</span> 3. Mult. 1 Cifra
+  </div>
+  <div class="nav-item" data-sec="sec-elementos" onclick="goTo(this)">
+    <span class="nav-icon">🏗️</span> 4. Elementos
+  </div>
+  <div class="nav-item" data-sec="sec-mult1m" onclick="goTo(this)">
+    <span class="nav-icon">1️⃣</span> 5. Mult. ×1 cifra
+  </div>
+  <div class="nav-item" data-sec="sec-mult2m" onclick="goTo(this)">
+    <span class="nav-icon">2️⃣</span> 6. Mult. ×2 cifras
+  </div>
+  <div class="nav-item" data-sec="sec-mult34m" onclick="goTo(this)">
+    <span class="nav-icon">🔠</span> 7. Mult. ×3-4 cifras
+  </div>
+  <div class="nav-item" data-sec="sec-problemas" onclick="goTo(this)">
+    <span class="nav-icon">📚</span> 8. Aplicaciones
+  </div>
+  <div class="nav-item" data-sec="sec-generator" onclick="goTo(this)">
+    <span class="nav-icon">📝</span> 9. Generador
+  </div>
+  <div class="nav-item" data-sec="sec-eval" onclick="goTo(this)">
+    <span class="nav-icon">🏆</span> 10. Evaluación
+  </div>
+</nav>
+
+<!--===== MAIN CONTENT =====-->
+<main id="main">
+
+<!-- =============================================
+     SECCIÓN 0: ¿QUÉ APRENDEREMOS?
+     ============================================= -->
+<section id="sec-intro" class="section active">
+  <div class="page-title">
+    <div class="title-icon">🎬</div>
+    <div>
+      <h1>¿Qué aprenderemos?</h1>
+      <p style="color:#64748b;font-size:.88rem">Multiplicación de Números Enteros</p>
+    </div>
+  </div>
+
+  <!-- Tarjeta de bienvenida -->
+  <div class="card" style="background:linear-gradient(135deg,#1a3a6b,#1e4d9e);color:#fff;border:none;">
+    <h2 class="section-h" style="color:#fbbf24;font-family:'Fredoka One',cursive;font-size:1.4rem;">
+      🎯 Objetivo del Tema
+    </h2>
+    <p style="line-height:1.7;color:#e0f2fe;font-size:.95rem;">
+      En este tema aprenderás a <strong style="color:#fbbf24">multiplicar números enteros</strong>. 
+      Descubrirás las reglas básicas para multiplicar números positivos y negativos, 
+      y cómo aplicar esas reglas en diferentes situaciones. Al final del tema, 
+      serás capaz de resolver multiplicaciones de enteros de manera rápida y precisa.
+    </p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
+      <span class="badge" style="background:rgba(251,191,36,.2);color:#fbbf24;">📐 Conceptos</span>
+      <span class="badge" style="background:rgba(56,189,248,.2);color:#38bdf8;">🎮 Práctica gamificada</span>
+      <span class="badge" style="background:rgba(16,185,129,.2);color:#6ee7b7;">✅ Evaluación</span>
+      <span class="badge" style="background:rgba(124,58,237,.2);color:#c4b5fd;">📹 Videos</span>
+    </div>
+  </div>
+
+  <!-- ¿Por qué es importante? -->
+  <div class="card card-accent">
+    <h2 class="section-h">🌟 ¿Por qué es importante la multiplicación?</h2>
+    <p class="body-text">La multiplicación de números enteros es una habilidad fundamental en matemáticas. La utilizamos en:</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:12px;">
+      <div style="background:#eff6ff;border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:1.8rem;margin-bottom:6px;">🛒</div>
+        <strong style="color:var(--blue);">Vida cotidiana</strong>
+        <p style="font-size:.82rem;color:#475569;margin-top:4px;">Calcular precios, distancias, áreas y más.</p>
+      </div>
+      <div style="background:#fdf4ff;border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:1.8rem;margin-bottom:6px;">📐</div>
+        <strong style="color:var(--purple);">Matemáticas</strong>
+        <p style="font-size:.82rem;color:#475569;margin-top:4px;">En álgebra, geometría y muchas ramas.</p>
+      </div>
+      <div style="background:#f0fdf4;border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:1.8rem;margin-bottom:6px;">💻</div>
+        <strong style="color:var(--green);">Programación</strong>
+        <p style="font-size:.82rem;color:#475569;margin-top:4px;">Para realizar cálculos y resolver problemas.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mapa visual del tema -->
+  <div class="card card-amber">
+    <h2 class="section-h">🗺️ Mapa del Tema</h2>
+    <p class="body-text" style="margin-bottom:14px;">Explorarás estos módulos de aprendizaje:</p>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 14px;background:#fffbeb;border-radius:9px;border:1px solid #fde68a;">
+        <span style="font-size:1.2rem;">💡</span>
+        <div><strong style="color:#92400e;">Concepto de Multiplicación</strong> – Repaso de tablas y ley de signos.</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 14px;background:#eff6ff;border-radius:9px;border:1px solid #bfdbfe;">
+        <span style="font-size:1.2rem;">🔢</span>
+        <div><strong style="color:var(--blue);">Multiplicación de 1 cifra</strong> – Ejemplo básico con video.</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 14px;background:#fdf4ff;border-radius:9px;border:1px solid #e9d5ff;">
+        <span style="font-size:1.2rem;">🏗️</span>
+        <div><strong style="color:var(--purple);">Elementos de la Multiplicación</strong> – Multiplicando, multiplicador, producto.</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 14px;background:#f0fdf4;border-radius:9px;border:1px solid #a7f3d0;">
+        <span style="font-size:1.2rem;">📈</span>
+        <div><strong style="color:var(--green);">Multiplicación avanzada</strong> – 1, 2, 3 y 4 cifras en el multiplicador.</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 14px;background:#fff1f2;border-radius:9px;border:1px solid #fecdd3;">
+        <span style="font-size:1.2rem;">📚</span>
+        <div><strong style="color:#be185d;">Problemas de aplicación</strong> – Situaciones del mundo real.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Canvas: Visualización de multiplicación como suma repetida -->
+  <div class="card card-green">
+    <h2 class="section-h">🎨 La Multiplicación como Suma Repetida</h2>
+    <p class="body-text" style="margin-bottom:12px;">
+      Multiplicar es sumar un número varias veces. Ejemplo: <strong>3 × 4</strong> = 4 + 4 + 4 = 12
+    </p>
+    <div class="canvas-wrap">
+      <canvas id="cnv-intro" width="560" height="160"></canvas>
+      <div class="canvas-controls">
+        <label style="font-size:.82rem;font-weight:700;">Factor A:</label>
+        <input type="range" min="1" max="6" value="3" class="ctrl-slider" id="rng-a" oninput="drawIntroCanvas()">
+        <span id="val-a" style="font-weight:800;color:var(--blue);min-width:20px;text-align:center;">3</span>
+        <label style="font-size:.82rem;font-weight:700;">Factor B:</label>
+        <input type="range" min="1" max="6" value="4" class="ctrl-slider" id="rng-b" oninput="drawIntroCanvas()">
+        <span id="val-b" style="font-weight:800;color:var(--purple);min-width:20px;text-align:center;">4</span>
+      </div>
+    </div>
+    <p id="intro-formula" class="body-text" style="text-align:center;font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--navy);"></p>
+  </div>
+
+  <!-- Nota importante -->
+  <div class="highlight-box">
+    <span class="hi-icon">⚠️</span>
+    <div>
+      <strong style="color:#92400e;">¡Importante!</strong>
+      <p style="font-size:.88rem;color:#78350f;margin-top:3px;line-height:1.5;">
+        Es necesario <strong>dominar las tablas de multiplicar del 1 al 12</strong> para poder multiplicar cualquier número con facilidad y rapidez.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     SECCIÓN 1: CONCEPTO DE MULTIPLICACIÓN
+     ============================================= -->
+<section id="sec-concepto" class="section">
+  <div class="page-title">
+    <div class="title-icon">💡</div>
+    <div>
+      <h1>Concepto de Multiplicación</h1>
+      <p style="color:#64748b;font-size:.88rem">Tablas, ley de signos y procedimiento</p>
+    </div>
+  </div>
+
+  <!-- Ley de signos -->
+  <div class="card card-accent">
+    <h2 class="section-h">📋 La Ley de Signos</h2>
+    <p class="body-text">La ley de los signos nos indica cómo determinar el signo del resultado al multiplicar dos números enteros:</p>
+    <table class="sign-table" style="margin-top:12px;">
+      <tr><th>Factor 1</th><th>Factor 2</th><th>Resultado</th><th>Regla</th></tr>
+      <tr><td class="sign-pos">+ Positivo</td><td class="sign-pos">+ Positivo</td><td class="sign-pos">+ Positivo</td><td>Signos iguales → <span class="sign-pos">+</span></td></tr>
+      <tr><td class="sign-neg">− Negativo</td><td class="sign-neg">− Negativo</td><td class="sign-pos">+ Positivo</td><td>Signos iguales → <span class="sign-pos">+</span></td></tr>
+      <tr><td class="sign-pos">+ Positivo</td><td class="sign-neg">− Negativo</td><td class="sign-neg">− Negativo</td><td>Signos distintos → <span class="sign-neg">−</span></td></tr>
+      <tr><td class="sign-neg">− Negativo</td><td class="sign-pos">+ Positivo</td><td class="sign-neg">− Negativo</td><td>Signos distintos → <span class="sign-neg">−</span></td></tr>
+    </table>
+
+    <div class="rule-box" style="margin-top:14px;">
+      <p><strong>✅ Regla fácil de recordar:</strong> Si los signos son <strong>iguales → resultado positivo (+)</strong>. Si los signos son <strong>diferentes → resultado negativo (−)</strong>.</p>
+    </div>
+  </div>
+
+  <!-- Ejemplos de signos -->
+  <div class="card card-amber">
+    <h2 class="section-h">🔍 Ejemplos con Ley de Signos</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:8px;">
+      <div style="background:#d1fae5;border-radius:10px;padding:12px 14px;">
+        <div style="font-size:.78rem;font-weight:700;color:#065f46;">➕ × ➕ = ➕</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--green);margin-top:4px;">3 × 5 = <strong>15</strong></div>
+      </div>
+      <div style="background:#d1fae5;border-radius:10px;padding:12px 14px;">
+        <div style="font-size:.78rem;font-weight:700;color:#065f46;">➖ × ➖ = ➕</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--green);margin-top:4px;">(−3) × (−5) = <strong>15</strong></div>
+      </div>
+      <div style="background:#fee2e2;border-radius:10px;padding:12px 14px;">
+        <div style="font-size:.78rem;font-weight:700;color:#991b1b;">➖ × ➕ = ➖</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--red);margin-top:4px;">(−3) × 5 = <strong>−15</strong></div>
+      </div>
+      <div style="background:#fee2e2;border-radius:10px;padding:12px 14px;">
+        <div style="font-size:.78rem;font-weight:700;color:#991b1b;">➕ × ➖ = ➖</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--red);margin-top:4px;">6 × (−3) = <strong>−18</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Canvas ley de signos interactiva -->
+  <div class="card card-purple">
+    <h2 class="section-h">🎮 Visualizador de Ley de Signos</h2>
+    <div class="canvas-wrap">
+      <canvas id="cnv-signs" width="560" height="200"></canvas>
+      <div class="canvas-controls">
+        <button class="ctrl-btn active" onclick="setSignDemo('pp')">+ × +</button>
+        <button class="ctrl-btn" onclick="setSignDemo('nn')">− × −</button>
+        <button class="ctrl-btn" onclick="setSignDemo('pn')">+ × −</button>
+        <button class="ctrl-btn" onclick="setSignDemo('np')">− × +</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pasos para multiplicar -->
+  <div class="card card-green">
+    <h2 class="section-h">📌 Cómo Multiplicar Números Enteros</h2>
+    <ul class="steps-list">
+      <li>
+        <div class="step-num">1</div>
+        <div>
+          <strong>Multiplicar los valores absolutos:</strong>
+          <p class="body-text">Ignoramos los signos por el momento y multiplicamos los números como si fueran positivos.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div>
+          <strong>Aplicar la ley de los signos:</strong>
+          <p class="body-text">Determinamos el signo del resultado según la regla de los signos.</p>
+        </div>
+      </li>
+    </ul>
+    <div class="rule-box green">
+      <p><strong>Ejemplo:</strong> −7 × 5 = ?</p>
+      <p style="margin-top:6px;">① Valores absolutos: |−7| × |5| = 7 × 5 = <strong>35</strong></p>
+      <p style="margin-top:4px;">② Ley de signos: (−) × (+) = <strong>−</strong></p>
+      <p style="margin-top:4px;">✅ Resultado: −7 × 5 = <strong>−35</strong></p>
+    </div>
+  </div>
+
+  </div>
+</section>
+
+
+<!-- =============================================
+     SECCIÓN 2: REPASO GAMIFICADO DE TABLAS
+     ============================================= -->
+<section id="sec-tablas" class="section">
+  <div class="page-title">
+    <div class="title-icon">🎮</div>
+    <div>
+      <h1>Repaso Gamificado de Tablas</h1>
+      <p style="color:#64748b;font-size:.88rem">Tablas del 2 al 11 — ¡Practica y supera tu marca!</p>
+    </div>
+  </div>
+
+  <div class="card" style="background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1.5px solid #fde68a;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:2rem;">⚠️</span>
+      <div>
+        <strong style="color:#92400e;">¡Recuerda!</strong>
+        <p style="font-size:.9rem;color:#78350f;margin-top:3px;line-height:1.5;">
+          Dominar las tablas de multiplicar del <strong>1 al 12</strong> es la base para poder multiplicar cualquier número con rapidez y seguridad.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ARCADE GAME WRAPPER ===== -->
+  <div id="arcade-wrapper">
+
+    <!-- PANTALLA DE INICIO -->
+    <div id="arcade-start">
+      <div class="arc-title">🎮 ¡Atrapa la respuesta!</div>
+      <p class="arc-subtitle">Aparecerá una multiplicación arriba.<br>Haz clic en la burbuja con la respuesta correcta antes de que llegue al fondo.</p>
+
+      <div style="margin:18px 0;">
+        <p style="font-size:.8rem;font-weight:800;color:#93c5fd;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Elige las tablas a practicar:</p>
+        <div id="arc-table-sel" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;"></div>
+      </div>
+
+      <div style="margin:14px 0;">
+        <p style="font-size:.8rem;font-weight:800;color:#93c5fd;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Dificultad:</p>
+        <div style="display:flex;gap:8px;justify-content:center;">
+          <button class="arc-diff-btn active" data-diff="easy"   onclick="setDiff(this,'easy')">🐢 Fácil</button>
+          <button class="arc-diff-btn"        data-diff="normal" onclick="setDiff(this,'normal')">🐇 Normal</button>
+          <button class="arc-diff-btn"        data-diff="hard"   onclick="setDiff(this,'hard')">🚀 Difícil</button>
+        </div>
+      </div>
+
+      <button class="arc-play-btn" onclick="arcadeStart()">▶ ¡Jugar!</button>
+    </div>
+
+    <!-- JUEGO ACTIVO -->
+    <div id="arcade-game" style="display:none;">
+      <div id="arc-hud">
+        <div class="arc-hud-item">❓ <span id="arc-question" style="font-family:'Fredoka One',cursive;font-size:1.5rem;color:#fbbf24;"></span></div>
+        <div style="display:flex;gap:14px;align-items:center;">
+          <span class="arc-hud-item">⭐ <strong id="arc-score">0</strong></span>
+          <span class="arc-hud-item">🔥 <strong id="arc-streak">0</strong></span>
+          <span id="arc-lives"></span>
+          <button onclick="arcadePause()" id="arc-pause-btn" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:4px 12px;border-radius:7px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:.8rem;">⏸ Pausa</button>
+        </div>
+      </div>
+      <canvas id="arcade-canvas" width="600" height="460"></canvas>
+    </div>
+
+    <!-- GAME OVER -->
+    <div id="arcade-over" style="display:none;">
+      <div class="arc-over-emoji" id="arc-over-emoji">🏆</div>
+      <div class="arc-title" id="arc-over-title">¡Bien hecho!</div>
+      <div style="margin:12px 0;">
+        <div style="font-family:'Fredoka One',cursive;font-size:2.8rem;color:#fbbf24;" id="arc-final-score">0</div>
+        <p style="color:#93c5fd;font-size:.9rem;" id="arc-final-msg"></p>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:14px 0;">
+        <div class="arc-stat"><span>✅</span><strong id="arc-stat-ok">0</strong><span>correctas</span></div>
+        <div class="arc-stat"><span>❌</span><strong id="arc-stat-err">0</strong><span>errores</span></div>
+        <div class="arc-stat"><span>🔥</span><strong id="arc-stat-best">0</strong><span>mejor racha</span></div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <button class="arc-play-btn" onclick="arcadeRestart()">🔄 Jugar de nuevo</button>
+        <button class="arc-play-btn" style="background:rgba(255,255,255,.15);" onclick="arcadeMenu()">🏠 Menú</button>
+      </div>
+    </div>
+
+  </div><!-- /#arcade-wrapper -->
+
+  <!-- Tabla de referencia -->
+  <div class="card card-accent" style="margin-top:22px;">
+    <h2 class="section-h">📋 Tabla de Referencia (del 2 al 11)</h2>
+    <div style="overflow-x:auto;">
+      <table class="sign-table" id="ref-table" style="min-width:500px;"></table>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     SECCIÓN 2: MULTIPLICACIÓN DE 1 CIFRA
+     ============================================= -->
+<section id="sec-1cifra" class="section">
+  <div class="page-title">
+    <div class="title-icon">🔢</div>
+    <div>
+      <h1>Multiplicación de 1 Cifra</h1>
+      <p style="color:#64748b;font-size:.88rem">Conceptos básicos y ejercicios</p>
+    </div>
+  </div>
+
+  <!-- Video -->
+  <div class="card">
+    <h2 class="section-h">🎬 Video: Multiplicación de 1 Cifra</h2>
+    <div class="video-wrap">
+      <video controls>
+        <source src="/vid/mult1.mp4" type="video/mp4">
+        <div class="video-fallback">
+          <div class="vf-icon">🎬</div>
+          <p style="color:#cbd5e1;">Video: <em>/vid/mult1.mp4</em></p>
+          <p style="font-size:.8rem;color:#64748b;margin-top:4px;">Coloca el archivo en la carpeta <code>/vid/</code></p>
+        </div>
+      </video>
+    </div>
+  </div>
+
+  <!-- Conceptos -->
+  <div class="card card-accent">
+    <h2 class="section-h">📚 ¿Qué es multiplicar por 1 cifra?</h2>
+    <p class="body-text">
+      Multiplicar un número por una cifra (del 1 al 9) es la forma más básica de multiplicación. 
+      Se realiza dígito a dígito de derecha a izquierda, llevando el acarreo cuando es necesario.
+    </p>
+    <ul class="steps-list" style="margin-top:14px;">
+      <li><div class="step-num">1</div><div>Escribir el número mayor arriba (multiplicando) y el de 1 cifra abajo (multiplicador).</div></li>
+      <li><div class="step-num">2</div><div>Multiplicar el dígito de las unidades del multiplicando por el multiplicador.</div></li>
+      <li><div class="step-num">3</div><div>Si el resultado tiene 2 dígitos, escribir el primero y llevar el segundo (acarreo).</div></li>
+      <li><div class="step-num">4</div><div>Continuar con decenas, centenas, etc., sumando el acarreo.</div></li>
+    </ul>
+  </div>
+
+  <!-- Ejemplos básicos Práctica 1 -->
+  <div class="card card-amber">
+    <h2 class="section-h">✏️ Práctica 1 – Tablas básicas</h2>
+    <p class="body-text" style="margin-bottom:12px;">Resuelve las siguientes multiplicaciones básicas:</p>
+    <div class="activity-box">
+      <div id="prac1-items"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+        <button class="check-btn" onclick="checkPrac1()">✔ Verificar respuestas</button>
+        <button class="reset-btn" onclick="resetPrac1()">🔄 Reintentar</button>
+      </div>
+      <div id="prac1-result" style="margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <!-- Canvas: Multiplicación por 1 cifra animada -->
+  <div class="card card-green">
+    <h2 class="section-h">🎨 Visualizador Interactivo – Multiplicación por 1 Cifra</h2>
+    <p class="body-text" style="margin-bottom:8px;">Escribe un número y observa el proceso paso a paso:</p>
+    <div id="vmult-demo-wrap">
+      <div class="demo-inputs">
+        <label>Multiplicando:</label>
+        <input type="number" id="demo1-a" value="36" min="1" max="999" oninput="draw1CifraDemo()">
+        <span style="font-family:'Fredoka One',cursive;font-size:1.5rem;color:#94a3b8;">×</span>
+        <label>Multiplicador (1 cifra):</label>
+        <input type="number" id="demo1-b" value="4" min="1" max="9" oninput="draw1CifraDemo()">
+        <button class="check-btn" onclick="draw1CifraDemo()" style="margin-left:6px;">▶ Calcular</button>
+      </div>
+      <div id="vmult-steps"></div>
+    </div>
+  </div>
+
+  <!-- Más ejemplos ilustrativos -->
+  <div class="card card-purple">
+    <h2 class="section-h">📌 Más Ejemplos Ilustrativos</h2>
+    <div class="examples-grid" id="examples-1cifra">
+      <!-- generado por JS -->
+    </div>
+  </div>
+
+  <!-- Actividades de práctica -->
+  <div class="card">
+    <h2 class="section-h">🏋️ Actividades Interactivas – Multiplica por 1 Cifra</h2>
+    <div class="activity-box">
+      <p style="font-size:.88rem;font-weight:700;color:#475569;margin-bottom:10px;">Resuelve las siguientes multiplicaciones verticales:</p>
+      <div id="act1-items"></div>
+      <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+        <button class="check-btn" onclick="checkAct1()">✔ Verificar</button>
+        <button class="reset-btn" onclick="resetAct1()">🔄 Nuevos ejercicios</button>
+      </div>
+      <div id="act1-result" style="margin-top:10px;"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     SECCIÓN 3: ELEMENTOS DE LA MULTIPLICACIÓN
+     ============================================= -->
+<section id="sec-elementos" class="section">
+  <div class="page-title">
+    <div class="title-icon">🏗️</div>
+    <div>
+      <h1>Elementos de la Multiplicación</h1>
+      <p style="color:#64748b;font-size:.88rem">Multiplicando · Multiplicador · Producto</p>
+    </div>
+  </div>
+
+  <div class="card card-accent">
+    <h2 class="section-h">🔍 ¿Cuáles son los elementos?</h2>
+    <p class="body-text">Una multiplicación tiene tres elementos fundamentales:</p>
+    <div class="elem-diagram" style="margin-top:18px;">
+      <div class="elem-box elem-multiplicando">
+        <div class="el-label">Multiplicando</div>
+        <div class="el-val">35</div>
+        <div style="font-size:.72rem;color:#1d4ed8;margin-top:2px;">El que se multiplica</div>
+      </div>
+      <div class="elem-signo">×</div>
+      <div class="elem-box elem-multiplicador">
+        <div class="el-label">Multiplicador</div>
+        <div class="el-val">4</div>
+        <div style="font-size:.72rem;color:#6d28d9;margin-top:2px;">Por el que se multiplica</div>
+      </div>
+      <div class="elem-igual">=</div>
+      <div class="elem-box elem-producto">
+        <div class="el-label">Producto</div>
+        <div class="el-val">140</div>
+        <div style="font-size:.72rem;color:#065f46;margin-top:2px;">El resultado</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla resumen -->
+  <div class="card card-amber">
+    <h2 class="section-h">📋 Tabla Resumen</h2>
+    <table class="sign-table">
+      <tr><th>Elemento</th><th>Nombre técnico</th><th>¿Qué es?</th><th>Ejemplo</th></tr>
+      <tr>
+        <td style="background:#dbeafe;color:var(--blue);font-weight:800;">Primer factor</td>
+        <td><strong>Multiplicando</strong></td>
+        <td>El número que se va a sumar repetidamente</td>
+        <td>En 35 × 4, el multiplicando es <strong>35</strong></td>
+      </tr>
+      <tr>
+        <td style="background:#ede9fe;color:var(--purple);font-weight:800;">Segundo factor</td>
+        <td><strong>Multiplicador</strong></td>
+        <td>Indica cuántas veces se suma el multiplicando</td>
+        <td>En 35 × 4, el multiplicador es <strong>4</strong></td>
+      </tr>
+      <tr>
+        <td style="background:#d1fae5;color:var(--green);font-weight:800;">Resultado</td>
+        <td><strong>Producto</strong></td>
+        <td>El resultado de la multiplicación</td>
+        <td>35 × 4 = <strong>140</strong></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Canvas interactivo de elementos -->
+  <div class="card card-green">
+    <h2 class="section-h">🎨 Identifica los Elementos (Interactivo)</h2>
+    <div class="canvas-wrap">
+      <canvas id="cnv-elementos" width="560" height="200"></canvas>
+      <div class="canvas-controls">
+        <button class="ctrl-btn active" onclick="elemDemo(0)">Ejemplo 1: 35 × 4</button>
+        <button class="ctrl-btn" onclick="elemDemo(1)">Ejemplo 2: 127 × 6</button>
+        <button class="ctrl-btn" onclick="elemDemo(2)">Ejemplo 3: 45 × 12</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Propiedades de la multiplicación -->
+  <div class="card card-purple">
+    <h2 class="section-h">⚡ Propiedades de la Multiplicación</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">
+      <div style="background:#f0f9ff;border-radius:10px;padding:14px;border:1.5px solid #bae6fd;">
+        <strong style="color:#0284c7;">🔄 Propiedad Conmutativa</strong>
+        <p style="font-size:.85rem;margin-top:6px;color:#334155;">El orden de los factores <strong>no altera el producto</strong>.</p>
+        <p style="font-family:'Fredoka One',cursive;color:#0284c7;margin-top:6px;">a × b = b × a</p>
+        <p style="font-size:.8rem;color:#64748b;">5 × 3 = 3 × 5 = 15</p>
+      </div>
+      <div style="background:#fdf4ff;border-radius:10px;padding:14px;border:1.5px solid #e9d5ff;">
+        <strong style="color:var(--purple);">🔗 Propiedad Asociativa</strong>
+        <p style="font-size:.85rem;margin-top:6px;color:#334155;">Puedes <strong>agrupar los factores</strong> como quieras.</p>
+        <p style="font-family:'Fredoka One',cursive;color:var(--purple);margin-top:6px;">(a×b)×c = a×(b×c)</p>
+        <p style="font-size:.8rem;color:#64748b;">(2×3)×4 = 2×(3×4) = 24</p>
+      </div>
+      <div style="background:#f0fdf4;border-radius:10px;padding:14px;border:1.5px solid #a7f3d0;">
+        <strong style="color:var(--green);">📦 Elemento Neutro</strong>
+        <p style="font-size:.85rem;margin-top:6px;color:#334155;">Cualquier número × <strong>1</strong> es igual a sí mismo.</p>
+        <p style="font-family:'Fredoka One',cursive;color:var(--green);margin-top:6px;">a × 1 = a</p>
+        <p style="font-size:.8rem;color:#64748b;">7 × 1 = 7</p>
+      </div>
+      <div style="background:#fff7ed;border-radius:10px;padding:14px;border:1.5px solid #fed7aa;">
+        <strong style="color:#c2410c;">🚫 Elemento Absorbente</strong>
+        <p style="font-size:.85rem;margin-top:6px;color:#334155;">Cualquier número × <strong>0</strong> es igual a cero.</p>
+        <p style="font-family:'Fredoka One',cursive;color:#c2410c;margin-top:6px;">a × 0 = 0</p>
+        <p style="font-size:.8rem;color:#64748b;">999 × 0 = 0</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actividad: Identifica los elementos -->
+  <div class="card">
+    <h2 class="section-h">🏋️ Actividad: Identifica los Elementos</h2>
+    <div class="activity-box">
+      <p style="font-size:.88rem;color:#475569;margin-bottom:12px;">Para cada multiplicación, escribe el multiplicando, multiplicador y producto:</p>
+      <div id="elem-act-items"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;">
+        <button class="check-btn" onclick="checkElemAct()">✔ Verificar</button>
+        <button class="reset-btn" onclick="initElemAct()">🔄 Reiniciar</button>
+      </div>
+      <div id="elem-act-result" style="margin-top:10px;"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     SECCIÓN 4: MULTIPLICACIÓN × 1 CIFRA (MULTIPLICADOR)
+     ============================================= -->
+<section id="sec-mult1m" class="section">
+  <div class="page-title">
+    <div class="title-icon">1️⃣</div>
+    <div>
+      <h1>Multiplicación con 1 cifra en el multiplicador</h1>
+      <p style="color:#64748b;font-size:.88rem">Algoritmo completo paso a paso</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 class="section-h">🎬 Video Explicativo</h2>
+    <div class="video-wrap">
+      <video controls>
+        <source src="/vid/mult1.mp4" type="video/mp4">
+        <div class="video-fallback">
+          <div class="vf-icon">🎬</div>
+          <p style="color:#cbd5e1;">Video: <em>/vid/mult1.mp4</em></p>
+        </div>
+      </video>
+    </div>
+  </div>
+
+  <div class="card card-accent">
+    <h2 class="section-h">📌 Algoritmo de Multiplicación × 1 Cifra</h2>
+    <p class="body-text">Para multiplicar cualquier número por una sola cifra, seguimos este proceso:</p>
+    <ul class="steps-list" style="margin-top:12px;">
+      <li><div class="step-num">1</div><div>Colocar el multiplicando arriba y el multiplicador (1 cifra) abajo con el símbolo ×.</div></li>
+      <li><div class="step-num">2</div><div>Trazar una línea horizontal debajo del multiplicador.</div></li>
+      <li><div class="step-num">3</div><div>Multiplicar el multiplicador por las unidades del multiplicando. Anotar unidades, llevar decenas.</div></li>
+      <li><div class="step-num">4</div><div>Multiplicar el multiplicador por las decenas, más el acarreo. Continuar.</div></li>
+      <li><div class="step-num">5</div><div>Anotar el resultado final.</div></li>
+    </ul>
+    <div class="rule-box" style="margin-top:12px;">
+      <p><strong>Ejemplo: 234 × 3</strong></p>
+      <div style="margin-top:10px;font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--navy);line-height:1.9;background:#f8fafc;padding:12px 16px;border-radius:8px;display:inline-block;min-width:100px;text-align:right;">
+        <div style="color:#475569;font-size:.7rem;text-align:right;">¹</div>
+        <div>234</div>
+        <div style="color:var(--blue);">× &nbsp;&nbsp;3</div>
+        <div style="border-top:2px solid var(--navy);padding-top:2px;color:var(--green);">702</div>
+      </div>
+      <p style="margin-top:10px;font-size:.88rem;line-height:1.7;">
+        3×4=12 → anoto 2, llevo 1 | 3×3=9+1=10 → anoto 0, llevo 1 | 3×2=6+1=7 → anoto 7
+      </p>
+    </div>
+  </div>
+
+  <!-- Visualizador interactivo -->
+  <div class="card card-green">
+    <h2 class="section-h">🎨 Visualizador Interactivo</h2>
+    <div id="vmult-demo-wrap2">
+      <div class="demo-inputs">
+        <label>Multiplicando:</label>
+        <input type="number" id="d2-a" value="234" min="10" max="9999" oninput="drawMult1M()">
+        <span style="font-family:'Fredoka One',cursive;font-size:1.5rem;color:#94a3b8;">×</span>
+        <label>Multiplicador (1 cifra):</label>
+        <input type="number" id="d2-b" value="3" min="1" max="9" oninput="drawMult1M()">
+        <button class="check-btn" onclick="drawMult1M()">▶ Ver pasos</button>
+      </div>
+      <div id="vmult2-steps"></div>
+    </div>
+  </div>
+
+  <!-- Más ejemplos -->
+  <div class="card card-amber">
+    <h2 class="section-h">📌 Más Ejemplos</h2>
+    <div class="examples-grid" id="examples-mult1m"></div>
+  </div>
+
+  <!-- Canvas multiplicación larga animada -->
+  <div class="card card-purple">
+    <h2 class="section-h">🎨 Canvas: Proceso de Multiplicación</h2>
+    <div class="canvas-wrap">
+      <canvas id="cnv-mult1m" width="560" height="220"></canvas>
+      <div class="canvas-controls">
+        <button class="ctrl-btn active" onclick="animMult1M(0)">324 × 2</button>
+        <button class="ctrl-btn" onclick="animMult1M(1)">156 × 7</button>
+        <button class="ctrl-btn" onclick="animMult1M(2)">483 × 6</button>
+        <button class="ctrl-btn" onclick="animMult1M(3)">2345 × 4</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actividad -->
+  <div class="card">
+    <h2 class="section-h">🏋️ Actividades Interactivas</h2>
+    <div class="activity-box">
+      <div id="act-m1-items"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;">
+        <button class="check-btn" onclick="checkActM1()">✔ Verificar</button>
+        <button class="reset-btn" onclick="genActM1()">🔄 Nuevos ejercicios</button>
+      </div>
+      <div id="act-m1-result" style="margin-top:10px;"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     SECCIÓN 5: MULTIPLICACIÓN × 2 CIFRAS
+     ============================================= -->
+<section id="sec-mult2m" class="section">
+  <div class="page-title">
+    <div class="title-icon">2️⃣</div>
+    <div>
+      <h1>Multiplicación con 2 cifras en el multiplicador</h1>
+      <p style="color:#64748b;font-size:.88rem">Productos parciales y suma final</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 class="section-h">🎬 Video Explicativo</h2>
+    <div class="video-wrap">
+      <video controls>
+        <source src="/vid/mult2.mp4" type="video/mp4">
+        <div class="video-fallback">
+          <div class="vf-icon">🎬</div>
+          <p style="color:#cbd5e1;">Video: <em>/vid/mult2.mp4</em></p>
+        </div>
+      </video>
+    </div>
+  </div>
+
+  <div class="card card-accent">
+    <h2 class="section-h">📌 Algoritmo × 2 Cifras</h2>
+    <p class="body-text">Cuando el multiplicador tiene 2 cifras, generamos <strong>2 productos parciales</strong> y los sumamos:</p>
+    <ul class="steps-list" style="margin-top:12px;">
+      <li><div class="step-num">1</div><div>Multiplicar el multiplicando por las <strong>unidades</strong> del multiplicador → <strong>1er producto parcial</strong>.</div></li>
+      <li><div class="step-num">2</div><div>Multiplicar el multiplicando por las <strong>decenas</strong> del multiplicador, desplazando una posición a la izquierda → <strong>2do producto parcial</strong>.</div></li>
+      <li><div class="step-num">3</div><div><strong>Sumar</strong> ambos productos parciales para obtener el resultado final.</div></li>
+    </ul>
+    <div class="rule-box" style="margin-top:12px;">
+      <p><strong>Ejemplo: 45 × 23</strong></p>
+      <div style="margin-top:10px;font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--navy);line-height:2;background:#f8fafc;padding:14px 16px;border-radius:8px;display:inline-block;min-width:120px;text-align:right;">
+        <div>45</div>
+        <div style="color:var(--blue);">× 23</div>
+        <div style="border-top:2px solid var(--navy);padding-top:2px;color:var(--purple);">135 &nbsp;&nbsp;← 45×3</div>
+        <div style="color:var(--purple);">900 &nbsp;&nbsp;← 45×20</div>
+        <div style="border-top:2px solid var(--navy);padding-top:2px;color:var(--green);">1035</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Visualizador 2 cifras -->
+  <div class="card card-green">
+    <h2 class="section-h">🎨 Visualizador Interactivo × 2 Cifras</h2>
+    <div id="vmult-demo-wrap3">
+      <div class="demo-inputs">
+        <label>Multiplicando:</label>
+        <input type="number" id="d3-a" value="45" min="10" max="999" oninput="drawMult2M()">
+        <span style="font-family:'Fredoka One',cursive;font-size:1.5rem;color:#94a3b8;">×</span>
+        <label>Multiplicador (2 cifras):</label>
+        <input type="number" id="d3-b" value="23" min="10" max="99" oninput="drawMult2M()">
+        <button class="check-btn" onclick="drawMult2M()">▶ Ver pasos</button>
+      </div>
+      <div id="vmult3-steps"></div>
+    </div>
+  </div>
+
+  <!-- Práctica 3 ejemplos -->
+  <div class="card card-amber">
+    <h2 class="section-h">📌 Más Ejemplos</h2>
+    <div class="examples-grid" id="examples-mult2m"></div>
+  </div>
+
+  <!-- Canvas 2 cifras -->
+  <div class="card card-purple">
+    <h2 class="section-h">🎨 Canvas: Productos Parciales</h2>
+    <div class="canvas-wrap">
+      <canvas id="cnv-mult2m" width="560" height="260"></canvas>
+      <div class="canvas-controls">
+        <button class="ctrl-btn active" onclick="animMult2M(0)">45 × 23</button>
+        <button class="ctrl-btn" onclick="animMult2M(1)">67 × 34</button>
+        <button class="ctrl-btn" onclick="animMult2M(2)">123 × 45</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actividad -->
+  <div class="card">
+    <h2 class="section-h">🏋️ Actividades Interactivas</h2>
+    <div class="activity-box">
+      <div id="act-m2-items"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;">
+        <button class="check-btn" onclick="checkActM2()">✔ Verificar</button>
+        <button class="reset-btn" onclick="genActM2()">🔄 Nuevos ejercicios</button>
+      </div>
+      <div id="act-m2-result" style="margin-top:10px;"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     SECCIÓN 6: MULTIPLICACIÓN × 3-4 CIFRAS
+     ============================================= -->
+<section id="sec-mult34m" class="section">
+  <div class="page-title">
+    <div class="title-icon">🔠</div>
+    <div>
+      <h1>Multiplicación con 3 y 4 cifras en el multiplicador</h1>
+      <p style="color:#64748b;font-size:.88rem">Productos parciales múltiples</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 class="section-h">🎬 Video Explicativo</h2>
+    <div class="video-wrap">
+      <video controls>
+        <source src="/vid/mult3.mp4" type="video/mp4">
+        <div class="video-fallback">
+          <div class="vf-icon">🎬</div>
+          <p style="color:#cbd5e1;">Video: <em>/vid/mult3.mp4</em></p>
+        </div>
+      </video>
+    </div>
+  </div>
+
+  <div class="card card-accent">
+    <h2 class="section-h">📌 Algoritmo × 3 Cifras</h2>
+    <p class="body-text">Con 3 cifras en el multiplicador, generamos <strong>3 productos parciales</strong>, cada uno desplazado una posición más a la izquierda:</p>
+    <div class="rule-box" style="margin-top:12px;">
+      <p><strong>Ejemplo: 123 × 234</strong></p>
+      <div style="margin-top:10px;font-family:'Fredoka One',cursive;font-size:1rem;color:var(--navy);line-height:2;background:#f8fafc;padding:14px 16px;border-radius:8px;display:inline-block;min-width:140px;text-align:right;">
+        <div>123</div>
+        <div style="color:var(--blue);">× 234</div>
+        <div style="border-top:2px solid var(--navy);padding-top:2px;color:var(--purple);">492 &nbsp;&nbsp;← 123×4</div>
+        <div style="color:var(--purple);">3690 &nbsp;← 123×30</div>
+        <div style="color:var(--purple);">24600 ← 123×200</div>
+        <div style="border-top:2px solid var(--navy);padding-top:2px;color:var(--green);">28782</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Visualizador 3 cifras -->
+  <div class="card card-green">
+    <h2 class="section-h">🎨 Visualizador Interactivo × 3-4 Cifras</h2>
+    <div id="vmult-demo-wrap4">
+      <div class="demo-inputs">
+        <label>Multiplicando:</label>
+        <input type="number" id="d4-a" value="123" min="10" max="9999" oninput="drawMult3M()">
+        <span style="font-family:'Fredoka One',cursive;font-size:1.5rem;color:#94a3b8;">×</span>
+        <label>Multiplicador (3-4 cifras):</label>
+        <input type="number" id="d4-b" value="234" min="100" max="9999" oninput="drawMult3M()">
+        <button class="check-btn" onclick="drawMult3M()">▶ Ver pasos</button>
+      </div>
+      <div id="vmult4-steps"></div>
+    </div>
+  </div>
+
+  <!-- Ejemplos -->
+  <div class="card card-amber">
+    <h2 class="section-h">📌 Más Ejemplos</h2>
+    <div class="examples-grid" id="examples-mult34m"></div>
+  </div>
+
+  <!-- Canvas 3-4 cifras -->
+  <div class="card card-purple">
+    <h2 class="section-h">🎨 Canvas: Multiplicación Compleja</h2>
+    <div class="canvas-wrap">
+      <canvas id="cnv-mult34m" width="560" height="300"></canvas>
+      <div class="canvas-controls">
+        <button class="ctrl-btn active" onclick="animMult3M(0)">123 × 234</button>
+        <button class="ctrl-btn" onclick="animMult3M(1)">456 × 123</button>
+        <button class="ctrl-btn" onclick="animMult3M(2)">1234 × 56</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actividad -->
+  <div class="card">
+    <h2 class="section-h">🏋️ Actividades Interactivas</h2>
+    <div class="activity-box">
+      <div id="act-m3-items"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;">
+        <button class="check-btn" onclick="checkActM3()">✔ Verificar</button>
+        <button class="reset-btn" onclick="genActM3()">🔄 Nuevos ejercicios</button>
+      </div>
+      <div id="act-m3-result" style="margin-top:10px;"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     SECCIÓN 7: APLICACIONES EN PROBLEMAS
+     ============================================= -->
+<section id="sec-problemas" class="section">
+  <div class="page-title">
+    <div class="title-icon">📚</div>
+    <div>
+      <h1>Aplicaciones en Problemas</h1>
+      <p style="color:#64748b;font-size:.88rem">Situaciones de la vida real</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 class="section-h">🎬 Video 1 – Problemas con Multiplicación</h2>
+    <div class="video-wrap">
+      <video controls>
+        <source src="/vid/prob_mult.mp4" type="video/mp4">
+        <div class="video-fallback">
+          <div class="vf-icon">🎬</div>
+          <p style="color:#cbd5e1;">Video: <em>/vid/prob_mult.mp4</em></p>
+        </div>
+      </video>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 class="section-h">🎬 Video 2 – Más Problemas</h2>
+    <div class="video-wrap">
+      <video controls>
+        <source src="/vid/prob_mult1.mp4" type="video/mp4">
+        <div class="video-fallback">
+          <div class="vf-icon">🎬</div>
+          <p style="color:#cbd5e1;">Video: <em>/vid/prob_mult1.mp4</em></p>
+        </div>
+      </video>
+    </div>
+  </div>
+
+  <!-- Problemas del documento -->
+  <div class="card card-accent">
+    <h2 class="section-h">📖 Problemas del Tema</h2>
+    <p class="body-text" style="margin-bottom:14px;">Lee cada problema, plantea la multiplicación y encuentra la respuesta:</p>
+
+    <div id="prob-list">
+      <!-- generado por JS -->
+    </div>
+  </div>
+
+  <!-- Actividad interactiva de problemas -->
+  <div class="card card-green">
+    <h2 class="section-h">🏋️ Resuelve los Problemas</h2>
+    <div class="activity-box">
+      <div id="prob-act-items"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;">
+        <button class="check-btn" onclick="checkProbAct()">✔ Verificar respuestas</button>
+        <button class="reset-btn" onclick="resetProbAct()">🔄 Reiniciar</button>
+      </div>
+      <div id="prob-act-result" style="margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <!-- Canvas: línea numérica para problemas negativos -->
+  <div class="card card-purple">
+    <h2 class="section-h">🎨 Visualizador: Multiplicación de Enteros Negativos</h2>
+    <p class="body-text" style="margin-bottom:8px;">Observa cómo la multiplicación con negativos representa pérdidas o retrocesos:</p>
+    <div class="canvas-wrap">
+      <canvas id="cnv-problemas" width="560" height="180"></canvas>
+      <div class="canvas-controls">
+        <button class="ctrl-btn active" onclick="drawProbCanvas(0)">−15 × 7 (pérdida)</button>
+        <button class="ctrl-btn" onclick="drawProbCanvas(1)">−5 × 10 (retroceso)</button>
+        <button class="ctrl-btn" onclick="drawProbCanvas(2)">−3 × 8 (temperatura)</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     SECCIÓN 8: GENERADOR DE HOJAS
+     ============================================= -->
+<section id="sec-generator" class="section">
+  <div class="page-title">
+    <div class="title-icon">📝</div>
+    <div>
+      <h1>Generador de Hojas de Ejercicios</h1>
+      <p style="color:#64748b;font-size:.88rem">Crea y descarga tus propias hojas de práctica</p>
+    </div>
+  </div>
+
+  <div class="card card-accent">
+    <h2 class="section-h">⚙️ Configuración</h2>
+    <div class="gen-controls">
+      <div class="gen-field">
+        <label>Nº de ejercicios</label>
+        <input type="number" id="gen-count" value="12" min="4" max="40">
+      </div>
+      <div class="gen-field">
+        <label>Dígitos en multiplicando</label>
+        <select id="gen-dig-a">
+          <option value="1">1 dígito</option>
+          <option value="2" selected>2 dígitos</option>
+          <option value="3">3 dígitos</option>
+          <option value="4">4 dígitos</option>
+        </select>
+      </div>
+      <div class="gen-field">
+        <label>Dígitos en multiplicador</label>
+        <select id="gen-dig-b">
+          <option value="1" selected>1 dígito</option>
+          <option value="2">2 dígitos</option>
+          <option value="3">3 dígitos</option>
+        </select>
+      </div>
+      <button class="gen-btn" onclick="generateSheet()">🎲 Generar ejercicios</button>
+      <button class="gen-btn pdf-btn" onclick="downloadPDF()" id="pdf-btn" style="display:none;">📄 Descargar PDF</button>
+    </div>
+    <div class="print-header">
+      <h2 style="font-size:1.2rem;color:#1a3a6b;">Mente Matemática – Hoja de Ejercicios de Multiplicación</h2>
+      <p style="font-size:.85rem;color:#475569;">Nombre: _________________________________ &nbsp;&nbsp; Fecha: _______________</p>
+      <hr style="margin:10px 0;">
+    </div>
+    <div id="exercise-sheet" style="margin-top:14px;"></div>
+  </div>
+
+  <div class="card card-amber" id="gen-answers" style="display:none;">
+    <h2 class="section-h">✅ Respuestas (para el docente)</h2>
+    <div id="answer-key" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     SECCIÓN 9: EVALUACIÓN FINAL
+     ============================================= -->
+<section id="sec-eval" class="section">
+  <div class="page-title">
+    <div class="title-icon">🏆</div>
+    <div>
+      <h1>Evaluación Final</h1>
+      <p style="color:#64748b;font-size:.88rem">10 preguntas – Demuestra lo que aprendiste</p>
+    </div>
+  </div>
+
+  <div class="card" style="background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1.5px solid #fde68a;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:2rem;">📋</span>
+      <div>
+        <strong style="color:#92400e;">Instrucciones</strong>
+        <p style="font-size:.88rem;color:#78350f;margin-top:3px;">Lee cada pregunta con atención y selecciona la respuesta correcta. Recibirás retroalimentación inmediata.</p>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;">
+      <span class="badge badge-amber">📝 10 preguntas</span>
+      <span class="badge badge-blue">🕐 Sin tiempo límite</span>
+      <span class="badge badge-green">✅ Retroalimentación inmediata</span>
+    </div>
+  </div>
+
+  <div id="quiz-container">
+    <!-- preguntas generadas por JS -->
+  </div>
+
+  <div id="quiz-score-section" style="display:none;">
+    <!-- puntaje generado por JS -->
+  </div>
+
+  <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
+    <button class="check-btn" id="quiz-submit-btn" onclick="submitQuiz()">🏆 Obtener calificación</button>
+    <button class="reset-btn" id="quiz-reset-btn" onclick="resetQuiz()">🔄 Reiniciar evaluación</button>
+  </div>
+</section>
+
+</main><!-- /#main -->
+
+<!--===== FOOTER =====-->
+<footer>
+  © 2026 <strong>MenteMatematicaI</strong>. Todos los derechos reservados <strong>VC</strong>.
+</footer>
+
+<!--===================================================
+    JAVASCRIPT PRINCIPAL
+===================================================-->
+<script>
+/* ====================================================
+   NAVEGACIÓN DINÁMICA
+   ==================================================== */
+function goTo(el) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  const sec = document.getElementById(el.dataset.sec);
+  if (sec) { sec.classList.add('active'); onSectionLoad(el.dataset.sec); }
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function onSectionLoad(id) {
+  if (id === 'sec-intro')      { setTimeout(drawIntroCanvas, 100); }
+  if (id === 'sec-concepto')   { setTimeout(()=>{ drawSignsCanvas('pp'); }, 100); }
+  if (id === 'sec-tablas')     { setTimeout(()=>{ initTablesGame(); buildRefTable(); }, 100); }
+  if (id === 'sec-1cifra')     { setTimeout(()=>{ draw1CifraDemo(); renderExamples1Cifra(); initPrac1(); genAct1(); }, 100); }
+  if (id === 'sec-elementos')  { setTimeout(()=>{ elemDemo(0); initElemAct(); }, 100); }
+  if (id === 'sec-mult1m')     { setTimeout(()=>{ drawMult1M(); renderExamplesMult1M(); genActM1(); animMult1M(0); }, 100); }
+  if (id === 'sec-mult2m')     { setTimeout(()=>{ drawMult2M(); renderExamplesMult2M(); genActM2(); animMult2M(0); }, 100); }
+  if (id === 'sec-mult34m')    { setTimeout(()=>{ drawMult3M(); renderExamplesMult3M(); genActM3(); animMult3M(0); }, 100); }
+  if (id === 'sec-problemas')  { setTimeout(()=>{ renderProblems(); initProbAct(); drawProbCanvas(0); }, 100); }
+  if (id === 'sec-generator')  { /* nada automático */ }
+  if (id === 'sec-eval')       { setTimeout(renderQuiz, 100); }
+}
+
+function closeWelcome() {
+  const ov = document.getElementById('welcome-overlay');
+  ov.style.transition = 'opacity .4s';
+  ov.style.opacity = '0';
+  setTimeout(() => ov.remove(), 400);
+  setTimeout(()=>{ drawIntroCanvas(); }, 600);
+}
+
+/* ====================================================
+   CANVAS: INTRO – SUMA REPETIDA (ARRAY DOTS)
+   ==================================================== */
+function drawIntroCanvas() {
+  const ca = document.getElementById('cnv-intro');
+  if (!ca) return;
+  const ctx = ca.getContext('2d');
+  const a = parseInt(document.getElementById('rng-a').value);
+  const b = parseInt(document.getElementById('rng-b').value);
+  document.getElementById('val-a').textContent = a;
+  document.getElementById('val-b').textContent = b;
+
+  const W = ca.width, H = ca.height;
+  ctx.clearRect(0,0,W,H);
+
+  const r = 14, gapX = 32, gapY = 30;
+  const startX = 20, startY = 20;
+  const colors = ['#3b82f6','#8b5cf6','#f59e0b','#10b981','#ef4444','#06b6d4'];
+
+  for (let row=0; row<a; row++) {
+    for (let col=0; col<b; col++) {
+      ctx.beginPath();
+      ctx.arc(startX + col*gapX, startY + row*gapY, r/2, 0, Math.PI*2);
+      ctx.fillStyle = colors[row % colors.length];
+      ctx.fill();
+    }
+  }
+  const total = a * b;
+  const parts = [];
+  for (let i=0; i<a; i++) parts.push(b);
+  const formula = parts.join(' + ') + ' = ' + total;
+  const short = a + ' × ' + b + ' = ' + total;
+  document.getElementById('intro-formula').textContent = short + '   →   ' + formula;
+}
+
+/* ====================================================
+   CANVAS: LEY DE SIGNOS
+   ==================================================== */
+let currentSignDemo = 'pp';
+function setSignDemo(type) {
+  document.querySelectorAll('#sec-concepto .ctrl-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  currentSignDemo = type;
+  drawSignsCanvas(type);
+}
+function drawSignsCanvas(type) {
+  currentSignDemo = type;
+  const ca = document.getElementById('cnv-signs');
+  if (!ca) return;
+  const ctx = ca.getContext('2d');
+  const W = ca.width, H = ca.height;
+  ctx.clearRect(0,0,W,H);
+
+  const configs = {
+    pp: { s1:'+3', s2:'+4', res:'+12', color:'#10b981', label:'Positivo × Positivo = Positivo', ex:'(+3) × (+4) = +12' },
+    nn: { s1:'−3', s2:'−4', res:'+12', color:'#10b981', label:'Negativo × Negativo = Positivo', ex:'(−3) × (−4) = +12' },
+    pn: { s1:'+3', s2:'−4', res:'−12', color:'#ef4444', label:'Positivo × Negativo = Negativo', ex:'(+3) × (−4) = −12' },
+    np: { s1:'−3', s2:'+4', res:'−12', color:'#ef4444', label:'Negativo × Positivo = Negativo', ex:'(−3) × (+4) = −12' },
+  };
+  const c = configs[type];
+
+  // Draw boxes
+  const drawBox = (x, y, w, h, text, bg, fg) => {
+    ctx.fillStyle = bg; ctx.beginPath(); ctx.roundRect(x,y,w,h,10); ctx.fill();
+    ctx.font = 'bold 28px Fredoka One, cursive'; ctx.fillStyle = fg; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(text, x+w/2, y+h/2);
+  };
+  drawBox(30,  60, 100, 70, c.s1, '#f0f9ff', '#1a3a6b');
+  ctx.font = '30px Fredoka One, cursive'; ctx.fillStyle = '#94a3b8'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('×', 155, 95);
+  drawBox(180, 60, 100, 70, c.s2, '#f0f9ff', '#1a3a6b');
+  ctx.fillText('=', 305, 95);
+  drawBox(330, 60, 100, 70, c.res, c.color==='#10b981' ? '#d1fae5' : '#fee2e2', c.color);
+
+  ctx.font = '600 14px Nunito, sans-serif'; ctx.fillStyle = '#475569'; ctx.textAlign='center';
+  ctx.fillText(c.label, W/2, 160);
+  ctx.font = '800 17px Fredoka One, cursive'; ctx.fillStyle = c.color;
+  ctx.fillText(c.ex, W/2, 185);
+}
+
+/* ====================================================
+   ARCADE: JUEGO DE TABLAS – BURBUJAS QUE CAEN
+   ==================================================== */
+(function() {
+  const LANES      = 4;
+  const BALL_R     = 34;
+  const COLORS     = ['#6366f1','#f59e0b','#10b981','#ef4444'];
+  const DIFF_SPEED = { easy:1.1, normal:1.9, hard:3.2 };
+  const DIFF_ACCEL = { easy:0.00018, normal:0.00035, hard:0.0007 };
+  const LIVES_MAX  = 3;
+
+  let selTables=[2,3,4,5], diff='easy';
+  let balls=[], parts=[], flashMsg=null;
+  let score=0, streak=0, bestStreak=0, lives=LIVES_MAX;
+  let correctCount=0, wrongCount=0, elapsed=0;
+  let lastTime=null, rafId=null, paused=false, gameActive=false;
+  let currentQ=null, spawning=false;
+  let canvas, ctx, CW, CH;
+
+  function getCanvas() {
+    canvas=document.getElementById('arcade-canvas');
+    if(!canvas) return false;
+    ctx=canvas.getContext('2d');
+    CW=canvas.width; CH=canvas.height;
+    return true;
+  }
+
+  /* ── TABLE SELECTOR ── */
+  function buildTableSelector() {
+    const sel=document.getElementById('arc-table-sel');
+    if(!sel||sel.innerHTML!=='') return;
+    for(let t=2;t<=11;t++){
+      const b=document.createElement('button');
+      b.className='arc-tbl-btn'+(selTables.includes(t)?' on':'');
+      b.textContent=t; b.dataset.t=t;
+      b.onclick=()=>{
+        const idx=selTables.indexOf(t);
+        if(idx>=0){if(selTables.length===1)return;selTables.splice(idx,1);b.classList.remove('on');}
+        else{selTables.push(t);b.classList.add('on');}
+      };
+      sel.appendChild(b);
+    }
+  }
+
+  window.setDiff=function(btn,d){
+    document.querySelectorAll('.arc-diff-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); diff=d;
+  };
+
+  /* ── START ── */
+  window.arcadeStart=function(){
+    if(!getCanvas()) return;
+    score=0;streak=0;bestStreak=0;lives=LIVES_MAX;
+    correctCount=0;wrongCount=0;elapsed=0;
+    balls=[];parts=[];flashMsg=null;paused=false;gameActive=true;spawning=false;
+    document.getElementById('arcade-start').style.display='none';
+    document.getElementById('arcade-over').style.display='none';
+    document.getElementById('arcade-game').style.display='block';
+    document.getElementById('arc-pause-btn').textContent='⏸ Pausa';
+    updateHUD();
+    canvas.onclick=handleClick;
+    spawnQuestion();
+    lastTime=null;
+    rafId=requestAnimationFrame(loop);
+  };
+  window.arcadeRestart=function(){document.getElementById('arcade-over').style.display='none';arcadeStart();};
+  window.arcadeMenu=function(){
+    cancelAnimationFrame(rafId);gameActive=false;
+    document.getElementById('arcade-game').style.display='none';
+    document.getElementById('arcade-over').style.display='none';
+    document.getElementById('arcade-start').style.display='block';
+  };
+  window.arcadePause=function(){
+    if(!gameActive)return;
+    paused=!paused;
+    document.getElementById('arc-pause-btn').textContent=paused?'▶ Continuar':'⏸ Pausa';
+    if(!paused){lastTime=null;rafId=requestAnimationFrame(loop);}
+  };
+
+  /* ── QUESTION & BALLS ── */
+  function spawnQuestion(){
+    if(spawning) return; spawning=true;
+    const tbl=selTables[Math.floor(Math.random()*selTables.length)];
+    const fac=Math.floor(Math.random()*10)+1;
+    currentQ={a:tbl,b:fac,ans:tbl*fac};
+    document.getElementById('arc-question').textContent=tbl+' × '+fac+' = ?';
+
+    const opts=buildOptions(currentQ.ans);
+    const order=shuffleArr([0,1,2,3]);
+    balls=[];
+    opts.forEach((val,i)=>{
+      const lane=order[i];
+      const lW=CW/LANES;
+      balls.push({
+        x:lW*lane+lW/2, y:-BALL_R-i*100,
+        val, isCorrect:val===currentQ.ans,
+        color:COLORS[lane],
+        speed:DIFF_SPEED[diff]+elapsed*DIFF_ACCEL[diff],
+        alpha:1, hit:false, shake:0, scale:1,
+      });
+    });
+    spawning=false;
+  }
+
+  function buildOptions(correct){
+    const set=new Set([correct]);
+    const candidates=[
+      correct+1,correct-1,correct+2,correct-2,correct+3,correct-3,
+      correct+5,correct-5,correct+correct%7+1,correct+4,
+      Math.max(2,correct-correct%5+2),correct+10
+    ];
+    for(const v of candidates){if(v>0&&v!==correct){set.add(v);if(set.size===4)break;}}
+    while(set.size<4) set.add(correct+Math.floor(Math.random()*20)+1);
+    return shuffleArr([...set].slice(0,4));
+  }
+
+  /* ── LOOP ── */
+  function loop(ts){
+    if(paused) return;
+    if(!lastTime) lastTime=ts;
+    const dt=Math.min((ts-lastTime)/1000,0.05);
+    lastTime=ts; elapsed+=dt;
+    update(dt); render();
+    if(gameActive) rafId=requestAnimationFrame(loop);
+  }
+
+  function update(dt){
+    const spd=DIFF_SPEED[diff]+elapsed*DIFF_ACCEL[diff];
+
+    balls.forEach(b=>{
+      if(!b.hit) b.y+=spd*60*dt;
+      if(b.shake>0){b.shake-=dt*10;}
+      if(b.scale>1) b.scale=Math.max(1,b.scale-dt*4);
+    });
+
+    // Particles
+    parts.forEach(p=>{
+      p.x+=p.vx*dt; p.y+=p.vy*dt; p.vy+=220*dt;
+      p.alpha-=dt*2.2; p.r-=dt*6;
+    });
+    parts=parts.filter(p=>p.alpha>0&&p.r>0);
+
+    // Flash message
+    if(flashMsg){flashMsg.alpha-=dt*1.8;flashMsg.y-=dt*28;if(flashMsg.alpha<=0)flashMsg=null;}
+
+    // Correct ball fell off bottom → lose life
+    balls.forEach(b=>{
+      if(!b.hit && b.isCorrect && b.y-BALL_R>CH){
+        b.hit=true;
+        loseLife(b.x);
+      } else if(!b.hit && !b.isCorrect && b.y-BALL_R>CH){
+        b.hit=true; // wrong ball just disappears
+      }
+    });
+
+    // All balls gone → next question
+    const active=balls.filter(b=>!b.hit&&b.y-BALL_R<=CH);
+    if(active.length===0&&balls.length>0&&!spawning){
+      setTimeout(spawnQuestion,350);
+    }
+  }
+
+  /* ── RENDER ── */
+  function render(){
+    if(!ctx) return;
+    // Sky background
+    const bg=ctx.createLinearGradient(0,0,0,CH);
+    bg.addColorStop(0,'#050d1a'); bg.addColorStop(1,'#0a1628');
+    ctx.fillStyle=bg; ctx.fillRect(0,0,CW,CH);
+
+    // Stars
+    ctx.fillStyle='rgba(255,255,255,.12)';
+    for(let i=0;i<30;i++){
+      const sx=(i*CW/30+elapsed*10)%CW;
+      const sy=(i*CH/30)%CH;
+      ctx.fillRect(sx,sy,1.5,1.5);
+    }
+
+    // Lane lines
+    ctx.strokeStyle='rgba(255,255,255,.06)'; ctx.lineWidth=1;
+    for(let i=1;i<LANES;i++){
+      ctx.beginPath();ctx.moveTo(CW/LANES*i,0);ctx.lineTo(CW/LANES*i,CH);ctx.stroke();
+    }
+
+    // Danger zone
+    ctx.strokeStyle='rgba(239,68,68,.3)'; ctx.lineWidth=2;
+    ctx.setLineDash([7,5]);
+    ctx.beginPath();ctx.moveTo(0,CH-14);ctx.lineTo(CW,CH-14);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.font='600 10px Nunito,sans-serif'; ctx.fillStyle='rgba(239,68,68,.5)';
+    ctx.textAlign='center'; ctx.fillText('⚡ ¡Zona peligrosa!',CW/2,CH-3);
+
+    // Speed bar
+    ctx.fillStyle='rgba(255,255,255,.05)';
+    ctx.fillRect(0,0,CW,4);
+    const spd=DIFF_SPEED[diff]+elapsed*DIFF_ACCEL[diff];
+    const maxSpd=DIFF_SPEED.hard+5*DIFF_ACCEL.hard;
+    const pct=Math.min(1,spd/maxSpd);
+    const barGrad=ctx.createLinearGradient(0,0,CW,0);
+    barGrad.addColorStop(0,'#10b981'); barGrad.addColorStop(0.5,'#f59e0b'); barGrad.addColorStop(1,'#ef4444');
+    ctx.fillStyle=barGrad; ctx.fillRect(0,0,CW*pct,4);
+
+    // Balls
+    balls.forEach(b=>{
+      if(b.hit&&b.alpha<=0) return;
+      ctx.save();
+      ctx.globalAlpha=b.alpha;
+      const bx=b.shake>0?b.x+Math.sin(b.shake*35)*7:b.x;
+      const sc=b.scale||1;
+      ctx.translate(bx,b.y); ctx.scale(sc,sc);
+
+      // Glow
+      ctx.shadowColor=b.color; ctx.shadowBlur=20;
+
+      // Circle gradient
+      const g=ctx.createRadialGradient(-8,-8,3,0,0,BALL_R);
+      g.addColorStop(0,lighten(b.color,55));
+      g.addColorStop(0.5,b.color);
+      g.addColorStop(1,darken(b.color,20));
+      ctx.beginPath(); ctx.arc(0,0,BALL_R,0,Math.PI*2);
+      ctx.fillStyle=g; ctx.fill();
+
+      // Shine
+      ctx.fillStyle='rgba(255,255,255,.25)';
+      ctx.beginPath(); ctx.ellipse(-9,-12,12,7,-.3,0,Math.PI*2); ctx.fill();
+
+      // Border
+      ctx.strokeStyle='rgba(255,255,255,.4)'; ctx.lineWidth=2.5; ctx.shadowBlur=0;
+      ctx.beginPath(); ctx.arc(0,0,BALL_R,0,Math.PI*2); ctx.stroke();
+
+      // Number
+      ctx.fillStyle='#fff';
+      ctx.font='bold 22px Fredoka One,cursive';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(String(b.val),0,1);
+      ctx.restore();
+    });
+
+    // Particles
+    parts.forEach(p=>{
+      ctx.save();
+      ctx.globalAlpha=Math.max(0,p.alpha);
+      ctx.fillStyle=p.color;
+      ctx.beginPath(); ctx.arc(p.x,p.y,Math.max(0,p.r),0,Math.PI*2); ctx.fill();
+      ctx.restore();
+    });
+
+    // Flash text
+    if(flashMsg){
+      ctx.save();
+      ctx.globalAlpha=Math.max(0,flashMsg.alpha);
+      ctx.shadowColor=flashMsg.color; ctx.shadowBlur=20;
+      ctx.font='bold 30px Fredoka One,cursive';
+      ctx.fillStyle=flashMsg.color;
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(flashMsg.text,CW/2,flashMsg.y);
+      ctx.restore();
+    }
+
+    // Pause overlay
+    if(paused){
+      ctx.fillStyle='rgba(0,0,0,.65)'; ctx.fillRect(0,0,CW,CH);
+      ctx.font='bold 36px Fredoka One,cursive'; ctx.fillStyle='#fff';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText('⏸ PAUSA',CW/2,CH/2);
+      ctx.font='600 16px Nunito,sans-serif'; ctx.fillStyle='#93c5fd';
+      ctx.fillText('Haz clic en "Continuar" para seguir',CW/2,CH/2+44);
+    }
+  }
+
+  /* ── CLICK ── */
+  function handleClick(e){
+    if(!gameActive||paused) return;
+    const rect=canvas.getBoundingClientRect();
+    const sx=CW/rect.width, sy=CH/rect.height;
+    const mx=(e.clientX-rect.left)*sx, my=(e.clientY-rect.top)*sy;
+
+    for(const b of balls){
+      if(b.hit) continue;
+      const dx=mx-b.x, dy=my-b.y;
+      if(Math.sqrt(dx*dx+dy*dy)<=BALL_R+10){
+        b.hit=true;
+        if(b.isCorrect){
+          onCorrect(b);
+          balls.forEach(bb=>{if(!bb.isCorrect)bb.hit=true;});
+        } else {
+          onWrong(b);
+          balls.forEach(bb=>{if(bb.isCorrect)bb.hit=true;});
+        }
+        setTimeout(spawnQuestion,500);
+        return;
+      }
+    }
+  }
+
+  function onCorrect(b){
+    correctCount++; streak++; if(streak>bestStreak) bestStreak=streak;
+    const bonus=streak>=5?30:streak>=3?20:10;
+    score+=bonus;
+    spawnParticles(b.x,b.y,b.color,20);
+    const msg=streak>=5?'🔥 RACHA ×'+streak+'! +'+bonus:streak>=3?'⚡ ×'+streak+' +'+bonus:'✅ +'+bonus;
+    flashMsg={text:msg,color:'#10b981',alpha:1.6,y:CH/2+20};
+    updateHUD();
+  }
+
+  function onWrong(b){
+    wrongCount++; streak=0;
+    b.shake=1.2;
+    spawnParticles(b.x,b.y,'#ef4444',10);
+    flashMsg={text:'❌ ¡Incorrecto!',color:'#ef4444',alpha:1.6,y:CH/2+20};
+    loseLife(b.x);
+    updateHUD();
+  }
+
+  function loseLife(x){
+    lives--;
+    spawnParticles(x||CW/2,CH-30,'#ef4444',12);
+    updateHUD();
+    if(lives<=0){gameActive=false;setTimeout(gameOver,700);}
+  }
+
+  /* ── PARTICLES ── */
+  function spawnParticles(x,y,color,n){
+    for(let i=0;i<n;i++){
+      const a=Math.random()*Math.PI*2, sp=60+Math.random()*200;
+      parts.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-80,r:4+Math.random()*5,color,alpha:1});
+    }
+  }
+
+  /* ── HUD ── */
+  function updateHUD(){
+    const sc=document.getElementById('arc-score');
+    const st=document.getElementById('arc-streak');
+    const lv=document.getElementById('arc-lives');
+    if(sc) sc.textContent=score;
+    if(st) st.textContent=streak;
+    if(lv) lv.innerHTML=Array.from({length:LIVES_MAX}).map((_,i)=>
+      `<span style="font-size:1.15rem;">${i<lives?'❤️':'🖤'}</span>`).join('');
+  }
+
+  /* ── GAME OVER ── */
+  function gameOver(){
+    cancelAnimationFrame(rafId);
+    document.getElementById('arcade-game').style.display='none';
+    const over=document.getElementById('arcade-over');
+    over.style.display='block';
+    const tot=correctCount+wrongCount;
+    const pct=tot>0?Math.round(correctCount/tot*100):0;
+    let emoji='😊',title='¡Bien hecho!',msg='';
+    if(pct>=90){emoji='🏆';title='¡Campeón de tablas!';msg='¡Increíble! Dominas perfectamente las tablas.';}
+    else if(pct>=70){emoji='🎉';title='¡Muy bien!';msg='Gran nivel. Sigue practicando para mejorar.';}
+    else if(pct>=50){emoji='💪';title='¡Buen esfuerzo!';msg='Repasa las tablas que más te cuestan.';}
+    else{emoji='📚';title='¡Sigue intentando!';msg='La práctica constante es la clave. ¡Vamos!';}
+    document.getElementById('arc-over-emoji').textContent=emoji;
+    document.getElementById('arc-over-title').textContent=title;
+    document.getElementById('arc-final-score').textContent=score+' pts';
+    document.getElementById('arc-final-msg').textContent=msg;
+    document.getElementById('arc-stat-ok').textContent=correctCount;
+    document.getElementById('arc-stat-err').textContent=wrongCount;
+    document.getElementById('arc-stat-best').textContent=bestStreak;
+  }
+
+  /* ── HELPERS ── */
+  function shuffleArr(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+  function lighten(h,a){let r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return'#'+[Math.min(255,r+a),Math.min(255,g+a),Math.min(255,b+a)].map(v=>v.toString(16).padStart(2,'0')).join('');}
+  function darken(h,a){let r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return'#'+[Math.max(0,r-a),Math.max(0,g-a),Math.max(0,b-a)].map(v=>v.toString(16).padStart(2,'0')).join('');}
+
+  /* ── EXPOSE ── */
+  window.initTablesGame=function(){
+    buildTableSelector();
+    const start=document.getElementById('arcade-start');
+    const game=document.getElementById('arcade-game');
+    const over=document.getElementById('arcade-over');
+    if(start) start.style.display='block';
+    if(game)  game.style.display='none';
+    if(over)  over.style.display='none';
+  };
+})();
+
+function buildRefTable() {
+  const t = document.getElementById('ref-table');
+  if (!t || t.innerHTML !== '') return;
+  const factors = [1,2,3,4,5,6,7,8,9,10];
+  let html = '<tr><th>×</th>' + [2,3,4,5,6,7,8,9,10,11].map(n=>`<th>${n}</th>`).join('') + '</tr>';
+  factors.forEach(f => {
+    html += `<tr><td style="font-weight:800;background:#1a3a6b;color:#fff;">${f}</td>`;
+    [2,3,4,5,6,7,8,9,10,11].forEach(n => {
+      const v = f*n;
+      const bg = v<=20?'#dbeafe':v<=50?'#ede9fe':v<=80?'#d1fae5':'#fef3c7';
+      html += `<td style="background:${bg};font-weight:700;">${v}</td>`;
+    });
+    html += '</tr>';
+  });
+  t.innerHTML = html;
+}
+
+
+
+/* ====================================================
+   UTILIDAD: VISUALIZADOR DE MULTIPLICACIÓN VERTICAL
+   ==================================================== */
+function buildVertMult(a, b, stepsContainer) {
+  const container = document.getElementById(stepsContainer);
+  if (!container) return;
+  container.innerHTML = '';
+
+  const aStr = String(Math.abs(a));
+  const bStr = String(Math.abs(b));
+  const bDigits = bStr.split('').reverse(); // units first
+  const partials = bDigits.map((d,i) => parseInt(d) * a * Math.pow(10,i));
+  const total = a * b;
+
+  // Header: the vertical representation
+  const header = document.createElement('div');
+  header.style.cssText = 'font-family:Fredoka One,cursive;font-size:1.2rem;color:#1a3a6b;background:#f8fafc;padding:14px 20px;border-radius:10px;display:inline-block;text-align:right;line-height:1.9;margin-bottom:12px;border:1.5px solid #e2e8f0;';
+  let html = `<div>${aStr}</div><div style="color:#2563eb;">× ${bStr}</div><div style="border-top:2px solid #1a3a6b;padding-top:4px;">`;
+  if (partials.length === 1) {
+    html += `<span style="color:#10b981;">${total}</span>`;
+  } else {
+    const pCols = ['#7c3aed','#c2410c','#0284c7','#065f46'];
+    partials.forEach((p,i) => {
+      html += `<div style="color:${pCols[i%pCols.length]};">${p}${'&nbsp;'.repeat(i*0)}</div>`;
+    });
+    html += `<div style="border-top:2px solid #1a3a6b;color:#2563eb;">${total}</div>`;
+  }
+  html += '</div>';
+  header.innerHTML = html;
+  container.appendChild(header);
+
+  // Steps
+  bDigits.forEach((d,i) => {
+    const row = document.createElement('div');
+    row.className = 'step-row' + (i===bDigits.length-1 ? ' step-partial' : ' step-partial');
+    row.innerHTML = `
+      <span class="sr-num">Paso ${i+1} (${d===bStr.split('').reverse()[i]?['unidades','decenas','centenas','millares'][i]||'miles':''}):</span>
+      <span class="sr-calc">${aStr} × ${d}</span>
+      <span class="sr-eq">=</span>
+      <span class="sr-res">${parseInt(d)*parseInt(aStr)} ${ i>0 ? '→ desplazar ' + i + ' pos.' : '' }</span>
+      <span class="sr-eq">= ${partials[i]}</span>
+    `;
+    container.appendChild(row);
+  });
+
+  if (partials.length > 1) {
+    const sumRow = document.createElement('div');
+    sumRow.className = 'step-row step-final';
+    sumRow.innerHTML = `<span class="sr-num">Suma parciales:</span><span class="sr-calc">${partials.join(' + ')}</span><span class="sr-eq">=</span><span class="sr-res" style="font-size:1.1rem;">${total}</span>`;
+    container.appendChild(sumRow);
+  }
+}
+
+/* ====================================================
+   SECCIÓN 1 CIFRA: DEMO + PRÁCTICA
+   ==================================================== */
+function draw1CifraDemo() {
+  const a = parseInt(document.getElementById('demo1-a').value)||36;
+  const b = parseInt(document.getElementById('demo1-b').value)||4;
+  buildVertMult(a, b, 'vmult-steps');
+}
+
+const prac1Data = [
+  {expr:'6 × 1', ans:6},{expr:'6 × 7', ans:42},{expr:'3 × 7', ans:21},
+  {expr:'9 × 8', ans:72},{expr:'6 × 7', ans:42},{expr:'4 × 9', ans:36},
+  {expr:'2 × 4', ans:8},{expr:'5 × 3', ans:15},{expr:'3 × 7', ans:21},{expr:'1 × 10', ans:10}
+];
+
+function initPrac1() {
+  const c = document.getElementById('prac1-items');
+  if (!c) return;
+  c.innerHTML = prac1Data.map((p,i)=>`
+    <div class="problem-item">
+      <span class="problem-label">${i+1}. ${p.expr} =</span>
+      <input class="answer-input" id="p1-${i}" type="number" placeholder="?">
+      <span class="feedback-icon" id="p1f-${i}"></span>
+    </div>`).join('');
+  document.getElementById('prac1-result').innerHTML='';
+}
+
+function checkPrac1() {
+  let ok=0;
+  prac1Data.forEach((p,i)=>{
+    const inp = document.getElementById(`p1-${i}`);
+    const ico = document.getElementById(`p1f-${i}`);
+    const v = parseInt(inp.value);
+    if (v===p.ans) { inp.classList.add('correct');inp.classList.remove('wrong');ico.textContent='✅';ok++; }
+    else           { inp.classList.add('wrong');inp.classList.remove('correct');ico.textContent='❌'; }
+  });
+  document.getElementById('prac1-result').innerHTML=`<span class="badge ${ok===prac1Data.length?'badge-green':'badge-amber'}">
+    ${ok}/${prac1Data.length} correctas</span>`;
+}
+
+function resetPrac1() { initPrac1(); }
+
+function renderExamples1Cifra() {
+  const data = [
+    {a:'6',b:'7',res:'42'},
+    {a:'34',b:'5',res:'170'},
+    {a:'28',b:'4',res:'112'},
+    {a:'73',b:'6',res:'438'},
+  ];
+  document.getElementById('examples-1cifra').innerHTML = data.map(d=>`
+    <div class="ex-item">
+      <div class="ex-op">Ejemplo</div>
+      <div class="ex-body">${d.a}<br><span style="color:var(--blue)">× &nbsp;${d.b}</span><br><div class="ex-sep"></div><span class="ex-res">${d.res}</span></div>
+    </div>`).join('');
+}
+
+// Actividad 1
+let act1Data = [];
+function genAct1() {
+  act1Data = Array.from({length:5},()=>({
+    a: Math.floor(Math.random()*90)+10,
+    b: Math.floor(Math.random()*8)+2
+  }));
+  act1Data.forEach(d=>d.ans=d.a*d.b);
+  const c = document.getElementById('act1-items');
+  if(!c)return;
+  c.innerHTML = act1Data.map((d,i)=>`
+    <div class="problem-item">
+      <span class="problem-label">${i+1}. ${d.a} × ${d.b} =</span>
+      <input class="answer-input" id="a1-${i}" type="number" placeholder="?">
+      <span class="feedback-icon" id="a1f-${i}"></span>
+    </div>`).join('');
+  document.getElementById('act1-result').innerHTML='';
+}
+
+function checkAct1() {
+  let ok=0;
+  act1Data.forEach((d,i)=>{
+    const inp=document.getElementById(`a1-${i}`);
+    const ico=document.getElementById(`a1f-${i}`);
+    if(parseInt(inp.value)===d.ans){inp.className='answer-input correct';ico.textContent='✅';ok++;}
+    else{inp.className='answer-input wrong';ico.textContent=`❌ (${d.ans})`;}
+  });
+  document.getElementById('act1-result').innerHTML=`<span class="badge ${ok===act1Data.length?'badge-green':'badge-amber'}">${ok}/${act1Data.length} correctas</span>`;
+}
+function resetAct1(){genAct1();}
+
+/* ====================================================
+   CANVAS: ELEMENTOS
+   ==================================================== */
+const elemExamples = [
+  {a:35,b:4},{a:127,b:6},{a:45,b:12}
+];
+
+function elemDemo(idx) {
+  document.querySelectorAll('#sec-elementos .ctrl-btn').forEach((b,i)=>{b.classList.toggle('active',i===idx);});
+  const ca=document.getElementById('cnv-elementos'); if(!ca)return;
+  const ctx=ca.getContext('2d');
+  const W=ca.width,H=ca.height;
+  ctx.clearRect(0,0,W,H);
+  const {a,b}=elemExamples[idx];
+  const res=a*b;
+
+  const drawLabel=(x,y,label,val,bg,border,fg)=>{
+    ctx.fillStyle=bg; ctx.strokeStyle=border; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.roundRect(x,y,130,80,12); ctx.fill(); ctx.stroke();
+    ctx.font='600 11px Nunito,sans-serif'; ctx.fillStyle='#94a3b8'; ctx.textAlign='center';
+    ctx.fillText(label.toUpperCase(), x+65, y+20);
+    ctx.font='bold 28px Fredoka One,cursive'; ctx.fillStyle=fg;
+    ctx.fillText(String(val), x+65, y+56);
+  };
+  drawLabel(20, 60,'Multiplicando',a,'#dbeafe','#93c5fd','#1d4ed8');
+  ctx.font='bold 30px Fredoka One,cursive'; ctx.fillStyle='#94a3b8'; ctx.textAlign='center';
+  ctx.fillText('×', 175, 103);
+  drawLabel(200, 60,'Multiplicador',b,'#ede9fe','#c4b5fd','#6d28d9');
+  ctx.fillText('=', 355, 103);
+  drawLabel(380, 60,'Producto',res,'#d1fae5','#6ee7b7','#065f46');
+}
+
+// Actividad elementos
+const elemActData=[
+  {expr:'8 × 9 = 72', mult:8, plcr:9, prod:72},
+  {expr:'15 × 6 = 90', mult:15, plcr:6, prod:90},
+  {expr:'23 × 4 = 92', mult:23, plcr:4, prod:92},
+];
+function initElemAct(){
+  const c=document.getElementById('elem-act-items'); if(!c)return;
+  c.innerHTML=elemActData.map((d,i)=>`
+    <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;margin-bottom:10px;">
+      <p style="font-family:'Fredoka One',cursive;font-size:1rem;margin-bottom:8px;">🔢 ${d.expr}</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <div><label style="font-size:.78rem;font-weight:700;color:#475569;">Multiplicando:</label><br>
+          <input class="answer-input" id="ea-m-${i}" type="number" placeholder="?"></div>
+        <div><label style="font-size:.78rem;font-weight:700;color:#475569;">Multiplicador:</label><br>
+          <input class="answer-input" id="ea-p-${i}" type="number" placeholder="?"></div>
+        <div><label style="font-size:.78rem;font-weight:700;color:#475569;">Producto:</label><br>
+          <input class="answer-input" id="ea-r-${i}" type="number" placeholder="?"></div>
+        <span class="feedback-icon" id="ea-f-${i}" style="align-self:flex-end;margin-bottom:8px;"></span>
+      </div>
+    </div>`).join('');
+  document.getElementById('elem-act-result').innerHTML='';
+}
+function checkElemAct(){
+  let ok=0;
+  elemActData.forEach((d,i)=>{
+    const vm=parseInt(document.getElementById(`ea-m-${i}`).value);
+    const vp=parseInt(document.getElementById(`ea-p-${i}`).value);
+    const vr=parseInt(document.getElementById(`ea-r-${i}`).value);
+    const ico=document.getElementById(`ea-f-${i}`);
+    if(vm===d.mult && vp===d.plcr && vr===d.prod){ico.textContent='✅';ok++;}
+    else{ico.textContent=`❌ (${d.mult},${d.plcr},${d.prod})`;}
+  });
+  document.getElementById('elem-act-result').innerHTML=`<span class="badge ${ok===elemActData.length?'badge-green':'badge-amber'}">${ok}/${elemActData.length} completas</span>`;
+}
+
+/* ====================================================
+   MULT × 1 CIFRA (MULTIPLICADOR)
+   ==================================================== */
+function drawMult1M(){
+  const a=parseInt(document.getElementById('d2-a').value)||234;
+  const b=parseInt(document.getElementById('d2-b').value)||3;
+  buildVertMult(a,b,'vmult2-steps');
+}
+
+function renderExamplesMult1M(){
+  const data=[{a:324,b:2},{a:156,b:7},{a:483,b:6},{a:2345,b:4},{a:7820,b:5},{a:631,b:9}];
+  document.getElementById('examples-mult1m').innerHTML=data.map(d=>`
+    <div class="ex-item">
+      <div class="ex-op">Ejemplo</div>
+      <div class="ex-body">${d.a}<br><span style="color:var(--blue)">× &nbsp;&nbsp;&nbsp;${d.b}</span><br>
+      <div class="ex-sep"></div><span class="ex-res">${d.a*d.b}</span></div>
+    </div>`).join('');
+}
+
+function animMult1M(idx){
+  document.querySelectorAll('#sec-mult1m .ctrl-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  const data=[{a:324,b:2},{a:156,b:7},{a:483,b:6},{a:2345,b:4}];
+  const {a,b}=data[idx];
+  drawMultCanvas('cnv-mult1m',a,b);
+}
+
+// Generic canvas vertical mult draw
+function drawMultCanvas(canvasId,a,b){
+  const ca=document.getElementById(canvasId); if(!ca)return;
+  const ctx=ca.getContext('2d');
+  ctx.clearRect(0,0,ca.width,ca.height);
+  const aS=String(a), bS=String(b);
+  const res=a*b, resS=String(res);
+  const x=ca.width/2+40, y=30;
+  const lh=40;
+  ctx.font='bold 28px Fredoka One,cursive'; ctx.textAlign='right';
+  ctx.fillStyle='#1a3a6b'; ctx.fillText(aS,x,y+lh);
+  ctx.fillStyle='#2563eb'; ctx.fillText('× '+bS,x,y+lh*2);
+  ctx.strokeStyle='#1a3a6b'; ctx.lineWidth=2.5;
+  ctx.beginPath(); ctx.moveTo(x-120,y+lh*2+10); ctx.lineTo(x+10,y+lh*2+10); ctx.stroke();
+
+  const bDigits=bS.split('').reverse();
+  const pCols=['#7c3aed','#c2410c','#0284c7','#065f46'];
+  let py=y+lh*3;
+  if(bDigits.length===1){
+    ctx.fillStyle='#10b981'; ctx.fillText(resS,x,py);
+  } else {
+    bDigits.forEach((d,i)=>{
+      const partial=parseInt(d)*a*Math.pow(10,i);
+      ctx.fillStyle=pCols[i%pCols.length];
+      ctx.fillText(String(partial),x,py);
+      py+=lh;
+    });
+    ctx.strokeStyle='#1a3a6b'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(x-140,py-lh+10); ctx.lineTo(x+10,py-lh+10); ctx.stroke();
+    ctx.fillStyle='#2563eb'; ctx.fillText(resS,x,py);
+  }
+}
+
+let actM1Data=[];
+function genActM1(){
+  actM1Data=Array.from({length:4},()=>({a:Math.floor(Math.random()*900)+100,b:Math.floor(Math.random()*7)+2}));
+  actM1Data.forEach(d=>d.ans=d.a*d.b);
+  const c=document.getElementById('act-m1-items'); if(!c)return;
+  c.innerHTML=actM1Data.map((d,i)=>`
+    <div class="problem-item">
+      <span class="problem-label">${i+1}. ${d.a} × ${d.b} =</span>
+      <input class="answer-input" id="am1-${i}" type="number" placeholder="?">
+      <span class="feedback-icon" id="am1f-${i}"></span>
+    </div>`).join('');
+  document.getElementById('act-m1-result').innerHTML='';
+}
+function checkActM1(){
+  let ok=0;
+  actM1Data.forEach((d,i)=>{
+    const inp=document.getElementById(`am1-${i}`);
+    const ico=document.getElementById(`am1f-${i}`);
+    if(parseInt(inp.value)===d.ans){inp.className='answer-input correct';ico.textContent='✅';ok++;}
+    else{inp.className='answer-input wrong';ico.textContent=`❌ (${d.ans})`;}
+  });
+  document.getElementById('act-m1-result').innerHTML=`<span class="badge ${ok===actM1Data.length?'badge-green':'badge-amber'}">${ok}/${actM1Data.length} correctas</span>`;
+}
+
+/* ====================================================
+   MULT × 2 CIFRAS
+   ==================================================== */
+function drawMult2M(){
+  const a=parseInt(document.getElementById('d3-a').value)||45;
+  const b=parseInt(document.getElementById('d3-b').value)||23;
+  buildVertMult(a,b,'vmult3-steps');
+}
+
+function renderExamplesMult2M(){
+  const data=[{a:45,b:23},{a:67,b:34},{a:123,b:45},{a:256,b:78},{a:89,b:56},{a:432,b:21}];
+  document.getElementById('examples-mult2m').innerHTML=data.map(d=>`
+    <div class="ex-item">
+      <div class="ex-op">Ejemplo</div>
+      <div class="ex-body">${d.a}<br><span style="color:var(--blue)">× ${d.b}</span><br>
+      <div class="ex-sep"></div>
+      <span style="color:var(--purple);font-size:.85rem;">${(d.a*(d.b%10))}<br>${(d.a*Math.floor(d.b/10)*10)}</span>
+      <div style="border-top:1px solid #94a3b8;margin-top:2px;"></div>
+      <span class="ex-res">${d.a*d.b}</span></div>
+    </div>`).join('');
+}
+
+function animMult2M(idx){
+  document.querySelectorAll('#sec-mult2m .ctrl-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  const data=[{a:45,b:23},{a:67,b:34},{a:123,b:45}];
+  const {a,b}=data[idx];
+  drawMultCanvas('cnv-mult2m',a,b);
+}
+
+let actM2Data=[];
+function genActM2(){
+  actM2Data=Array.from({length:4},()=>({a:Math.floor(Math.random()*90)+10,b:Math.floor(Math.random()*89)+11}));
+  actM2Data.forEach(d=>d.ans=d.a*d.b);
+  const c=document.getElementById('act-m2-items'); if(!c)return;
+  c.innerHTML=actM2Data.map((d,i)=>`
+    <div class="problem-item">
+      <span class="problem-label">${i+1}. ${d.a} × ${d.b} =</span>
+      <input class="answer-input" id="am2-${i}" type="number" placeholder="?">
+      <span class="feedback-icon" id="am2f-${i}"></span>
+    </div>`).join('');
+  document.getElementById('act-m2-result').innerHTML='';
+}
+function checkActM2(){
+  let ok=0;
+  actM2Data.forEach((d,i)=>{
+    const inp=document.getElementById(`am2-${i}`);
+    const ico=document.getElementById(`am2f-${i}`);
+    if(parseInt(inp.value)===d.ans){inp.className='answer-input correct';ico.textContent='✅';ok++;}
+    else{inp.className='answer-input wrong';ico.textContent=`❌ (${d.ans})`;}
+  });
+  document.getElementById('act-m2-result').innerHTML=`<span class="badge ${ok===actM2Data.length?'badge-green':'badge-amber'}">${ok}/${actM2Data.length} correctas</span>`;
+}
+
+/* ====================================================
+   MULT × 3-4 CIFRAS
+   ==================================================== */
+function drawMult3M(){
+  const a=parseInt(document.getElementById('d4-a').value)||123;
+  const b=parseInt(document.getElementById('d4-b').value)||234;
+  buildVertMult(a,b,'vmult4-steps');
+}
+
+function renderExamplesMult3M(){
+  const data=[{a:123,b:234},{a:456,b:123},{a:1234,b:56},{a:321,b:456}];
+  document.getElementById('examples-mult34m').innerHTML=data.map(d=>`
+    <div class="ex-item">
+      <div class="ex-op">Ejemplo</div>
+      <div class="ex-body">${d.a}<br><span style="color:var(--blue)">× ${d.b}</span><br>
+      <div class="ex-sep"></div><span class="ex-res">${d.a*d.b}</span></div>
+    </div>`).join('');
+}
+
+function animMult3M(idx){
+  document.querySelectorAll('#sec-mult34m .ctrl-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  const data=[{a:123,b:234},{a:456,b:123},{a:1234,b:56}];
+  const {a,b}=data[idx];
+  drawMultCanvas('cnv-mult34m',a,b);
+}
+
+let actM3Data=[];
+function genActM3(){
+  actM3Data=Array.from({length:4},()=>({a:Math.floor(Math.random()*900)+100,b:Math.floor(Math.random()*899)+100}));
+  actM3Data.forEach(d=>d.ans=d.a*d.b);
+  const c=document.getElementById('act-m3-items'); if(!c)return;
+  c.innerHTML=actM3Data.map((d,i)=>`
+    <div class="problem-item">
+      <span class="problem-label">${i+1}. ${d.a} × ${d.b} =</span>
+      <input class="answer-input" id="am3-${i}" type="number" placeholder="?">
+      <span class="feedback-icon" id="am3f-${i}"></span>
+    </div>`).join('');
+  document.getElementById('act-m3-result').innerHTML='';
+}
+function checkActM3(){
+  let ok=0;
+  actM3Data.forEach((d,i)=>{
+    const inp=document.getElementById(`am3-${i}`);
+    const ico=document.getElementById(`am3f-${i}`);
+    if(parseInt(inp.value)===d.ans){inp.className='answer-input correct';ico.textContent='✅';ok++;}
+    else{inp.className='answer-input wrong';ico.textContent=`❌ (${d.ans})`;}
+  });
+  document.getElementById('act-m3-result').innerHTML=`<span class="badge ${ok===actM3Data.length?'badge-green':'badge-amber'}">${ok}/${actM3Data.length} correctas</span>`;
+}
+
+/* ====================================================
+   PROBLEMAS
+   ==================================================== */
+const problemsData = [
+  { icon:'💼', cat:'Pérdida diaria', text:'Una empresa perdió 15 bolivianos al día durante 7 días. ¿Cuál es la pérdida total en una semana?', expr:'(−15) × 7', ans:-105 },
+  { icon:'🚀', cat:'Movimiento', text:'Un objeto se mueve 5 metros hacia atrás cada segundo. ¿Qué distancia habrá recorrido en 10 segundos?', expr:'(−5) × 10', ans:-50 },
+  { icon:'🌡️', cat:'Temperatura', text:'La temperatura baja 3 grados cada hora y ya han pasado 8 horas. ¿Cuánto ha disminuido la temperatura?', expr:'(−3) × 8', ans:-24 },
+  { icon:'🌨️', cat:'Descenso temperatura', text:'La temperatura en una ciudad baja 4 grados Celsius cada hora durante 6 horas. ¿Cuál es el cambio total?', expr:'(−4) × 6', ans:-24 },
+  { icon:'🛍️', cat:'Pérdida económica', text:'Una tienda pierde 20 bolivianos al día durante 15 días. ¿Cuál es la pérdida total?', expr:'(−20) × 15', ans:-300 },
+  { icon:'👥', cat:'Deuda acumulada', text:'Debes 50 bolivianos a cada uno de tus 4 amigos. ¿Cuál es la cantidad total que debes?', expr:'(−50) × 4', ans:-200 },
+  { icon:'🌾', cat:'Ganancia', text:'Un agricultor gana 25 bolivianos por cada saco de yuca vendido. Si vende 12 sacos, ¿cuánto gana en total?', expr:'25 × 12', ans:300 },
+  { icon:'📈', cat:'Inversión', text:'Un inversionista pierde 100 Bs/día durante 5 días, luego gana 200 Bs/día durante 3 días. ¿Resultado total?', expr:'(−100×5) + (200×3)', ans:100 },
+];
+
+function renderProblems(){
+  const c=document.getElementById('prob-list'); if(!c)return;
+  c.innerHTML=problemsData.map((p,i)=>`
+    <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:14px 16px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <span style="font-size:1.3rem;">${p.icon}</span>
+        <span class="badge badge-blue">${p.cat}</span>
+      </div>
+      <p style="font-size:.9rem;line-height:1.6;color:#334155;">${p.text}</p>
+      <p style="font-family:'Fredoka One',cursive;color:var(--purple);margin-top:6px;font-size:.95rem;">Operación: ${p.expr}</p>
+    </div>`).join('');
+}
+
+const probActData=[
+  {text:'Una empresa perdió 15 Bs/día × 7 días =', ans:-105},
+  {text:'Un objeto: −5 m/seg × 10 seg =', ans:-50},
+  {text:'Temperatura: −3°/hora × 8 horas =', ans:-24},
+  {text:'Tienda: −20 Bs/día × 15 días =', ans:-300},
+  {text:'Agricultor: 25 Bs/saco × 12 sacos =', ans:300},
+];
+
+function initProbAct(){
+  const c=document.getElementById('prob-act-items'); if(!c)return;
+  c.innerHTML=probActData.map((p,i)=>`
+    <div class="problem-item">
+      <span style="font-size:.88rem;font-weight:700;color:#334155;flex:1;">${i+1}. ${p.text}</span>
+      <input class="answer-input" id="pa-${i}" type="number" placeholder="?" style="width:100px;">
+      <span class="feedback-icon" id="paf-${i}"></span>
+    </div>`).join('');
+  document.getElementById('prob-act-result').innerHTML='';
+}
+function checkProbAct(){
+  let ok=0;
+  probActData.forEach((p,i)=>{
+    const inp=document.getElementById(`pa-${i}`);
+    const ico=document.getElementById(`paf-${i}`);
+    if(parseInt(inp.value)===p.ans){inp.className='answer-input correct';ico.textContent='✅';ok++;}
+    else{inp.className='answer-input wrong';ico.textContent=`❌ (${p.ans})`;}
+  });
+  document.getElementById('prob-act-result').innerHTML=`<span class="badge ${ok===probActData.length?'badge-green':'badge-amber'}">${ok}/${probActData.length} correctas</span>`;
+}
+function resetProbAct(){initProbAct();}
+
+function drawProbCanvas(idx){
+  document.querySelectorAll('#sec-problemas .ctrl-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  const ca=document.getElementById('cnv-problemas'); if(!ca)return;
+  const ctx=ca.getContext('2d');
+  const W=ca.width,H=ca.height;
+  ctx.clearRect(0,0,W,H);
+  const configs=[
+    {val:-15,times:7,label:'Pérdida de 15 Bs/día × 7 días = −105 Bs',color:'#ef4444'},
+    {val:-5,times:10,label:'Retroceso de 5 m/seg × 10 seg = −50 m',color:'#7c3aed'},
+    {val:-3,times:8,label:'Descenso de 3°C/hora × 8 horas = −24°C',color:'#0284c7'},
+  ];
+  const cfg=configs[idx];
+  // Draw number line
+  const midY=100, lineX=40, lineW=W-80;
+  ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(lineX,midY); ctx.lineTo(lineX+lineW,midY); ctx.stroke();
+  // Arrow
+  ctx.beginPath(); ctx.moveTo(lineX+lineW,midY); ctx.lineTo(lineX+lineW-8,midY-5); ctx.lineTo(lineX+lineW-8,midY+5); ctx.closePath();
+  ctx.fillStyle='#cbd5e1'; ctx.fill();
+  // Zero
+  const zeroX=lineX+lineW*0.65;
+  ctx.font='bold 13px Nunito,sans-serif'; ctx.fillStyle='#475569'; ctx.textAlign='center';
+  ctx.fillText('0',zeroX,midY+20);
+  ctx.strokeStyle='#94a3b8'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(zeroX,midY-6); ctx.lineTo(zeroX,midY+6); ctx.stroke();
+  // Arrows showing steps
+  const total=cfg.val*cfg.times;
+  const totalX=zeroX+total*2.5;
+  ctx.strokeStyle=cfg.color; ctx.lineWidth=3;
+  ctx.beginPath(); ctx.moveTo(zeroX,midY); ctx.lineTo(totalX,midY); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(totalX,midY); ctx.lineTo(totalX+8,midY-5); ctx.lineTo(totalX+8,midY+5); ctx.closePath();
+  ctx.fillStyle=cfg.color; ctx.fill();
+  // Total label
+  ctx.font='bold 13px Nunito,sans-serif'; ctx.fillStyle=cfg.color; ctx.textAlign='center';
+  ctx.fillText(String(total),totalX,midY-15);
+  // Description
+  ctx.font='700 13px Nunito,sans-serif'; ctx.fillStyle='#334155'; ctx.textAlign='center';
+  ctx.fillText(cfg.label,W/2,155);
+}
+
+/* ====================================================
+   GENERADOR DE HOJAS
+   ==================================================== */
+function randNum(digits){
+  const min=Math.pow(10,digits-1), max=Math.pow(10,digits)-1;
+  return Math.floor(Math.random()*(max-min+1))+min;
+}
+
+function generateSheet(){
+  const count=parseInt(document.getElementById('gen-count').value)||12;
+  const dA=parseInt(document.getElementById('gen-dig-a').value)||2;
+  const dB=parseInt(document.getElementById('gen-dig-b').value)||1;
+  const sheet=document.getElementById('exercise-sheet');
+  const ansKey=document.getElementById('answer-key');
+  sheet.innerHTML=''; ansKey.innerHTML='';
+
+  const exercises=[];
+  for(let i=0;i<count;i++){
+    const a=randNum(dA), b=randNum(dB);
+    exercises.push({a,b,ans:a*b,n:i+1});
+  }
+
+  exercises.forEach(e=>{
+    const card=document.createElement('div');
+    card.className='ex-card';
+    card.innerHTML=`<div class="ex-num">${e.n}.</div>
+      <div>${e.a}</div>
+      <div style="color:var(--blue);">× ${e.b}</div>
+      <div class="ex-line"></div>
+      <div class="ex-ans">&nbsp;</div>`;
+    sheet.appendChild(card);
+  });
+
+  exercises.forEach(e=>{
+    const sp=document.createElement('span');
+    sp.className='badge badge-green';
+    sp.style.margin='3px';
+    sp.textContent=`${e.n}. ${e.a}×${e.b}=${e.ans}`;
+    ansKey.appendChild(sp);
+  });
+
+  document.getElementById('gen-answers').style.display='block';
+  document.getElementById('pdf-btn').style.display='inline-flex';
+}
+
+function downloadPDF(){
+  const title=document.createElement('div');
+  title.className='print-header';
+  title.style.display='block';
+  document.querySelector('.card.card-accent .print-header').style.display='block';
+  window.print();
+  document.querySelector('.card.card-accent .print-header').style.display='none';
+}
+
+/* ====================================================
+   EVALUACIÓN FINAL
+   ==================================================== */
+const quizQuestions=[
+  { q:'¿Cuál es el resultado de 6 × 7?',
+    opts:['A) 42','B) 43','C) 40','D) 48'], ans:0,
+    fb:'6×7=42. Recuerda la tabla del 6.' },
+  { q:'¿Cuál es el resultado de (−3) × (−5)?',
+    opts:['A) −15','B) 15','C) −8','D) 8'], ans:1,
+    fb:'Negativo × Negativo = Positivo. (−3)×(−5)=+15.' },
+  { q:'¿Cuánto es 23 × 4?',
+    opts:['A) 82','B) 92','C) 84','D) 96'], ans:1,
+    fb:'23×4=92. (3×4=12→2 llevo 1; 2×4=8+1=9).' },
+  { q:'¿Cómo se llama el resultado de una multiplicación?',
+    opts:['A) Suma','B) Producto','C) Cociente','D) Diferencia'], ans:1,
+    fb:'El resultado de la multiplicación se llama Producto.' },
+  { q:'¿Cuánto es 45 × 12?',
+    opts:['A) 540','B) 450','C) 504','D) 520'], ans:0,
+    fb:'45×12=540. (45×2=90; 45×10=450; 90+450=540).' },
+  { q:'¿Cuál es el signo de (+6) × (−4)?',
+    opts:['A) Positivo','B) Negativo','C) Cero','D) Indefinido'], ans:1,
+    fb:'Positivo × Negativo = Negativo. El resultado es −24.' },
+  { q:'¿Cuánto es 125 × 3?',
+    opts:['A) 365','B) 375','C) 360','D) 385'], ans:1,
+    fb:'125×3=375. (5×3=15→5,llevo1; 2×3=6+1=7; 1×3=3).' },
+  { q:'Una tienda pierde 15 Bs al día durante 7 días. ¿Pérdida total?',
+    opts:['A) −95 Bs','B) −100 Bs','C) −105 Bs','D) −110 Bs'], ans:2,
+    fb:'(−15)×7=−105 Bs. La pérdida acumulada es 105 bolivianos.' },
+  { q:'¿Cuánto es 0 × 999?',
+    opts:['A) 999','B) 1','C) 0','D) 9990'], ans:2,
+    fb:'Cualquier número multiplicado por 0 es igual a 0 (elemento absorbente).' },
+  { q:'¿Cuánto es (−4) × (−6)?',
+    opts:['A) −24','B) 24','C) −10','D) 10'], ans:1,
+    fb:'Negativo × Negativo = Positivo. (−4)×(−6)=+24.' },
+];
+
+let quizAnswers=new Array(quizQuestions.length).fill(-1);
+let quizSubmitted=false;
+
+function renderQuiz(){
+  if(document.getElementById('quiz-container').innerHTML!=='') return;
+  const c=document.getElementById('quiz-container');
+  c.innerHTML=quizQuestions.map((q,i)=>`
+    <div class="quiz-q" id="qq-${i}">
+      <div class="q-num">Pregunta ${i+1} de ${quizQuestions.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="quiz-options" id="qo-${i}">
+        ${q.opts.map((o,j)=>`
+          <div class="quiz-opt" id="qopt-${i}-${j}" onclick="selectQuizOpt(${i},${j})">
+            <div class="opt-letter">${['A','B','C','D'][j]}</div>
+            <span>${o.substring(3)}</span>
+          </div>`).join('')}
+      </div>
+      <div id="qfb-${i}" style="display:none;" class="quiz-feedback"></div>
+    </div>`).join('');
+}
+
+function selectQuizOpt(qi,oi){
+  if(quizSubmitted) return;
+  quizAnswers[qi]=oi;
+  document.querySelectorAll(`#qo-${qi} .quiz-opt`).forEach((el,j)=>{
+    el.classList.toggle('selected',j===oi);
+  });
+}
+
+function submitQuiz(){
+  if(quizSubmitted) return;
+  quizSubmitted=true;
+  let score=0;
+  quizQuestions.forEach((q,i)=>{
+    const sel=quizAnswers[i];
+    const fb=document.getElementById(`qfb-${i}`);
+    document.querySelectorAll(`#qo-${i} .quiz-opt`).forEach((el,j)=>{
+      if(j===q.ans){ el.classList.add('opt-c'); }
+      else if(j===sel && sel!==q.ans){ el.classList.add('opt-w'); }
+    });
+    fb.style.display='block';
+    if(sel===q.ans){ score++; fb.className='quiz-feedback fb-c'; fb.textContent='✅ '+q.fb; }
+    else           { fb.className='quiz-feedback fb-w'; fb.textContent='❌ La respuesta correcta es '+q.opts[q.ans].substring(0,3)+'. '+q.fb; }
+  });
+  // Score display
+  const pct=Math.round(score/quizQuestions.length*100);
+  let msg, emoji;
+  if(pct>=90){ msg='¡Excelente! Dominas la multiplicación.'; emoji='🏆'; }
+  else if(pct>=70){ msg='¡Muy bien! Sigue practicando.'; emoji='🎉'; }
+  else if(pct>=50){ msg='¡Buen esfuerzo! Repasa los conceptos.'; emoji='📚'; }
+  else             { msg='Necesitas repasar el tema. ¡Tú puedes!'; emoji='💪'; }
+
+  const ss=document.getElementById('quiz-score-section');
+  ss.style.display='block';
+  ss.innerHTML=`
+    <div class="score-display">
+      <div style="font-size:2.5rem;">${emoji}</div>
+      <h2>Tu Resultado</h2>
+      <div class="score-big">${score}/${quizQuestions.length}</div>
+      <div class="score-bar-wrap"><div class="score-bar" style="width:0%" id="score-bar-fill"></div></div>
+      <p style="font-size:1rem;color:#e0f2fe;">${pct}% — ${msg}</p>
+    </div>`;
+  setTimeout(()=>{
+    const bar=document.getElementById('score-bar-fill');
+    if(bar) bar.style.width=pct+'%';
+  },200);
+  document.getElementById('quiz-submit-btn').style.display='none';
+  ss.scrollIntoView({behavior:'smooth'});
+}
+
+function resetQuiz(){
+  quizAnswers=new Array(quizQuestions.length).fill(-1);
+  quizSubmitted=false;
+  document.getElementById('quiz-container').innerHTML='';
+  document.getElementById('quiz-score-section').style.display='none';
+  document.getElementById('quiz-submit-btn').style.display='flex';
+  renderQuiz();
+}
+
+/* ====================================================
+   INIT: Cargar sección intro al inicio
+   ==================================================== */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    drawIntroCanvas();
+  },500);
+});
+</script>
+</body>
+</html>

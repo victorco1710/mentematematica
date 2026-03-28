@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Descomposición Aditiva | Mente Matemática</title>
+
+  <!-- =====================================================
+       ESTILOS GENERALES
+  ====================================================== -->
+  <style>
+    /* ---------- Variables de color ---------- */
+    :root {
+      --navy:      #0D1B3E;
+      --blue:      #1A4FAB;
+      --blue-mid:  #2563EB;
+      --blue-lt:   #DBEAFE;
+      --accent:    #F59E0B;
+      --accent2:   #10B981;
+      --red:       #EF4444;
+      --gray-bg:   #F1F5F9;
+      --white:     #FFFFFF;
+      --shadow:    0 4px 18px rgba(13,27,62,.10);
+      --radius:    14px;
+      --sidebar-w: 260px;
+    }
+
+    /* ---------- Reset ---------- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--gray-bg);
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* =====================================================
+       HEADER
+    ====================================================== */
+    header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+      color: #fff;
+      padding: 0 28px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 16px rgba(0,0,0,.35);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -.5px;
+    }
+    .logo svg { width: 36px; height: 36px; }
+    .logo span { color: var(--accent); }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .btn-back {
+      background: rgba(255,255,255,.15);
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,.35);
+      padding: 8px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: .88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background .2s;
+    }
+    .btn-back:hover { background: rgba(255,255,255,.28); }
+
+    /* =====================================================
+       LAYOUT PRINCIPAL (sidebar + content)
+    ====================================================== */
+    .layout {
+      display: flex;
+      flex: 1;
+    }
+
+    /* =====================================================
+       SIDEBAR
+    ====================================================== */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--white);
+      border-right: 1.5px solid #e2e8f0;
+      position: sticky;
+      top: 68px;
+      height: calc(100vh - 68px);
+      overflow-y: auto;
+      padding: 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sidebar-title {
+      font-size: .7rem;
+      font-weight: 700;
+      color: #94a3b8;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 0 18px 10px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 18px;
+      cursor: pointer;
+      border-radius: 0;
+      color: #475569;
+      font-size: .92rem;
+      font-weight: 500;
+      transition: background .18s, color .18s;
+      border-left: 4px solid transparent;
+      user-select: none;
+    }
+    .nav-item:hover { background: var(--blue-lt); color: var(--blue-mid); }
+    .nav-item.active {
+      background: var(--blue-lt);
+      color: var(--blue-mid);
+      border-left-color: var(--blue-mid);
+      font-weight: 700;
+    }
+    .nav-icon { font-size: 1.25rem; min-width: 26px; text-align: center; }
+
+    /* =====================================================
+       ÁREA DE CONTENIDO
+    ====================================================== */
+    .content-area {
+      flex: 1;
+      padding: 32px 36px;
+      overflow-y: auto;
+      max-width: 900px;
+    }
+
+    /* ---------- Animación de entrada ---------- */
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .section-view { animation: fadeSlide .35s ease; }
+
+    /* ---------- Tarjetas ---------- */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px 30px;
+      margin-bottom: 24px;
+    }
+    .card h2 {
+      color: var(--navy);
+      font-size: 1.3rem;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card h3 {
+      color: var(--blue);
+      font-size: 1.05rem;
+      margin: 16px 0 8px;
+    }
+    .card p { line-height: 1.75; margin-bottom: 10px; color: #374151; }
+
+    /* ---------- Hero bienvenida ---------- */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue-mid) 100%);
+      border-radius: var(--radius);
+      padding: 44px 36px;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+    .hero h1 { font-size: 2rem; font-weight: 800; margin-bottom: 12px; }
+    .hero p  { font-size: 1.08rem; opacity: .88; max-width: 540px; margin: 0 auto 22px; }
+    .btn-start {
+      display: inline-block;
+      background: var(--accent);
+      color: #1a1a1a;
+      font-weight: 700;
+      padding: 13px 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      font-size: 1rem;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .btn-start:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(245,158,11,.35); }
+
+    /* ---------- Objetivos (lista de aprendizaje) ---------- */
+    .obj-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 8px;
+    }
+    .obj-item {
+      background: var(--blue-lt);
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .obj-num {
+      background: var(--blue-mid);
+      color: #fff;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: .85rem;
+      flex-shrink: 0;
+    }
+    .obj-text { font-size: .9rem; line-height: 1.6; color: #1e3a5f; }
+
+    /* ---------- Canvas visualizador ---------- */
+    canvas { display: block; border-radius: 10px; }
+    .canvas-wrap {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 18px;
+      margin-top: 12px;
+      text-align: center;
+    }
+    .canvas-label {
+      font-size: .83rem;
+      color: #64748b;
+      margin-top: 8px;
+    }
+
+    /* ---------- Controles interactivos ---------- */
+    .control-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 14px 0;
+    }
+    label { font-size: .9rem; font-weight: 600; color: #374151; }
+    input[type="number"], input[type="text"], select {
+      border: 1.5px solid #cbd5e1;
+      border-radius: 7px;
+      padding: 8px 12px;
+      font-size: .95rem;
+      outline: none;
+      transition: border .2s;
+      background: #fff;
+    }
+    input[type="number"]:focus,
+    input[type="text"]:focus { border-color: var(--blue-mid); }
+    .btn {
+      background: var(--blue-mid);
+      color: #fff;
+      border: none;
+      padding: 9px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: .9rem;
+      transition: background .18s, transform .12s;
+    }
+    .btn:hover { background: var(--blue); transform: translateY(-1px); }
+    .btn-green { background: var(--accent2); }
+    .btn-green:hover { background: #059669; }
+
+    /* ---------- Feedback ---------- */
+    .feedback {
+      border-radius: 9px;
+      padding: 12px 16px;
+      margin-top: 12px;
+      font-weight: 600;
+      display: none;
+    }
+    .feedback.ok  { background: #d1fae5; color: #065f46; display: block; }
+    .feedback.err { background: #fee2e2; color: #991b1b; display: block; }
+    .feedback.info{ background: var(--blue-lt); color: var(--navy); display: block; }
+
+    /* ---------- Badge ---------- */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: .78rem;
+      font-weight: 700;
+    }
+    .badge-easy   { background: #d1fae5; color: #065f46; }
+    .badge-medium { background: #fef3c7; color: #92400e; }
+    .badge-hard   { background: #fee2e2; color: #991b1b; }
+
+    /* ---------- Tabla de ejemplos ---------- */
+    table.ex-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+      font-size: .92rem;
+    }
+    table.ex-table th {
+      background: var(--navy);
+      color: #fff;
+      padding: 10px 14px;
+      text-align: left;
+    }
+    table.ex-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    table.ex-table tr:nth-child(even) td { background: #f8fafc; }
+
+    /* ---------- Quiz ---------- */
+    .quiz-q {
+      background: var(--white);
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+      transition: border .2s;
+    }
+    .quiz-q .q-text { font-weight: 700; margin-bottom: 12px; color: var(--navy); }
+    .quiz-q .options { display: flex; flex-direction: column; gap: 8px; }
+    .quiz-q .opt {
+      display: flex; align-items: center; gap: 10px;
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 9px 14px;
+      cursor: pointer;
+      transition: background .18s, border .18s;
+      font-size: .92rem;
+    }
+    .quiz-q .opt:hover { background: var(--blue-lt); border-color: var(--blue-mid); }
+    .quiz-q .opt.selected { background: var(--blue-lt); border-color: var(--blue-mid); }
+    .quiz-q .opt.correct  { background: #d1fae5; border-color: var(--accent2); }
+    .quiz-q .opt.wrong    { background: #fee2e2; border-color: var(--red); }
+    .quiz-q input[type="radio"] { accent-color: var(--blue-mid); }
+    .q-feedback { margin-top: 8px; font-size: .85rem; font-weight: 600; display: none; }
+    .q-feedback.show { display: block; }
+    .q-feedback.ok  { color: #065f46; }
+    .q-feedback.err { color: #991b1b; }
+
+    /* ---------- Score box ---------- */
+    .score-box {
+      text-align: center;
+      padding: 30px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg,var(--navy),var(--blue-mid));
+      color: #fff;
+      margin-top: 20px;
+    }
+    .score-number { font-size: 3.5rem; font-weight: 900; }
+    .score-label  { font-size: 1.1rem; opacity: .85; }
+
+    /* ---------- Progress bar ---------- */
+    .progress-bar {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 99px;
+      margin: 8px 0 20px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue-mid), var(--accent2));
+      border-radius: 99px;
+      transition: width .4s ease;
+    }
+
+    /* ---------- Video embed ---------- */
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 12px;
+      margin: 16px 0;
+      background: #000;
+    }
+    .video-container iframe,
+    .video-container video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border-radius: 12px;
+    }
+    .video-placeholder {
+      background: linear-gradient(135deg, #0f172a, #1e3a5f);
+      border-radius: 12px;
+      padding: 60px 30px;
+      text-align: center;
+      color: #fff;
+      margin: 16px 0;
+    }
+    .video-placeholder .play-icon { font-size: 4rem; margin-bottom: 16px; }
+    .video-placeholder p { opacity: .75; font-size: .95rem; }
+
+    /* ---------- Decomposition visual boxes ---------- */
+    .deco-vis {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 10px 0;
+    }
+    .deco-box {
+      background: var(--blue-lt);
+      border: 2px solid var(--blue-mid);
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--navy);
+      min-width: 52px;
+      text-align: center;
+    }
+    .deco-op { font-size: 1.3rem; font-weight: 800; color: #64748b; }
+    .deco-eq { font-size: 1.3rem; font-weight: 800; color: var(--navy); }
+
+    /* ---------- Input row para práctica ---------- */
+    .prac-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0;
+      flex-wrap: wrap;
+    }
+    .prac-row input { width: 72px; }
+    .prac-row .plus { font-weight: 700; color: #64748b; font-size: 1.1rem; }
+
+    /* ---------- Responsive ---------- */
+    @media(max-width: 700px) {
+      .sidebar { display: none; }
+      .content-area { padding: 20px 14px; }
+      .obj-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ---------- Scrollbar ---------- */
+    .sidebar::-webkit-scrollbar { width: 5px; }
+    .sidebar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+    /* Highlight chip */
+    .chip {
+      display: inline-block;
+      background: var(--blue-lt);
+      color: var(--blue);
+      border-radius: 6px;
+      padding: 2px 9px;
+      font-size: .83rem;
+      font-weight: 700;
+      margin: 2px;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     HEADER
+====================================================== -->
+<header>
+  <div class="logo">
+    <!-- Ícono cerebro + suma -->
+    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="18" cy="18" r="17" fill="#1A4FAB" stroke="#F59E0B" stroke-width="2"/>
+      <text x="18" y="24" text-anchor="middle" font-size="18" font-weight="900" fill="#F59E0B" font-family="Arial">∑</text>
+    </svg>
+    Mente <span>Matemática</span>
+  </div>
+  <div class="header-right">
+    <span style="color:rgba(255,255,255,.65);font-size:.85rem;">...</span>
+    <a href="temario.html" class="btn-back">⬅ Volver al menú</a>
+  </div>
+</header>
+
+<!-- =====================================================
+     LAYOUT
+====================================================== -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-title">Módulos</div>
+    <div class="nav-item active" onclick="showSection('bienvenida')">
+      <span class="nav-icon">🏠</span> Bienvenida
+    </div>
+    <div class="nav-item" onclick="showSection('objetivos')">
+      <span class="nav-icon">🎯</span> ¿Qué aprenderemos?
+    </div>
+    <div class="nav-item" onclick="showSection('teoria')">
+      <span class="nav-icon">📖</span> ¿Qué es la Descomposición?
+    </div>
+    <div class="nav-item" onclick="showSection('ejemplos')">
+      <span class="nav-icon">💡</span> Explicación con Ejemplos
+    </div>
+    <div class="nav-item" onclick="showSection('practica')">
+      <span class="nav-icon">✏️</span> ¡A Descomponer!
+    </div>
+    <div class="nav-item" onclick="showSection('evaluacion')">
+      <span class="nav-icon">📝</span> Evaluación Final
+    </div>
+  </nav>
+
+  <!-- CONTENT AREA -->
+  <main class="content-area">
+
+    <!-- ================================================
+         SECCIÓN 0: BIENVENIDA
+    ================================================= -->
+    <div id="sec-bienvenida" class="section-view">
+      <div class="hero">
+        <div style="font-size:3.5rem;margin-bottom:14px;">🔢</div>
+        <h1>¡Bienvenido a la Aventura Matemática!</h1>
+        <p>Aprende a <strong>descomponer números enteros</strong> de forma creativa, comprende el valor posicional y domina el cálculo mental. ¡Todo de manera divertida!</p>
+        <button class="btn-start" onclick="showSection('objetivos')">Comenzar a aprender ▶</button>
+      </div>
+
+      <div class="card">
+        <h2>🗺️ ¿Cómo usar esta plataforma?</h2>
+        <p>Navega por los <strong>módulos del menú izquierdo</strong> en orden:</p>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px;">
+          <div style="display:flex;gap:12px;align-items:center">
+            <div style="background:var(--blue-mid);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0">1</div>
+            <span><strong>¿Qué aprenderemos?</strong> — Revisa los objetivos del tema.</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center">
+            <div style="background:var(--blue-mid);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0">2</div>
+            <span><strong>¿Qué es la Descomposición?</strong> — Teoría + video + actividades.</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center">
+            <div style="background:var(--blue-mid);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0">3</div>
+            <span><strong>Explicación con Ejemplos</strong> — Fácil, difícil y muy difícil.</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center">
+            <div style="background:var(--blue-mid);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0">4</div>
+            <span><strong>¡A Descomponer!</strong> — Práctica guiada con retroalimentación.</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center">
+            <div style="background:var(--accent);color:#1a1a1a;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0">5</div>
+            <span><strong>Evaluación Final</strong> — 10 preguntas con puntuación automática.</span>
+          </div>
+        </div>
+      </div>
+    </div><!-- /bienvenida -->
+
+    <!-- ================================================
+         SECCIÓN 1: OBJETIVOS
+    ================================================= -->
+    <div id="sec-objetivos" class="section-view" style="display:none">
+      <div class="card">
+        <h2>🎯 Objetivos de Aprendizaje — ¿Qué aprenderemos?</h2>
+        <p>Al finalizar este tema serás capaz de:</p>
+        <div class="obj-grid" style="margin-top:16px">
+          <div class="obj-item">
+            <div class="obj-num">1</div>
+            <div class="obj-text"><strong>Comprender la composición:</strong> Entender que un número entero se puede formar uniendo partes más pequeñas.</div>
+          </div>
+          <div class="obj-item">
+            <div class="obj-num">2</div>
+            <div class="obj-text"><strong>Flexibilidad numérica:</strong> Expresar un mismo número de múltiples formas (ej. 20 = 10+10 = 15+5 = 12+8).</div>
+          </div>
+          <div class="obj-item">
+            <div class="obj-num">3</div>
+            <div class="obj-text"><strong>Descomposición canónica:</strong> Identificar el valor posicional de cada dígito (unidades, decenas y centenas).</div>
+          </div>
+          <div class="obj-item">
+            <div class="obj-num">4</div>
+            <div class="obj-text"><strong>Cálculo mental ágil:</strong> Sumar y restar más rápido separando o "redondeando" números en la mente.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Canvas: mapa mental animado de objetivos -->
+      <div class="card">
+        <h2>🧠 Mapa Visual de Conceptos</h2>
+        <div class="canvas-wrap">
+          <canvas id="canvasObjetivos" width="750" height="300"></canvas>
+          <p class="canvas-label">Mapa de conceptos clave de la descomposición aditiva</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>📌 ¿Para qué sirve descomponer?</h2>
+        <p>La descomposición aditiva es una herramienta poderosa que usamos todos los días sin darnos cuenta:</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+          <div style="background:#f0fdf4;border-radius:9px;padding:14px">
+            <div style="font-size:1.5rem">🛒</div>
+            <strong>En la tienda:</strong> Si tienes $37 y pagas con $40, calculas el cambio rápido: 37 = 30 + 7.
+          </div>
+          <div style="background:#fffbeb;border-radius:9px;padding:14px">
+            <div style="font-size:1.5rem">⏰</div>
+            <strong>En el tiempo:</strong> 75 minutos = 60 + 15 = 1 hora y 15 minutos.
+          </div>
+          <div style="background:#eff6ff;border-radius:9px;padding:14px">
+            <div style="font-size:1.5rem">📐</div>
+            <strong>En geometría:</strong> Calcular áreas dividiendo figuras en partes más simples.
+          </div>
+          <div style="background:#fdf4ff;border-radius:9px;padding:14px">
+            <div style="font-size:1.5rem">🎯</div>
+            <strong>En el cálculo mental:</strong> 98 + 5 → (100 - 2) + 5 = 103.
+          </div>
+        </div>
+      </div>
+    </div><!-- /objetivos -->
+
+    <!-- ================================================
+         SECCIÓN 2: TEORÍA + VIDEO
+    ================================================= -->
+    <div id="sec-teoria" class="section-view" style="display:none">
+      <div class="card">
+        <h2>📖 ¿Qué es la Descomposición Aditiva?</h2>
+        <p>La <strong>descomposición aditiva</strong> consiste en escribir un número como la <strong>suma de dos o más sumandos</strong>. Es una habilidad fundamental en aritmética porque facilita el cálculo mental y ayuda a comprender el valor posicional.</p>
+
+        <!-- Video -->
+        <h3>🎬 Video Explicativo</h3>
+        <div class="video-box">
+          <div class="video-play-icon"></div>
+          <strong style="font-size:1.1rem">oberva con detalle</strong>
+          <div class="video-wrapper" style="margin-top:14px">
+            <video controls>
+              <source src="vid/des_aditiva daniel.mp4" type="video/mp4">
+              <p style="color:#ccc;padding:20px">Tu navegador no soporta video HTML5. <br>Ruta del video: <code>/vid/rect_num.mp4</code></p>
+            </video>
+          </div>
+        </div>
+
+
+        <h3>📚 Definición</h3>
+        <p>Existen dos formas principales de hacer una descomposición aditiva:</p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px">
+          <div style="background:var(--blue-lt);border-radius:10px;padding:18px">
+            <div style="font-size:1.4rem;margin-bottom:8px">🔓</div>
+            <strong style="color:var(--navy)">Descomposición Libre</strong>
+            <p style="margin-top:8px;font-size:.92rem">Separas el número en <em>cualquier</em> combinación de sumandos.</p>
+            <div class="deco-vis" style="margin-top:10px">
+              <div class="deco-box">10</div>
+              <div class="deco-eq">=</div>
+              <div class="deco-box">7</div>
+              <div class="deco-op">+</div>
+              <div class="deco-box">3</div>
+            </div>
+          </div>
+          <div style="background:#f0fdf4;border-radius:10px;padding:18px">
+            <div style="font-size:1.4rem;margin-bottom:8px">📏</div>
+            <strong style="color:var(--navy)">Descomposición Canónica</strong>
+            <p style="margin-top:8px;font-size:.92rem">Separas el número según el <em>valor posicional</em> de cada dígito.</p>
+            <div class="deco-vis" style="margin-top:10px">
+              <div class="deco-box">145</div>
+              <div class="deco-eq">=</div>
+              <div class="deco-box">100</div>
+              <div class="deco-op">+</div>
+              <div class="deco-box">40</div>
+              <div class="deco-op">+</div>
+              <div class="deco-box">5</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Propiedad conmutativa y asociativa -->
+      <div class="card">
+        <h2>⚖️ Propiedades de la Descomposición Aditiva</h2>
+        <h3>Propiedad Conmutativa</h3>
+        <p>El orden de los sumandos <strong>no altera</strong> el resultado:</p>
+        <div class="deco-vis">
+          <div class="deco-box">8 + 5</div>
+          <div class="deco-eq">=</div>
+          <div class="deco-box">5 + 8</div>
+          <div class="deco-eq">=</div>
+          <div class="deco-box">13</div>
+        </div>
+        <h3>Propiedad Asociativa</h3>
+        <p>Puedes agrupar los sumandos de <strong>cualquier manera</strong> y el resultado es el mismo:</p>
+        <div class="deco-vis">
+          <div class="deco-box">(4 + 3) + 6</div>
+          <div class="deco-eq">=</div>
+          <div class="deco-box">4 + (3 + 6)</div>
+          <div class="deco-eq">=</div>
+          <div class="deco-box">13</div>
+        </div>
+        <h3>Propiedad del Elemento Neutro</h3>
+        <p>Sumar <strong>0</strong> no cambia el número: <span class="chip">N + 0 = N</span></p>
+      </div>
+
+      <!-- Visualizador interactivo de descomposición -->
+      <div class="card">
+        <h2>🔢 Visualizador Interactivo</h2>
+        <p>Escribe un número y observa su descomposición canónica en tiempo real:</p>
+        <div class="control-row">
+          <label>Número (1–999):</label>
+          <input type="number" id="inputVis" min="1" max="999" value="145" style="width:90px"/>
+          <button class="btn" onclick="visualizarDescomposicion()">Visualizar</button>
+        </div>
+        <div id="resultVis" class="deco-vis" style="margin-top:12px"></div>
+        <div class="canvas-wrap" style="margin-top:16px">
+          <canvas id="canvasVis" width="720" height="160"></canvas>
+          <p class="canvas-label" id="canvasVisLabel">Representación visual del número</p>
+        </div>
+      </div>
+
+      <!-- Actividad: ¿Descomposición correcta? -->
+      <div class="card">
+        <h2>🎮 Actividad 1 — ¿Es correcta la descomposición?</h2>
+        <p>Decide si la descomposición mostrada es <strong>correcta o incorrecta</strong>:</p>
+        <div id="actividadBool" style="margin-top:14px"></div>
+        <div style="display:flex;gap:10px;margin-top:14px">
+          <button class="btn btn-green" onclick="responderBool(true)">✅ Correcta</button>
+          <button class="btn" style="background:var(--red)" onclick="responderBool(false)">❌ Incorrecta</button>
+          <button class="btn" onclick="nuevaBool()">🔄 Nueva pregunta</button>
+        </div>
+        <div id="feedBool" class="feedback"></div>
+      </div>
+
+    </div><!-- /teoria -->
+
+    <!-- ================================================
+         SECCIÓN 3: EJEMPLOS (fácil, difícil, muy difícil)
+    ================================================= -->
+    <div id="sec-ejemplos" class="section-view" style="display:none">
+      <div class="card">
+        <h2>💡 Explicación con Ejemplos</h2>
+        <p>Imagina que tienes <strong>12 manzanas</strong>. Puedes organizarlas de distintas maneras, pero al final siempre tendrás 12. Lo mismo ocurre con los números: podemos escribirlos de muchas formas usando sumas.</p>
+      </div>
+
+      <!-- NIVEL FÁCIL -->
+      <div class="card">
+        <h2>🟢 Nivel Fácil <span class="badge badge-easy">1 cifra</span></h2>
+        <h3>Número 10</h3>
+        <table class="ex-table">
+          <tr><th>Descomposición</th><th>Verificación</th><th>Tipo</th></tr>
+          <tr><td>5 + 5</td><td>✔ 5+5 = 10</td><td>Libre</td></tr>
+          <tr><td>8 + 2</td><td>✔ 8+2 = 10</td><td>Libre</td></tr>
+          <tr><td>9 + 1</td><td>✔ 9+1 = 10</td><td>Libre</td></tr>
+          <tr><td>4 + 4 + 2</td><td>✔ 4+4+2 = 10</td><td>Libre (3 sumandos)</td></tr>
+          <tr><td>10 + 0</td><td>✔ 10+0 = 10</td><td>Elemento neutro</td></tr>
+        </table>
+        <h3>Número 15</h3>
+        <table class="ex-table">
+          <tr><th>Descomposición</th><th>Verificación</th></tr>
+          <tr><td>10 + 5</td><td>✔ 10+5 = 15</td></tr>
+          <tr><td>7 + 8</td><td>✔ 7+8 = 15</td></tr>
+          <tr><td>6 + 9</td><td>✔ 6+9 = 15</td></tr>
+          <tr><td>5 + 5 + 5</td><td>✔ 5+5+5 = 15</td></tr>
+        </table>
+
+        <!-- Canvas bloques de 10 -->
+        <div class="canvas-wrap" style="margin-top:14px">
+          <canvas id="canvasEasy" width="700" height="130"></canvas>
+          <p class="canvas-label">Representación en bloques del número 10 (5+5)</p>
+        </div>
+      </div>
+
+      <!-- NIVEL DIFÍCIL -->
+      <div class="card">
+        <h2>🟡 Nivel Difícil <span class="badge badge-medium">2 cifras</span></h2>
+        <h3>Número 45</h3>
+        <table class="ex-table">
+          <tr><th>Descomposición</th><th>Verificación</th><th>Tipo</th></tr>
+          <tr><td>40 + 5</td><td>✔ 40+5 = 45</td><td><strong>Canónica</strong></td></tr>
+          <tr><td>20 + 20 + 5</td><td>✔ 20+20+5 = 45</td><td>Libre (3 sumandos)</td></tr>
+          <tr><td>30 + 15</td><td>✔ 30+15 = 45</td><td>Libre</td></tr>
+          <tr><td>25 + 20</td><td>✔ 25+20 = 45</td><td>Libre</td></tr>
+          <tr><td>9 + 9 + 9 + 9 + 9</td><td>✔ 9×5 = 45</td><td>Repetición igual</td></tr>
+        </table>
+        <h3>Número 63</h3>
+        <table class="ex-table">
+          <tr><th>Descomposición</th><th>Verificación</th><th>Tipo</th></tr>
+          <tr><td>60 + 3</td><td>✔ 60+3 = 63</td><td><strong>Canónica</strong></td></tr>
+          <tr><td>50 + 13</td><td>✔ 50+13 = 63</td><td>Libre</td></tr>
+          <tr><td>30 + 33</td><td>✔ 30+33 = 63</td><td>Libre</td></tr>
+        </table>
+
+        <h3>🎮 Mini actividad — Arrastra el resultado</h3>
+        <p>¿Cuál es la descomposición <strong>canónica</strong> de los siguientes números?</p>
+        <div id="act-canonico" style="margin-top:12px"></div>
+        <button class="btn" onclick="verificarCanonico()" style="margin-top:12px">Verificar</button>
+        <div id="feedCanonico" class="feedback"></div>
+      </div>
+
+      <!-- NIVEL MUY DIFÍCIL -->
+      <div class="card">
+        <h2>🔴 Nivel Muy Difícil <span class="badge badge-hard">3 cifras</span></h2>
+        <h3>Número 100</h3>
+        <table class="ex-table">
+          <tr><th>Descomposición</th><th>Verificación</th><th>Tipo</th></tr>
+          <tr><td>100 + 0</td><td>✔ 100+0 = 100</td><td>Canónica simple</td></tr>
+          <tr><td>50 + 50</td><td>✔ 50+50 = 100</td><td>Libre (2 iguales)</td></tr>
+          <tr><td>70 + 30</td><td>✔ 70+30 = 100</td><td>Libre</td></tr>
+          <tr><td>90 + 10</td><td>✔ 90+10 = 100</td><td>Libre</td></tr>
+          <tr><td>25 + 25 + 25 + 25</td><td>✔ 4×25 = 100</td><td>Cuatro iguales</td></tr>
+        </table>
+        <h3>Número 128</h3>
+        <table class="ex-table">
+          <tr><th>Descomposición</th><th>Verificación</th><th>Tipo</th></tr>
+          <tr><td>100 + 20 + 8</td><td>✔ 100+20+8 = 128</td><td><strong>Canónica (C+D+U)</strong></td></tr>
+          <tr><td>100 + 28</td><td>✔ 100+28 = 128</td><td>Libre</td></tr>
+          <tr><td>64 + 64</td><td>✔ 64+64 = 128</td><td>Libre (dos iguales)</td></tr>
+          <tr><td>80 + 48</td><td>✔ 80+48 = 128</td><td>Libre</td></tr>
+        </table>
+        <h3>Número 509</h3>
+        <table class="ex-table">
+          <tr><th>Descomposición</th><th>Verificación</th><th>Tipo</th></tr>
+          <tr><td>500 + 0 + 9</td><td>✔ 500+0+9 = 509</td><td><strong>Canónica (C+D+U)</strong></td></tr>
+          <tr><td>500 + 9</td><td>✔ 500+9 = 509</td><td>Libre (sin decenas)</td></tr>
+          <tr><td>400 + 109</td><td>✔ 400+109 = 509</td><td>Libre</td></tr>
+        </table>
+
+        <!-- Canvas tabla posicional -->
+        <div class="canvas-wrap" style="margin-top:16px">
+          <canvas id="canvasTabla" width="700" height="200"></canvas>
+          <p class="canvas-label">Tabla de valor posicional — Número 128</p>
+        </div>
+
+        <h3 style="margin-top:18px">🔍 Descomposición extendida de 4 cifras</h3>
+        <p>Para números grandes como <strong>2,345</strong>:</p>
+        <div class="deco-vis">
+          <div class="deco-box">2345</div>
+          <div class="deco-eq">=</div>
+          <div class="deco-box">2000</div>
+          <div class="deco-op">+</div>
+          <div class="deco-box">300</div>
+          <div class="deco-op">+</div>
+          <div class="deco-box">40</div>
+          <div class="deco-op">+</div>
+          <div class="deco-box">5</div>
+        </div>
+      </div>
+
+      <!-- Visualizador avanzado -->
+      <div class="card">
+        <h2>🔭 Explora Descomposiciones</h2>
+        <p>Ingresa un número y genera automáticamente múltiples descomposiciones:</p>
+        <div class="control-row">
+          <label>Número (1–999):</label>
+          <input type="number" id="inputExplora" min="1" max="999" value="48"/>
+          <button class="btn" onclick="exploraDescomp()">Generar</button>
+        </div>
+        <div id="listaDescomp" style="margin-top:14px"></div>
+      </div>
+
+    </div><!-- /ejemplos -->
+
+    <!-- ================================================
+         SECCIÓN 4: PRÁCTICA
+    ================================================= -->
+    <div id="sec-practica" class="section-view" style="display:none">
+      <div class="card">
+        <h2>✏️ Parte Práctica — ¡A Descomponer!</h2>
+        <p>Completa los ejercicios. Recibirás retroalimentación inmediata en cada respuesta.</p>
+      </div>
+
+      <!-- Ejercicio 1: 3 formas de 15 -->
+      <div class="card">
+        <h2>📌 Ejercicio 1 — Descompón el número <span style="color:var(--blue-mid)">15</span></h2>
+        <p>Escribe tres descomposiciones distintas (la suma debe dar 15):</p>
+        <div class="prac-row">
+          <span style="font-weight:700;color:#64748b">a)</span>
+          <input type="number" class="p1a1" placeholder="?" style="width:60px"/>
+          <span class="plus">+</span>
+          <input type="number" class="p1a2" placeholder="?" style="width:60px"/>
+          <span>=</span>
+          <span style="font-weight:800;color:var(--navy)">15</span>
+          <button class="btn" onclick="checkPrac(1,'a')">Comprobar</button>
+          <span class="feed-inline" id="f1a"></span>
+        </div>
+        <div class="prac-row">
+          <span style="font-weight:700;color:#64748b">b)</span>
+          <input type="number" class="p1b1" placeholder="?" style="width:60px"/>
+          <span class="plus">+</span>
+          <input type="number" class="p1b2" placeholder="?" style="width:60px"/>
+          <span>=</span>
+          <span style="font-weight:800;color:var(--navy)">15</span>
+          <button class="btn" onclick="checkPrac(1,'b')">Comprobar</button>
+          <span class="feed-inline" id="f1b"></span>
+        </div>
+        <div class="prac-row">
+          <span style="font-weight:700;color:#64748b">c)</span>
+          <input type="number" class="p1c1" placeholder="?" style="width:60px"/>
+          <span class="plus">+</span>
+          <input type="number" class="p1c2" placeholder="?" style="width:60px"/>
+          <span class="plus">+</span>
+          <input type="number" class="p1c3" placeholder="?" style="width:60px"/>
+          <span>=</span>
+          <span style="font-weight:800;color:var(--navy)">15</span>
+          <button class="btn" onclick="checkPrac(1,'c')">Comprobar</button>
+          <span class="feed-inline" id="f1c"></span>
+        </div>
+      </div>
+
+      <!-- Ejercicio 2: 3 formas de 45 -->
+      <div class="card">
+        <h2>📌 Ejercicio 2 — Descompón el número <span style="color:var(--blue-mid)">45</span></h2>
+        <div class="prac-row">
+          <span style="font-weight:700;color:#64748b">a)</span>
+          <input type="number" class="p2a1" placeholder="?" style="width:60px"/>
+          <span class="plus">+</span>
+          <input type="number" class="p2a2" placeholder="?" style="width:60px"/>
+          <span>=</span>
+          <span style="font-weight:800;color:var(--navy)">45</span>
+          <button class="btn" onclick="checkPrac(2,'a')">Comprobar</button>
+          <span class="feed-inline" id="f2a"></span>
+        </div>
+        <div class="prac-row">
+          <span style="font-weight:700;color:#64748b">b)</span>
+          <input type="number" class="p2b1" placeholder="?" style="width:60px"/>
+          <span class="plus">+</span>
+          <input type="number" class="p2b2" placeholder="?" style="width:60px"/>
+          <span>=</span>
+          <span style="font-weight:800;color:var(--navy)">45</span>
+          <button class="btn" onclick="checkPrac(2,'b')">Comprobar</button>
+          <span class="feed-inline" id="f2b"></span>
+        </div>
+        <div class="prac-row">
+          <span style="font-weight:700;color:#64748b">c)</span>
+          <input type="number" class="p2c1" placeholder="?" style="width:60px"/>
+          <span class="plus">+</span>
+          <input type="number" class="p2c2" placeholder="?" style="width:60px"/>
+          <span class="plus">+</span>
+          <input type="number" class="p2c3" placeholder="?" style="width:60px"/>
+          <span>=</span>
+          <span style="font-weight:800;color:var(--navy)">45</span>
+          <button class="btn" onclick="checkPrac(2,'c')">Comprobar</button>
+          <span class="feed-inline" id="f2c"></span>
+        </div>
+      </div>
+
+      <!-- Ejercicio 3: 3 formas de 120 -->
+      <div class="card">
+        <h2>📌 Ejercicio 3 — Descompón el número <span style="color:var(--blue-mid)">120</span></h2>
+        <div class="prac-row">
+          <span style="font-weight:700;color:#64748b">a)</span>
+          <input type="number" class="p3a1" placeholder="?" style="width:70px"/>
+          <span class="plus">+</span>
+          <input type="number" class="p3a2" placeholder="?" style="width:70px"/>
+          <span>=</span>
+          <span style="font-weight:800;color:var(--navy)">120</span>
+          <button class="btn" onclick="checkPrac(3,'a')">Comprobar</button>
+          <span class="feed-inline" id="f3a"></span>
+        </div>
+        <div class="prac-row">
+          <span style="font-weight:700;color:#64748b">b)</span>
+          <input type="number" class="p3b1" placeholder="?" style="width:70px"/>
+          <span class="plus">+</span>
+          <input type="number" class="p3b2" placeholder="?" style="width:70px"/>
+          <span>=</span>
+          <span style="font-weight:800;color:var(--navy)">120</span>
+          <button class="btn" onclick="checkPrac(3,'b')">Comprobar</button>
+          <span class="feed-inline" id="f3b"></span>
+        </div>
+        <div class="prac-row">
+          <span style="font-weight:700;color:#64748b">c)</span>
+          <input type="number" class="p3c1" placeholder="?" style="width:70px"/>
+          <span class="plus">+</span>
+          <input type="number" class="p3c2" placeholder="?" style="width:70px"/>
+          <span class="plus">+</span>
+          <input type="number" class="p3c3" placeholder="?" style="width:70px"/>
+          <span>=</span>
+          <span style="font-weight:800;color:var(--navy)">120</span>
+          <button class="btn" onclick="checkPrac(3,'c')">Comprobar</button>
+          <span class="feed-inline" id="f3c"></span>
+        </div>
+      </div>
+
+      <!-- Ejercicio 4: Une con una línea -->
+      <div class="card">
+        <h2>📌 Ejercicio 4 — Une cada número con su descomposición</h2>
+        <p>Selecciona la descomposición correcta para cada número:</p>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
+          <div class="prac-row" style="align-items:center">
+            <div style="font-weight:800;font-size:1.2rem;color:var(--navy);min-width:50px">25</div>
+            <span>↔</span>
+            <select id="match25" style="padding:8px 12px;border-radius:7px;border:1.5px solid #cbd5e1">
+              <option value="">-- elegir --</option>
+              <option value="a">10 + 10 + 4</option>
+              <option value="b">20 + 5</option>
+              <option value="c">9 + 9</option>
+            </select>
+            <span id="m25feed" style="font-size:1.2rem"></span>
+          </div>
+          <div class="prac-row" style="align-items:center">
+            <div style="font-weight:800;font-size:1.2rem;color:var(--navy);min-width:50px">18</div>
+            <span>↔</span>
+            <select id="match18" style="padding:8px 12px;border-radius:7px;border:1.5px solid #cbd5e1">
+              <option value="">-- elegir --</option>
+              <option value="a">10 + 10 + 4</option>
+              <option value="b">20 + 5</option>
+              <option value="c">9 + 9</option>
+            </select>
+            <span id="m18feed" style="font-size:1.2rem"></span>
+          </div>
+          <div class="prac-row" style="align-items:center">
+            <div style="font-weight:800;font-size:1.2rem;color:var(--navy);min-width:50px">24</div>
+            <span>↔</span>
+            <select id="match24" style="padding:8px 12px;border-radius:7px;border:1.5px solid #cbd5e1">
+              <option value="">-- elegir --</option>
+              <option value="a">10 + 10 + 4</option>
+              <option value="b">20 + 5</option>
+              <option value="c">9 + 9</option>
+            </select>
+            <span id="m24feed" style="font-size:1.2rem"></span>
+          </div>
+        </div>
+        <button class="btn btn-green" onclick="checkMatch()" style="margin-top:14px">Verificar Unión</button>
+        <div id="feedMatch" class="feedback"></div>
+      </div>
+
+      <!-- Ejercicio 5: Canónica -->
+      <div class="card">
+        <h2>📌 Ejercicio 5 — Descomposición Canónica</h2>
+        <p>Completa la descomposición canónica (por valor posicional):</p>
+        <div style="margin:14px 0">
+          <strong>128 = </strong>
+          <input type="number" id="can128c" placeholder="C" style="width:70px"/>
+          <span class="plus">+</span>
+          <input type="number" id="can128d" placeholder="D" style="width:70px"/>
+          <span class="plus">+</span>
+          <input type="number" id="can128u" placeholder="U" style="width:70px"/>
+          <button class="btn" onclick="checkCanonica(128,'can128c','can128d','can128u','feedCan128')" style="margin-left:8px">Comprobar</button>
+          <div id="feedCan128" class="feedback" style="margin-top:8px"></div>
+        </div>
+        <div style="margin:14px 0">
+          <strong>56 = </strong>
+          <input type="number" id="can56d" placeholder="D" style="width:70px"/>
+          <span class="plus">+</span>
+          <input type="number" id="can56u" placeholder="U" style="width:70px"/>
+          <button class="btn" onclick="checkCan2Dig(56,'can56d','can56u','feedCan56')" style="margin-left:8px">Comprobar</button>
+          <div id="feedCan56" class="feedback" style="margin-top:8px"></div>
+        </div>
+        <div style="margin:14px 0">
+          <strong>347 = </strong>
+          <input type="number" id="can347c" placeholder="C" style="width:70px"/>
+          <span class="plus">+</span>
+          <input type="number" id="can347d" placeholder="D" style="width:70px"/>
+          <span class="plus">+</span>
+          <input type="number" id="can347u" placeholder="U" style="width:70px"/>
+          <button class="btn" onclick="checkCanonica(347,'can347c','can347d','can347u','feedCan347')" style="margin-left:8px">Comprobar</button>
+          <div id="feedCan347" class="feedback" style="margin-top:8px"></div>
+        </div>
+      </div>
+
+      <!-- Mini juego: Encuentra el sumando perdido -->
+      <div class="card">
+        <h2>🎯 Actividad Especial — Encuentra el Sumando Perdido</h2>
+        <p>Completa el <strong>?</strong> para que la suma sea correcta:</p>
+        <div id="sumandoPerdido" style="margin-top:14px"></div>
+        <div class="control-row">
+          <input type="number" id="respSumando" placeholder="Tu respuesta" style="width:100px"/>
+          <button class="btn" onclick="checkSumando()">✓ Comprobar</button>
+          <button class="btn" onclick="nuevoSumando()">🔄 Nuevo</button>
+        </div>
+        <div id="feedSumando" class="feedback"></div>
+      </div>
+
+    </div><!-- /practica -->
+
+    <!-- ================================================
+         SECCIÓN 5: EVALUACIÓN FINAL
+    ================================================= -->
+    <div id="sec-evaluacion" class="section-view" style="display:none">
+      <div class="card">
+        <h2>📝 Evaluación Final</h2>
+        <p>Responde las <strong>10 preguntas</strong>. Recibirás retroalimentación inmediata por cada respuesta. Al final verás tu puntuación.</p>
+        <div class="progress-bar"><div class="progress-fill" id="quizProgress" style="width:0%"></div></div>
+        <div id="quizContainer"></div>
+        <div style="text-align:center;margin-top:20px">
+          <button class="btn btn-green" onclick="calificarQuiz()" style="padding:13px 32px;font-size:1rem">
+            📊 Ver Calificación Final
+          </button>
+          <button class="btn" onclick="reiniciarQuiz()" style="margin-left:12px;padding:13px 22px">
+            🔄 Reiniciar
+          </button>
+        </div>
+        <div id="scoreBox"></div>
+      </div>
+    </div><!-- /evaluacion -->
+
+  </main>
+</div><!-- /layout -->
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+<footer style="background:var(--navy);color:#fff;text-align:center;padding:18px;font-size:.88rem;opacity:.9">
+  <div style="margin-bottom:4px">📐 Descomposición Aditiva de Números Enteros</div>
+  <div style="opacity:.65">Créditos: <strong>Victor Crespo</strong> &nbsp;|&nbsp; Mente Matemática &nbsp;|&nbsp; 4° Grado</div>
+</footer>
+
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
+<script>
+
+/* =============================================
+   NAVEGACIÓN DINÁMICA
+============================================= */
+function showSection(name) {
+  // Ocultar todas
+  document.querySelectorAll('.section-view').forEach(s => s.style.display = 'none');
+  // Mostrar la seleccionada
+  const sec = document.getElementById('sec-' + name);
+  sec.style.display = '';
+  // Reiniciar animación
+  sec.classList.remove('section-view');
+  void sec.offsetWidth;
+  sec.classList.add('section-view');
+  // Actualizar nav
+  document.querySelectorAll('.nav-item').forEach(ni => ni.classList.remove('active'));
+  const items = document.querySelectorAll('.nav-item');
+  const map = {bienvenida:0,objetivos:1,teoria:2,ejemplos:3,practica:4,evaluacion:5};
+  if (map[name] !== undefined) items[map[name]].classList.add('active');
+  // Iniciar canvas de la sección
+  setTimeout(() => initCanvases(name), 50);
+}
+
+/* =============================================
+   CANVAS — MAPA MENTAL (OBJETIVOS)
+============================================= */
+function drawObjetivos() {
+  const c = document.getElementById('canvasObjetivos');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+
+  // Fondo
+  ctx.fillStyle = '#f8fafc';
+  ctx.fillRect(0,0,c.width,c.height);
+
+  // Centro
+  const cx=375, cy=150;
+  const nodes = [
+    {label:'Descomposición\nAditiva', x:cx, y:cy, r:48, fill:'#1A4FAB', tc:'#fff'},
+    {label:'Libre', x:160, y:70, r:36, fill:'#2563EB', tc:'#fff'},
+    {label:'Canónica', x:590, y:70, r:36, fill:'#059669', tc:'#fff'},
+    {label:'Cálculo\nMental', x:140, y:220, r:34, fill:'#F59E0B', tc:'#1a1a1a'},
+    {label:'Valor\nPosicional', x:610, y:220, r:34, fill:'#7C3AED', tc:'#fff'},
+    {label:'Suma', x:375, y:50, r:28, fill:'#EF4444', tc:'#fff'},
+  ];
+
+  // Líneas
+  ctx.strokeStyle = '#cbd5e1';
+  ctx.lineWidth = 2;
+  for (let i=1; i<nodes.length; i++) {
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(nodes[i].x, nodes[i].y);
+    ctx.stroke();
+  }
+
+  // Nodos
+  nodes.forEach(n => {
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+    ctx.fillStyle = n.fill;
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    ctx.fillStyle = n.tc;
+    ctx.font = 'bold 12px Segoe UI';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    const lines = n.label.split('\n');
+    lines.forEach((l,i)=> ctx.fillText(l, n.x, n.y + (i-(lines.length-1)/2)*14));
+  });
+}
+
+/* =============================================
+   CANVAS — VISUALIZADOR (TEORÍA)
+============================================= */
+function visualizarDescomposicion() {
+  const n = parseInt(document.getElementById('inputVis').value);
+  if (!n || n < 1 || n > 999) return;
+
+  const c = parseInt(n/100);
+  const d = parseInt((n%100)/10);
+  const u = n%10;
+
+  const res = document.getElementById('resultVis');
+  let html = `<div class="deco-box">${n}</div><div class="deco-eq">=</div>`;
+  const parts = [];
+  if (c) parts.push(`<div class="deco-box" style="background:#fee2e2;border-color:#ef4444">${c*100}<br><small style="font-size:.7rem;color:#991b1b">C</small></div>`);
+  if (d) parts.push(`<div class="deco-box" style="background:#fef3c7;border-color:#f59e0b">${d*10}<br><small style="font-size:.7rem;color:#92400e">D</small></div>`);
+  if (u) parts.push(`<div class="deco-box" style="background:#d1fae5;border-color:#10b981">${u}<br><small style="font-size:.7rem;color:#065f46">U</small></div>`);
+  if (!parts.length) parts.push(`<div class="deco-box">0</div>`);
+
+  res.innerHTML = html + parts.join('<div class="deco-op">+</div>');
+
+  // Canvas barras
+  const canvas = document.getElementById('canvasVis');
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = '#f8fafc';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  const colors = ['#ef4444','#f59e0b','#10b981'];
+  const labels = ['Centenas','Decenas','Unidades'];
+  const values = [c*100, d*10, u];
+  const max = n;
+  const bw = 160; const bMaxH = 120; const startY = 150; const gap = 30;
+
+  values.forEach((v,i) => {
+    if (v === 0 && i === 0 && c===0) return;
+    const bh = max > 0 ? (v/max)*bMaxH : 0;
+    const x = 80 + i*(bw+gap);
+    ctx.fillStyle = colors[i];
+    ctx.beginPath();
+    roundRect(ctx, x, startY-bh, bw, bh, 6);
+    ctx.fill();
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 15px Segoe UI';
+    ctx.textAlign = 'center';
+    ctx.fillText(v, x+bw/2, startY-bh-10);
+    ctx.font = '13px Segoe UI';
+    ctx.fillStyle = '#64748b';
+    ctx.fillText(labels[i], x+bw/2, startY+20);
+  });
+  document.getElementById('canvasVisLabel').textContent = `Descomposición canónica de ${n}`;
+}
+
+function roundRect(ctx,x,y,w,h,r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h);
+  ctx.lineTo(x,y+h);
+  ctx.lineTo(x,y+r);
+  ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.closePath();
+}
+
+/* =============================================
+   ACTIVIDAD BOOL (TEORÍA) — ¿Correcta?
+============================================= */
+const boolPregs = [
+  {n:10, parts:[5,5], correct:true},
+  {n:10, parts:[4,7], correct:false},
+  {n:20, parts:[15,5], correct:true},
+  {n:20, parts:[12,9], correct:false},
+  {n:45, parts:[40,5], correct:true},
+  {n:45, parts:[20,20,6], correct:false},
+  {n:100, parts:[50,50], correct:true},
+  {n:100, parts:[60,30], correct:false},
+  {n:128, parts:[100,20,8], correct:true},
+  {n:128, parts:[100,30,8], correct:false},
+];
+let boolIdx = 0;
+
+function nuevaBool() {
+  boolIdx = Math.floor(Math.random()*boolPregs.length);
+  const p = boolPregs[boolIdx];
+  const sum = p.parts.join(' + ');
+  document.getElementById('actividadBool').innerHTML =
+    `<div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:20px;text-align:center">
+      <div style="font-size:1.1rem;margin-bottom:8px">¿Es correcta esta descomposición?</div>
+      <div style="font-size:1.6rem;font-weight:800;color:var(--navy)">${p.n} = ${sum}</div>
+      <div style="font-size:.85rem;color:#64748b;margin-top:6px">Suma: ${p.parts.reduce((a,b)=>a+b,0)}</div>
+    </div>`;
+  document.getElementById('feedBool').className = 'feedback';
+  document.getElementById('feedBool').textContent = '';
+}
+
+function responderBool(resp) {
+  const p = boolPregs[boolIdx];
+  const fb = document.getElementById('feedBool');
+  const sum = p.parts.reduce((a,b)=>a+b,0);
+  if (resp === p.correct) {
+    fb.className='feedback ok';
+    fb.textContent = `✅ ¡Correcto! ${p.parts.join(' + ')} = ${sum} ${p.correct ? '✔' : '✘'}`;
+  } else {
+    fb.className='feedback err';
+    fb.textContent = `❌ Incorrecto. ${p.parts.join(' + ')} = ${sum} ${p.correct ? '= ' + p.n + ' ✔' : '≠ ' + p.n + ' ✘'}`;
+  }
+}
+
+/* =============================================
+   CANVAS — NIVEL FÁCIL (bloques)
+============================================= */
+function drawEasyCanvas() {
+  const c = document.getElementById('canvasEasy');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.fillStyle='#f8fafc'; ctx.fillRect(0,0,c.width,c.height);
+  const colors1='#2563EB', colors2='#10b981';
+  const bs=50, gap=8;
+  ctx.font='bold 14px Segoe UI'; ctx.textAlign='center';
+  for(let i=0;i<10;i++){
+    ctx.fillStyle= i<5 ? colors1 : colors2;
+    ctx.fillRect(20+i*(bs+gap), 30, bs, bs);
+    ctx.fillStyle='#fff';
+    ctx.fillText(1, 20+i*(bs+gap)+bs/2, 60);
+  }
+  ctx.fillStyle='#1e293b'; ctx.font='bold 15px Segoe UI';
+  ctx.fillText('5 bloques azules', 145, 105);
+  ctx.fillText('+', 295, 105);
+  ctx.fillText('5 bloques verdes', 450, 105);
+  ctx.fillText('= 10', 595, 105);
+}
+
+/* =============================================
+   CANVAS — TABLA POSICIONAL (EJEMPLOS)
+============================================= */
+function drawTablaCanvas() {
+  const c = document.getElementById('canvasTabla');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,c.width,c.height);
+
+  const cols = ['Centenas (C)','Decenas (D)','Unidades (U)'];
+  const vals = ['1','2','8'];
+  const colors = ['#fee2e2','#fef3c7','#d1fae5'];
+  const bcolors=['#ef4444','#f59e0b','#10b981'];
+  const cw=200, x0=50, y0=20, h=70;
+
+  cols.forEach((lbl,i)=>{
+    ctx.fillStyle=colors[i];
+    ctx.fillRect(x0+i*cw, y0, cw, h);
+    ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1.5;
+    ctx.strokeRect(x0+i*cw, y0, cw, h);
+    ctx.fillStyle=bcolors[i]; ctx.font='bold 13px Segoe UI'; ctx.textAlign='center';
+    ctx.fillText(lbl, x0+i*cw+cw/2, y0+25);
+    ctx.fillStyle='#1e293b'; ctx.font='bold 30px Segoe UI';
+    ctx.fillText(vals[i], x0+i*cw+cw/2, y0+58);
+  });
+
+  ctx.fillStyle='#374151'; ctx.font='14px Segoe UI'; ctx.textAlign='center';
+  ctx.fillText('128 = 100 + 20 + 8', 350, y0+h+40);
+  ctx.fillStyle='#64748b'; ctx.font='12px Segoe UI';
+  ctx.fillText('(1 centena + 2 decenas + 8 unidades)', 350, y0+h+60);
+}
+
+/* =============================================
+   ACTIVIDAD CANÓNICO (EJEMPLOS)
+============================================= */
+const canonPregs = [
+  {n:37, c:0, d:30, u:7},
+  {n:85, c:0, d:80, u:5},
+  {n:246, c:200, d:40, u:6},
+];
+function initCanonico() {
+  let html='';
+  canonPregs.forEach((p,i)=>{
+    html+=`<div class="prac-row" style="margin:10px 0">
+      <span style="font-weight:800;font-size:1.1rem;color:var(--navy)">${p.n} =</span>
+      ${p.c>0?`<input type="number" id="cc${i}" placeholder="C" style="width:65px"/>
+      <span class="plus">+</span>`:''}
+      <input type="number" id="cd${i}" placeholder="D" style="width:65px"/>
+      <span class="plus">+</span>
+      <input type="number" id="cu${i}" placeholder="U" style="width:65px"/>
+    </div>`;
+  });
+  const el = document.getElementById('act-canonico');
+  if (el) el.innerHTML = html;
+}
+function verificarCanonico() {
+  let ok=0;
+  canonPregs.forEach((p,i)=>{
+    const cv = p.c>0 ? parseInt(document.getElementById('cc'+i)?.value||0) : 0;
+    const dv = parseInt(document.getElementById('cd'+i)?.value||0);
+    const uv = parseInt(document.getElementById('cu'+i)?.value||0);
+    if(cv===p.c && dv===p.d && uv===p.u) ok++;
+  });
+  const fb = document.getElementById('feedCanonico');
+  if(ok===canonPregs.length){
+    fb.className='feedback ok'; fb.textContent=`✅ ¡Perfecto! Todas las descomposiciones son correctas.`;
+  } else {
+    fb.className='feedback err'; fb.textContent=`❌ ${ok} de ${canonPregs.length} correctas. Revisa los valores posicionales.`;
+  }
+}
+
+/* =============================================
+   EXPLORADOR DE DESCOMPOSICIONES (EJEMPLOS)
+============================================= */
+function exploraDescomp() {
+  const n = parseInt(document.getElementById('inputExplora').value);
+  if (!n||n<1||n>999) return;
+  const lista = [];
+  // Canónica
+  const c=parseInt(n/100), d=parseInt((n%100)/10), u=n%10;
+  let can=[];
+  if(c) can.push(c*100+'(C)'); if(d) can.push(d*10+'(D)'); if(u) can.push(u+'(U)');
+  if(can.length>1) lista.push({label:'Canónica', expr:can.join(' + '), type:'badge-easy'});
+  // Libres
+  const pares=[];
+  for(let a=1;a<n;a++){
+    if(a<=n-a) pares.push([a,n-a]);
+  }
+  // Mostrar hasta 6 pares al azar
+  const sel = pares.sort(()=>Math.random()-.5).slice(0,6);
+  sel.forEach(p=> lista.push({label:'Libre (2 sumandos)', expr:`${p[0]} + ${p[1]}`, type:'badge-medium'}));
+  // 3 sumandos
+  for(let i=0;i<3;i++){
+    const a=Math.floor(Math.random()*(n-2))+1;
+    const b=Math.floor(Math.random()*(n-a-1))+1;
+    const cc=n-a-b;
+    if(cc>0) lista.push({label:'Libre (3 sumandos)', expr:`${a} + ${b} + ${cc}`, type:'badge-hard'});
+  }
+
+  let html='<div style="display:flex;flex-direction:column;gap:8px">';
+  lista.forEach(item=>{
+    html+=`<div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:9px;padding:10px 16px;display:flex;align-items:center;gap:12px">
+      <span class="badge ${item.type}">${item.label}</span>
+      <code style="font-size:1rem;color:var(--navy)">${n} = ${item.expr}</code>
+    </div>`;
+  });
+  html+='</div>';
+  document.getElementById('listaDescomp').innerHTML = html;
+}
+
+/* =============================================
+   PRÁCTICA — COMPROBACIÓN GENÉRICA
+============================================= */
+const pracTargets = {1:15, 2:45, 3:120};
+
+function getVals(sel) {
+  return Array.from(document.querySelectorAll(sel)).map(i=>parseInt(i.value)||0);
+}
+
+function setFeed(id, ok, msg) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = ok ? '✅' : '❌ ' + msg;
+  el.style.color = ok ? '#065f46' : '#991b1b';
+  el.style.fontWeight = '700';
+}
+
+function checkPrac(ej, sub) {
+  const target = pracTargets[ej];
+  let sum;
+  if (sub==='c') {
+    const v = getVals(`.p${ej}c1, .p${ej}c2, .p${ej}c3`);
+    sum = v.reduce((a,b)=>a+b,0);
+  } else {
+    const v = getVals(`.p${ej}${sub}1, .p${ej}${sub}2`);
+    sum = v.reduce((a,b)=>a+b,0);
+  }
+  const ok = sum === target;
+  setFeed(`f${ej}${sub}`, ok, `La suma da ${sum}, necesita ${target}`);
+}
+
+function checkMatch() {
+  const answers = {match25:'b', match18:'c', match24:'a'};
+  let ok=0;
+  Object.keys(answers).forEach(id=>{
+    const sel = document.getElementById(id).value;
+    const num = id.replace('match','');
+    const feed = document.getElementById('m'+num+'feed');
+    if(sel===answers[id]){ ok++; if(feed) feed.textContent='✅'; }
+    else { if(feed) feed.textContent=sel?'❌':''; }
+  });
+  const fb = document.getElementById('feedMatch');
+  if(ok===3){ fb.className='feedback ok'; fb.textContent='✅ ¡Perfecto! Todas las uniones son correctas.'; }
+  else { fb.className='feedback err'; fb.textContent=`❌ ${ok} de 3 correctas. Revisa tus respuestas.`; }
+}
+
+function checkCanonica(n, cId, dId, uId, fbId) {
+  const cv=parseInt(document.getElementById(cId)?.value||0);
+  const dv=parseInt(document.getElementById(dId)?.value||0);
+  const uv=parseInt(document.getElementById(uId)?.value||0);
+  const c=parseInt(n/100), d=parseInt((n%100)/10), u=n%10;
+  const fb=document.getElementById(fbId);
+  if(cv===c*100 && dv===d*10 && uv===u){
+    fb.className='feedback ok'; fb.textContent=`✅ ¡Correcto! ${n} = ${c*100} + ${d*10} + ${u}`;
+  } else {
+    fb.className='feedback err'; fb.textContent=`❌ Revisa. Centenas=${c*100}, Decenas=${d*10}, Unidades=${u}`;
+  }
+}
+
+function checkCan2Dig(n, dId, uId, fbId) {
+  const dv=parseInt(document.getElementById(dId)?.value||0);
+  const uv=parseInt(document.getElementById(uId)?.value||0);
+  const d=parseInt(n/10)*10, u=n%10;
+  const fb=document.getElementById(fbId);
+  if(dv===d && uv===u){
+    fb.className='feedback ok'; fb.textContent=`✅ ¡Correcto! ${n} = ${d} + ${u}`;
+  } else {
+    fb.className='feedback err'; fb.textContent=`❌ Pista: Decenas=${d}, Unidades=${u}`;
+  }
+}
+
+/* =============================================
+   SUMANDO PERDIDO
+============================================= */
+let sumandoActual = null;
+function nuevoSumando() {
+  const n = Math.floor(Math.random()*80)+10;
+  const a = Math.floor(Math.random()*(n-1))+1;
+  const b = n-a;
+  sumandoActual = {n,a,b};
+  document.getElementById('sumandoPerdido').innerHTML =
+    `<div style="font-size:1.5rem;font-weight:800;color:var(--navy);text-align:center;padding:16px;background:#f8fafc;border-radius:10px;border:1.5px dashed #cbd5e1">
+      ${n} = ${a} + <span style="color:var(--blue-mid);font-size:1.8rem">?</span>
+    </div>`;
+  document.getElementById('respSumando').value='';
+  document.getElementById('feedSumando').className='feedback';
+}
+function checkSumando() {
+  if(!sumandoActual) return;
+  const r=parseInt(document.getElementById('respSumando').value);
+  const fb=document.getElementById('feedSumando');
+  if(r===sumandoActual.b){
+    fb.className='feedback ok'; fb.textContent=`✅ ¡Correcto! ${sumandoActual.n} = ${sumandoActual.a} + ${sumandoActual.b}`;
+  } else {
+    fb.className='feedback err'; fb.textContent=`❌ Intenta de nuevo. Pista: ${sumandoActual.n} - ${sumandoActual.a} = ?`;
+  }
+}
+
+/* =============================================
+   QUIZ — EVALUACIÓN FINAL
+============================================= */
+const quizData = [
+  {
+    q:'1. ¿Cuál de las siguientes es una descomposición correcta del número 14?',
+    opts:['a) 7 + 8 = 15','b) 10 + 4 = 14','c) 12 + 3 = 15','d) 6 + 9 = 15'],
+    correct:1,
+    expl:'10 + 4 = 14 ✔ Es la descomposición canónica de 14.'
+  },
+  {
+    q:'2. Si descompongo el 20 como 15 + X, ¿cuánto vale X?',
+    opts:['a) 5','b) 10','c) 4','d) 7'],
+    correct:0,
+    expl:'20 - 15 = 5. Entonces X = 5.'
+  },
+  {
+    q:'3. ¿Qué número se forma con la suma 30 + 7?',
+    opts:['a) 73','b) 307','c) 37','d) 3007'],
+    correct:2,
+    expl:'30 + 7 = 37. El 3 ocupa la posición de las decenas.'
+  },
+  {
+    q:'4. ¿Cuál es la descomposición canónica de 156?',
+    opts:['a) 100 + 50 + 6','b) 150 + 6','c) 1 + 5 + 6','d) 100 + 56'],
+    correct:0,
+    expl:'156 = 100 (centena) + 50 (decenas) + 6 (unidades).'
+  },
+  {
+    q:'5. ¿Cuál de estas opciones NO es una descomposición de 10?',
+    opts:['a) 2 + 2 + 6','b) 5 + 4 + 1','c) 3 + 3 + 3','d) 1 + 9'],
+    correct:2,
+    expl:'3 + 3 + 3 = 9, no 10. Las demás sí suman 10.'
+  },
+  {
+    q:'6. Si tengo 8 + 8, estoy descomponiendo el número:',
+    opts:['a) 14','b) 16','c) 18','d) 12'],
+    correct:1,
+    expl:'8 + 8 = 16.'
+  },
+  {
+    q:'7. ¿Qué pareja de números suma 50?',
+    opts:['a) 25 + 25','b) 30 + 15','c) 40 + 20','d) 35 + 10'],
+    correct:0,
+    expl:'25 + 25 = 50. Las otras opciones no suman 50.'
+  },
+  {
+    q:'8. Descomposición de 100 en tres partes iguales:',
+    opts:['a) 30 + 30 + 40','b) No se puede en partes enteras iguales','c) 33 + 33 + 34','d) 25 + 25 + 50'],
+    correct:1,
+    expl:'100 ÷ 3 = 33.33…, no es un número entero. No se puede dividir exactamente en tres partes iguales.'
+  },
+  {
+    q:'9. En el número 84, el "8" representa:',
+    opts:['a) 8 unidades','b) 80 unidades','c) 800 unidades','d) 8 centenas'],
+    correct:1,
+    expl:'El 8 está en la posición de las decenas, por lo tanto representa 8 × 10 = 80 unidades.'
+  },
+  {
+    q:'10. ¿Cuál es el resultado de 200 + 40 + 9?',
+    opts:['a) 2409','b) 249','c) 2049','d) 294'],
+    correct:1,
+    expl:'200 + 40 + 9 = 249. Es la composición del número 249.'
+  }
+];
+
+let userAnswers = new Array(10).fill(-1);
+
+function renderQuiz() {
+  let html = '';
+  quizData.forEach((q,i)=>{
+    html += `<div class="quiz-q" id=" qq${i}">
+      <div class="q-text">${q.q}</div>
+      <div class="options">`;
+    q.opts.forEach((opt,j)=>{
+      html+=`<label class="opt" id="opt${i}_${j}" onclick="selectOpt(${i},${j})">
+        <input type="radio" name="q${i}" value="${j}"> ${opt}
+      </label>`;
+    });
+    html+=`</div>
+      <div class="q-feedback" id="qf${i}"></div>
+    </div>`;
+  });
+  document.getElementById('quizContainer').innerHTML = html;
+  document.getElementById('quizProgress').style.width='0%';
+  document.getElementById('scoreBox').innerHTML='';
+}
+
+function selectOpt(qi, oi) {
+  userAnswers[qi] = oi;
+  // Visual
+  for(let j=0;j<4;j++){
+    const el=document.getElementById(`opt${qi}_${j}`);
+    if(el) el.classList.remove('selected');
+  }
+  const sel=document.getElementById(`opt${qi}_${oi}`);
+  if(sel) sel.classList.add('selected');
+  // Feedback inmediato
+  const correct = quizData[qi].correct;
+  const fb = document.getElementById('qf'+qi);
+  fb.classList.add('show');
+  if(oi===correct){
+    fb.className='q-feedback show ok';
+    fb.textContent='✅ '+quizData[qi].expl;
+    document.getElementById(`opt${qi}_${oi}`).classList.add('correct');
+  } else {
+    fb.className='q-feedback show err';
+    fb.textContent='❌ Incorrecto. '+quizData[qi].expl;
+    document.getElementById(`opt${qi}_${oi}`).classList.add('wrong');
+    document.getElementById(`opt${qi}_${correct}`).classList.add('correct');
+  }
+  // Progreso
+  const answered = userAnswers.filter(v=>v>=0).length;
+  document.getElementById('quizProgress').style.width=(answered/10*100)+'%';
+}
+
+function calificarQuiz() {
+  const score = userAnswers.reduce((acc,ans,i)=> acc + (ans===quizData[i].correct?1:0), 0);
+  const pct = score*10;
+  let emoji='', msg='';
+  if(score>=9){emoji='🏆';msg='¡Excelente! Dominas la descomposición aditiva.';}
+  else if(score>=7){emoji='⭐';msg='¡Muy bien! Sigue practicando para llegar al 100%.';}
+  else if(score>=5){emoji='📚';msg='Bien, pero repasa los conceptos y vuelve a intentarlo.';}
+  else{emoji='💪';msg='No te rindas, estudia la teoría y vuelve a practicar.';}
+
+  document.getElementById('scoreBox').innerHTML=`
+    <div class="score-box">
+      <div style="font-size:3rem;margin-bottom:8px">${emoji}</div>
+      <div class="score-number">${score}/10</div>
+      <div class="score-label">${pct}% — ${msg}</div>
+      <div style="background:rgba(255,255,255,.15);border-radius:10px;height:14px;margin:18px auto 0;max-width:300px;overflow:hidden">
+        <div style="width:${pct}%;height:100%;background:#F59E0B;border-radius:10px;transition:width .6s ease"></div>
+      </div>
+    </div>`;
+}
+
+function reiniciarQuiz() {
+  userAnswers = new Array(10).fill(-1);
+  renderQuiz();
+}
+
+/* =============================================
+   INICIALIZACIÓN DE CANVAS POR SECCIÓN
+============================================= */
+function initCanvases(name) {
+  if(name==='objetivos') drawObjetivos();
+  if(name==='teoria') { nuevaBool(); visualizarDescomposicion(); }
+  if(name==='ejemplos') { drawEasyCanvas(); drawTablaCanvas(); initCanonico(); }
+  if(name==='practica') nuevoSumando();
+  if(name==='evaluacion') renderQuiz();
+}
+
+/* =============================================
+   INICIO — cargar sección bienvenida
+============================================= */
+window.addEventListener('DOMContentLoaded', ()=>{
+  showSection('bienvenida');
+});
+
+</script>
+</body>
+</html>

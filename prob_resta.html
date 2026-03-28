@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resta aplicada a problemas - Mente Matemática</title>
+    <style>
+        /* =========================================
+           1. VARIABLES Y RESET
+        ========================================= */
+        :root {
+            --primary-color: #001f3f; /* Azul marino */
+            --secondary-color: #00509e; /* Azul claro degradado */
+            --bg-color: #f4f6f9; /* Gris claro */
+            --card-bg: #ffffff; /* Blanco */
+            --text-main: #333333;
+            --text-muted: #666666;
+            --success-color: #2ecc71;
+            --error-color: #e74c3c;
+            --accent-color: #f39c12;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           2. LAYOUT PRINCIPAL
+        ========================================= */
+        /* Barra Lateral Izquierda */
+        .sidebar {
+            width: 280px;
+            background-color: var(--card-bg);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+
+        .sidebar-header h2 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .score-display {
+            background: var(--bg-color);
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px 0;
+        }
+
+        .nav-item {
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 4px solid transparent;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-item:hover {
+            background-color: var(--bg-color);
+        }
+
+        .nav-item.active {
+            background-color: #e6f0fa;
+            border-left-color: var(--primary-color);
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* Contenido Principal */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        /* Encabezado Superior */
+        .top-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-volver {
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 500;
+            transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        .btn-volver:hover {
+            background-color: white;
+            color: var(--primary-color);
+        }
+
+        /* Área de Contenido */
+        .content-area {
+            padding: 40px;
+            flex: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .section-module {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section-module.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Pie de página */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--card-bg);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+            margin-top: auto;
+        }
+
+        /* =========================================
+           3. COMPONENTES (Tarjetas, Botones, etc.)
+        ========================================= */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--bg-color);
+        }
+
+        .card-header h3 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .badge {
+            background: var(--secondary-color);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        ul.styled-list {
+            list-style: none;
+            padding-left: 10px;
+            margin-bottom: 20px;
+        }
+
+        ul.styled-list li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+            line-height: 1.5;
+        }
+
+        ul.styled-list li::before {
+            content: "👉";
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        .canvas-container {
+            background: var(--bg-color);
+            border: 2px dashed #ccc;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        canvas {
+            background: white;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+            max-width: 100%;
+        }
+
+        .btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .highlight-box {
+            background-color: #eef2f7;
+            border-left: 5px solid var(--accent-color);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+
+        /* Elementos de la Resta */
+        .math-elements {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .math-box {
+            background: #fff;
+            border: 2px solid var(--primary-color);
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 120px;
+        }
+        .math-box .number { font-size: 2rem; font-weight: bold; color: var(--primary-color); }
+        .math-box .label { font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; font-weight: bold;}
+
+        /* Ejercicios Prácticos */
+        .exercise-item {
+            background: var(--bg-color);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-left: 4px solid #ccc;
+            transition: var(--transition);
+        }
+
+        .exercise-item.correct { border-left-color: var(--success-color); background: #eafaf1; }
+        .exercise-item.incorrect { border-left-color: var(--error-color); background: #fdf2f0; }
+
+        .exercise-text { flex: 1; min-width: 250px; font-weight: 500;}
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .exercise-input {
+            padding: 8px 12px;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            width: 100px;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .exercise-input:focus { border-color: var(--secondary-color); }
+
+        .feedback-icon {
+            font-size: 1.5rem;
+            width: 30px;
+            text-align: center;
+        }
+
+        .level-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: var(--bg-color);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Evaluación */
+        .quiz-question { margin-bottom: 25px; }
+        .quiz-options { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        .quiz-option {
+            background: var(--bg-color);
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .quiz-option:hover { background: #e2e6ea; }
+        .quiz-option.selected { border-color: var(--secondary-color); background: #e6f0fa; }
+        .quiz-option.correct-ans { border-color: var(--success-color); background: #eafaf1; }
+        .quiz-option.wrong-ans { border-color: var(--error-color); background: #fdf2f0; }
+        
+        .quiz-feedback { margin-top: 10px; font-weight: bold; display: none; }
+        .quiz-feedback.show { display: block; }
+        .feedback-correct { color: var(--success-color); }
+        .feedback-wrong { color: var(--error-color); }
+
+        .quiz-result-card {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #e6f0fa, #fff);
+            border-radius: 12px;
+            border: 2px solid var(--secondary-color);
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; position: static; }
+            .nav-menu { display: flex; overflow-x: auto; padding: 0; border-bottom: 1px solid #ccc; }
+            .nav-item { white-space: nowrap; border-left: none; border-bottom: 4px solid transparent; }
+            .nav-item.active { border-left: none; border-bottom-color: var(--primary-color); }
+            .content-area { padding: 20px; }
+            .top-header { flex-direction: column; gap: 15px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BARRA LATERAL (NAVEGACIÓN) -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Módulos de Estudio</h2>
+            <div class="score-display">Puntos: <span id="global-score">0</span> 🌟</div>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item active" onclick="navigate('bienvenida')">🏠 Bienvenida</li>
+            <li class="nav-item" onclick="navigate('concepto')">🧠 1. Concepto Clave</li>
+            <li class="nav-item" onclick="navigate('pasos')">📖 2. Pasos para Resolver</li>
+            <li class="nav-item" onclick="navigate('ejemplos')">🏗️ 3. Ejemplos Guiados</li>
+            <li class="nav-item" onclick="navigate('estrategias')">🧩 4. Estrategias Útiles</li>
+            <li class="nav-item" onclick="navigate('practica')">📝 5. Actividades Prácticas</li>
+            <li class="nav-item" onclick="navigate('evaluacion')">✅ 6. Evaluación Final</li>
+        </ul>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-wrapper">
+        
+        <!-- ENCABEZADO SUPERIOR -->
+        <header class="top-header">
+            <div class="logo">
+                🎓 Mente Matemática
+            </div>
+            <a href="temario.html" class="btn-volver">Volver al menú ↩</a>
+        </header>
+
+        <!-- ÁREA DE CONTENIDO DINÁMICO -->
+        <div class="content-area">
+
+            <!-- 0. BIENVENIDA -->
+            <section id="bienvenida" class="section-module active">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>👋 ¡Bienvenido a la Lección de Resta!</h3>
+                    </div>
+                    <p>Hola, futuro genio de las matemáticas. En esta plataforma interactiva vamos a aprender cómo utilizar la resta para resolver problemas de nuestro día a día.</p>
+                    
+                    <div class="highlight-box">
+                        <strong>🎯 OBJETIVO DE APRENDIZAJE:</strong><br>
+                        Desarrollar la capacidad de resolver problemas matemáticos utilizando la resta en situaciones de la vida cotidiana, aplicando estrategias de comprensión, análisis y cálculo.
+                    </div>
+
+                    <p>Navega a través del menú de la izquierda para avanzar paso a paso. Encontrarás explicaciones, simuladores interactivos, ejercicios y una evaluación para poner a prueba tus conocimientos.</p>
+                    <button class="btn" onclick="navigate('concepto')" style="margin-top: 15px;">Empezar Lección 🚀</button>
+                </div>
+            </section>
+
+            <!-- 1. CONCEPTO CLAVE -->
+            <section id="concepto" class="section-module">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🧠 1. ¿Qué es la resta?</h3>
+                    </div>
+                    <p>La <strong>resta</strong> es una operación matemática que sirve para <strong>quitar, comparar o encontrar la diferencia</strong> entre dos cantidades.</p>
+                    
+                    <div class="highlight-box">
+                        👉 <strong>Ejemplo:</strong> Si tienes 10 manzanas y regalas 3... ¿Cuántas te quedan? (10 - 3 = 7)
+                    </div>
+
+                    <!-- Visualización Interactiva 1: Concepto -->
+                    <div class="canvas-container">
+                        <h4>Simulador Visual: Manzanas</h4>
+                        <canvas id="canvasConcepto" width="500" height="200"></canvas>
+                        <br>
+                        <button class="btn" id="btnRestarManzanas">Quitar 3 manzanas (-3)</button>
+                        <button class="btn" id="btnResetManzanas" style="background: #7f8c8d;">Reiniciar</button>
+                        <p id="textoManzanas" style="margin-top: 10px; font-weight: bold; font-size: 1.2rem;">Manzanas: 10</p>
+                    </div>
+
+                    <div class="card-header" style="margin-top: 40px;">
+                        <h3>🔑 2. Elementos de la Resta</h3>
+                    </div>
+                    <p>Para entender bien la resta, debemos conocer los nombres de sus partes:</p>
+                    <div class="math-elements">
+                        <div class="math-box">
+                            <div class="number">10</div>
+                            <div class="label">Minuendo</div>
+                            <small>(Número del que se resta)</small>
+                        </div>
+                        <div style="font-size: 3rem; color: #ccc; display: flex; align-items: center;">-</div>
+                        <div class="math-box">
+                            <div class="number">3</div>
+                            <div class="label">Sustraendo</div>
+                            <small>(Número que se quita)</small>
+                        </div>
+                        <div style="font-size: 3rem; color: #ccc; display: flex; align-items: center;">=</div>
+                        <div class="math-box" style="border-color: var(--success-color);">
+                            <div class="number" style="color: var(--success-color);">7</div>
+                            <div class="label">Diferencia</div>
+                            <small>(El resultado)</small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. PASOS PARA RESOLVER -->
+            <section id="pasos" class="section-module">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📖 Pasos para resolver problemas de resta</h3>
+                    </div>
+                    <p>Resolver un problema es como armar un rompecabezas. Sigue estos 7 pasos:</p>
+                    
+                    <ul class="styled-list">
+                        <li><strong>Leer</strong> el problema cuidadosamente.</li>
+                        <li><strong>Identificar</strong> los datos importantes (los números).</li>
+                        <li><strong>Reconocer</strong> la pregunta (¿Qué nos piden?).</li>
+                        <li><strong>Determinar</strong> si se usa resta (Busca palabras clave: <em>perder, quitar, quedar, diferencia, menos</em>).</li>
+                        <li><strong>Plantear</strong> la operación.</li>
+                        <li><strong>Resolver</strong> la operación.</li>
+                        <li><strong>Verificar</strong> la respuesta.</li>
+                    </ul>
+
+                    <!-- Visualización Interactiva 2: Pasos (Lápices) -->
+                    <div class="canvas-container" style="margin-top: 30px;">
+                        <h4>Interactuemos: "Juan tenía 20 lápices y perdió 5"</h4>
+                        <canvas id="canvasPasos" width="500" height="200"></canvas>
+                        <br>
+                        <button class="btn" id="btnAnimarPasos">Perder 5 Lápices</button>
+                        <p id="textoPasos" style="margin-top: 10px; font-weight: bold; font-size: 1.2rem;">Lápices actuales: 20</p>
+                        <div id="feedbackPasos" class="highlight-box" style="display: none; background: #eafaf1; border-color: var(--success-color);">
+                            ¡Excelente! Identificaste los datos (20 y 5), la palabra clave ("perdió") y calculaste la diferencia: <strong>20 - 5 = 15 lápices.</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. EJEMPLOS GUIADOS -->
+            <section id="ejemplos" class="section-module">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🏗️ Ejemplos Guiados Interactivos</h3>
+                        <span class="badge">Análisis</span>
+                    </div>
+                    <p>Veamos cómo se aplica la resta en diferentes situaciones de la vida real. Haz clic en los botones para ver la resolución paso a paso.</p>
+
+                    <!-- Nivel 1 -->
+                    <div class="highlight-box">
+                        <strong>🟢 Nivel Básico (9-10 años):</strong><br>
+                        María tenía 15 dulces y regaló 6. ¿Cuántos dulces le quedan?
+                        <button class="btn" onclick="mostrarEjemplo('ej1')" style="padding: 5px 10px; font-size: 0.9rem; margin-top: 10px; display: block;">Ver Resolución</button>
+                        <div id="ej1" style="display:none; margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 10px;">
+                            👉 <strong>Operación:</strong> 15 (minuendo) - 6 (sustraendo) = <strong>9 (diferencia)</strong><br>
+                            <em>Respuesta: A María le quedan 9 dulces.</em>
+                        </div>
+                    </div>
+
+                    <!-- Nivel 2 -->
+                    <div class="highlight-box" style="border-left-color: #f1c40f; background-color: #fdfae6;">
+                        <strong>🟡 Nivel Intermedio:</strong><br>
+                        Carlos tenía 120 Bs. y gastó 45 Bs. ¿Cuánto dinero le queda?
+                        <button class="btn" onclick="mostrarEjemplo('ej2')" style="padding: 5px 10px; font-size: 0.9rem; margin-top: 10px; display: block;">Ver Resolución</button>
+                        <div id="ej2" style="display:none; margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 10px;">
+                            👉 <strong>Operación:</strong> 120 Bs - 45 Bs = <strong>75 Bs</strong><br>
+                            <em>Respuesta: A Carlos le quedan 75 Bolivianos.</em>
+                        </div>
+                    </div>
+
+                    <!-- Canvas Interactivo (Tanque de agua) -->
+                    <div class="canvas-container" style="margin-top: 30px;">
+                        <h4>Visualización: "Un tanque tenía 80 litros, se usaron 20"</h4>
+                        <canvas id="canvasEjemplos" width="300" height="250"></canvas>
+                        <br>
+                        <button class="btn" id="btnUsarAgua">Usar 20 litros</button>
+                        <p id="textoAgua" style="margin-top: 10px; font-weight: bold;">Capacidad actual: 80 L</p>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 4. ESTRATEGIAS ÚTILES -->
+            <section id="estrategias" class="section-module">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🧩 Estrategias Útiles</h3>
+                    </div>
+                    <p>Cuando te enfrentes a un problema de resta, puedes usar estas herramientas mentales para hacerlo más fácil:</p>
+                    
+                    <ul class="styled-list" style="font-size: 1.1rem;">
+                        <li><strong>📝 Subrayar:</strong> Marca los datos importantes en el texto.</li>
+                        <li><strong>🎨 Dibujar:</strong> Representa el problema con dibujos o esquemas si te ayuda a visualizarlo.</li>
+                        <li><strong>🔄 Operaciones inversas:</strong> Comprueba tu resta sumando. (Ej: Si 10 - 3 = 7, entonces 7 + 3 debe ser 10).</li>
+                        <li><strong>🤔 Estimar:</strong> Calcula aproximadamente antes de resolver para saber si tu respuesta tiene sentido.</li>
+                    </ul>
+
+                    <div class="highlight-box" style="text-align: center; font-size: 1.2rem; margin-top: 30px;">
+                        ¡Recuerda las palabras clave!<br>
+                        <span style="color: var(--error-color); font-weight: bold;">Perder, Quitar, Quedar, Diferencia, Menos, Gastar, Faltar</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. ACTIVIDADES PRÁCTICAS -->
+            <section id="practica" class="section-module">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📝 Actividades Prácticas</h3>
+                        <span class="badge" style="background: var(--primary-color);">Gana Puntos</span>
+                    </div>
+                    <p>Resuelve los siguientes problemas escribiendo la cantidad numérica correcta. Si aciertas, ¡ganas puntos!</p>
+
+                    <div class="level-tabs">
+                        <button class="tab-btn active" onclick="switchTab(1, this)">🟢 Nivel 1</button>
+                        <button class="tab-btn" onclick="switchTab(2, this)">🟡 Nivel 2</button>
+                        <button class="tab-btn" onclick="switchTab(3, this)">🔴 Nivel 3</button>
+                    </div>
+
+                    <!-- Pestaña Nivel 1 -->
+                    <div id="nivel-1" class="practice-level">
+                        <div class="exercise-item" id="ex-1-1">
+                            <div class="exercise-text">1. Juan tenía 20 lápices y perdió 5. ¿Cuántos tiene ahora?</div>
+                            <div class="input-group">
+                                <input type="number" class="exercise-input" data-ans="15">
+                                <button class="btn" onclick="checkExercise(this)">Revisar</button>
+                                <span class="feedback-icon"></span>
+                            </div>
+                        </div>
+                        <div class="exercise-item" id="ex-1-2">
+                            <div class="exercise-text">2. Un árbol tenía 30 frutas, se cayeron 12. ¿Cuántas quedan?</div>
+                            <div class="input-group">
+                                <input type="number" class="exercise-input" data-ans="18">
+                                <button class="btn" onclick="checkExercise(this)">Revisar</button>
+                                <span class="feedback-icon"></span>
+                            </div>
+                        </div>
+                        <div class="exercise-item" id="ex-1-3">
+                            <div class="exercise-text">3. Ana tenía 60 figuritas y perdió 25. ¿Cuántas tiene ahora?</div>
+                            <div class="input-group">
+                                <input type="number" class="exercise-input" data-ans="35">
+                                <button class="btn" onclick="checkExercise(this)">Revisar</button>
+                                <span class="feedback-icon"></span>
+                            </div>
+                        </div>
+                        <div class="exercise-item" id="ex-1-4">
+                            <div class="exercise-text">4. De 70 estudiantes, faltaron 30. ¿Cuántos asistieron?</div>
+                            <div class="input-group">
+                                <input type="number" class="exercise-input" data-ans="40">
+                                <button class="btn" onclick="checkExercise(this)">Revisar</button>
+                                <span class="feedback-icon"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pestaña Nivel 2 -->
+                    <div id="nivel-2" class="practice-level" style="display:none;">
+                        <div class="exercise-item" id="ex-2-1">
+                            <div class="exercise-text">1. Un libro tiene 200 páginas, leíste 75. ¿Cuántas faltan?</div>
+                            <div class="input-group">
+                                <input type="number" class="exercise-input" data-ans="125">
+                                <button class="btn" onclick="checkExercise(this)">Revisar</button>
+                                <span class="feedback-icon"></span>
+                            </div>
+                        </div>
+                        <div class="exercise-item" id="ex-2-2">
+                            <div class="exercise-text">2. En una caja había 300 naranjas, se vendieron 125. ¿Cuántas quedan?</div>
+                            <div class="input-group">
+                                <input type="number" class="exercise-input" data-ans="175">
+                                <button class="btn" onclick="checkExercise(this)">Revisar</button>
+                                <span class="feedback-icon"></span>
+                            </div>
+                        </div>
+                        <div class="exercise-item" id="ex-2-3">
+                            <div class="exercise-text">3. Un tanque tenía 600 litros, se usaron 275. ¿Cuánto queda?</div>
+                            <div class="input-group">
+                                <input type="number" class="exercise-input" data-ans="325">
+                                <button class="btn" onclick="checkExercise(this)">Revisar</button>
+                                <span class="feedback-icon"></span>
+                            </div>
+                        </div>
+                        <div class="exercise-item" id="ex-2-4">
+                            <div class="exercise-text">4. Tenías 900 puntos, perdiste 450. ¿Cuántos tienes ahora?</div>
+                            <div class="input-group">
+                                <input type="number" class="exercise-input" data-ans="450">
+                                <button class="btn" onclick="checkExercise(this)">Revisar</button>
+                                <span class="feedback-icon"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pestaña Nivel 3 -->
+                    <div id="nivel-3" class="practice-level" style="display:none;">
+                        <div class="exercise-item" id="ex-3-1">
+                            <div class="exercise-text">1. Un colegio tiene 2500 estudiantes, 875 faltaron. ¿Cuántos asistieron?</div>
+                            <div class="input-group">
+                                <input type="number" class="exercise-input" data-ans="1625">
+                                <button class="btn" onclick="checkExercise(this)">Revisar</button>
+                                <span class="feedback-icon"></span>
+                            </div>
+                        </div>
+                        <div class="exercise-item" id="ex-3-2">
+                            <div class="exercise-text">2. Una biblioteca tenía 3500 libros, se prestaron 1250. ¿Cuántos quedan?</div>
+                            <div class="input-group">
+                                <input type="number" class="exercise-input" data-ans="2250">
+                                <button class="btn" onclick="checkExercise(this)">Revisar</button>
+                                <span class="feedback-icon"></span>
+                            </div>
+                        </div>
+                        <div class="exercise-item" id="ex-3-3">
+                            <div class="exercise-text">3. Un tanque tenía 10,000 litros, se usaron 4560. ¿Cuánto queda?</div>
+                            <div class="input-group">
+                                <input type="number" class="exercise-input" data-ans="5440">
+                                <button class="btn" onclick="checkExercise(this)">Revisar</button>
+                                <span class="feedback-icon"></span>
+                            </div>
+                        </div>
+                        <div class="exercise-item" id="ex-3-4">
+                            <div class="exercise-text">4. Un negocio ganó 12,000 Bs., tuvo gastos de 4,750 Bs. ¿Cuál es la ganancia neta?</div>
+                            <div class="input-group">
+                                <input type="number" class="exercise-input" data-ans="7250">
+                                <button class="btn" onclick="checkExercise(this)">Revisar</button>
+                                <span class="feedback-icon"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 6. EVALUACIÓN FINAL -->
+            <section id="evaluacion" class="section-module">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>✅ Evaluación Final</h3>
+                    </div>
+                    <p>Demuestra lo que has aprendido respondiendo estas 10 preguntas. Lee con atención y selecciona la opción correcta.</p>
+
+                    <div id="quiz-container">
+                        <!-- Generado por JS -->
+                    </div>
+
+                    <button class="btn" id="btn-submit-quiz" onclick="submitQuiz()" style="width: 100%; margin-top: 20px; font-size: 1.2rem; padding: 15px;">Entregar Evaluación</button>
+
+                    <div class="quiz-result-card" id="quiz-result">
+                        <h2 style="color: var(--primary-color);">¡Evaluación Completada!</h2>
+                        <div style="font-size: 3rem; margin: 15px 0; color: var(--accent-color);" id="final-score-text">8/10</div>
+                        <p id="final-feedback-text">¡Buen trabajo! Has completado el módulo.</p>
+                        <button class="btn" onclick="navigate('bienvenida')">Volver al Inicio</button>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+
+        <!-- PIE DE PÁGINA -->
+        <footer>
+            © 2026 MenteMatematicaI. Todos los derechos reservados VC.
+        </footer>
+    </main>
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================= -->
+    <script>
+        // ------------------------------------
+        // VARIABLES GLOBALES
+        // ------------------------------------
+        let globalScore = 0;
+        const scoreElement = document.getElementById('global-score');
+
+        // ------------------------------------
+        // SISTEMA DE NAVEGACIÓN DINÁMICA
+        // ------------------------------------
+        function navigate(sectionId) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('.section-module').forEach(el => {
+                el.classList.remove('active');
+            });
+            // Mostrar la sección seleccionada
+            document.getElementById(sectionId).classList.add('active');
+
+            // Actualizar menú activo
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.classList.remove('active');
+            });
+            // Buscar el elemento de la lista que desencadenó el evento usando onclick attribute o comparar
+            event.currentTarget.classList.add('active');
+            
+            // Scroll hacia arriba
+            window.scrollTo(0,0);
+        }
+
+        function mostrarEjemplo(id) {
+            const el = document.getElementById(id);
+            if(el.style.display === 'none') {
+                el.style.display = 'block';
+                el.style.animation = 'fadeIn 0.5s ease';
+            } else {
+                el.style.display = 'none';
+            }
+        }
+
+        // ------------------------------------
+        // PESTAÑAS DE PRÁCTICA
+        // ------------------------------------
+        function switchTab(nivel, btn) {
+            // Ocultar todos los niveles
+            document.querySelectorAll('.practice-level').forEach(el => el.style.display = 'none');
+            // Quitar clase active a los botones
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            // Mostrar nivel actual
+            document.getElementById(`nivel-${nivel}`).style.display = 'block';
+            // Agregar clase active al botón clickeado
+            btn.classList.add('active');
+        }
+
+        // ------------------------------------
+        // VALIDACIÓN DE EJERCICIOS PRÁCTICOS
+        // ------------------------------------
+        function checkExercise(btnElement) {
+            const container = btnElement.parentElement.parentElement;
+            const inputElement = container.querySelector('.exercise-input');
+            const iconElement = container.querySelector('.feedback-icon');
+            const correctAnswer = inputElement.getAttribute('data-ans');
+            const userAnswer = inputElement.value.trim();
+
+            if(userAnswer === "") {
+                iconElement.innerHTML = "⚠️";
+                iconElement.title = "Por favor ingresa un número";
+                return;
+            }
+
+            if(userAnswer === correctAnswer) {
+                container.classList.remove('incorrect');
+                container.classList.add('correct');
+                iconElement.innerHTML = "✅";
+                
+                // Dar puntos solo una vez por ejercicio (usamos un atributo flag)
+                if(!container.hasAttribute('data-solved')) {
+                    globalScore += 10;
+                    scoreElement.innerText = globalScore;
+                    container.setAttribute('data-solved', 'true');
+                    inputElement.disabled = true;
+                    btnElement.disabled = true;
+                    btnElement.style.background = "#bdc3c7";
+                }
+            } else {
+                container.classList.remove('correct');
+                container.classList.add('incorrect');
+                iconElement.innerHTML = "❌";
+                // Limpiar input para reintento guiado
+                setTimeout(() => {
+                    inputElement.value = "";
+                    inputElement.placeholder = "Intenta de nuevo";
+                }, 1500);
+            }
+        }
+
+        // ------------------------------------
+        // CANVAS INTERACTIVOS
+        // ------------------------------------
+        
+        // Canvas 1: Concepto (Manzanas)
+        const ctxConcepto = document.getElementById('canvasConcepto').getContext('2d');
+        let manzanasState = 10;
+        
+        function drawManzanas() {
+            ctxConcepto.clearRect(0, 0, 500, 200);
+            ctxConcepto.font = "40px Arial";
+            for(let i=0; i<10; i++) {
+                let x = 30 + (i * 45);
+                let y = 100;
+                
+                if (i >= manzanasState) {
+                    // Manzanas quitadas (grises/transparentes)
+                    ctxConcepto.globalAlpha = 0.2;
+                    ctxConcepto.fillText("🍎", x, y);
+                    ctxConcepto.globalAlpha = 1.0;
+                    // Dibujar una X encima
+                    ctxConcepto.strokeStyle = "red";
+                    ctxConcepto.lineWidth = 3;
+                    ctxConcepto.beginPath();
+                    ctxConcepto.moveTo(x, y - 30);
+                    ctxConcepto.lineTo(x + 30, y);
+                    ctxConcepto.moveTo(x + 30, y - 30);
+                    ctxConcepto.lineTo(x, y);
+                    ctxConcepto.stroke();
+                } else {
+                    // Manzanas vivas
+                    ctxConcepto.fillText("🍎", x, y);
+                }
+            }
+            document.getElementById('textoManzanas').innerText = `Manzanas: ${manzanasState}`;
+        }
+        
+        document.getElementById('btnRestarManzanas').addEventListener('click', () => {
+            if(manzanasState === 10) {
+                manzanasState = 7;
+                drawManzanas();
+            }
+        });
+        document.getElementById('btnResetManzanas').addEventListener('click', () => {
+            manzanasState = 10;
+            drawManzanas();
+        });
+        drawManzanas(); // Init
+
+        // Canvas 2: Pasos (Lápices)
+        const ctxPasos = document.getElementById('canvasPasos').getContext('2d');
+        let lapicesState = 20;
+
+        function drawLapices() {
+            ctxPasos.clearRect(0, 0, 500, 200);
+            ctxPasos.font = "30px Arial";
+            for(let i=0; i<20; i++) {
+                let col = i % 10;
+                let row = Math.floor(i / 10);
+                let x = 40 + (col * 40);
+                let y = 80 + (row * 60);
+
+                if(i >= lapicesState) {
+                    ctxPasos.globalAlpha = 0.2;
+                    ctxPasos.fillText("✏️", x, y);
+                    ctxPasos.globalAlpha = 1.0;
+                    ctxPasos.strokeStyle = "red";
+                    ctxPasos.lineWidth = 2;
+                    ctxPasos.beginPath();
+                    ctxPasos.moveTo(x, y - 25);
+                    ctxPasos.lineTo(x + 25, y);
+                    ctxPasos.stroke();
+                } else {
+                    ctxPasos.fillText("✏️", x, y);
+                }
+            }
+            document.getElementById('textoPasos').innerText = `Lápices actuales: ${lapicesState}`;
+        }
+
+        document.getElementById('btnAnimarPasos').addEventListener('click', () => {
+            if(lapicesState === 20) {
+                // Animar paso a paso (restar 1 por 1 hasta 15)
+                let interval = setInterval(() => {
+                    lapicesState--;
+                    drawLapices();
+                    if(lapicesState === 15) {
+                        clearInterval(interval);
+                        document.getElementById('feedbackPasos').style.display = 'block';
+                    }
+                }, 300);
+            } else {
+                lapicesState = 20;
+                document.getElementById('feedbackPasos').style.display = 'none';
+                drawLapices();
+            }
+        });
+        drawLapices(); // Init
+
+        // Canvas 3: Ejemplos (Tanque de agua)
+        const ctxEjemplos = document.getElementById('canvasEjemplos').getContext('2d');
+        let aguaLts = 80;
+
+        function drawTanque() {
+            ctxEjemplos.clearRect(0, 0, 300, 250);
+            // Dibujar estructura del tanque
+            ctxEjemplos.lineWidth = 4;
+            ctxEjemplos.strokeStyle = "#333";
+            ctxEjemplos.strokeRect(100, 30, 100, 180);
+            
+            // Dibujar nivel de agua
+            let percentage = aguaLts / 80; // 1.0 a 0.75
+            let waterHeight = 176 * percentage;
+            let waterY = 32 + (176 - waterHeight);
+            
+            ctxEjemplos.fillStyle = "rgba(52, 152, 219, 0.7)";
+            ctxEjemplos.fillRect(102, waterY, 96, waterHeight);
+
+            // Escala (marcas)
+            ctxEjemplos.fillStyle = "#333";
+            ctxEjemplos.font = "14px Arial";
+            ctxEjemplos.fillText("80L", 65, 40);
+            ctxEjemplos.fillText("60L", 65, 85);
+            ctxEjemplos.fillText("40L", 65, 130);
+            ctxEjemplos.fillText("20L", 65, 175);
+            ctxEjemplos.fillText("0L", 70, 210);
+
+            document.getElementById('textoAgua').innerText = `Capacidad actual: ${aguaLts} Litros`;
+        }
+
+        document.getElementById('btnUsarAgua').addEventListener('click', () => {
+            if(aguaLts === 80) {
+                let target = 60; // 80 - 20
+                let interval = setInterval(() => {
+                    aguaLts--;
+                    drawTanque();
+                    if(aguaLts === target) clearInterval(interval);
+                }, 50);
+                document.getElementById('btnUsarAgua').innerText = "Rellenar Tanque";
+            } else {
+                let target = 80;
+                let interval = setInterval(() => {
+                    aguaLts++;
+                    drawTanque();
+                    if(aguaLts === target) clearInterval(interval);
+                }, 50);
+                document.getElementById('btnUsarAgua').innerText = "Usar 20 litros";
+            }
+        });
+        drawTanque(); // Init
+
+        // ------------------------------------
+        // EVALUACIÓN FINAL (QUIZ)
+        // ------------------------------------
+        const quizData = [
+            {
+                q: "1. ¿Qué es la resta?",
+                opts: ["A. Una operación para juntar dos cantidades.", "B. Una operación para quitar o encontrar la diferencia.", "C. Una forma de multiplicar números.", "D. Repartir partes iguales."],
+                ans: 1
+            },
+            {
+                q: "2. ¿Cuáles son los elementos de la resta?",
+                opts: ["A. Sumando y Suma", "B. Factor y Producto", "C. Minuendo, Sustraendo y Diferencia", "D. Dividendo, Divisor y Cociente"],
+                ans: 2
+            },
+            {
+                q: "3. ¿Qué palabras clave indican que debes hacer una resta en un problema?",
+                opts: ["A. Añadir, total, juntar", "B. Veces, doble, producto", "C. Perder, quitar, quedar, diferencia", "D. Mitad, repartir, fracción"],
+                ans: 2
+            },
+            {
+                q: "4. ¿Por qué es importante verificar el resultado?",
+                opts: ["A. Porque lo dice el maestro.", "B. Para hacer un dibujo más bonito.", "C. Para asegurarse de no haber cometido errores de cálculo.", "D. No es importante, es mejor adivinar."],
+                ans: 2
+            },
+            {
+                q: "5. Resuelve: 345 - 123",
+                opts: ["A. 222", "B. 232", "C. 212", "D. 220"],
+                ans: 0
+            },
+            {
+                q: "6. Resuelve: 890 - 456",
+                opts: ["A. 444", "B. 434", "C. 454", "D. 424"],
+                ans: 1
+            },
+            {
+                q: "7. Resuelve: 1000 - 375",
+                opts: ["A. 625", "B. 725", "C. 615", "D. 635"],
+                ans: 0
+            },
+            {
+                q: "8. Resuelve: 2500 - 1250",
+                opts: ["A. 1150", "B. 1200", "C. 1350", "D. 1250"],
+                ans: 3
+            },
+            {
+                q: "9. Resuelve: 6000 - 2345",
+                opts: ["A. 3655", "B. 3755", "C. 3555", "D. 3665"],
+                ans: 0
+            },
+            {
+                q: "10. Resuelve: 10,000 - 7890",
+                opts: ["A. 2010", "B. 2210", "C. 2110", "D. 2100"],
+                ans: 2
+            }
+        ];
+
+        let quizUserAnswers = new Array(quizData.length).fill(null);
+        let quizSubmitted = false;
+
+        function buildQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+            
+            quizData.forEach((item, index) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'quiz-question';
+                
+                const qText = document.createElement('h4');
+                qText.innerText = item.q;
+                qDiv.appendChild(qText);
+                
+                const optsDiv = document.createElement('div');
+                optsDiv.className = 'quiz-options';
+
+                item.opts.forEach((optText, optIndex) => {
+                    const optBtn = document.createElement('div');
+                    optBtn.className = 'quiz-option';
+                    optBtn.innerText = optText;
+                    optBtn.onclick = () => selectOption(index, optIndex, optBtn, optsDiv);
+                    optsDiv.appendChild(optBtn);
+                });
+
+                const feedback = document.createElement('div');
+                feedback.className = 'quiz-feedback';
+                feedback.id = `q-feedback-${index}`;
+
+                qDiv.appendChild(optsDiv);
+                qDiv.appendChild(feedback);
+                container.appendChild(qDiv);
+            });
+        }
+
+        function selectOption(qIndex, optIndex, optBtn, optsDiv) {
+            if(quizSubmitted) return; // No cambiar si ya se envió
+            
+            // Remover selected de las hermanas
+            const children = optsDiv.children;
+            for(let i=0; i<children.length; i++) {
+                children[i].classList.remove('selected');
+            }
+            
+            // Agregar selected a la actual
+            optBtn.classList.add('selected');
+            quizUserAnswers[qIndex] = optIndex;
+        }
+
+        function submitQuiz() {
+            if(quizSubmitted) return;
+            
+            // Verificar que todo esté respondido
+            if(quizUserAnswers.includes(null)) {
+                alert("Por favor responde todas las preguntas antes de enviar.");
+                return;
+            }
+
+            quizSubmitted = true;
+            document.getElementById('btn-submit-quiz').style.display = 'none';
+
+            let correctCount = 0;
+            const container = document.getElementById('quiz-container');
+            const questions = container.querySelectorAll('.quiz-question');
+
+            quizData.forEach((item, index) => {
+                const userAns = quizUserAnswers[index];
+                const qDiv = questions[index];
+                const opts = qDiv.querySelectorAll('.quiz-option');
+                const feedback = document.getElementById(`q-feedback-${index}`);
+
+                if(userAns === item.ans) {
+                    correctCount++;
+                    opts[userAns].classList.add('correct-ans');
+                    feedback.innerText = "✅ ¡Correcto!";
+                    feedback.className = "quiz-feedback show feedback-correct";
+                } else {
+                    opts[userAns].classList.add('wrong-ans');
+                    opts[item.ans].classList.add('correct-ans');
+                    feedback.innerText = "❌ Incorrecto. La respuesta correcta era: " + item.opts[item.ans];
+                    feedback.className = "quiz-feedback show feedback-wrong";
+                }
+            });
+
+            // Actualizar Puntuación Global (+20 pts por respuesta correcta)
+            globalScore += (correctCount * 20);
+            scoreElement.innerText = globalScore;
+
+            // Mostrar resultado final
+            const resultCard = document.getElementById('quiz-result');
+            resultCard.style.display = 'block';
+            document.getElementById('final-score-text').innerText = `${correctCount} / 10`;
+            
+            let message = "";
+            if(correctCount === 10) message = "¡Excelente! Eres un maestro de la resta. 🏆";
+            else if(correctCount >= 7) message = "¡Muy buen trabajo! Tienes un gran dominio del tema. 🌟";
+            else message = "Buen esfuerzo. Te recomendamos repasar los conceptos y volver a intentarlo. 📚";
+            
+            document.getElementById('final-feedback-text').innerText = message;
+            
+            // Scroll hacia el resultado
+            resultCard.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Inicializar
+        buildQuiz();
+
+    </script>
+</body>
+</html>

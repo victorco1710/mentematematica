@@ -1,0 +1,1874 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Números Romanos – Mente Matemática</title>
+<!--
+  ============================================================
+  PLATAFORMA EDUCATIVA: NÚMEROS ROMANOS
+  © 2026 MenteMatemática. Todos los derechos reservados VC.
+  Archivo único: HTML5 + CSS3 + JavaScript puro
+  ============================================================
+-->
+<style>
+/* ===================== RESET & BASE ===================== */
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --navy:#0d2b5e;
+  --navy2:#1a3a7a;
+  --blue:#2563eb;
+  --blue2:#3b82f6;
+  --blue3:#93c5fd;
+  --gold:#f59e0b;
+  --green:#16a34a;
+  --red:#dc2626;
+  --purple:#7c3aed;
+  --bg:#f0f4f8;
+  --white:#ffffff;
+  --sidebar:#ffffff;
+  --card:#ffffff;
+  --text:#1e293b;
+  --text2:#475569;
+  --border:#e2e8f0;
+  --shadow:0 2px 12px rgba(0,0,0,.10);
+  --shadow2:0 4px 24px rgba(13,43,94,.12);
+  --radius:14px;
+  --radius2:8px;
+  --sidebar-w:265px;
+  --header-h:68px;
+  --transition:.28s cubic-bezier(.4,0,.2,1);
+}
+html,body{height:100%;font-family:'Segoe UI',Arial,sans-serif;font-size:15px;color:var(--text);background:var(--bg);}
+
+/* ===================== WELCOME MODAL ===================== */
+#welcome-overlay{
+  position:fixed;inset:0;background:rgba(13,43,94,.82);z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  animation:fadeIn .5s ease;
+}
+#welcome-box{
+  background:var(--white);border-radius:22px;padding:44px 48px;max-width:520px;width:90%;
+  text-align:center;box-shadow:0 8px 48px rgba(0,0,0,.28);
+  animation:slideUp .5s cubic-bezier(.4,0,.2,1);
+}
+#welcome-box .wicon{font-size:64px;margin-bottom:12px;}
+#welcome-box h1{font-size:2rem;color:var(--navy);font-weight:800;margin-bottom:8px;}
+#welcome-box p{color:var(--text2);font-size:1.05rem;line-height:1.6;margin-bottom:22px;}
+#welcome-box .age-badge{display:inline-block;background:var(--blue3);color:var(--navy);border-radius:20px;padding:4px 16px;font-size:.85rem;font-weight:700;margin-bottom:18px;}
+#btn-welcome{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border:none;padding:14px 38px;border-radius:30px;font-size:1.05rem;font-weight:700;cursor:pointer;transition:var(--transition);box-shadow:0 4px 16px rgba(13,43,94,.3);}
+#btn-welcome:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(13,43,94,.4);}
+
+/* ===================== LAYOUT ===================== */
+#header{
+  position:fixed;top:0;left:0;right:0;height:var(--header-h);z-index:100;
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--blue) 100%);
+  display:flex;align-items:center;padding:0 24px;box-shadow:0 2px 16px rgba(0,0,0,.22);
+}
+.logo-area{display:flex;align-items:center;gap:12px;flex:1;}
+.logo-icon{font-size:32px;}
+.logo-text{font-size:1.35rem;font-weight:800;color:#fff;letter-spacing:.5px;}
+.logo-sub{font-size:.72rem;color:var(--blue3);font-weight:500;display:block;margin-top:-2px;}
+#btn-menu{background:rgba(255,255,255,.18);color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:8px 18px;border-radius:20px;font-size:.85rem;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:6px;transition:var(--transition);}
+#btn-menu:hover{background:rgba(255,255,255,.28);}
+
+#sidebar{
+  position:fixed;top:var(--header-h);left:0;width:var(--sidebar-w);bottom:0;
+  background:var(--sidebar);border-right:1.5px solid var(--border);
+  overflow-y:auto;z-index:80;padding:16px 0 20px;
+  box-shadow:2px 0 12px rgba(0,0,0,.05);
+}
+#sidebar::-webkit-scrollbar{width:4px;}
+#sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+
+.nav-label{font-size:.7rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1.2px;padding:8px 20px 4px;margin-top:4px;}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:11px 18px;cursor:pointer;
+  border-left:3px solid transparent;transition:var(--transition);font-size:.88rem;color:var(--text2);font-weight:500;
+  margin:1px 6px;border-radius:0 8px 8px 0;
+}
+.nav-item:hover{background:#eff6ff;color:var(--navy);border-left-color:var(--blue3);}
+.nav-item.active{background:linear-gradient(90deg,#dbeafe,#eff6ff);color:var(--navy);border-left-color:var(--blue);font-weight:700;}
+.nav-icon{font-size:1.1rem;min-width:22px;text-align:center;}
+.nav-badge{margin-left:auto;background:var(--blue);color:#fff;border-radius:10px;padding:1px 8px;font-size:.7rem;font-weight:700;}
+
+#main{
+  margin-left:var(--sidebar-w);margin-top:var(--header-h);
+  min-height:calc(100vh - var(--header-h));padding:28px 28px 60px;
+  transition:var(--transition);
+}
+
+/* ===================== SECTION PANELS ===================== */
+.section-panel{display:none;animation:fadeInUp .35s ease;}
+.section-panel.active{display:block;}
+
+/* ===================== CARDS ===================== */
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:22px;}
+.card-title{font-size:1.15rem;font-weight:800;color:var(--navy);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.card-sub{color:var(--text2);font-size:.88rem;margin-bottom:16px;}
+.section-header{background:linear-gradient(135deg,var(--navy),var(--blue2));color:#fff;border-radius:var(--radius);padding:26px 28px;margin-bottom:24px;box-shadow:var(--shadow2);}
+.section-header h2{font-size:1.6rem;font-weight:800;margin-bottom:4px;}
+.section-header p{opacity:.85;font-size:.95rem;line-height:1.5;}
+.section-icon{font-size:2.4rem;margin-bottom:8px;}
+
+/* ===================== TABLES ===================== */
+table.roman-table{width:100%;border-collapse:collapse;font-size:.95rem;}
+table.roman-table th{background:linear-gradient(135deg,var(--navy),var(--blue2));color:#fff;padding:12px 16px;text-align:left;font-weight:700;}
+table.roman-table td{padding:10px 16px;border-bottom:1px solid var(--border);}
+table.roman-table tr:nth-child(even) td{background:#f8fafc;}
+table.roman-table tr:hover td{background:#eff6ff;}
+table.roman-table th:first-child{border-radius:8px 0 0 0;}
+table.roman-table th:last-child{border-radius:0 8px 0 0;}
+
+/* ===================== BUTTONS ===================== */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 22px;border-radius:24px;border:none;cursor:pointer;font-size:.9rem;font-weight:700;transition:var(--transition);letter-spacing:.2px;}
+.btn-primary{background:linear-gradient(135deg,var(--navy),var(--blue2));color:#fff;box-shadow:0 3px 12px rgba(37,99,235,.3);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(37,99,235,.4);}
+.btn-success{background:linear-gradient(135deg,#15803d,var(--green));color:#fff;}
+.btn-success:hover{transform:translateY(-2px);}
+.btn-gold{background:linear-gradient(135deg,#d97706,var(--gold));color:#fff;}
+.btn-gold:hover{transform:translateY(-2px);}
+.btn-danger{background:linear-gradient(135deg,#b91c1c,var(--red));color:#fff;}
+.btn-outline{background:transparent;border:2px solid var(--blue);color:var(--blue);}
+.btn-outline:hover{background:var(--blue);color:#fff;}
+.btn-sm{padding:7px 16px;font-size:.82rem;}
+
+/* ===================== BADGES ===================== */
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.75rem;font-weight:700;}
+.badge-blue{background:#dbeafe;color:var(--navy);}
+.badge-green{background:#dcfce7;color:#15803d;}
+.badge-red{background:#fee2e2;color:#b91c1c;}
+.badge-gold{background:#fef3c7;color:#d97706;}
+.badge-purple{background:#ede9fe;color:#6d28d9;}
+
+/* ===================== VIDEO ===================== */
+.video-wrapper{background:#0d1117;border-radius:var(--radius);overflow:hidden;margin-bottom:16px;box-shadow:var(--shadow);}
+.video-wrapper video{width:100%;max-height:360px;display:block;}
+.video-label{background:#1e293b;color:#94a3b8;font-size:.78rem;padding:8px 14px;display:flex;align-items:center;gap:6px;}
+
+/* ===================== INTERACTIVE SIMULATOR ===================== */
+.sim-box{background:linear-gradient(135deg,#f8fafc,#eff6ff);border:2px solid var(--border);border-radius:var(--radius);padding:22px;}
+.sim-input{width:100%;padding:12px 16px;border:2px solid var(--border);border-radius:var(--radius2);font-size:1.1rem;font-family:inherit;transition:var(--transition);outline:none;}
+.sim-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
+.sim-result{margin-top:14px;padding:14px 18px;background:var(--white);border-radius:var(--radius2);border-left:4px solid var(--blue);font-size:1.1rem;font-weight:700;color:var(--navy);min-height:50px;display:flex;align-items:center;gap:8px;}
+
+/* ===================== QUIZ / EXERCISES ===================== */
+.quiz-question{background:#f8fafc;border-radius:var(--radius2);padding:18px;margin-bottom:14px;border-left:4px solid var(--blue3);}
+.quiz-question h4{font-weight:700;color:var(--navy);margin-bottom:12px;font-size:1rem;}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.quiz-option{padding:10px 14px;border-radius:8px;border:2px solid var(--border);cursor:pointer;transition:var(--transition);font-size:.9rem;background:var(--white);font-weight:500;text-align:center;}
+.quiz-option:hover{border-color:var(--blue);background:#eff6ff;}
+.quiz-option.correct{border-color:var(--green);background:#dcfce7;color:#15803d;font-weight:700;}
+.quiz-option.wrong{border-color:var(--red);background:#fee2e2;color:#b91c1c;font-weight:700;}
+.quiz-option.reveal{border-color:var(--green);background:#dcfce7;color:#15803d;}
+.feedback-msg{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.9rem;font-weight:600;display:none;}
+.feedback-msg.show{display:block;}
+.feedback-correct{background:#dcfce7;color:#15803d;}
+.feedback-wrong{background:#fee2e2;color:#b91c1c;}
+
+/* ===================== SCORE / PROGRESS ===================== */
+.score-bar-wrap{background:var(--border);border-radius:20px;overflow:hidden;height:12px;margin:6px 0 12px;}
+.score-bar{height:100%;background:linear-gradient(90deg,var(--blue2),var(--green));border-radius:20px;transition:.6s ease;}
+.score-display{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.score-label{font-size:.85rem;color:var(--text2);font-weight:600;}
+.score-val{font-size:.85rem;font-weight:800;color:var(--navy);}
+.stars{font-size:1.6rem;letter-spacing:2px;}
+
+/* ===================== EXAMPLE STEPS ===================== */
+.step-list{counter-reset:step;}
+.step-item{display:flex;gap:14px;margin-bottom:14px;}
+.step-num{min-width:34px;height:34px;background:linear-gradient(135deg,var(--navy),var(--blue2));color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;flex-shrink:0;}
+.step-content{flex:1;padding-top:6px;}
+.step-content strong{color:var(--navy);}
+
+/* ===================== CANVAS ===================== */
+canvas{max-width:100%;display:block;}
+
+/* ===================== ACCORDION ===================== */
+.accordion-item{border:1.5px solid var(--border);border-radius:var(--radius2);margin-bottom:8px;overflow:hidden;}
+.accordion-head{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;background:var(--white);font-weight:700;color:var(--navy);font-size:.95rem;transition:var(--transition);}
+.accordion-head:hover{background:#eff6ff;}
+.accordion-body{display:none;padding:14px 16px;background:#f8fafc;font-size:.92rem;color:var(--text2);line-height:1.6;}
+.accordion-body.open{display:block;}
+.accordion-arrow{transition:var(--transition);}
+.accordion-head.open .accordion-arrow{transform:rotate(180deg);}
+
+/* ===================== WORKSHEET ===================== */
+.ws-form{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;}
+.ws-form .full{grid-column:1/-1;}
+.ws-field{display:flex;flex-direction:column;gap:4px;}
+.ws-field label{font-size:.82rem;font-weight:700;color:var(--navy);}
+.ws-field input,.ws-field select{padding:9px 12px;border:2px solid var(--border);border-radius:var(--radius2);font-size:.9rem;font-family:inherit;outline:none;transition:var(--transition);}
+.ws-field input:focus,.ws-field select:focus{border-color:var(--blue);}
+
+/* ===================== PRINT STYLES ===================== */
+@media print{
+  #header,#sidebar,#btn-menu,.no-print,#welcome-overlay{display:none!important;}
+  #main{margin:0;padding:0;}
+  .section-panel{display:none!important;}
+  #print-worksheet{display:block!important;}
+  body{background:#fff;}
+}
+#print-worksheet{display:none;font-family:Arial,sans-serif;}
+
+/* ===================== TOOLTIP ===================== */
+.tooltip-wrap{position:relative;display:inline-block;}
+.tooltip-wrap .tooltip{position:absolute;bottom:120%;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;border-radius:6px;padding:5px 10px;font-size:.75rem;white-space:nowrap;pointer-events:none;opacity:0;transition:.2s;z-index:200;}
+.tooltip-wrap:hover .tooltip{opacity:1;}
+
+/* ===================== FINAL EVAL ===================== */
+.eval-box{background:linear-gradient(135deg,#0d2b5e,#1a3a7a);color:#fff;border-radius:var(--radius);padding:28px;text-align:center;margin-bottom:20px;}
+.eval-box h3{font-size:1.5rem;font-weight:800;margin-bottom:6px;}
+.eval-score-big{font-size:3.5rem;font-weight:900;color:var(--gold);}
+.progress-ring{stroke-dasharray:283;stroke-dashoffset:283;transition:stroke-dashoffset 1s ease;}
+
+/* ===================== GAMIFIED CARDS ===================== */
+.game-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;text-align:center;border-top:5px solid var(--blue);}
+.game-card.correct-card{border-top-color:var(--green);}
+.game-card.wrong-card{border-top-color:var(--red);}
+.big-number{font-size:2.8rem;font-weight:900;color:var(--navy);letter-spacing:2px;margin:10px 0;}
+.fill-input{width:100%;padding:12px;border:2.5px solid var(--border);border-radius:10px;font-size:1.4rem;text-align:center;font-weight:800;letter-spacing:3px;text-transform:uppercase;outline:none;transition:var(--transition);}
+.fill-input:focus{border-color:var(--blue);}
+.fill-input.correct-input{border-color:var(--green);background:#dcfce7;color:#15803d;}
+.fill-input.wrong-input{border-color:var(--red);background:#fee2e2;color:#b91c1c;}
+
+/* ===================== ANIMATIONS ===================== */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}40%{transform:translateY(-8px)}}
+@keyframes shimmer{0%{background-position:-200%}100%{background-position:200%}}
+.pulse{animation:pulse 1s ease infinite;}
+.bounce{animation:bounce .6s ease;}
+
+/* ===================== RESPONSIVE ===================== */
+@media(max-width:768px){
+  :root{--sidebar-w:240px;}
+  #sidebar{transform:translateX(-100%);transition:var(--transition);}
+  #sidebar.open{transform:translateX(0);}
+  #main{margin-left:0;}
+  .quiz-options{grid-template-columns:1fr;}
+  .ws-form{grid-template-columns:1fr;}
+}
+
+/* ===================== UTILITIES ===================== */
+.text-center{text-align:center;}
+.text-navy{color:var(--navy);}
+.text-blue{color:var(--blue);}
+.text-green{color:var(--green);}
+.text-red{color:var(--red);}
+.text-gold{color:var(--gold);}
+.mt-8{margin-top:8px;} .mt-12{margin-top:12px;} .mt-16{margin-top:16px;} .mt-20{margin-top:20px;} .mb-8{margin-bottom:8px;} .mb-12{margin-bottom:12px;} .mb-16{margin-bottom:16px;}
+.flex{display:flex;} .items-center{align-items:center;} .gap-8{gap:8px;} .gap-12{gap:12px;} .gap-16{gap:16px;} .flex-wrap{flex-wrap:wrap;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.separator{height:1.5px;background:var(--border);margin:18px 0;}
+.roman-big{font-size:2.2rem;font-weight:900;color:var(--navy);letter-spacing:3px;font-family:Georgia,serif;}
+.arabic-big{font-size:1.5rem;font-weight:800;color:var(--blue);}
+
+.rule-box{border-radius:var(--radius2);padding:14px 16px;margin-bottom:12px;border-left:4px solid var(--blue);}
+.rule-ok{background:#dcfce7;border-left-color:var(--green);}
+.rule-warn{background:#fef3c7;border-left-color:var(--gold);}
+.rule-bad{background:#fee2e2;border-left-color:var(--red);}
+.rule-info{background:#eff6ff;border-left-color:var(--blue);}
+
+.example-block{background:#f8fafc;border-radius:var(--radius2);padding:16px;margin-bottom:12px;border:1.5px solid var(--border);}
+.example-block .ex-title{font-weight:800;color:var(--navy);margin-bottom:8px;font-size:.95rem;}
+
+.inline-check{display:flex;align-items:center;gap:10px;margin-top:8px;}
+</style>
+</head>
+<body>
+
+<!-- ==================== WELCOME OVERLAY ==================== -->
+<div id="welcome-overlay">
+  <div id="welcome-box">
+    <div class="wicon">🏛️</div>
+    <h1>¡Bienvenido!</h1>
+    <div class="age-badge">📚 Para estudiantes de 9 a 15 años</div>
+    <p>Prepárate para explorar el fascinante mundo de los <strong>Números Romanos</strong>, el sistema que usaban los antiguos romanos para contar, medir y registrar su historia.</p>
+    <p style="margin-top:10px;margin-bottom:22px;font-size:.9rem;">Esta plataforma te guiará paso a paso con ejemplos interactivos, simuladores y ejercicios gamificados.</p>
+    <button class="btn btn-primary" id="btn-welcome" onclick="closeWelcome()">🚀 ¡Comenzar a Aprender!</button>
+  </div>
+</div>
+
+<!-- ==================== HEADER ==================== -->
+<header id="header">
+  <div class="logo-area">
+    <span class="logo-icon">🧮</span>
+    <div>
+      <span class="logo-text">Mente Matemática</span>
+      <span class="logo-sub">Plataforma Educativa Interactiva</span>
+    </div>
+  </div>
+  <a href="temario.html" id="btn-menu">⬅️ Volver al menú</a>
+</header>
+
+<!-- ==================== SIDEBAR ==================== -->
+<nav id="sidebar">
+  <div class="nav-label">Módulos</div>
+  <div class="nav-item active" onclick="showSection('s0')" id="nav-s0">
+    <span class="nav-icon">🎯</span><span>¿Qué aprenderemos?</span>
+  </div>
+  <div class="nav-item" onclick="showSection('s1')" id="nav-s1">
+    <span class="nav-icon">📖</span><span>1. Definición</span>
+  </div>
+  <div class="nav-item" onclick="showSection('s2')" id="nav-s2">
+    <span class="nav-icon">🔑</span><span>2. Propiedades</span>
+  </div>
+  <div class="nav-item" onclick="showSection('s3')" id="nav-s3">
+    <span class="nav-icon">📐</span><span>3. Reglas</span>
+  </div>
+  <div class="nav-item" onclick="showSection('s4')" id="nav-s4">
+    <span class="nav-icon">✍️</span><span>4. Lectura y Escritura</span>
+  </div>
+  <div class="nav-item" onclick="showSection('s5')" id="nav-s5">
+    <span class="nav-icon">📝</span><span>5. Práctica Guiada</span>
+  </div>
+  <div class="nav-item" onclick="showSection('s6')" id="nav-s6">
+    <span class="nav-icon">🎮</span><span>6. Ejercicios</span>
+    <span class="nav-badge">!</span>
+  </div>
+  <div class="nav-item" onclick="showSection('s7')" id="nav-s7">
+    <span class="nav-icon">🏆</span><span>7. Evaluación Final</span>
+  </div>
+</nav>
+
+<!-- ==================== MAIN CONTENT ==================== -->
+<main id="main">
+
+<!-- ==================== S0: QUÉ APRENDEREMOS ==================== -->
+<div class="section-panel active" id="s0">
+  <div class="section-header">
+    <div class="section-icon">🎬</div>
+    <h2>¿Qué aprenderemos?</h2>
+    <p>Descubre todo lo que vas a explorar en esta plataforma sobre los Números Romanos</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏛️ Bienvenida al mundo de los Números Romanos</div>
+    <p style="line-height:1.7;color:var(--text2);margin-bottom:16px;">Los <strong>números romanos</strong> son uno de los sistemas de numeración más famosos del mundo. Nacieron en la antigua Roma hace más de 2,500 años y todavía los vemos hoy en relojes, libros, películas y monumentos.</p>
+    <canvas id="canvas-intro" width="700" height="110" style="border-radius:10px;background:#0d1117;width:100%;"></canvas>
+  </div>
+
+  <div class="grid-3" style="margin-bottom:20px;">
+    <div class="card" style="text-align:center;border-top:4px solid var(--blue);">
+      <div style="font-size:2rem;margin-bottom:8px;">📖</div>
+      <div style="font-weight:800;color:var(--navy);margin-bottom:4px;">Definición</div>
+      <div style="font-size:.85rem;color:var(--text2);">Conocerás el origen y los 7 símbolos básicos del sistema romano.</div>
+    </div>
+    <div class="card" style="text-align:center;border-top:4px solid var(--purple);">
+      <div style="font-size:2rem;margin-bottom:8px;">🔑</div>
+      <div style="font-weight:800;color:var(--navy);margin-bottom:4px;">Propiedades</div>
+      <div style="font-size:.85rem;color:var(--text2);">Aprenderás las características únicas de este sistema de numeración.</div>
+    </div>
+    <div class="card" style="text-align:center;border-top:4px solid var(--gold);">
+      <div style="font-size:2rem;margin-bottom:8px;">📐</div>
+      <div style="font-weight:800;color:var(--navy);margin-bottom:4px;">Reglas</div>
+      <div style="font-size:.85rem;color:var(--text2);">Dominarás las 5 reglas para leer y escribir correctamente.</div>
+    </div>
+    <div class="card" style="text-align:center;border-top:4px solid var(--green);">
+      <div style="font-size:2rem;margin-bottom:8px;">✍️</div>
+      <div style="font-weight:800;color:var(--navy);margin-bottom:4px;">Lectura y Escritura</div>
+      <div style="font-size:.85rem;color:var(--text2);">Practicarás paso a paso cómo convertir números.</div>
+    </div>
+    <div class="card" style="text-align:center;border-top:4px solid var(--red);">
+      <div style="font-size:2rem;margin-bottom:8px;">🎮</div>
+      <div style="font-weight:800;color:var(--navy);margin-bottom:4px;">Ejercicios</div>
+      <div style="font-size:.85rem;color:var(--text2);">Jugarás con ejercicios de nivel fácil, medio y difícil.</div>
+    </div>
+    <div class="card" style="text-align:center;border-top:4px solid var(--navy);">
+      <div style="font-size:2rem;margin-bottom:8px;">🏆</div>
+      <div style="font-weight:800;color:var(--navy);margin-bottom:4px;">Evaluación Final</div>
+      <div style="font-size:.85rem;color:var(--text2);">Demostrarás todo lo que aprendiste con 10 preguntas.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎯 Objetivos de Aprendizaje</div>
+    <div class="step-list" style="margin-top:14px;">
+      <div class="step-item"><div class="step-num">1</div><div class="step-content"><strong>Identificar</strong> los 7 símbolos básicos de los números romanos y sus valores.</div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-content"><strong>Comprender</strong> las propiedades del sistema: no usa cero, se basa en suma y resta.</div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-content"><strong>Aplicar</strong> las 5 reglas correctamente para leer y escribir números romanos.</div></div>
+      <div class="step-item"><div class="step-num">4</div><div class="step-content"><strong>Convertir</strong> números arábigos a romanos y viceversa de forma segura.</div></div>
+      <div class="step-item"><div class="step-num">5</div><div class="step-content"><strong>Resolver</strong> ejercicios prácticos de distintos niveles de dificultad.</div></div>
+    </div>
+    <div style="margin-top:16px;text-align:center;">
+      <button class="btn btn-primary" onclick="showSection('s1')">📖 Comenzar con la Definición →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== S1: DEFINICIÓN ==================== -->
+<div class="section-panel" id="s1">
+  <div class="section-header">
+    <div class="section-icon">📖</div>
+    <h2>1. Definición de Números Romanos</h2>
+    <p>Conoce el origen y los símbolos del sistema de numeración más famoso de la historia</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏛️ ¿Qué son los Números Romanos?</div>
+    <p style="line-height:1.8;color:var(--text2);font-size:1rem;margin-bottom:16px;">Los <strong style="color:var(--navy)">números romanos</strong> son un sistema de numeración que se originó en la <strong style="color:var(--navy)">antigua Roma</strong>. Utilizan <strong style="color:var(--blue)">letras del alfabeto latino</strong> para representar cantidades, en lugar de los números que usamos hoy (1, 2, 3, etc.).</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+      <span class="badge badge-blue">📅 Origen: Antigua Roma</span>
+      <span class="badge badge-purple">🔤 Usa letras latinas</span>
+      <span class="badge badge-gold">🔢 7 símbolos básicos</span>
+      <span class="badge badge-green">📚 Aún se usa hoy</span>
+    </div>
+    <div class="rule-box rule-info">
+      <strong>💡 ¿Sabías que?</strong> Los números romanos todavía aparecen en relojes (XII = 12), ediciones de películas (Rocky II), siglos (Siglo XXI), y capítulos de libros.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔤 Los 7 Símbolos Básicos</div>
+    <div class="card-sub">Estos son todos los símbolos que necesitas aprender. ¡Solo 7!</div>
+    <table class="roman-table">
+      <thead><tr><th>Símbolo Romano</th><th>Valor Arábigo</th><th>Ejemplo de Uso</th><th>Equivalencia</th></tr></thead>
+      <tbody>
+        <tr><td style="font-size:2rem;font-weight:900;color:var(--navy);font-family:Georgia,serif;">I</td><td><span class="badge badge-blue">1</span></td><td>I lápiz = 1 lápiz</td><td>Una unidad</td></tr>
+        <tr><td style="font-size:2rem;font-weight:900;color:var(--blue);font-family:Georgia,serif;">V</td><td><span class="badge badge-blue">5</span></td><td>V dedos = 5 dedos</td><td>Cinco unidades</td></tr>
+        <tr><td style="font-size:2rem;font-weight:900;color:var(--purple);font-family:Georgia,serif;">X</td><td><span class="badge badge-purple">10</span></td><td>X centavos = 10 centavos</td><td>Diez unidades</td></tr>
+        <tr><td style="font-size:2rem;font-weight:900;color:var(--green);font-family:Georgia,serif;">L</td><td><span class="badge badge-green">50</span></td><td>L minutos = 50 minutos</td><td>Cincuenta</td></tr>
+        <tr><td style="font-size:2rem;font-weight:900;color:var(--gold);font-family:Georgia,serif;">C</td><td><span class="badge badge-gold">100</span></td><td>C años = 1 siglo</td><td>Cien</td></tr>
+        <tr><td style="font-size:2rem;font-weight:900;color:var(--red);font-family:Georgia,serif;">D</td><td><span class="badge badge-red">500</span></td><td>D soldados = 500 soldados</td><td>Quinientos</td></tr>
+        <tr><td style="font-size:2rem;font-weight:900;color:#475569;font-family:Georgia,serif;">M</td><td><span class="badge badge-blue">1000</span></td><td>M metros = 1 kilómetro</td><td>Mil</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🧠 Simulador Interactivo de Símbolos</div>
+    <div class="card-sub">Haz clic en cualquier símbolo para ver su información</div>
+    <div id="symbol-display" style="display:flex;justify-content:center;flex-wrap:wrap;gap:14px;margin:16px 0;">
+    </div>
+    <div id="symbol-info" style="display:none;" class="sim-result">
+      <span id="sym-text"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎯 Repaso Rápido de Símbolos</div>
+    <div id="def-quiz-container">
+      <!-- populated by JS -->
+    </div>
+    <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-primary btn-sm" onclick="generateDefQuiz()">🔄 Nuevo ejercicio</button>
+      <button class="btn btn-success btn-sm" onclick="checkDefAnswer()">✅ Verificar</button>
+    </div>
+    <div id="def-quiz-feedback" class="feedback-msg mt-8"></div>
+  </div>
+</div>
+
+<!-- ==================== S2: PROPIEDADES ==================== -->
+<div class="section-panel" id="s2">
+  <div class="section-header">
+    <div class="section-icon">🔑</div>
+    <h2>2. Propiedades de los Números Romanos</h2>
+    <p>Descubre las características únicas que hacen especial a este sistema de numeración</p>
+  </div>
+
+  <!-- Video -->
+  <div class="card">
+    <div class="card-title">🎬 Video Explicativo</div>
+    <div class="video-wrapper">
+      <video controls poster="">
+        <source src="vid/num_rom1.mp4" type="video/mp4">
+        <p style="color:#94a3b8;padding:20px;text-align:center;">⚠️ Coloca el archivo <strong>num_rom1.mp4</strong> en la carpeta <code>vid/</code> para ver el video.</p>
+      </video>
+    </div>
+    <div class="video-label">📁 vid/num_rom1.mp4 — Propiedades de los Números Romanos</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 Las 4 Propiedades Fundamentales</div>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-top:12px;">
+      <div class="rule-box rule-info">
+        <strong>🚫 Propiedad 1: No usan el cero (0)</strong>
+        <p style="margin-top:6px;font-size:.92rem;color:var(--text2);">El sistema romano no tiene símbolo para el cero. Por eso no pueden representar cantidades vacías. Los romanos simplemente no necesitaban el concepto del cero para su vida diaria.</p>
+      </div>
+      <div class="rule-box rule-info">
+        <strong>📍 Propiedad 2: No son posicionales</strong>
+        <p style="margin-top:6px;font-size:.92rem;color:var(--text2);">En nuestro sistema (23 o 45), la posición de cada dígito importa. En los números romanos, el valor de un símbolo no cambia según su posición (excepto las reglas de suma/resta).</p>
+      </div>
+      <div class="rule-box rule-info">
+        <strong>➕➖ Propiedad 3: Se basan en suma y resta</strong>
+        <p style="margin-top:6px;font-size:.92rem;color:var(--text2);">Los valores de los símbolos se suman o se restan según su posición relativa. VI = 5+1 = 6, pero IV = 5-1 = 4.</p>
+      </div>
+      <div class="rule-box rule-info">
+        <strong>⬅️ Propiedad 4: Se escriben de mayor a menor</strong>
+        <p style="margin-top:6px;font-size:.92rem;color:var(--text2);">Generalmente los símbolos van de mayor a menor, de izquierda a derecha. Ejemplo: XVI = 10+5+1 = 16.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive comparison canvas -->
+  <div class="card">
+    <div class="card-title">⚖️ Comparación: Sistema Arábigo vs Romano</div>
+    <canvas id="canvas-comparison" width="700" height="180" style="border-radius:10px;width:100%;background:#f8fafc;border:1.5px solid var(--border);"></canvas>
+  </div>
+
+  <!-- Simulator -->
+  <div class="card">
+    <div class="card-title">🔬 Simulador de Propiedades</div>
+    <div class="card-sub">Ingresa un número para analizar sus propiedades en el sistema romano</div>
+    <div class="sim-box">
+      <input type="number" id="prop-input" class="sim-input" placeholder="Escribe un número del 1 al 3999..." min="1" max="3999" oninput="analyzeProp()">
+      <div id="prop-result" style="margin-top:14px;"></div>
+    </div>
+  </div>
+
+  <!-- Gamified review -->
+  <div class="card">
+    <div class="card-title">🎮 Juego: Verdadero o Falso</div>
+    <div class="card-sub">Responde correctamente para ganar puntos</div>
+    <div id="prop-game-container"></div>
+    <div style="margin-top:12px;"><button class="btn btn-primary btn-sm" onclick="generatePropGame()">🔄 Nueva pregunta</button></div>
+    <div style="margin-top:10px;" id="prop-game-score-display"></div>
+  </div>
+</div>
+
+<!-- ==================== S3: REGLAS ==================== -->
+<div class="section-panel" id="s3">
+  <div class="section-header">
+    <div class="section-icon">📐</div>
+    <h2>3. Reglas de los Números Romanos</h2>
+    <p>Aprende las 5 reglas fundamentales para leer y escribir correctamente</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎬 Video Explicativo</div>
+    <div class="video-wrapper">
+      <video controls>
+        <source src="vid/num_rom_reg.mp4" type="video/mp4">
+        <p style="color:#94a3b8;padding:20px;text-align:center;">⚠️ Coloca el archivo <strong>num_rom_reg.mp4</strong> en la carpeta <code>vid/</code> para ver el video.</p>
+      </video>
+    </div>
+    <div class="video-label">📁 vid/num_rom_reg.mp4 — Reglas de los Números Romanos</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📜 Las 5 Reglas Fundamentales</div>
+    <div class="accordion-item">
+      <div class="accordion-head" onclick="toggleAccordion(this)">
+        <span>✅ Regla 1: Suma — Símbolo menor a la derecha de uno mayor</span>
+        <span class="accordion-arrow">▼</span>
+      </div>
+      <div class="accordion-body open">
+        <p>Si un símbolo <strong>menor</strong> está a la <strong>derecha</strong> de uno mayor, sus valores se <strong>SUMAN</strong>.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;">
+          <div class="example-block" style="flex:1;min-width:140px;text-align:center;"><div class="ex-title">VI</div><p style="font-size:.85rem;color:var(--text2);">V(5) + I(1) = <strong>6</strong></p></div>
+          <div class="example-block" style="flex:1;min-width:140px;text-align:center;"><div class="ex-title">XV</div><p style="font-size:.85rem;color:var(--text2);">X(10) + V(5) = <strong>15</strong></p></div>
+          <div class="example-block" style="flex:1;min-width:140px;text-align:center;"><div class="ex-title">LX</div><p style="font-size:.85rem;color:var(--text2);">L(50) + X(10) = <strong>60</strong></p></div>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <div class="accordion-head" onclick="toggleAccordion(this)">
+        <span>✅ Regla 2: Resta — Símbolo menor a la izquierda de uno mayor</span>
+        <span class="accordion-arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <p>Si un símbolo <strong>menor</strong> está a la <strong>izquierda</strong> de uno mayor, se <strong>RESTA</strong> del mayor.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;">
+          <div class="example-block" style="flex:1;min-width:140px;text-align:center;"><div class="ex-title">IV</div><p style="font-size:.85rem;color:var(--text2);">V(5) - I(1) = <strong>4</strong></p></div>
+          <div class="example-block" style="flex:1;min-width:140px;text-align:center;"><div class="ex-title">IX</div><p style="font-size:.85rem;color:var(--text2);">X(10) - I(1) = <strong>9</strong></p></div>
+          <div class="example-block" style="flex:1;min-width:140px;text-align:center;"><div class="ex-title">XL</div><p style="font-size:.85rem;color:var(--text2);">L(50) - X(10) = <strong>40</strong></p></div>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <div class="accordion-head" onclick="toggleAccordion(this)">
+        <span>✅ Regla 3: Repetición — Máximo 3 veces seguidas</span>
+        <span class="accordion-arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <p>Un mismo símbolo puede repetirse <strong>máximo 3 veces</strong> consecutivas.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;">
+          <div class="rule-box rule-ok" style="flex:1;min-width:120px;"><strong>III = 3</strong> ✅</div>
+          <div class="rule-box rule-ok" style="flex:1;min-width:120px;"><strong>XXX = 30</strong> ✅</div>
+          <div class="rule-box rule-ok" style="flex:1;min-width:120px;"><strong>CCC = 300</strong> ✅</div>
+          <div class="rule-box rule-bad" style="flex:1;min-width:120px;"><strong>IIII = ❌ Incorrecto</strong> (usar IV = 4)</div>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <div class="accordion-head" onclick="toggleAccordion(this)">
+        <span>✅ Regla 4: V, L y D NO se repiten</span>
+        <span class="accordion-arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <p>Los símbolos <strong>V (5)</strong>, <strong>L (50)</strong> y <strong>D (500)</strong> <strong>NUNCA</strong> se repiten.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;">
+          <div class="rule-box rule-bad" style="flex:1;"><strong>VV = ❌</strong> — se debe usar X (10)</div>
+          <div class="rule-box rule-bad" style="flex:1;"><strong>LL = ❌</strong> — se debe usar C (100)</div>
+          <div class="rule-box rule-bad" style="flex:1;"><strong>DD = ❌</strong> — se debe usar M (1000)</div>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <div class="accordion-head" onclick="toggleAccordion(this)">
+        <span>✅ Regla 5: Restas permitidas (solo combinaciones específicas)</span>
+        <span class="accordion-arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <p>Solo están permitidas estas combinaciones de resta:</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;">
+          <div class="rule-box rule-ok" style="flex:1;"><strong>I</strong> antes de <strong>V</strong> o <strong>X</strong> → IV=4, IX=9</div>
+          <div class="rule-box rule-ok" style="flex:1;"><strong>X</strong> antes de <strong>L</strong> o <strong>C</strong> → XL=40, XC=90</div>
+          <div class="rule-box rule-ok" style="flex:1;"><strong>C</strong> antes de <strong>D</strong> o <strong>M</strong> → CD=400, CM=900</div>
+        </div>
+        <div class="rule-box rule-bad" style="margin-top:10px;"><strong>❌ Prohibidas:</strong> IC, IM, VX, IL, XM — estas combinaciones NO son válidas</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rule Simulator -->
+  <div class="card">
+    <div class="card-title">🔬 Simulador de Reglas</div>
+    <div class="card-sub">Escribe un número romano y verifica si cumple todas las reglas</div>
+    <div class="sim-box">
+      <input type="text" id="rule-input" class="sim-input" placeholder="Escribe un número romano (ej: XIV, XLII, CM)..." style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase();checkRules()">
+      <div id="rule-result" style="margin-top:14px;"></div>
+    </div>
+  </div>
+
+  <!-- Gamified rules quiz -->
+  <div class="card">
+    <div class="card-title">🎮 Quiz: ¿Es Correcto o Incorrecto?</div>
+    <div class="card-sub">Identifica si el número romano es válido según las reglas</div>
+    <div id="rules-game-container"></div>
+    <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-success btn-sm" id="rules-btn-yes" onclick="answerRulesGame(true)" disabled>✅ Es Correcto</button>
+      <button class="btn btn-danger btn-sm" id="rules-btn-no" onclick="answerRulesGame(false)" disabled>❌ Es Incorrecto</button>
+      <button class="btn btn-primary btn-sm" onclick="generateRulesGame()">🔄 Nueva pregunta</button>
+    </div>
+    <div id="rules-game-feedback" class="feedback-msg mt-8"></div>
+    <div style="margin-top:10px;" id="rules-score-display"></div>
+  </div>
+</div>
+
+<!-- ==================== S4: LECTURA Y ESCRITURA ==================== -->
+<div class="section-panel" id="s4">
+  <div class="section-header">
+    <div class="section-icon">✍️</div>
+    <h2>4. Lectura y Escritura de Números Romanos</h2>
+    <p>Aprende paso a paso cómo leer y escribir números romanos</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎬 Video Explicativo</div>
+    <div class="video-wrapper">
+      <video controls>
+        <source src="vid/num_rom2.mp4" type="video/mp4">
+        <p style="color:#94a3b8;padding:20px;text-align:center;">⚠️ Coloca el archivo <strong>num_rom2.mp4</strong> en la carpeta <code>vid/</code> para ver el video.</p>
+      </video>
+    </div>
+    <div class="video-label">📁 vid/num_rom2.mp4 — Lectura y Escritura de Números Romanos</div>
+  </div>
+
+  <!-- Reading steps -->
+  <div class="card">
+    <div class="card-title">📖 Cómo LEER números romanos (3 pasos)</div>
+    <div class="step-list" style="margin-top:14px;">
+      <div class="step-item"><div class="step-num">1</div><div class="step-content"><strong>Observa cada símbolo</strong> de izquierda a derecha e identifica su valor individual.</div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-content"><strong>Decide si suma o resta:</strong> Si el siguiente símbolo es mayor, el actual se resta. Si es menor o igual, se suma.</div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-content"><strong>Calcula el valor total</strong> sumando y restando según corresponda.</div></div>
+    </div>
+  </div>
+
+  <!-- 6 illustrated examples reading -->
+  <div class="card">
+    <div class="card-title">💡 6 Ejemplos Ilustrativos — Lectura</div>
+    <div id="read-examples" style="display:flex;flex-direction:column;gap:14px;margin-top:10px;"></div>
+  </div>
+
+  <!-- Writing steps -->
+  <div class="card">
+    <div class="card-title">✍️ Cómo ESCRIBIR números romanos (paso a paso)</div>
+    <div class="card-sub">Convierte el número descomponiendo por valor, usando la tabla de referencia</div>
+    <div class="example-block">
+      <div class="ex-title">📋 Tabla de referencia para escribir</div>
+      <div style="overflow-x:auto;"><table class="roman-table" style="margin-top:8px;">
+        <thead><tr><th>Valor</th><th>Romano</th><th>Valor</th><th>Romano</th><th>Valor</th><th>Romano</th></tr></thead>
+        <tbody>
+          <tr><td>1000</td><td><strong>M</strong></td><td>40</td><td><strong>XL</strong></td><td>9</td><td><strong>IX</strong></td></tr>
+          <tr><td>900</td><td><strong>CM</strong></td><td>10</td><td><strong>X</strong></td><td>5</td><td><strong>V</strong></td></tr>
+          <tr><td>500</td><td><strong>D</strong></td><td>9</td><td><strong>IX</strong></td><td>4</td><td><strong>IV</strong></td></tr>
+          <tr><td>400</td><td><strong>CD</strong></td><td>5</td><td><strong>V</strong></td><td>1</td><td><strong>I</strong></td></tr>
+          <tr><td>100</td><td><strong>C</strong></td><td>4</td><td><strong>IV</strong></td><td></td><td></td></tr>
+          <tr><td>90</td><td><strong>XC</strong></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>50</td><td><strong>L</strong></td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <!-- 6 writing examples -->
+  <div class="card">
+    <div class="card-title">💡 6 Ejemplos Ilustrativos — Escritura</div>
+    <div id="write-examples" style="display:flex;flex-direction:column;gap:14px;margin-top:10px;"></div>
+  </div>
+
+  <!-- Interactive simulator -->
+  <div class="card">
+    <div class="card-title">🔬 Simulador de Conversión Interactivo</div>
+    <div class="sim-box">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
+        <button class="btn btn-primary btn-sm" id="mode-a2r" onclick="setConvMode('a2r')">🔢 → 🏛️ Arábigo a Romano</button>
+        <button class="btn btn-outline btn-sm" id="mode-r2a" onclick="setConvMode('r2a')">🏛️ → 🔢 Romano a Arábigo</button>
+      </div>
+      <div id="conv-a2r">
+        <input type="number" id="conv-arabic" class="sim-input" placeholder="Escribe un número del 1 al 3999..." min="1" max="3999" oninput="convertA2R()">
+        <div id="conv-a2r-result" class="sim-result" style="margin-top:12px;display:none;"></div>
+        <div id="conv-a2r-steps" style="margin-top:10px;display:none;"></div>
+      </div>
+      <div id="conv-r2a" style="display:none;">
+        <input type="text" id="conv-roman" class="sim-input" placeholder="Escribe un número romano (ej: XLII)..." style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase();convertR2A()">
+        <div id="conv-r2a-result" class="sim-result" style="margin-top:12px;display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gamified quiz -->
+  <div class="card">
+    <div class="card-title">🎮 Práctica Gamificada — Conversión</div>
+    <div id="conv-game-container"></div>
+    <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-success btn-sm" onclick="checkConvAnswer()">✅ Verificar</button>
+      <button class="btn btn-primary btn-sm" onclick="generateConvGame()">🔄 Nueva pregunta</button>
+    </div>
+    <div id="conv-game-feedback" class="feedback-msg mt-8"></div>
+    <div style="margin-top:10px;" id="conv-score-display"></div>
+  </div>
+</div>
+
+<!-- ==================== S5: PRÁCTICA GUIADA ==================== -->
+<div class="section-panel" id="s5">
+  <div class="section-header">
+    <div class="section-icon">📝</div>
+    <h2>5. Práctica y Ejercicios Guiados</h2>
+    <p>Resuelve ejercicios con explicación paso a paso y verifica tus respuestas</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💡 6 Ejercicios Resueltos Paso a Paso</div>
+    <div id="guided-examples"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎯 Generador de Ejercicios Guiados</div>
+    <div class="card-sub">Genera un nuevo ejercicio y resuélvelo tú mismo</div>
+    <div id="guided-gen-container">
+      <button class="btn btn-primary" onclick="generateGuidedEx()">🎲 Generar Ejercicio Aleatorio</button>
+    </div>
+    <div id="guided-gen-problem" style="margin-top:16px;"></div>
+  </div>
+
+  <!-- Gamified practice -->
+  <div class="card">
+    <div class="card-title">🎮 Repaso Interactivo</div>
+    <div id="guided-game-container"></div>
+    <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-success btn-sm" onclick="checkGuidedGame()">✅ Verificar</button>
+      <button class="btn btn-primary btn-sm" onclick="generateGuidedGame()">🔄 Siguiente</button>
+    </div>
+    <div id="guided-game-feedback" class="feedback-msg mt-8"></div>
+    <div style="margin-top:10px;" id="guided-score-display"></div>
+  </div>
+</div>
+
+<!-- ==================== S6: EJERCICIOS ==================== -->
+<div class="section-panel" id="s6">
+  <div class="section-header">
+    <div class="section-icon">🎮</div>
+    <h2>6. Ejercicios de Práctica</h2>
+    <p>¡Pon a prueba tus conocimientos! Del nivel Fácil al Difícil</p>
+  </div>
+
+  <!-- Level selector -->
+  <div class="card">
+    <div class="card-title">🎚️ Selecciona el Nivel</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;">
+      <button class="btn btn-success" id="lvl-easy" onclick="setLevel('easy')">⭐ Fácil</button>
+      <button class="btn btn-gold" id="lvl-mid" onclick="setLevel('mid')">⭐⭐ Intermedio</button>
+      <button class="btn btn-danger" id="lvl-hard" onclick="setLevel('hard')">⭐⭐⭐ Difícil</button>
+    </div>
+    <div style="margin-top:10px;">
+      <span class="badge badge-blue" id="current-level-badge">Nivel: Fácil</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏆 Marcador</div>
+    <div class="score-display"><span class="score-label">Correctas</span><span class="score-val" id="ex-score-text">0 / 0</span></div>
+    <div class="score-bar-wrap"><div class="score-bar" id="ex-score-bar" style="width:0%"></div></div>
+    <div id="ex-stars" class="stars text-center">☆☆☆☆☆</div>
+  </div>
+
+  <!-- Exercise area -->
+  <div class="card" id="ex-card">
+    <div class="card-title" id="ex-type-label">Ejercicio</div>
+    <div id="ex-container">
+      <div style="text-align:center;padding:20px;">
+        <button class="btn btn-primary" onclick="startExercises()">🚀 ¡Comenzar Ejercicios!</button>
+      </div>
+    </div>
+    <div id="ex-feedback" class="feedback-msg mt-8"></div>
+    <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;" id="ex-btn-row" style="display:none;">
+      <button class="btn btn-success btn-sm" id="ex-check-btn" onclick="checkExercise()" style="display:none;">✅ Verificar</button>
+      <button class="btn btn-primary btn-sm" id="ex-next-btn" onclick="nextExercise()" style="display:none;">➡️ Siguiente</button>
+    </div>
+  </div>
+
+  <!-- Worksheet generator -->
+  <div class="card">
+    <div class="card-title">📄 Generador de Hoja de Ejercicios (PDF)</div>
+    <div class="card-sub">Configura y genera una hoja de ejercicios lista para imprimir o guardar como PDF</div>
+    <div class="ws-form">
+      <div class="ws-field"><label>🏫 Centro Educativo</label><input type="text" id="ws-school" placeholder="Nombre del centro educativo..." value=""></div>
+      <div class="ws-field"><label>👨‍🏫 Nombre del Maestro/a</label><input type="text" id="ws-teacher" placeholder="Nombre del maestro/a..." value=""></div>
+      <div class="ws-field"><label>📚 Curso / Grado</label><input type="text" id="ws-course" placeholder="Ej: 5° Primaria..." value=""></div>
+      <div class="ws-field"><label>🔢 Cantidad de ejercicios</label>
+        <select id="ws-count"><option value="10">10 ejercicios</option><option value="15">15 ejercicios</option><option value="20" selected>20 ejercicios</option><option value="25">25 ejercicios</option><option value="30">30 ejercicios</option></select>
+      </div>
+      <div class="ws-field full"><label>🔣 Tipo de ejercicios con agrupación</label>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;">
+          <label style="display:flex;align-items:center;gap:6px;font-size:.9rem;cursor:pointer;"><input type="checkbox" id="ws-parens" checked> Paréntesis ( )</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:.9rem;cursor:pointer;"><input type="checkbox" id="ws-brackets"> Corchetes [ ]</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:.9rem;cursor:pointer;"><input type="checkbox" id="ws-braces"> Llaves { }</label>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="generateWorksheet()">👁️ Vista Previa</button>
+      <button class="btn btn-success" onclick="printWorksheet()">💾 Guardar como PDF</button>
+    </div>
+    <div id="ws-preview" style="margin-top:16px;display:none;"></div>
+  </div>
+</div>
+
+<!-- ==================== S7: EVALUACIÓN FINAL ==================== -->
+<div class="section-panel" id="s7">
+  <div class="section-header">
+    <div class="section-icon">🏆</div>
+    <h2>7. Evaluación Final</h2>
+    <p>Demuestra todo lo que aprendiste — 10 preguntas con calificación automática</p>
+  </div>
+
+  <div id="eval-start" class="card text-center">
+    <div style="font-size:3rem;margin-bottom:12px;">📋</div>
+    <div class="card-title" style="justify-content:center;font-size:1.3rem;">Evaluación Final de Números Romanos</div>
+    <p style="color:var(--text2);margin:12px 0 20px;line-height:1.6;">Esta evaluación tiene <strong>10 preguntas</strong> (4 teóricas + 6 prácticas).<br>Recibirás retroalimentación inmediata en cada pregunta.<br>Al finalizar verás tu calificación y desempeño.</p>
+    <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:20px;">
+      <span class="badge badge-blue">📖 4 preguntas teóricas</span>
+      <span class="badge badge-green">✏️ 6 ejercicios prácticos</span>
+      <span class="badge badge-gold">⭐ Calificación automática</span>
+    </div>
+    <button class="btn btn-primary" style="padding:14px 40px;font-size:1rem;" onclick="startEval()">🚀 Iniciar Evaluación</button>
+  </div>
+
+  <div id="eval-body" style="display:none;">
+    <div class="card">
+      <div class="card-title">📊 Progreso</div>
+      <div class="score-display"><span class="score-label" id="eval-progress-label">Pregunta 1 de 10</span><span class="score-val" id="eval-points-label">0 pts</span></div>
+      <div class="score-bar-wrap"><div class="score-bar" id="eval-progress-bar" style="width:0%"></div></div>
+    </div>
+    <div id="eval-questions"></div>
+    <div style="margin-top:16px;text-align:center;" id="eval-submit-row" style="display:none;">
+      <button class="btn btn-primary" style="padding:13px 36px;" onclick="submitEval()">📊 Ver Resultados</button>
+    </div>
+  </div>
+
+  <div id="eval-result" style="display:none;">
+    <div class="eval-box">
+      <h3>🏆 Resultado de tu Evaluación</h3>
+      <div class="eval-score-big" id="eval-final-score">0/10</div>
+      <div style="margin:8px 0 14px;" id="eval-grade-label"></div>
+      <div class="stars" id="eval-stars"></div>
+    </div>
+    <div id="eval-review"></div>
+    <div style="margin-top:16px;text-align:center;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="retryEval()">🔄 Volver a Intentar</button>
+      <button class="btn btn-gold" onclick="showSection('s0')">🏠 Volver al Inicio</button>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- ==================== FOOTER ==================== -->
+<footer style="background:var(--navy);color:#94a3b8;text-align:center;padding:18px;font-size:.82rem;margin-left:var(--sidebar-w);transition:var(--transition);" id="footer">
+  © 2026 MenteMatemáticaI. Todos los derechos reservados VC.
+</footer>
+
+<!-- ==================== PRINT WORKSHEET ==================== -->
+<div id="print-worksheet"></div>
+
+<script>
+/* =====================================================================
+   JAVASCRIPT PRINCIPAL — NÚMEROS ROMANOS PLATAFORMA EDUCATIVA
+   ===================================================================== */
+
+// ── Utility: Roman numeral conversion ──────────────────────────────────
+const ROMAN_VALS=[1000,900,500,400,100,90,50,40,10,9,5,4,1];
+const ROMAN_SYMS=['M','CM','D','CD','C','XC','L','XL','X','IX','V','IV','I'];
+
+function toRoman(n){
+  if(!n||n<1||n>3999)return'—';
+  let r='';
+  for(let i=0;i<ROMAN_VALS.length;i++){while(n>=ROMAN_VALS[i]){r+=ROMAN_SYMS[i];n-=ROMAN_VALS[i];}}
+  return r;
+}
+function fromRoman(s){
+  const map={I:1,V:5,X:10,L:50,C:100,D:500,M:1000};
+  s=s.toUpperCase().trim();
+  let r=0,prev=0;
+  for(let i=s.length-1;i>=0;i--){
+    const v=map[s[i]];
+    if(!v)return NaN;
+    if(v<prev)r-=v; else r+=v;
+    prev=v;
+  }
+  return r;
+}
+function isValidRoman(s){
+  if(!s)return false;
+  const valid=/^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/i;
+  return valid.test(s.toUpperCase());
+}
+
+// ── Navigation ──────────────────────────────────────────────────────────
+function showSection(id){
+  document.querySelectorAll('.section-panel').forEach(p=>{p.classList.remove('active');});
+  document.querySelectorAll('.nav-item').forEach(n=>{n.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  // Initialize section-specific content
+  if(id==='s0')initCanvasIntro();
+  if(id==='s1'){initSymbols();generateDefQuiz();}
+  if(id==='s2'){initCanvasComparison();generatePropGame();}
+  if(id==='s3'){generateRulesGame();}
+  if(id==='s4'){initReadExamples();initWriteExamples();generateConvGame();}
+  if(id==='s5'){initGuidedExamples();generateGuidedGame();}
+  if(id==='s6'){startExercises();}
+}
+
+function closeWelcome(){
+  document.getElementById('welcome-overlay').style.animation='fadeOut .3s ease forwards';
+  setTimeout(()=>{document.getElementById('welcome-overlay').style.display='none';initCanvasIntro();},300);
+}
+
+// ── Canvas: Intro animation ─────────────────────────────────────────────
+function initCanvasIntro(){
+  const c=document.getElementById('canvas-intro');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+  const syms=['I','V','X','L','C','D','M'];
+  const vals=[1,5,10,50,100,500,1000];
+  const colors=['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#f97316'];
+  let t=0;
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    // Background
+    ctx.fillStyle='#0d1117';ctx.fillRect(0,0,c.width,c.height);
+    // Stars
+    for(let i=0;i<30;i++){
+      const x=(i*73+t*0.1)%c.width;
+      const y=10+Math.sin(i*1.5+t*0.05)*40;
+      ctx.fillStyle='rgba(255,255,255,'+(0.2+Math.sin(i+t*0.1)*0.3)+')';
+      ctx.fillRect(x,y,1.5,1.5);
+    }
+    // Symbols
+    syms.forEach((sym,i)=>{
+      const x=50+i*(c.width-80)/6;
+      const y=60+Math.sin(t*0.05+i*0.8)*18;
+      const scale=1+Math.sin(t*0.04+i*0.7)*0.08;
+      ctx.save();
+      ctx.translate(x,y);
+      ctx.scale(scale,scale);
+      ctx.font='bold 36px Georgia,serif';
+      ctx.textAlign='center';
+      ctx.textBaseline='middle';
+      // Glow
+      ctx.shadowColor=colors[i];ctx.shadowBlur=16;
+      ctx.fillStyle=colors[i];
+      ctx.fillText(sym,0,0);
+      ctx.shadowBlur=0;
+      // Value
+      ctx.font='bold 13px Arial';
+      ctx.fillStyle='rgba(255,255,255,.7)';
+      ctx.fillText('='+vals[i],0,26);
+      ctx.restore();
+    });
+    t++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ── Canvas: Comparison ──────────────────────────────────────────────────
+function initCanvasComparison(){
+  const c=document.getElementById('canvas-comparison');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+  const W=c.width,H=c.height;
+  // Left side: Arábigo
+  ctx.fillStyle='#0d2b5e';ctx.roundRect(10,10,W/2-20,H-20,12);ctx.fill();
+  ctx.fillStyle='#ffffff';ctx.font='bold 15px Arial';ctx.textAlign='center';
+  ctx.fillText('Sistema Arábigo (moderno)',W/4,34);
+  ctx.font='14px Arial';ctx.fillStyle='#93c5fd';
+  const arab=['✅ Tiene cero (0)','📍 Posicional (posición importa)','🔢 10 dígitos: 0-9','♾️ Ilimitado'];
+  arab.forEach((t,i)=>{ctx.fillText(t,W/4,58+i*26);});
+  // Right side: Romano
+  ctx.fillStyle='#1a3a7a';ctx.roundRect(W/2+10,10,W/2-20,H-20,12);ctx.fill();
+  ctx.fillStyle='#ffffff';ctx.font='bold 15px Arial';
+  ctx.fillText('Sistema Romano (antiguo)',W*3/4,34);
+  ctx.font='14px Arial';ctx.fillStyle='#fde68a';
+  const rom=['❌ Sin cero','🔠 No posicional','✉️ 7 símbolos: I,V,X,L,C,D,M','📊 Hasta 3999'];
+  rom.forEach((t,i)=>{ctx.fillText(t,W*3/4,58+i*26);});
+}
+
+// ── Section 1: Symbol display ───────────────────────────────────────────
+const symbolData=[
+  {sym:'I',val:1,color:'#2563eb',desc:'Representa UN dedo levantado. Valor: 1'},
+  {sym:'V',val:5,color:'#10b981',desc:'Representa la mano abierta (5 dedos). Valor: 5'},
+  {sym:'X',val:10,color:'#7c3aed',desc:'Dos manos: 5+5. Valor: 10'},
+  {sym:'L',val:50,color:'#16a34a',desc:'Medio centenar. Valor: 50'},
+  {sym:'C',val:100,color:'#d97706',desc:'De "Centum" (cien en latín). Valor: 100'},
+  {sym:'D',val:500,color:'#dc2626',desc:'Medio millar. Valor: 500'},
+  {sym:'M',val:1000,color:'#475569',desc:'De "Mille" (mil en latín). Valor: 1000'},
+];
+function initSymbols(){
+  const d=document.getElementById('symbol-display');
+  if(!d)return;
+  d.innerHTML='';
+  symbolData.forEach(s=>{
+    const btn=document.createElement('button');
+    btn.style.cssText=`background:${s.color};color:#fff;border:none;border-radius:14px;padding:16px 20px;cursor:pointer;font-size:2rem;font-weight:900;font-family:Georgia,serif;min-width:70px;transition:all .2s;box-shadow:0 4px 12px rgba(0,0,0,.2);`;
+    btn.textContent=s.sym;
+    btn.title=`${s.sym} = ${s.val}`;
+    btn.onclick=()=>{
+      const info=document.getElementById('symbol-info');
+      document.getElementById('sym-text').innerHTML=`<span style="font-size:2rem;font-weight:900;color:${s.color};font-family:Georgia,serif;">${s.sym}</span> &nbsp;=&nbsp; <strong style="color:var(--navy)">${s.val}</strong> &nbsp;|&nbsp; ${s.desc}`;
+      info.style.display='flex';
+      info.style.borderLeftColor=s.color;
+      btn.style.transform='scale(1.1)';
+      setTimeout(()=>{btn.style.transform='';},300);
+    };
+    d.appendChild(btn);
+  });
+}
+
+// ── Section 1: Quick quiz ───────────────────────────────────────────────
+let defQuizCurrent=null;
+function generateDefQuiz(){
+  const types=['val2sym','sym2val'];
+  const t=types[Math.floor(Math.random()*2)];
+  const s=symbolData[Math.floor(Math.random()*symbolData.length)];
+  defQuizCurrent={type:t,data:s};
+  const c=document.getElementById('def-quiz-container');
+  if(!c)return;
+  const fb=document.getElementById('def-quiz-feedback');
+  if(fb){fb.className='feedback-msg';fb.textContent='';}
+  if(t==='val2sym'){
+    c.innerHTML=`<div class="quiz-question"><h4>¿Qué símbolo romano representa el número <span class="roman-big" style="font-size:1.5rem;">${s.val}</span>?</h4>
+    <input type="text" id="def-quiz-input" class="sim-input" placeholder="Escribe el símbolo..." style="text-transform:uppercase;max-width:200px;" maxlength="1" oninput="this.value=this.value.toUpperCase()">
+    </div>`;
+  } else {
+    c.innerHTML=`<div class="quiz-question"><h4>¿Cuánto vale el símbolo romano <span class="roman-big" style="font-size:1.8rem;color:${s.color};">${s.sym}</span>?</h4>
+    <input type="number" id="def-quiz-input" class="sim-input" placeholder="Escribe el valor..." style="max-width:200px;">
+    </div>`;
+  }
+}
+function checkDefAnswer(){
+  const inp=document.getElementById('def-quiz-input');
+  const fb=document.getElementById('def-quiz-feedback');
+  if(!inp||!defQuizCurrent)return;
+  const val=inp.value.trim().toUpperCase();
+  let correct=false;
+  if(defQuizCurrent.type==='val2sym') correct=val===defQuizCurrent.data.sym;
+  else correct=parseInt(val)===defQuizCurrent.data.val;
+  fb.className='feedback-msg show '+(correct?'feedback-correct':'feedback-wrong');
+  fb.textContent=correct?'✅ ¡Correcto! Muy bien.':'❌ Incorrecto. '+(defQuizCurrent.type==='val2sym'?`El símbolo es ${defQuizCurrent.data.sym}.`:`El valor es ${defQuizCurrent.data.val}.`);
+}
+
+// ── Section 2: Property analyzer ───────────────────────────────────────
+function analyzeProp(){
+  const v=parseInt(document.getElementById('prop-input').value);
+  const d=document.getElementById('prop-result');
+  if(!v||v<1||v>3999){d.innerHTML='<p style="color:var(--text2)">Ingresa un número entre 1 y 3999.</p>';return;}
+  const roman=toRoman(v);
+  d.innerHTML=`
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;">
+      <div class="example-block" style="flex:1;text-align:center;"><div class="ex-title">Número Arábigo</div><div class="arabic-big">${v}</div></div>
+      <div class="example-block" style="flex:1;text-align:center;"><div class="ex-title">Número Romano</div><div class="roman-big">${roman}</div></div>
+    </div>
+    <div class="rule-box rule-info"><strong>🔍 Análisis:</strong>
+      <ul style="margin-top:6px;padding-left:20px;font-size:.9rem;line-height:1.8;color:var(--text2);">
+        <li>¿Usa el cero? <strong>No</strong> — Los romanos no tienen cero.</li>
+        <li>Cantidad de símbolos: <strong>${roman.length}</strong></li>
+        <li>¿Es posicional? <strong>No</strong> — El valor de cada símbolo es fijo.</li>
+        <li>Dirección de lectura: <strong>Izquierda → Derecha (mayor a menor generalmente)</strong></li>
+      </ul>
+    </div>`;
+}
+
+// ── Section 2: True/False game ──────────────────────────────────────────
+const propStatements=[
+  {s:'Los números romanos utilizan el cero (0).',a:false},
+  {s:'El sistema romano se basa en la suma y resta de símbolos.',a:true},
+  {s:'En el sistema romano, la posición de un símbolo SIEMPRE cambia su valor.',a:false},
+  {s:'Los números romanos se originaron en la antigua Roma.',a:true},
+  {s:'Los números romanos pueden representar cualquier cantidad incluyendo fracciones.',a:false},
+  {s:'Los números romanos generalmente se escriben de mayor a menor valor.',a:true},
+  {s:'V equivale a 5 en los números romanos.',a:true},
+  {s:'El número romano M equivale a 100.',a:false},
+  {s:'Los números romanos utilizan letras del alfabeto latino.',a:true},
+  {s:'El número romano C equivale a 500.',a:false},
+];
+let propGameScore={correct:0,total:0},propGameCurrent=null;
+function generatePropGame(){
+  const q=propStatements[Math.floor(Math.random()*propStatements.length)];
+  propGameCurrent=q;
+  const c=document.getElementById('prop-game-container');
+  if(!c)return;
+  c.innerHTML=`<div class="quiz-question">
+    <h4>¿Verdadero o Falso?</h4>
+    <p style="font-size:1.05rem;color:var(--text);margin-bottom:14px;">"${q.s}"</p>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-success" onclick="answerPropGame(true)">✅ Verdadero</button>
+      <button class="btn btn-danger" onclick="answerPropGame(false)">❌ Falso</button>
+    </div>
+  </div>`;
+  updatePropScore();
+}
+function answerPropGame(ans){
+  if(!propGameCurrent)return;
+  propGameScore.total++;
+  const c=document.getElementById('prop-game-container');
+  if(ans===propGameCurrent.a){
+    propGameScore.correct++;
+    c.innerHTML+='<div class="feedback-msg show feedback-correct">✅ ¡Correcto!</div>';
+  } else {
+    c.innerHTML+='<div class="feedback-msg show feedback-wrong">❌ Incorrecto. La respuesta era: '+(propGameCurrent.a?'Verdadero':'Falso')+'</div>';
+  }
+  updatePropScore();
+  setTimeout(generatePropGame,1800);
+}
+function updatePropScore(){
+  const d=document.getElementById('prop-game-score-display');
+  if(!d)return;
+  const pct=propGameScore.total>0?Math.round(propGameScore.correct/propGameScore.total*100):0;
+  d.innerHTML=`<span class="badge badge-blue">Correctas: ${propGameScore.correct}</span> <span class="badge badge-gold">Total: ${propGameScore.total}</span> <span class="badge badge-green">${pct}%</span>`;
+}
+
+// ── Section 3: Accordion ────────────────────────────────────────────────
+function toggleAccordion(h){
+  const body=h.nextElementSibling;
+  h.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+// ── Section 3: Rule checker ─────────────────────────────────────────────
+function checkRules(){
+  const s=document.getElementById('rule-input').value.toUpperCase();
+  const d=document.getElementById('rule-result');
+  if(!s){d.innerHTML='';return;}
+  const valid=isValidRoman(s);
+  const val=valid?fromRoman(s):0;
+  if(valid){
+    d.innerHTML=`<div class="rule-box rule-ok">✅ <strong>${s}</strong> es un número romano válido = <strong>${val}</strong></div>`;
+  } else {
+    d.innerHTML=`<div class="rule-box rule-bad">❌ <strong>${s}</strong> no es un número romano válido. Revisa las reglas de escritura.</div>`;
+  }
+}
+
+// ── Section 3: Rules game (valid/invalid) ───────────────────────────────
+const rulesExamples=[
+  {r:'IV',valid:true},{r:'IX',valid:true},{r:'XL',valid:true},{r:'XC',valid:true},
+  {r:'CD',valid:true},{r:'CM',valid:true},{r:'XIV',valid:true},{r:'XLII',valid:true},
+  {r:'MMXXIV',valid:true},{r:'CCCXCIX',valid:true},
+  {r:'IIII',valid:false},{r:'VV',valid:false},{r:'LL',valid:false},{r:'IC',valid:false},
+  {r:'VX',valid:false},{r:'IL',valid:false},{r:'XM',valid:false},{r:'DD',valid:false},
+  {r:'IIIII',valid:false},{r:'IIV',valid:false},
+];
+let rulesScore={correct:0,total:0},rulesGameCurrent=null;
+function generateRulesGame(){
+  const q=rulesExamples[Math.floor(Math.random()*rulesExamples.length)];
+  rulesGameCurrent=q;
+  const c=document.getElementById('rules-game-container');
+  if(!c)return;
+  const fb=document.getElementById('rules-game-feedback');
+  if(fb){fb.className='feedback-msg';fb.textContent='';}
+  c.innerHTML=`<div class="quiz-question text-center">
+    <h4>¿Es este número romano <strong>válido</strong> o <strong>inválido</strong>?</h4>
+    <div class="roman-big" style="font-size:3rem;margin:16px 0;">${q.r}</div>
+  </div>`;
+  document.getElementById('rules-btn-yes').disabled=false;
+  document.getElementById('rules-btn-no').disabled=false;
+  updateRulesScore();
+}
+function answerRulesGame(ans){
+  if(!rulesGameCurrent)return;
+  rulesScore.total++;
+  const fb=document.getElementById('rules-game-feedback');
+  const correct=(ans===rulesGameCurrent.valid);
+  if(correct){rulesScore.correct++;}
+  fb.className='feedback-msg show '+(correct?'feedback-correct':'feedback-wrong');
+  const explanation=rulesGameCurrent.valid?`${rulesGameCurrent.r} = ${fromRoman(rulesGameCurrent.r)} — válido.`:`${rulesGameCurrent.r} — inválido, viola las reglas.`;
+  fb.textContent=(correct?'✅ ¡Correcto! ':'❌ Incorrecto. ')+explanation;
+  document.getElementById('rules-btn-yes').disabled=true;
+  document.getElementById('rules-btn-no').disabled=true;
+  updateRulesScore();
+  setTimeout(generateRulesGame,2200);
+}
+function updateRulesScore(){
+  const d=document.getElementById('rules-score-display');
+  if(!d)return;
+  const pct=rulesScore.total>0?Math.round(rulesScore.correct/rulesScore.total*100):0;
+  d.innerHTML=`<span class="badge badge-blue">Correctas: ${rulesScore.correct}</span> <span class="badge badge-gold">Total: ${rulesScore.total}</span> <span class="badge badge-green">${pct}%</span>`;
+}
+
+// ── Section 4: Read examples ────────────────────────────────────────────
+const readExData=[
+  {roman:'VI',steps:[{sym:'V',val:5,op:'+',reason:'V(5) es el primero'},
+    {sym:'I',val:1,op:'+',reason:'I(1) < ninguno mayor a su derecha → suma'}],result:6},
+  {roman:'XIV',steps:[{sym:'X',val:10,op:'+',reason:'X(10) → siguiente es I, que es menor → suma'},
+    {sym:'I',val:1,op:'-',reason:'I(1) está antes de V(5), que es mayor → resta'},
+    {sym:'V',val:5,op:'+',reason:'V(5) → es el mayor de este par'}],result:14},
+  {roman:'IX',steps:[{sym:'I',val:1,op:'-',reason:'I(1) está antes de X(10), que es mayor → resta'},
+    {sym:'X',val:10,op:'+',reason:'X(10) es el mayor de este par'}],result:9},
+  {roman:'XL',steps:[{sym:'X',val:10,op:'-',reason:'X(10) está antes de L(50), que es mayor → resta'},
+    {sym:'L',val:50,op:'+',reason:'L(50) es el mayor de este par'}],result:40},
+  {roman:'XLII',steps:[{sym:'X',val:10,op:'-',reason:'X(10) antes de L(50) → resta'},
+    {sym:'L',val:50,op:'+',reason:'L(50) mayor'},
+    {sym:'I',val:1,op:'+',reason:'I(1) suma'},
+    {sym:'I',val:1,op:'+',reason:'I(1) suma'}],result:42},
+  {roman:'MMXXIV',steps:[{sym:'M',val:1000,op:'+',reason:'M(1000) suma'},
+    {sym:'M',val:1000,op:'+',reason:'M(1000) suma'},
+    {sym:'X',val:10,op:'+',reason:'X(10) suma'},
+    {sym:'X',val:10,op:'+',reason:'X(10) suma'},
+    {sym:'I',val:1,op:'-',reason:'I(1) antes de V(5) → resta'},
+    {sym:'V',val:5,op:'+',reason:'V(5) mayor'}],result:2024},
+];
+function initReadExamples(){
+  const d=document.getElementById('read-examples');
+  if(!d||d.children.length>0)return;
+  readExData.forEach((ex,i)=>{
+    let stepsHtml='';
+    let running=0;
+    ex.steps.forEach(st=>{
+      if(st.op==='+')running+=st.val; else running-=st.val;
+      stepsHtml+=`<div class="step-item"><div class="step-num" style="background:${st.op==='+'?'var(--green)':'var(--red)'};min-width:28px;height:28px;font-size:.8rem;">${st.op}</div>
+      <div class="step-content"><strong>${st.sym}</strong> = ${st.val} → ${st.reason} | Acumulado: <strong>${running}</strong></div></div>`;
+    });
+    const el=document.createElement('div');
+    el.className='example-block';
+    el.innerHTML=`<div class="ex-title">Ejemplo ${i+1}: <span class="roman-big" style="font-size:1.5rem;">${ex.roman}</span></div>
+    <div style="margin-top:10px;">${stepsHtml}</div>
+    <div class="rule-box rule-ok" style="margin-top:8px;">🎯 Resultado: <strong>${ex.roman} = ${ex.result}</strong></div>`;
+    d.appendChild(el);
+  });
+}
+
+// ── Section 4: Write examples ───────────────────────────────────────────
+const writeExData=[
+  {n:23,roman:'XXIII',steps:['20 = XX (dos veces X)','3 = III (tres veces I)','Resultado: XX + III = XXIII']},
+  {n:47,roman:'XLVII',steps:['40 = XL (X antes de L → resta)','7 = VII (V + I + I)','Resultado: XL + VII = XLVII']},
+  {n:99,roman:'XCIX',steps:['90 = XC (X antes de C)','9 = IX (I antes de X)','Resultado: XC + IX = XCIX']},
+  {n:145,roman:'CXLV',steps:['100 = C','40 = XL (X antes de L)','5 = V','Resultado: C + XL + V = CXLV']},
+  {n:399,roman:'CCCXCIX',steps:['300 = CCC (tres veces C)','90 = XC (X antes de C)','9 = IX (I antes de X)','Resultado: CCC + XC + IX = CCCXCIX']},
+  {n:2024,roman:'MMXXIV',steps:['2000 = MM (dos veces M)','20 = XX (dos veces X)','4 = IV (I antes de V)','Resultado: MM + XX + IV = MMXXIV']},
+];
+function initWriteExamples(){
+  const d=document.getElementById('write-examples');
+  if(!d||d.children.length>0)return;
+  writeExData.forEach((ex,i)=>{
+    const el=document.createElement('div');
+    el.className='example-block';
+    let stepsHtml=ex.steps.map((s,j)=>`<div class="step-item"><div class="step-num" style="background:var(--blue2);min-width:28px;height:28px;font-size:.8rem;">${j+1}</div><div class="step-content">${s}</div></div>`).join('');
+    el.innerHTML=`<div class="ex-title">Ejemplo ${i+1}: Convertir <strong>${ex.n}</strong> a romano</div>
+    <div style="margin-top:10px;">${stepsHtml}</div>
+    <div class="rule-box rule-ok" style="margin-top:8px;">✅ <strong>${ex.n} = <span class="roman-big" style="font-size:1.2rem;">${ex.roman}</span></strong></div>`;
+    d.appendChild(el);
+  });
+}
+
+// ── Section 4: Conversion simulator ────────────────────────────────────
+let convMode='a2r';
+function setConvMode(m){
+  convMode=m;
+  document.getElementById('conv-a2r').style.display=m==='a2r'?'block':'none';
+  document.getElementById('conv-r2a').style.display=m==='r2a'?'block':'none';
+  document.getElementById('mode-a2r').className='btn btn-sm '+(m==='a2r'?'btn-primary':'btn-outline');
+  document.getElementById('mode-r2a').className='btn btn-sm '+(m==='r2a'?'btn-primary':'btn-outline');
+}
+function convertA2R(){
+  const v=parseInt(document.getElementById('conv-arabic').value);
+  const res=document.getElementById('conv-a2r-result');
+  const steps=document.getElementById('conv-a2r-steps');
+  if(!v||v<1||v>3999){res.style.display='none';steps.style.display='none';return;}
+  const roman=toRoman(v);
+  res.style.display='flex';
+  res.innerHTML=`<span style="font-size:1.6rem;">🔢 ${v}</span> <span style="font-size:1.8rem;color:var(--navy);">→</span> <span class="roman-big" style="font-size:2rem;">${roman}</span>`;
+  // Build steps
+  let remaining=v,stepsArr=[],stepsHtml='<div style="margin-top:10px;font-size:.85rem;"><strong>Pasos:</strong><br>';
+  ROMAN_VALS.forEach((rv,i)=>{while(remaining>=rv){stepsArr.push({val:rv,sym:ROMAN_SYMS[i]});remaining-=rv;}});
+  stepsArr.forEach((s,i)=>{stepsHtml+=`<span style="margin-right:6px;">Paso ${i+1}: ${s.sym}(${s.val})</span>`;});
+  stepsHtml+='</div>';
+  steps.innerHTML=stepsHtml;
+  steps.style.display='block';
+}
+function convertR2A(){
+  const s=document.getElementById('conv-roman').value.toUpperCase();
+  const res=document.getElementById('conv-r2a-result');
+  if(!s){res.style.display='none';return;}
+  res.style.display='flex';
+  if(!isValidRoman(s)){
+    res.innerHTML='<span style="color:var(--red);">❌ Número romano inválido. Revisa las reglas.</span>';
+    res.style.borderLeftColor='var(--red)';
+    return;
+  }
+  const val=fromRoman(s);
+  res.innerHTML=`<span class="roman-big" style="font-size:2rem;">${s}</span> <span style="font-size:1.8rem;color:var(--navy);">→</span> <span style="font-size:1.6rem;font-weight:800;color:var(--blue);">${val}</span>`;
+  res.style.borderLeftColor='var(--blue)';
+}
+
+// ── Section 4: Conversion game ──────────────────────────────────────────
+let convScore={correct:0,total:0},convGameCurrent=null;
+function generateConvGame(){
+  const types=['a2r','r2a'];
+  const t=types[Math.floor(Math.random()*2)];
+  const n=Math.floor(Math.random()*99)+1;
+  convGameCurrent={type:t,n:n,roman:toRoman(n)};
+  const c=document.getElementById('conv-game-container');
+  if(!c)return;
+  const fb=document.getElementById('conv-game-feedback');
+  if(fb){fb.className='feedback-msg';fb.textContent='';}
+  if(t==='a2r'){
+    c.innerHTML=`<div class="game-card"><div style="font-size:.9rem;color:var(--text2);margin-bottom:6px;">Convierte a número ROMANO:</div>
+    <div class="big-number">${n}</div>
+    <input type="text" id="conv-game-inp" class="fill-input" placeholder="Escribe en romano..." style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
+    </div>`;
+  } else {
+    c.innerHTML=`<div class="game-card"><div style="font-size:.9rem;color:var(--text2);margin-bottom:6px;">Convierte a número ARÁBIGO:</div>
+    <div class="big-number roman-big" style="font-size:2.5rem;">${toRoman(n)}</div>
+    <input type="number" id="conv-game-inp" class="fill-input" placeholder="Escribe el número...">
+    </div>`;
+  }
+  updateConvScore();
+}
+function checkConvAnswer(){
+  if(!convGameCurrent)return;
+  const inp=document.getElementById('conv-game-inp');
+  const fb=document.getElementById('conv-game-feedback');
+  if(!inp||!fb)return;
+  convScore.total++;
+  let correct=false;
+  if(convGameCurrent.type==='a2r'){
+    correct=inp.value.trim().toUpperCase()===convGameCurrent.roman;
+    if(!correct){fb.textContent=`❌ La respuesta correcta es: ${convGameCurrent.roman}`;}
+  } else {
+    correct=parseInt(inp.value)===convGameCurrent.n;
+    if(!correct){fb.textContent=`❌ La respuesta correcta es: ${convGameCurrent.n}`;}
+  }
+  if(correct){convScore.correct++;inp.className='fill-input correct-input';fb.textContent='✅ ¡Excelente!';}
+  else{inp.className='fill-input wrong-input';}
+  fb.className='feedback-msg show '+(correct?'feedback-correct':'feedback-wrong');
+  updateConvScore();
+  setTimeout(generateConvGame,2000);
+}
+function updateConvScore(){
+  const d=document.getElementById('conv-score-display');
+  if(!d)return;
+  const pct=convScore.total>0?Math.round(convScore.correct/convScore.total*100):0;
+  d.innerHTML=`<span class="badge badge-blue">Correctas: ${convScore.correct}</span> <span class="badge badge-gold">Total: ${convScore.total}</span> <span class="badge badge-green">${pct}%</span>`;
+}
+
+// ── Section 5: Guided examples ──────────────────────────────────────────
+const guidedExData=[
+  {title:'Ejercicio 5a: Convierte 48 a romano',n:48,roman:'XLVIII',
+   steps:['48 = 40 + 8','40 → XL (X antes de L, sustracción)','8 → VIII (V + I + I + I)','Resultado: XL + VIII = XLVIII']},
+  {title:'Ejercicio 5b: Convierte 99 a romano',n:99,roman:'XCIX',
+   steps:['99 = 90 + 9','90 → XC (X antes de C, sustracción)','9 → IX (I antes de X, sustracción)','Resultado: XC + IX = XCIX']},
+  {title:'Ejercicio 5c: Convierte 145 a romano',n:145,roman:'CXLV',
+   steps:['145 = 100 + 40 + 5','100 → C','40 → XL (X antes de L)','5 → V','Resultado: C + XL + V = CXLV']},
+  {title:'Ejercicio 5d: XLVIII → arábigo',n:48,roman:'XLVIII',direction:'r2a',
+   steps:['XL = L(50) - X(10) = 40','V = 5','I = 1','I = 1','I = 1','Total = 40 + 5 + 1 + 1 + 1 = 48']},
+  {title:'Ejercicio 5e: XCIX → arábigo',n:99,roman:'XCIX',direction:'r2a',
+   steps:['XC = C(100) - X(10) = 90','IX = X(10) - I(1) = 9','Total = 90 + 9 = 99']},
+  {title:'Ejercicio 5f: Operación X + IX = ?',type:'op',expression:'X + IX',result:'XIX',n:19,
+   steps:['X = 10','IX = 9','10 + 9 = 19','19 en romano → XIX (X + IX)','Resultado: XIX']},
+];
+function initGuidedExamples(){
+  const d=document.getElementById('guided-examples');
+  if(!d||d.children.length>0)return;
+  guidedExData.forEach((ex,i)=>{
+    const el=document.createElement('div');
+    el.className='example-block';
+    const stepsHtml=ex.steps.map((s,j)=>`<div class="step-item"><div class="step-num" style="background:var(--purple);min-width:26px;height:26px;font-size:.75rem;">${j+1}</div><div class="step-content">${s}</div></div>`).join('');
+    const question=ex.type==='op'?`<strong>${ex.expression} = ?</strong>`:(ex.direction==='r2a'?`<strong>${ex.roman} → ?</strong>`:`<strong>${ex.n} → romano</strong>`);
+    el.innerHTML=`<div class="ex-title">${ex.title}</div>
+    <div style="padding:8px 0;font-size:1rem;">${question}</div>
+    <button class="btn btn-outline btn-sm" onclick="toggleGuidedEx(this)">👁️ Ver solución</button>
+    <div style="display:none;margin-top:10px;">${stepsHtml}
+    <div class="rule-box rule-ok" style="margin-top:8px;">✅ Respuesta: <strong>${ex.type==='op'||!ex.direction?ex.roman:(ex.roman||ex.n)} = ${ex.type==='op'?ex.n:(ex.direction==='r2a'?ex.n:ex.roman)}</strong></div>
+    </div>`;
+    d.appendChild(el);
+  });
+}
+function toggleGuidedEx(btn){
+  const sol=btn.nextElementSibling;
+  const hidden=(sol.style.display==='none');
+  sol.style.display=hidden?'block':'none';
+  btn.textContent=hidden?'🙈 Ocultar solución':'👁️ Ver solución';
+}
+
+// ── Section 5: Exercise generator ───────────────────────────────────────
+function generateGuidedEx(){
+  const n=Math.floor(Math.random()*498)+1;
+  const roman=toRoman(n);
+  const types=['a2r','r2a'];
+  const t=types[Math.floor(Math.random()*2)];
+  const c=document.getElementById('guided-gen-problem');
+  if(!c)return;
+  let stepsHtml='';
+  if(t==='a2r'){
+    let rem=n,step=1;
+    ROMAN_VALS.forEach((rv,i)=>{while(rem>=rv){stepsHtml+=`<div class="step-item"><div class="step-num" style="background:var(--blue2);min-width:26px;height:26px;font-size:.75rem;">${step++}</div><div class="step-content">${rem}≥${rv} → agrego <strong>${ROMAN_SYMS[i]}</strong> (${rv}), resta: ${rem-rv}</div></div>`;rem-=rv;}});
+    c.innerHTML=`<div class="card"><div class="card-title">🎲 Ejercicio: Convierte <span class="arabic-big">${n}</span> a romano</div>
+    <button class="btn btn-primary btn-sm" onclick="toggleGEx(this)" style="margin:8px 0;">👁️ Ver solución paso a paso</button>
+    <div style="display:none;margin-top:10px;">${stepsHtml}
+    <div class="rule-box rule-ok">✅ <strong>${n} = ${roman}</strong></div></div></div>`;
+  } else {
+    let rem2=fromRoman(roman);
+    stepsHtml=`<div style="margin:10px 0;font-size:.95rem;">`;
+    let prev=0,parts=[];
+    for(let k=0;k<roman.length;k++){
+      const map={I:1,V:5,X:10,L:50,C:100,D:500,M:1000};
+      const cv=map[roman[k]],nv=map[roman[k+1]]||0;
+      if(cv<nv){parts.push({sym:roman[k]+roman[k+1],val:nv-cv,op:'resta'});k++;}
+      else parts.push({sym:roman[k],val:cv,op:'suma'});
+    }
+    parts.forEach((p,pi)=>{stepsHtml+=`<div class="step-item"><div class="step-num" style="background:var(--green);min-width:26px;height:26px;font-size:.75rem;">${pi+1}</div><div class="step-content"><strong>${p.sym}</strong> → ${p.op}: +${p.val}</div></div>`;});
+    stepsHtml+=`</div>`;
+    c.innerHTML=`<div class="card"><div class="card-title">🎲 Ejercicio: Convierte <span class="roman-big" style="font-size:1.5rem;">${roman}</span> a arábigo</div>
+    <button class="btn btn-primary btn-sm" onclick="toggleGEx(this)" style="margin:8px 0;">👁️ Ver solución paso a paso</button>
+    <div style="display:none;margin-top:10px;">${stepsHtml}
+    <div class="rule-box rule-ok">✅ <strong>${roman} = ${n}</strong></div></div></div>`;
+  }
+}
+function toggleGEx(btn){const d=btn.nextElementSibling;d.style.display=d.style.display==='none'?'block':'none';btn.textContent=d.style.display==='none'?'👁️ Ver solución paso a paso':'🙈 Ocultar solución';}
+
+// ── Section 5: Guided game ──────────────────────────────────────────────
+let guidedScore={correct:0,total:0},guidedCurrent=null;
+function generateGuidedGame(){
+  const types=['a2r','r2a','identify'];
+  const t=types[Math.floor(Math.random()*3)];
+  const n=Math.floor(Math.random()*99)+1;
+  const roman=toRoman(n);
+  guidedCurrent={type:t,n:n,roman:roman};
+  const c=document.getElementById('guided-game-container');
+  if(!c)return;
+  const fb=document.getElementById('guided-game-feedback');
+  if(fb){fb.className='feedback-msg';fb.textContent='';}
+  if(t==='a2r'){
+    c.innerHTML=`<div class="game-card"><p style="color:var(--text2);margin-bottom:6px;">Convierte a romano:</p><div class="big-number">${n}</div>
+    <input type="text" id="gg-inp" class="fill-input" placeholder="Número romano..." style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()"></div>`;
+  } else if(t==='r2a'){
+    c.innerHTML=`<div class="game-card"><p style="color:var(--text2);margin-bottom:6px;">Convierte a arábigo:</p><div class="big-number roman-big" style="font-size:2.5rem;">${roman}</div>
+    <input type="number" id="gg-inp" class="fill-input" placeholder="Número arábigo..."></div>`;
+  } else {
+    const wrongOpts=[toRoman(n+1),toRoman(Math.max(1,n-1)),toRoman(n+5)].filter(r=>r!==roman);
+    const opts=[roman,...wrongOpts.slice(0,3)].sort(()=>Math.random()-.5);
+    c.innerHTML=`<div class="game-card"><p style="color:var(--text2);margin-bottom:6px;">¿Cuál es la escritura correcta de <strong>${n}</strong>?</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
+    ${opts.map(o=>`<button class="quiz-option" style="font-family:Georgia,serif;font-size:1.3rem;font-weight:800;" onclick="selectGuidedOpt(this,'${o}')">${o}</button>`).join('')}
+    </div></div>`;
+    return;
+  }
+  updateGuidedScore();
+}
+function selectGuidedOpt(btn,val){
+  if(!guidedCurrent)return;
+  guidedScore.total++;
+  const correct=(val===guidedCurrent.roman);
+  if(correct)guidedScore.correct++;
+  document.querySelectorAll('#guided-game-container .quiz-option').forEach(b=>{
+    if(b.textContent===guidedCurrent.roman)b.className='quiz-option correct';
+    else if(b===btn&&!correct)b.className='quiz-option wrong';
+  });
+  const fb=document.getElementById('guided-game-feedback');
+  fb.className='feedback-msg show '+(correct?'feedback-correct':'feedback-wrong');
+  fb.textContent=correct?`✅ ¡Correcto! ${guidedCurrent.n} = ${guidedCurrent.roman}`:`❌ Incorrecto. ${guidedCurrent.n} = ${guidedCurrent.roman}`;
+  updateGuidedScore();
+  setTimeout(generateGuidedGame,2000);
+}
+function checkGuidedGame(){
+  if(!guidedCurrent)return;
+  const inp=document.getElementById('gg-inp');
+  if(!inp)return;
+  guidedScore.total++;
+  let correct=false;
+  if(guidedCurrent.type==='a2r') correct=inp.value.trim().toUpperCase()===guidedCurrent.roman;
+  else correct=parseInt(inp.value)===guidedCurrent.n;
+  if(correct)guidedScore.correct++;
+  inp.className='fill-input '+(correct?'correct-input':'wrong-input');
+  const fb=document.getElementById('guided-game-feedback');
+  fb.className='feedback-msg show '+(correct?'feedback-correct':'feedback-wrong');
+  fb.textContent=correct?'✅ ¡Excelente respuesta!':'❌ Incorrecto. '+
+    (guidedCurrent.type==='a2r'?`La respuesta correcta es: ${guidedCurrent.roman}`:`La respuesta correcta es: ${guidedCurrent.n}`);
+  updateGuidedScore();
+  setTimeout(generateGuidedGame,2200);
+}
+function updateGuidedScore(){
+  const d=document.getElementById('guided-score-display');
+  if(!d)return;
+  const pct=guidedScore.total>0?Math.round(guidedScore.correct/guidedScore.total*100):0;
+  d.innerHTML=`<span class="badge badge-blue">Correctas: ${guidedScore.correct}</span> <span class="badge badge-gold">Total: ${guidedScore.total}</span> <span class="badge badge-green">${pct}%</span>`;
+}
+
+// ── Section 6: Exercises ────────────────────────────────────────────────
+let exLevel='easy',exScore={correct:0,total:0},exCurrent=null,exAnswered=false;
+
+function setLevel(l){
+  exLevel=l;
+  const labels={easy:'⭐ Fácil',mid:'⭐⭐ Intermedio',hard:'⭐⭐⭐ Difícil'};
+  document.getElementById('current-level-badge').textContent='Nivel: '+labels[l].replace(/⭐/g,'').trim();
+  document.getElementById('lvl-easy').className='btn '+(l==='easy'?'btn-success':'btn-outline');
+  document.getElementById('lvl-mid').className='btn '+(l==='mid'?'btn-gold':'btn-outline');
+  document.getElementById('lvl-hard').className='btn '+(l==='hard'?'btn-danger':'btn-outline');
+  exScore={correct:0,total:0};
+  updateExScore();
+  startExercises();
+}
+function getRangeForLevel(){
+  if(exLevel==='easy')return[1,20];
+  if(exLevel==='mid')return[21,200];
+  return[201,3999];
+}
+function generateExercise(){
+  const types=['a2r','r2a','mcq'];
+  const t=types[Math.floor(Math.random()*3)];
+  const [lo,hi]=getRangeForLevel();
+  const n=Math.floor(Math.random()*(hi-lo+1))+lo;
+  return{type:t,n:n,roman:toRoman(n)};
+}
+function startExercises(){
+  exAnswered=false;
+  exCurrent=generateExercise();
+  const c=document.getElementById('ex-container');
+  const fb=document.getElementById('ex-feedback');
+  if(fb){fb.className='feedback-msg';fb.textContent='';}
+  const checkBtn=document.getElementById('ex-check-btn');
+  const nextBtn=document.getElementById('ex-next-btn');
+  if(checkBtn)checkBtn.style.display='none';
+  if(nextBtn)nextBtn.style.display='none';
+  if(!c)return;
+  const lbl=document.getElementById('ex-type-label');
+  if(exCurrent.type==='a2r'){
+    if(lbl)lbl.textContent='✍️ Convierte a número romano';
+    c.innerHTML=`<div class="game-card"><p style="color:var(--text2);margin-bottom:6px;">Escribe en romano el número:</p>
+    <div class="big-number">${exCurrent.n}</div>
+    <input type="text" id="ex-inp" class="fill-input" placeholder="Número romano..." style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter')checkExercise()"></div>`;
+    if(checkBtn)checkBtn.style.display='inline-flex';
+  } else if(exCurrent.type==='r2a'){
+    if(lbl)lbl.textContent='🔢 Convierte a número arábigo';
+    c.innerHTML=`<div class="game-card"><p style="color:var(--text2);margin-bottom:6px;">¿Cuánto vale este número romano?</p>
+    <div class="big-number roman-big" style="font-size:2.5rem;">${exCurrent.roman}</div>
+    <input type="number" id="ex-inp" class="fill-input" placeholder="Número arábigo..." onkeydown="if(event.key==='Enter')checkExercise()"></div>`;
+    if(checkBtn)checkBtn.style.display='inline-flex';
+  } else {
+    if(lbl)lbl.textContent='🎯 Selecciona la respuesta correcta';
+    const types2=['a2r_mc','r2a_mc'];
+    const sub=types2[Math.floor(Math.random()*2)];
+    let wrongOpts;
+    if(sub==='a2r_mc'){
+      wrongOpts=[toRoman(exCurrent.n+1),toRoman(Math.max(1,exCurrent.n-1)),toRoman(exCurrent.n+10)].filter(r=>r&&r!==exCurrent.roman);
+      const opts=[exCurrent.roman,...wrongOpts.slice(0,3)].sort(()=>Math.random()-.5);
+      c.innerHTML=`<div class="game-card"><p style="color:var(--text2);margin-bottom:6px;">¿Cuál es el número romano para <strong>${exCurrent.n}</strong>?</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;">
+      ${opts.map(o=>`<button class="quiz-option" style="font-family:Georgia,serif;font-size:1.1rem;font-weight:800;" onclick="selectExOpt(this,'${o}','roman')">${o}</button>`).join('')}
+      </div></div>`;
+    } else {
+      const deltas=[-3,-1,1,3];
+      const opts=[exCurrent.n,...deltas.map(d=>exCurrent.n+d).filter(x=>x>0&&x!==exCurrent.n).slice(0,3)].sort(()=>Math.random()-.5);
+      c.innerHTML=`<div class="game-card"><p style="color:var(--text2);margin-bottom:6px;">¿Cuánto vale <strong class="roman-big" style="font-size:1.5rem;">${exCurrent.roman}</strong>?</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;">
+      ${opts.map(o=>`<button class="quiz-option" style="font-size:1.3rem;font-weight:800;" onclick="selectExOpt(this,${o},'arabic')">${o}</button>`).join('')}
+      </div></div>`;
+    }
+  }
+}
+function selectExOpt(btn,val,kind){
+  if(exAnswered)return;
+  exAnswered=true;
+  exScore.total++;
+  let correct=false;
+  if(kind==='roman') correct=(String(val)===exCurrent.roman);
+  else correct=(parseInt(val)===exCurrent.n);
+  if(correct)exScore.correct++;
+  document.querySelectorAll('#ex-container .quiz-option').forEach(b=>{
+    const bval=b.textContent.trim();
+    if(bval===String(exCurrent.roman)||bval===String(exCurrent.n)) b.className='quiz-option correct';
+    else if(b===btn&&!correct) b.className='quiz-option wrong';
+  });
+  const fb=document.getElementById('ex-feedback');
+  fb.className='feedback-msg show '+(correct?'feedback-correct':'feedback-wrong');
+  fb.textContent=correct?'✅ ¡Correcto!':'❌ Incorrecto. '+exCurrent.n+' = '+exCurrent.roman;
+  updateExScore();
+  const nextBtn=document.getElementById('ex-next-btn');
+  if(nextBtn)nextBtn.style.display='inline-flex';
+}
+function checkExercise(){
+  if(exAnswered)return;
+  const inp=document.getElementById('ex-inp');
+  if(!inp)return;
+  exAnswered=true;
+  exScore.total++;
+  let correct=false;
+  if(exCurrent.type==='a2r') correct=inp.value.trim().toUpperCase()===exCurrent.roman;
+  else correct=parseInt(inp.value)===exCurrent.n;
+  if(correct)exScore.correct++;
+  inp.className='fill-input '+(correct?'correct-input':'wrong-input');
+  const fb=document.getElementById('ex-feedback');
+  fb.className='feedback-msg show '+(correct?'feedback-correct':'feedback-wrong');
+  fb.textContent=correct?'✅ ¡Correcto! Muy bien.':'❌ Incorrecto. La respuesta correcta es: '+
+    (exCurrent.type==='a2r'?exCurrent.roman:exCurrent.n);
+  updateExScore();
+  const checkBtn=document.getElementById('ex-check-btn');
+  const nextBtn=document.getElementById('ex-next-btn');
+  if(checkBtn)checkBtn.style.display='none';
+  if(nextBtn)nextBtn.style.display='inline-flex';
+}
+function nextExercise(){
+  exAnswered=false;
+  const nextBtn=document.getElementById('ex-next-btn');
+  const checkBtn=document.getElementById('ex-check-btn');
+  if(nextBtn)nextBtn.style.display='none';
+  if(checkBtn)checkBtn.style.display='none';
+  startExercises();
+}
+function updateExScore(){
+  const t=exScore.total,c=exScore.correct;
+  const pct=t>0?Math.round(c/t*100):0;
+  const el=document.getElementById('ex-score-text');
+  const bar=document.getElementById('ex-score-bar');
+  const stars=document.getElementById('ex-stars');
+  if(el)el.textContent=`${c} / ${t}`;
+  if(bar)bar.style.width=pct+'%';
+  if(stars){
+    const s=pct>=90?5:pct>=70?4:pct>=50?3:pct>=30?2:pct>0?1:0;
+    stars.textContent='⭐'.repeat(s)+'☆'.repeat(5-s);
+  }
+}
+
+// ── Section 6: Worksheet generator ──────────────────────────────────────
+let wsData=[];
+function generateWorksheet(){
+  const school=document.getElementById('ws-school').value||'—';
+  const teacher=document.getElementById('ws-teacher').value||'—';
+  const course=document.getElementById('ws-course').value||'—';
+  const count=parseInt(document.getElementById('ws-count').value)||20;
+  const useParens=document.getElementById('ws-parens').checked;
+  const useBrackets=document.getElementById('ws-brackets').checked;
+  const useBraces=document.getElementById('ws-braces').checked;
+  wsData=[];
+  for(let i=0;i<count;i++){
+    const n=Math.floor(Math.random()*399)+1;
+    const useGrouping=(useParens||useBrackets||useBraces)&&Math.random()>.5;
+    let exText;
+    if(useGrouping){
+      const n2=Math.floor(Math.random()*99)+1;
+      const ops=['+','-'];const op=ops[Math.floor(Math.random()*2)];
+      const result=op==='+'?n+n2:Math.abs(n-n2);
+      const leftParen=useParens?'(':useBrackets?'[':'{';
+      const rightParen=useParens?')':useBrackets?']':'}';
+      if(Math.random()>.5) exText=`${leftParen}${toRoman(n)} ${op} ${toRoman(n2)}${rightParen} = ___`;
+      else exText=`${toRoman(n)} ${op} ${toRoman(n2)} = ___`;
+    } else {
+      if(Math.random()>.5) exText=`${n} = ___`;
+      else exText=`${toRoman(n)} = ___`;
+    }
+    wsData.push(exText);
+  }
+  // Show preview
+  const prev=document.getElementById('ws-preview');
+  prev.style.display='block';
+  prev.innerHTML=`<div style="border:2px solid var(--border);border-radius:var(--radius);padding:20px;background:#fff;">
+    <div style="text-align:center;border-bottom:2px solid var(--navy);padding-bottom:12px;margin-bottom:14px;">
+      <div style="font-weight:800;font-size:1.1rem;color:var(--navy);">${school}</div>
+      <div style="font-size:.9rem;color:var(--text2);">Maestro/a: ${teacher} | Curso: ${course}</div>
+      <div style="font-weight:800;margin-top:6px;font-size:1rem;">HOJA DE EJERCICIOS: NÚMEROS ROMANOS</div>
+      <div style="font-size:.85rem;color:var(--text2);">Nombre: _________________________ Fecha: _______________</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+    ${wsData.map((q,i)=>`<div style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.9rem;"><strong>${i+1}.</strong> ${q}</div>`).join('')}
+    </div>
+    <div style="text-align:right;margin-top:12px;font-size:.8rem;color:var(--text2);">© 2026 MenteMatemáticaI — Todos los derechos reservados VC.</div>
+  </div>`;
+}
+function printWorksheet(){
+  if(!wsData.length){generateWorksheet();}
+  const school=document.getElementById('ws-school').value||'—';
+  const teacher=document.getElementById('ws-teacher').value||'—';
+  const course=document.getElementById('ws-course').value||'—';
+  const pw=document.getElementById('print-worksheet');
+  pw.innerHTML=`<style>
+  @media print{body *{display:none;} #print-worksheet,#print-worksheet *{display:block!important;}}
+  #print-worksheet{font-family:Arial,sans-serif;max-width:800px;margin:0 auto;padding:20px;}
+  .ws-header{text-align:center;border-bottom:3px double #000;padding-bottom:12px;margin-bottom:16px;}
+  .ws-title{font-size:1.3rem;font-weight:900;}
+  .ws-meta{font-size:.9rem;margin:4px 0;}
+  .ws-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;}
+  .ws-item{border:1px solid #000;padding:8px 12px;font-size:.95rem;min-height:36px;}
+  .ws-footer{text-align:center;font-size:.75rem;color:#666;margin-top:16px;border-top:1px solid #ccc;padding-top:8px;}
+  .ws-name-row{display:flex;gap:20px;margin-bottom:12px;font-size:.9rem;}
+  .ws-name-row span{flex:1;border-bottom:1px solid #000;padding-bottom:2px;}
+  </style>
+  <div class="ws-header">
+    <div class="ws-title">${school}</div>
+    <div class="ws-meta">Maestro/a: ${teacher} &nbsp;|&nbsp; Curso: ${course}</div>
+    <div class="ws-title" style="font-size:1.1rem;margin-top:6px;">HOJA DE EJERCICIOS — NÚMEROS ROMANOS</div>
+  </div>
+  <div class="ws-name-row">
+    <span>Nombre del Estudiante: ________________________________</span>
+    <span>Fecha: ________________</span>
+  </div>
+  <div class="ws-grid">${wsData.map((q,i)=>`<div class="ws-item"><strong>${i+1}.</strong> ${q}</div>`).join('')}</div>
+  <div class="ws-footer">© 2026 MenteMatemáticaI. Todos los derechos reservados VC.</div>`;
+  window.print();
+}
+
+// ── Section 7: Evaluation ───────────────────────────────────────────────
+const evalQuestions=[
+  {type:'mc',q:'¿Qué son los números romanos?',opts:['Un sistema moderno de numeración','Un sistema de numeración de la Roma Antigua','Un sistema decimal','Un sistema basado en el cero'],ans:1,points:1},
+  {type:'mc',q:'¿Cuál de los siguientes símbolos vale 50?',opts:['X','L','C','V'],ans:1,points:1},
+  {type:'mc',q:'¿Cuál de las siguientes afirmaciones es CORRECTA?',opts:['Los números romanos usan el cero','Se pueden repetir infinitamente','Se basan en suma y resta','Son un sistema posicional'],ans:2,points:1},
+  {type:'mc',q:'¿Cuál es la forma correcta del número 9?',opts:['VIIII','IX','VX','XI'],ans:1,points:1},
+  {type:'fill',q:'Convierte a número romano: 27 = ___',ans:'XXVII',points:1},
+  {type:'fill',q:'Convierte a número romano: 94 = ___',ans:'XCIV',points:1},
+  {type:'fill',q:'Convierte a número arábigo: XLII = ___',ans:'42',points:1},
+  {type:'fill',q:'Convierte a número arábigo: CD = ___',ans:'400',points:1},
+  {type:'fill',q:'Corrige el error — forma correcta de IIII = ___',ans:'IV',points:1},
+  {type:'fill',q:'Resuelve y expresa en romano: X + IX = ___',ans:'XIX',points:1},
+];
+let evalAnswers={},evalStarted=false;
+function startEval(){
+  evalAnswers={};evalStarted=true;
+  document.getElementById('eval-start').style.display='none';
+  document.getElementById('eval-result').style.display='none';
+  const body=document.getElementById('eval-body');
+  body.style.display='block';
+  const qc=document.getElementById('eval-questions');
+  qc.innerHTML='';
+  evalQuestions.forEach((q,i)=>{
+    const div=document.createElement('div');
+    div.className='card';div.id='eval-q-'+i;
+    let html=`<div class="card-title" style="font-size:1rem;"><span class="badge badge-blue" style="margin-right:8px;">${i+1}</span>${q.q}</div>`;
+    if(q.type==='mc'){
+      html+=`<div class="quiz-options" style="margin-top:12px;">`+
+        q.opts.map((o,j)=>`<button class="quiz-option" id="eval-opt-${i}-${j}" onclick="selectEvalOpt(${i},${j})">${String.fromCharCode(65+j)}) ${o}</button>`).join('')+
+        `</div>`;
+    } else {
+      html+=`<div style="margin-top:12px;"><input type="text" id="eval-fill-${i}" class="sim-input" placeholder="Escribe tu respuesta..." style="max-width:300px;text-transform:uppercase;" oninput="evalAnswers[${i}]=this.value.trim().toUpperCase();updateEvalProgress()"></div>`;
+    }
+    html+=`<div id="eval-fb-${i}" class="feedback-msg mt-8"></div>`;
+    div.innerHTML=html;
+    qc.appendChild(div);
+  });
+  const sub=document.getElementById('eval-submit-row');
+  if(sub)sub.style.display='block';
+  updateEvalProgress();
+}
+function selectEvalOpt(qi,opt){
+  evalAnswers[qi]=opt;
+  document.querySelectorAll(`[id^="eval-opt-${qi}-"]`).forEach((b,j)=>{b.className='quiz-option'+(j===opt?' active':'');});
+  if(opt!==undefined){document.getElementById(`eval-opt-${qi}-${opt}`).style.borderColor='var(--blue)';document.getElementById(`eval-opt-${qi}-${opt}`).style.background='#eff6ff';}
+  updateEvalProgress();
+}
+function updateEvalProgress(){
+  const answered=Object.keys(evalAnswers).length;
+  const pct=Math.round(answered/evalQuestions.length*100);
+  const lbl=document.getElementById('eval-progress-label');
+  const bar=document.getElementById('eval-progress-bar');
+  if(lbl)lbl.textContent=`Respondidas: ${answered} de ${evalQuestions.length}`;
+  if(bar)bar.style.width=pct+'%';
+}
+function submitEval(){
+  let score=0;
+  const review=[];
+  evalQuestions.forEach((q,i)=>{
+    let correct=false;
+    const userAns=evalAnswers[i];
+    if(q.type==='mc') correct=(parseInt(userAns)===q.ans);
+    else correct=(String(userAns||'').toUpperCase()===String(q.ans).toUpperCase());
+    if(correct)score+=q.points;
+    review.push({q:q.q,correct,userAns:q.type==='mc'?(userAns!==undefined?q.opts[userAns]:'—'):userAns||'—',correctAns:q.type==='mc'?q.opts[q.ans]:q.ans});
+    // Show feedback per question
+    const fb=document.getElementById('eval-fb-'+i);
+    if(fb){
+      fb.className='feedback-msg show '+(correct?'feedback-correct':'feedback-wrong');
+      fb.textContent=correct?'✅ ¡Correcto!':'❌ Incorrecto. Respuesta: '+review[i].correctAns;
+    }
+  });
+  // Show results
+  document.getElementById('eval-body').style.display='none';
+  const res=document.getElementById('eval-result');
+  res.style.display='block';
+  const pct=Math.round(score/10*100);
+  document.getElementById('eval-final-score').textContent=score+'/10';
+  const grade=pct>=90?'⭐ ¡Excelente! Dominas los números romanos.':pct>=70?'🎉 ¡Muy bien! Sigue practicando.':pct>=50?'👍 Aprobado. Repasa los temas.':'📚 Necesitas repasar más.';
+  document.getElementById('eval-grade-label').textContent=grade;
+  const stars=Math.round(pct/20);
+  document.getElementById('eval-stars').textContent='⭐'.repeat(stars)+'☆'.repeat(5-stars);
+  // Review
+  const rv=document.getElementById('eval-review');
+  rv.innerHTML='<div class="card"><div class="card-title">📋 Revisión de Respuestas</div>'+
+    review.map((r,i)=>`<div class="rule-box ${r.correct?'rule-ok':'rule-bad'}" style="margin-bottom:8px;">
+    <strong>${i+1}. ${r.q}</strong><br>
+    Tu respuesta: <strong>${r.userAns}</strong> | Correcta: <strong>${r.correctAns}</strong>
+    </div>`).join('')+'</div>';
+}
+function retryEval(){
+  document.getElementById('eval-result').style.display='none';
+  document.getElementById('eval-start').style.display='block';
+}
+
+// ── Initialize ───────────────────────────────────────────────────────────
+window.addEventListener('load',function(){
+  setTimeout(()=>{initCanvasIntro();},400);
+  // Add CSS roundRect polyfill if needed
+  if(!CanvasRenderingContext2D.prototype.roundRect){
+    CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){
+      this.beginPath();this.moveTo(x+r,y);this.lineTo(x+w-r,y);
+      this.arcTo(x+w,y,x+w,y+r,r);this.lineTo(x+w,y+h-r);
+      this.arcTo(x+w,y+h,x+w-r,y+h,r);this.lineTo(x+r,y+h);
+      this.arcTo(x,y+h,x,y+h-r,r);this.lineTo(x,y+r);
+      this.arcTo(x,y,x+r,y,r);this.closePath();return this;
+    };
+  }
+  // Initialize symbols on first load
+  initSymbols();
+  generateDefQuiz();
+});
+
+// ── Responsive: mobile sidebar ───────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',function(){
+  // Add hamburger for mobile if needed
+  if(window.innerWidth<=768){
+    document.getElementById('footer').style.marginLeft='0';
+  }
+});
+window.addEventListener('resize',function(){
+  const footer=document.getElementById('footer');
+  if(footer) footer.style.marginLeft=window.innerWidth>768?'var(--sidebar-w)':'0';
+});
+</script>
+</body>
+</html>

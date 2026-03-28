@@ -1,0 +1,2377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resta Vertical – Mente Matemática</title>
+
+  <!-- ===== ESTILOS CSS ===== -->
+  <style>
+    /* === Variables de diseño === */
+    :root {
+      --navy:       #1a2b5c;
+      --navy-dark:  #0d1a40;
+      --navy-mid:   #243570;
+      --blue:       #2563eb;
+      --blue-light: #3b82f6;
+      --accent:     #f59e0b;
+      --green:      #10b981;
+      --red:        #ef4444;
+      --sidebar-w:  268px;
+      --header-h:   68px;
+      --bg:         #eef2f7;
+      --card:       #ffffff;
+      --text:       #1e293b;
+      --text-muted: #64748b;
+      --shadow:     0 4px 20px rgba(0,0,0,.09);
+      --radius:     14px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ==============================
+       HEADER
+    ============================== */
+    #app-header {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 55%, var(--navy-mid) 100%);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+      z-index: 1000;
+      box-shadow: 0 3px 14px rgba(0,0,0,.35);
+    }
+
+    .logo-wrap {
+      display: flex; align-items: center; gap: 12px; color: white;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, #f59e0b, #f97316);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(245,158,11,.5);
+    }
+    .logo-text { line-height: 1.1; }
+    .logo-title { font-size: 20px; font-weight: 800; letter-spacing: -.4px; }
+    .logo-sub   { font-size: 11px; color: rgba(255,255,255,.65); }
+
+    .btn-back {
+      display: flex; align-items: center; gap: 7px;
+      background: rgba(255,255,255,.14);
+      color: white;
+      border: 1px solid rgba(255,255,255,.3);
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 13px; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      transition: background .2s;
+    }
+    .btn-back:hover { background: rgba(255,255,255,.26); }
+
+    /* ==============================
+       SIDEBAR
+    ============================== */
+    #sidebar {
+      position: fixed;
+      top: var(--header-h); left: 0;
+      width: var(--sidebar-w);
+      height: calc(100vh - var(--header-h));
+      background: white;
+      overflow-y: auto;
+      padding: 18px 0 24px;
+      box-shadow: 2px 0 16px rgba(0,0,0,.07);
+      z-index: 900;
+    }
+
+    .nav-section-label {
+      font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px;
+      color: var(--text-muted); font-weight: 700;
+      padding: 0 20px 8px 20px; margin-top: 8px;
+    }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 13px;
+      padding: 11px 18px;
+      cursor: pointer;
+      transition: all .2s;
+      border-left: 3px solid transparent;
+      font-size: 13.5px; font-weight: 500; color: var(--text);
+    }
+    .nav-item:hover { background: #f0f5ff; color: var(--blue); }
+    .nav-item.active {
+      background: #eff6ff; color: var(--blue);
+      border-left-color: var(--blue); font-weight: 700;
+    }
+
+    .nav-ic {
+      width: 33px; height: 33px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .ic0{background:#fef3c7;} .ic1{background:#dbeafe;} .ic2{background:#d1fae5;}
+    .ic3{background:#fce7f3;} .ic4{background:#ede9fe;} .ic5{background:#fef9c3;}
+    .ic6{background:#fee2e2;} .ic7{background:#ccfbf1;}
+
+    .nav-divider { height: 1px; background: #e8edf5; margin: 8px 16px; }
+
+    /* ==============================
+       MAIN CONTENT
+    ============================== */
+    #main-content {
+      margin-left: var(--sidebar-w);
+      margin-top: var(--header-h);
+      padding: 28px 32px;
+      min-height: calc(100vh - var(--header-h) - 60px);
+    }
+
+    .section { display: none; }
+    .section.active { display: block; animation: fadeSlide .4s ease; }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==============================
+       CARDS & HEROES
+    ============================== */
+    .card {
+      background: var(--card); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 26px; margin-bottom: 22px;
+    }
+    .card-title {
+      font-size: 19px; font-weight: 800; color: var(--navy);
+      margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+    }
+
+    .hero-banner {
+      background: linear-gradient(135deg, var(--navy-dark), var(--navy-mid));
+      color: white; border-radius: var(--radius);
+      padding: 34px 36px; margin-bottom: 24px;
+      position: relative; overflow: hidden;
+    }
+    .hero-banner::before {
+      content:''; position:absolute; right:-50px; top:-50px;
+      width:220px; height:220px;
+      background:rgba(255,255,255,.05); border-radius:50%;
+    }
+    .hero-banner::after {
+      content:''; position:absolute; right:80px; bottom:-60px;
+      width:160px; height:160px;
+      background:rgba(255,255,255,.04); border-radius:50%;
+    }
+    .hero-banner h2 { font-size:26px; font-weight:900; margin-bottom:8px; position:relative; }
+    .hero-banner p  { font-size:14.5px; opacity:.85; line-height:1.65; max-width:580px; position:relative; }
+
+    /* ==============================
+       UTILITIES
+    ============================== */
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .three-col { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    @media(max-width:900px){ .two-col,.three-col{ grid-template-columns:1fr; } }
+
+    .info-box {
+      background:#eff6ff; border-left:4px solid var(--blue);
+      border-radius:8px; padding:13px 16px; margin:12px 0;
+      font-size:14px; line-height:1.65;
+    }
+    .warn-box {
+      background:#fffbeb; border-left:4px solid var(--accent);
+      border-radius:8px; padding:13px 16px; margin:12px 0;
+      font-size:14px; line-height:1.65;
+    }
+    .ok-box {
+      background:#f0fdf4; border-left:4px solid var(--green);
+      border-radius:8px; padding:13px 16px; margin:12px 0;
+      font-size:14px; line-height:1.65;
+    }
+
+    .step { display:flex; gap:14px; margin-bottom:14px; align-items:flex-start; }
+    .step-num {
+      width:34px; height:34px; border-radius:50%;
+      background:var(--navy); color:white;
+      font-weight:800; font-size:15px;
+      display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    }
+    .step-body h4 { font-size:14.5px; font-weight:700; margin-bottom:3px; }
+    .step-body p  { font-size:13.5px; color:var(--text-muted); line-height:1.55; }
+
+    /* ==============================
+       MATH VERTICAL DISPLAY
+    ============================== */
+    .math-vert {
+      display:inline-flex; flex-direction:column; align-items:flex-end;
+      font-size:34px; font-weight:800;
+      font-family:'Courier New',monospace;
+      background:#f8fafc; border:2px solid #e2e8f0;
+      border-radius:12px; padding:18px 26px; min-width:130px;
+      line-height:1.3;
+    }
+    .math-vert .row { display:flex; align-items:center; gap:8px; }
+    .math-vert .op  { color:var(--red); }
+    .math-vert .hr  { width:100%; height:3px; background:var(--navy); margin:6px 0; border-radius:2px; }
+    .math-vert .res { color:var(--green); }
+    .math-vert .carry { font-size:14px; color:var(--accent); vertical-align:super; }
+
+    /* ==============================
+       ELEMENT CARDS (Section 2)
+    ============================== */
+    .elem-card {
+      display:flex; align-items:center; gap:14px;
+      padding:14px; background:#f8fafc;
+      border-radius:12px; border-left:4px solid var(--blue); margin-bottom:11px;
+    }
+    .elem-badge {
+      width:46px; height:46px; border-radius:10px;
+      background:var(--blue); color:white;
+      display:flex; align-items:center; justify-content:center;
+      font-size:20px; font-weight:900; flex-shrink:0;
+    }
+    .elem-card h4 { font-size:14.5px; font-weight:700; color:var(--navy); }
+    .elem-card p  { font-size:13px; color:var(--text-muted); margin-top:2px; line-height:1.45; }
+
+    /* ==============================
+       VIDEO CONTAINER
+    ============================== */
+    .video-wrap {
+      background:#000; border-radius:12px;
+      overflow:hidden; margin:18px 0;
+      aspect-ratio:16/9;
+    }
+    .video-wrap video { width:100%; height:100%; }
+    .video-placeholder {
+      background:linear-gradient(135deg,#1a2b5c,#243570);
+      border-radius:12px; padding:40px;
+      text-align:center; color:white; margin:18px 0;
+    }
+    .video-placeholder .play-ic { font-size:56px; margin-bottom:12px; }
+    .video-placeholder p { opacity:.8; font-size:14px; }
+
+    /* ==============================
+       BUTTONS
+    ============================== */
+    .btn {
+      padding:11px 22px; border:none; border-radius:10px;
+      font-size:14.5px; font-weight:700; cursor:pointer;
+      transition:all .2s;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .btn:hover  { transform:translateY(-2px); }
+    .btn:active { transform:translateY(0); }
+    .btn-primary { background:linear-gradient(135deg,var(--blue),var(--navy)); color:white; box-shadow:0 4px 14px rgba(37,99,235,.3); }
+    .btn-success { background:linear-gradient(135deg,var(--green),#059669);   color:white; }
+    .btn-danger  { background:linear-gradient(135deg,var(--red),#dc2626);     color:white; }
+    .btn-accent  { background:linear-gradient(135deg,var(--accent),#d97706);  color:white; }
+    .btn-outline { background:transparent; border:2px solid var(--blue); color:var(--blue); }
+    .btn-sm { padding:8px 16px; font-size:13px; }
+    .btn-lg { padding:14px 28px; font-size:16px; }
+
+    /* ==============================
+       FEEDBACK
+    ============================== */
+    .feedback {
+      padding:13px 18px; border-radius:10px;
+      font-size:14.5px; font-weight:600;
+      margin-top:10px; display:none;
+    }
+    .feedback.show    { display:block; animation:fadeSlide .3s; }
+    .feedback.correct { background:#f0fdf4; color:#15803d; border:1px solid #86efac; }
+    .feedback.wrong   { background:#fef2f2; color:#dc2626; border:1px solid #fca5a5; }
+
+    /* ==============================
+       PRACTICE SECTION
+    ============================== */
+    .practice-header {
+      display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:12px; margin-bottom:20px;
+    }
+    .score-pill {
+      display:inline-flex; align-items:center; gap:8px;
+      background:linear-gradient(135deg,var(--navy),var(--blue));
+      color:white; padding:10px 20px; border-radius:100px;
+      font-size:15px; font-weight:700;
+    }
+    .timer-display {
+      font-size:40px; font-weight:900; color:var(--blue);
+      font-family:'Courier New',monospace; line-height:1;
+    }
+    .timer-bar-bg {
+      background:#e2e8f0; border-radius:100px; height:10px; overflow:hidden; margin:8px 0 16px;
+    }
+    .timer-bar-fill {
+      height:100%;
+      background:linear-gradient(90deg,var(--green),var(--blue));
+      border-radius:100px; transition:width 1s linear;
+    }
+    .exercise-display {
+      font-size:52px; font-weight:900;
+      font-family:'Courier New',monospace;
+      color:var(--navy); line-height:1.25;
+      text-align:center; margin:14px 0;
+    }
+    .answer-input {
+      font-size:26px; font-weight:700; text-align:center;
+      width:130px; padding:11px;
+      border:3px solid #e2e8f0; border-radius:12px;
+      outline:none; transition:border-color .2s;
+      font-family:'Courier New',monospace;
+    }
+    .answer-input:focus   { border-color:var(--blue); }
+    .answer-input.correct { border-color:var(--green); background:#f0fdf4; }
+    .answer-input.wrong   { border-color:var(--red);   background:#fef2f2; }
+
+    /* Multiple choice options */
+    .mc-opts { margin:14px 0; }
+    .mc-opt {
+      display:flex; align-items:center; gap:13px;
+      padding:13px 16px; border:2px solid #e2e8f0;
+      border-radius:10px; cursor:pointer; margin-bottom:9px;
+      transition:all .2s; font-size:14.5px;
+    }
+    .mc-opt:hover      { border-color:var(--blue); background:#f0f5ff; }
+    .mc-opt.sel        { border-color:var(--blue); background:#eff6ff; }
+    .mc-opt.ok         { border-color:var(--green); background:#f0fdf4; }
+    .mc-opt.bad        { border-color:var(--red);   background:#fef2f2; }
+    .mc-opt .mc-letter {
+      width:30px; height:30px; border-radius:7px;
+      background:#e2e8f0; display:flex; align-items:center; justify-content:center;
+      font-weight:700; font-size:13px; flex-shrink:0;
+    }
+
+    /* Progress dots */
+    .prog-dots { display:flex; gap:6px; flex-wrap:wrap; margin:14px 0; }
+    .pdot {
+      width:30px; height:30px; border-radius:50%;
+      background:#e2e8f0;
+      display:flex; align-items:center; justify-content:center;
+      font-size:11px; font-weight:700; transition:all .3s;
+    }
+    .pdot.cur  { background:var(--blue);  color:white; }
+    .pdot.ok   { background:var(--green); color:white; }
+    .pdot.bad  { background:var(--red);   color:white; }
+
+    /* ==============================
+       WORKSHEET GENERATOR
+    ============================== */
+    .form-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:14px; margin-bottom:16px; }
+    .form-grp label {
+      display:block; font-size:12px; font-weight:600;
+      color:var(--text-muted); text-transform:uppercase;
+      letter-spacing:.6px; margin-bottom:5px;
+    }
+    .form-grp select,
+    .form-grp input[type="number"] {
+      width:100%; padding:9px 13px;
+      border:2px solid #e2e8f0; border-radius:8px;
+      font-size:14px; outline:none; transition:border-color .2s;
+    }
+    .form-grp select:focus,
+    .form-grp input[type="number"]:focus { border-color:var(--blue); }
+
+    .ws-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:16px; margin:20px 0; }
+    .ws-item {
+      background:#f8fafc; border:1px solid #e2e8f0;
+      border-radius:10px; padding:18px 14px; text-align:center;
+    }
+    .ws-num { font-size:20px; font-weight:800; font-family:'Courier New',monospace; line-height:1.4; }
+    .ws-line { height:2px; background:var(--navy); margin:4px 0 10px; }
+    .ws-blank { font-size:13px; color:var(--text-muted); }
+
+    /* ==============================
+       EVALUATION
+    ============================== */
+    .eval-q {
+      background:white; border-radius:12px;
+      box-shadow:var(--shadow); padding:22px; margin-bottom:16px;
+    }
+    .eval-q h4 { font-size:15px; font-weight:700; margin-bottom:14px; }
+    .q-num {
+      display:inline-block;
+      background:var(--navy); color:white;
+      width:26px; height:26px; border-radius:50%;
+      text-align:center; line-height:26px;
+      font-size:13px; font-weight:700; margin-right:8px;
+    }
+
+    /* Result screen */
+    .result-screen { text-align:center; padding:20px 0; }
+    .result-circle {
+      width:130px; height:130px; border-radius:50%;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      font-size:40px; font-weight:900; margin:0 auto 20px;
+    }
+    .result-circle .sub { font-size:14px; font-weight:600; }
+
+    /* ==============================
+       CANVAS CONTAINERS
+    ============================== */
+    .canvas-wrap {
+      background:white; border-radius:12px;
+      border:2px solid #e2e8f0; overflow:hidden;
+      margin:16px 0;
+    }
+
+    /* ==============================
+       WELCOME GRID
+    ============================== */
+    .welcome-modules {
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+      gap:14px; margin:22px 0;
+    }
+    .wm-card {
+      background:white; border-radius:12px; padding:20px;
+      text-align:center; box-shadow:var(--shadow);
+      cursor:pointer; transition:all .2s; border-top:4px solid var(--blue);
+    }
+    .wm-card:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,.12); }
+    .wm-card .wi { font-size:34px; margin-bottom:8px; }
+    .wm-card h3  { font-size:13.5px; font-weight:700; color:var(--navy); }
+    .wm-card p   { font-size:12px; color:var(--text-muted); margin-top:4px; }
+
+    /* ==============================
+       ANIMATIONS
+    ============================== */
+    @keyframes bounce  { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
+    @keyframes shake   { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-6px)} 40%,80%{transform:translateX(6px)} }
+    @keyframes popIn   { from{transform:scale(.7);opacity:0} to{transform:scale(1);opacity:1} }
+
+    .anim-bounce { animation:bounce .4s ease; }
+    .anim-shake  { animation:shake  .4s ease; }
+    .anim-pop    { animation:popIn  .4s ease; }
+
+    /* ==============================
+       FOOTER
+    ============================== */
+    #app-footer {
+      margin-left:var(--sidebar-w);
+      background:white; border-top:1px solid #e2e8f0;
+      text-align:center; padding:18px 24px;
+      font-size:13px; color:var(--text-muted);
+    }
+
+    @media(max-width:768px){
+      #sidebar{ transform:translateX(-100%); }
+      #main-content, #app-footer{ margin-left:0; }
+      #main-content{ padding:18px 16px; }
+    }
+
+    /* Interactive digit boxes */
+    .digit-row { display:flex; gap:8px; align-items:center; justify-content:center; margin:8px 0; }
+    .dbox {
+      width:56px; height:56px; border-radius:10px;
+      border:2px solid #e2e8f0;
+      display:flex; align-items:center; justify-content:center;
+      font-size:26px; font-weight:800;
+      font-family:'Courier New',monospace;
+      transition:all .35s;
+    }
+    .dbox.hl  { background:#fef3c7; border-color:var(--accent); transform:scale(1.12); }
+    .dbox.res { background:#d1fae5; border-color:var(--green); }
+    .dbox.borrow { background:#fee2e2; border-color:var(--red); }
+
+    .step-controls { display:flex; gap:10px; align-items:center; margin-top:14px; flex-wrap:wrap; }
+
+    /* tooltip */
+    .tooltip-lbl {
+      background:var(--navy); color:white;
+      font-size:12px; padding:5px 10px; border-radius:6px;
+      display:inline-block; margin:4px 2px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ==========================================
+     HEADER
+=========================================== -->
+<header id="app-header">
+  <a class="logo-wrap" href="#">
+    <div class="logo-icon">🧮</div>
+    <div class="logo-text">
+      <div class="logo-title">Mente Matemática</div>
+      <div class="logo-sub">Plataforma de Aprendizaje Interactivo</div>
+    </div>
+  </a>
+  <a class="btn-back" href="temario.html">🏠 Volver al menú</a>
+</header>
+
+<!-- ==========================================
+     SIDEBAR NAVIGATION
+=========================================== -->
+<nav id="sidebar">
+  <div class="nav-section-label">Inicio</div>
+  <div class="nav-item active" onclick="goSection(0)" id="nav0">
+    <div class="nav-ic ic0">🏠</div><span>Bienvenida</span>
+  </div>
+  <div class="nav-item" onclick="goSection(1)" id="nav1">
+    <div class="nav-ic ic1">🎬</div><span>¿Qué aprenderemos?</span>
+  </div>
+
+  <div class="nav-divider"></div>
+  <div class="nav-section-label">Módulos</div>
+
+  <div class="nav-item" onclick="goSection(2)" id="nav2">
+    <div class="nav-ic ic2">💡</div><span>1. Concepto de Resta</span>
+  </div>
+  <div class="nav-item" onclick="goSection(3)" id="nav3">
+    <div class="nav-ic ic3">🔢</div><span>2. Elementos de la Resta</span>
+  </div>
+  <div class="nav-item" onclick="goSection(4)" id="nav4">
+    <div class="nav-ic ic4">🏗️</div><span>3. Resta de 2+ Dígitos</span>
+  </div>
+
+  <div class="nav-divider"></div>
+  <div class="nav-section-label">Actividades</div>
+
+  <div class="nav-item" onclick="goSection(5)" id="nav5">
+    <div class="nav-ic ic5">⚡</div><span>4. Práctica Interactiva</span>
+  </div>
+  <div class="nav-item" onclick="goSection(6)" id="nav6">
+    <div class="nav-ic ic6">📄</div><span>5. Generador de Hojas</span>
+  </div>
+  <div class="nav-item" onclick="goSection(7)" id="nav7">
+    <div class="nav-ic ic7">📝</div><span>6. Evaluación Final</span>
+  </div>
+</nav>
+
+<!-- ==========================================
+     MAIN CONTENT
+=========================================== -->
+<main id="main-content">
+
+  <!-- ========================================
+       SECCIÓN 0 – BIENVENIDA
+  ========================================= -->
+  <section class="section active" id="sec0">
+    <div class="hero-banner">
+      <h2>🎉 ¡Bienvenido a Resta Vertical!</h2>
+      <p>Una plataforma de aprendizaje interactiva diseñada para estudiantes de 9 a 15 años. Aquí aprenderás, paso a paso, cómo restar números utilizando la forma vertical. ¡Vamos juntos en este viaje matemático!</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🗺️ ¿Qué encontrarás aquí?</div>
+      <div class="welcome-modules">
+        <div class="wm-card" onclick="goSection(2)">
+          <div class="wi">💡</div>
+          <h3>Concepto de Resta</h3>
+          <p>Aprende qué es la resta y cómo se representa</p>
+        </div>
+        <div class="wm-card" onclick="goSection(3)">
+          <div class="wi">🔢</div>
+          <h3>Elementos</h3>
+          <p>Minuendo, sustraendo y diferencia</p>
+        </div>
+        <div class="wm-card" onclick="goSection(4)">
+          <div class="wi">🏗️</div>
+          <h3>Resta de 2+ Dígitos</h3>
+          <p>Con y sin préstamo (llevando)</p>
+        </div>
+        <div class="wm-card" onclick="goSection(5)">
+          <div class="wi">⚡</div>
+          <h3>Práctica</h3>
+          <p>10 ejercicios con cronómetro</p>
+        </div>
+        <div class="wm-card" onclick="goSection(6)">
+          <div class="wi">📄</div>
+          <h3>Generador PDF</h3>
+          <p>Crea tus propias hojas de trabajo</p>
+        </div>
+        <div class="wm-card" onclick="goSection(7)">
+          <div class="wi">🏆</div>
+          <h3>Evaluación Final</h3>
+          <p>10 preguntas de opción múltiple</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card" style="border-left:5px solid var(--green)">
+        <div class="card-title">🎯 Objetivos de Aprendizaje</div>
+        <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Comprender</h4><p>Identificar el concepto de resta y sus elementos fundamentales</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Visualizar</h4><p>Observar la representación vertical de la resta con ejemplos interactivos</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Practicar</h4><p>Resolver ejercicios guiados con retroalimentación inmediata</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Evaluar</h4><p>Demostrar tu aprendizaje con la evaluación final</p></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">📊 Tu Progreso</div>
+        <div id="progress-overview" style="text-align:center;padding:20px 0;">
+          <div style="font-size:60px;font-weight:900;color:var(--blue)">0%</div>
+          <div style="color:var(--text-muted);font-size:14px;margin-top:6px">Secciones completadas</div>
+          <div style="margin-top:16px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap">
+            <span id="pb0" style="padding:6px 12px;background:#e2e8f0;border-radius:100px;font-size:12px;font-weight:600">🏠 Inicio</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       SECCIÓN 1 – ¿QUÉ APRENDEREMOS?
+  ========================================= -->
+  <section class="section" id="sec1">
+    <div class="hero-banner" style="background:linear-gradient(135deg,#1e3a5f,#2563eb)">
+      <h2>🎬 ¿Qué aprenderemos?</h2>
+      <p>En este módulo te presentamos un panorama general de todo lo que cubrirá esta plataforma sobre la resta en forma vertical. ¡Prepárate para dominar esta operación matemática esencial!</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📚 Introducción a la Resta Vertical</div>
+      <p style="font-size:15px;line-height:1.7;margin-bottom:16px;">
+        La <strong>resta</strong> es una de las cuatro operaciones básicas de la matemática. Nos permite conocer la diferencia entre dos cantidades: ¿cuánto queda si quitamos una parte de un total?
+      </p>
+      <p style="font-size:15px;line-height:1.7;margin-bottom:16px;">
+        La <strong>forma vertical</strong> es la manera organizada de escribir y calcular restas, especialmente cuando los números tienen dos o más cifras. Los números se escriben uno encima del otro, alineando sus cifras por columnas según su valor posicional.
+      </p>
+      <div class="ok-box">
+        💡 <strong>¿Sabías que?</strong> La resta es utilizada diariamente: cuando pagas en una tienda, cuando cocinas midiendo ingredientes, o cuando calculas cuánto tiempo falta para algo.
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">🗓️ Contenido del Curso</div>
+        <div class="elem-card" style="border-left-color:var(--blue)">
+          <div class="elem-badge" style="background:var(--blue)">1</div>
+          <div><h4>Concepto de Resta</h4><p>Definición, símbolo y representación básica</p></div>
+        </div>
+        <div class="elem-card" style="border-left-color:var(--green)">
+          <div class="elem-badge" style="background:var(--green)">2</div>
+          <div><h4>Elementos de la Resta Vertical</h4><p>Minuendo, sustraendo, diferencia</p></div>
+        </div>
+        <div class="elem-card" style="border-left-color:#8b5cf6">
+          <div class="elem-badge" style="background:#8b5cf6">3</div>
+          <div><h4>Resta de 2 y más Dígitos</h4><p>Sin préstamo, con préstamo y con ceros</p></div>
+        </div>
+        <div class="elem-card" style="border-left-color:var(--accent)">
+          <div class="elem-badge" style="background:var(--accent)">4</div>
+          <div><h4>Práctica y Evaluación</h4><p>Ejercicios cronometrados y prueba final</p></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🧠 Prerrequisitos</div>
+        <p style="font-size:14px;color:var(--text-muted);margin-bottom:14px">Para sacar el mayor provecho, es útil que ya conozcas:</p>
+        <div class="info-box">✅ Los números del 0 al 9 y su escritura</div>
+        <div class="info-box">✅ El concepto de valor posicional (unidades, decenas, centenas)</div>
+        <div class="info-box">✅ La suma de números de 1 y 2 dígitos</div>
+        <div class="warn-box">📌 Si tienes dudas sobre alguno de estos temas, ¡no te preocupes! Los recordaremos durante las explicaciones.</div>
+      </div>
+    </div>
+
+    <!-- Canvas animado de bienvenida -->
+    <div class="card">
+      <div class="card-title">🎨 Vista Previa Interactiva</div>
+      <p style="font-size:14px;color:var(--text-muted);margin-bottom:14px">Observa cómo lucirá una resta vertical. Haz clic en "Animar" para ver el proceso paso a paso.</p>
+      <div style="text-align:center">
+        <div class="canvas-wrap" style="display:inline-block;">
+          <canvas id="cvIntro" width="380" height="240"></canvas>
+        </div>
+        <br>
+        <button class="btn btn-primary" style="margin-top:10px" onclick="animIntro()">▶ Animar</button>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:20px">
+      <button class="btn btn-primary btn-lg" onclick="goSection(2)">
+        Comenzar con el Módulo 1 →
+      </button>
+    </div>
+  </section>
+
+  <!-- ========================================
+       SECCIÓN 2 – CONCEPTO DE RESTA
+  ========================================= -->
+  <section class="section" id="sec2">
+    <div class="hero-banner" style="background:linear-gradient(135deg,#064e3b,#059669)">
+      <h2>💡 Módulo 1 – Concepto de Resta</h2>
+      <p>La resta se representa con el símbolo <strong>–</strong> e indica cuánto debemos quitar de un número para obtener una cantidad menor.</p>
+    </div>
+
+    <!-- VIDEO 1 -->
+    <div class="card">
+      <div class="card-title">🎥 Video Explicativo – Resta sin llevar</div>
+      <div class="video-wrap">
+        <video controls poster="">
+          <source src="/vid/resta_sin_ll.mp4" type="video/mp4">
+          <p style="color:white;text-align:center;padding:20px">
+            ⚠️ Tu navegador no soporta video HTML5. <a href="/vid/resta_sin_ll.mp4" style="color:lightblue">Descarga el video aquí</a>.
+          </p>
+        </video>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">📖 ¿Qué es la Resta?</div>
+        <p style="font-size:14.5px;line-height:1.7;margin-bottom:12px">
+          La resta (o <strong>sustracción</strong>) es la operación matemática que consiste en <strong>quitar</strong> una cantidad de otra. El resultado indica cuánto sobra o cuál es la diferencia entre ambas cantidades.
+        </p>
+        <div class="info-box">
+          🔑 <strong>Símbolo:</strong> El signo <strong style="font-size:20px;color:var(--red)"> − </strong> representa la resta.<br>
+          Ejemplo: <code>9 − 4 = 5</code> se lee "nueve menos cuatro igual a cinco"
+        </div>
+        <div class="ok-box">
+          🌍 <strong>Ejemplo cotidiano:</strong> Tienes 9 manzanas y regalas 4. Te quedan <strong>5</strong> manzanas.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📐 Forma Vertical</div>
+        <p style="font-size:14px;color:var(--text-muted);margin-bottom:14px">La forma vertical organiza los números en columnas para facilitar el cálculo:</p>
+        <div style="text-align:center;padding:10px 0">
+          <div class="math-vert" style="font-size:38px">
+            <div class="row"><span>9</span></div>
+            <div class="row"><span class="op">−</span><span>4</span></div>
+            <div class="hr"></div>
+            <div class="row res"><span>5</span></div>
+          </div>
+        </div>
+        <div class="info-box" style="margin-top:14px">
+          📌 Los números se escriben <strong>uno bajo el otro</strong>, alineando las cifras por su posición (unidades bajo unidades, decenas bajo decenas...).
+        </div>
+      </div>
+    </div>
+
+    <!-- Canvas interactivo Concepto -->
+    <div class="card">
+      <div class="card-title">🎨 Visualización Interactiva – Resta Básica</div>
+      <p style="font-size:14px;color:var(--text-muted);margin-bottom:14px">Observa visualmente cómo quitamos elementos. Haz clic en "Ver animación".</p>
+      <div style="text-align:center">
+        <div class="canvas-wrap" style="display:inline-block">
+          <canvas id="cvConcept" width="500" height="200"></canvas>
+        </div>
+        <br>
+        <div style="margin-top:10px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="animConcept()">▶ Animar</button>
+          <button class="btn btn-outline" onclick="resetConcept()">↺ Reiniciar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actividad interactiva sección 2 -->
+    <div class="card">
+      <div class="card-title">✏️ Actividad 1 – Completa la Resta</div>
+      <p style="font-size:14px;color:var(--text-muted);margin-bottom:18px">Resuelve estas restas básicas. Escribe el resultado y presiona <strong>Verificar</strong>.</p>
+      <div id="act1-container"></div>
+      <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-success" onclick="checkAct1()">✔ Verificar Respuestas</button>
+        <button class="btn btn-outline" onclick="resetAct1()">↺ Limpiar</button>
+      </div>
+      <div id="act1-feedback" class="feedback"></div>
+    </div>
+
+    <div style="text-align:right;margin-top:8px">
+      <button class="btn btn-primary" onclick="goSection(3)">Siguiente módulo →</button>
+    </div>
+  </section>
+
+  <!-- ========================================
+       SECCIÓN 3 – ELEMENTOS DE LA RESTA
+  ========================================= -->
+  <section class="section" id="sec3">
+    <div class="hero-banner" style="background:linear-gradient(135deg,#4c1d95,#7c3aed)">
+      <h2>🔢 Módulo 2 – Elementos de la Resta Vertical</h2>
+      <p>Aprende los nombres de cada parte de una resta y cómo identificarlos en la forma vertical.</p>
+    </div>
+
+    <!-- VIDEO 2 -->
+    <div class="card">
+      <div class="card-title">🎥 Video Explicativo – Resta con llevar</div>
+      <div class="video-wrap">
+        <video controls>
+          <source src="/vid/resta_lle.mp4" type="video/mp4">
+          <p style="color:white;text-align:center;padding:20px">
+            ⚠️ Tu navegador no soporta video HTML5. <a href="/vid/resta_lle.mp4" style="color:lightblue">Descarga el video aquí</a>.
+          </p>
+        </video>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🏷️ Los Tres Elementos de la Resta</div>
+      <div class="two-col">
+        <div>
+          <div class="elem-card" style="border-left-color:#2563eb">
+            <div class="elem-badge" style="background:#2563eb">M</div>
+            <div>
+              <h4>MINUENDO</h4>
+              <p>Es el número del que se quita (el mayor). Se escribe <strong>arriba</strong> en la forma vertical.</p>
+            </div>
+          </div>
+          <div class="elem-card" style="border-left-color:var(--red)">
+            <div class="elem-badge" style="background:var(--red)">S</div>
+            <div>
+              <h4>SUSTRAENDO</h4>
+              <p>Es el número que se quita (el que restamos). Se escribe <strong>abajo</strong>, precedido del signo −.</p>
+            </div>
+          </div>
+          <div class="elem-card" style="border-left-color:var(--green)">
+            <div class="elem-badge" style="background:var(--green)">D</div>
+            <div>
+              <h4>DIFERENCIA (Resultado)</h4>
+              <p>Es el resultado de la resta. Se escribe <strong>debajo de la línea</strong> horizontal.</p>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+          <div style="position:relative;display:inline-block">
+            <div class="math-vert" style="font-size:42px;padding:22px 34px">
+              <div class="row"><span style="color:#2563eb">15</span></div>
+              <div class="row"><span class="op">−</span><span style="color:var(--red)">8</span></div>
+              <div class="hr"></div>
+              <div class="row res"><span>7</span></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+            <span class="tooltip-lbl" style="background:#2563eb">↑ Minuendo = 15</span>
+            <span class="tooltip-lbl" style="background:var(--red)">↑ Sustraendo = 8</span>
+            <span class="tooltip-lbl" style="background:var(--green)">↑ Diferencia = 7</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Canvas elementos interactivo -->
+    <div class="card">
+      <div class="card-title">🎨 Diagrama Interactivo de la Resta</div>
+      <div style="text-align:center">
+        <div class="canvas-wrap" style="display:inline-block">
+          <canvas id="cvElements" width="500" height="300"></canvas>
+        </div>
+        <br>
+        <div style="margin-top:10px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="highlightElement('m')">🔵 Minuendo</button>
+          <button class="btn btn-danger"  onclick="highlightElement('s')">🔴 Sustraendo</button>
+          <button class="btn btn-success" onclick="highlightElement('d')">🟢 Diferencia</button>
+          <button class="btn btn-outline" onclick="drawElements()">↺ Limpiar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Más ejemplos -->
+    <div class="card">
+      <div class="card-title">📋 Más Ejemplos con Elementos Identificados</div>
+      <div class="three-col">
+        <div style="text-align:center">
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:8px">Ejemplo 1</p>
+          <div class="math-vert" style="font-size:30px;padding:14px 22px">
+            <div class="row"><span style="color:#2563eb">25</span></div>
+            <div class="row"><span class="op">−</span><span style="color:var(--red)">12</span></div>
+            <div class="hr"></div>
+            <div class="row res"><span>13</span></div>
+          </div>
+          <div style="margin-top:8px;font-size:12px">
+            <span class="tooltip-lbl" style="background:#2563eb">Min=25</span>
+            <span class="tooltip-lbl" style="background:var(--red)">Sus=12</span>
+            <span class="tooltip-lbl" style="background:var(--green)">Dif=13</span>
+          </div>
+        </div>
+        <div style="text-align:center">
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:8px">Ejemplo 2</p>
+          <div class="math-vert" style="font-size:30px;padding:14px 22px">
+            <div class="row"><span style="color:#2563eb">47</span></div>
+            <div class="row"><span class="op">−</span><span style="color:var(--red)">23</span></div>
+            <div class="hr"></div>
+            <div class="row res"><span>24</span></div>
+          </div>
+          <div style="margin-top:8px;font-size:12px">
+            <span class="tooltip-lbl" style="background:#2563eb">Min=47</span>
+            <span class="tooltip-lbl" style="background:var(--red)">Sus=23</span>
+            <span class="tooltip-lbl" style="background:var(--green)">Dif=24</span>
+          </div>
+        </div>
+        <div style="text-align:center">
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:8px">Ejemplo 3</p>
+          <div class="math-vert" style="font-size:30px;padding:14px 22px">
+            <div class="row"><span style="color:#2563eb">83</span></div>
+            <div class="row"><span class="op">−</span><span style="color:var(--red)">61</span></div>
+            <div class="hr"></div>
+            <div class="row res"><span>22</span></div>
+          </div>
+          <div style="margin-top:8px;font-size:12px">
+            <span class="tooltip-lbl" style="background:#2563eb">Min=83</span>
+            <span class="tooltip-lbl" style="background:var(--red)">Sus=61</span>
+            <span class="tooltip-lbl" style="background:var(--green)">Dif=22</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actividad identificar elementos -->
+    <div class="card">
+      <div class="card-title">✏️ Actividad 2 – Identifica los Elementos</div>
+      <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px">Observa la resta y responde: ¿Cuál es el minuendo, sustraendo y diferencia?</p>
+      <div id="act2-container"></div>
+      <div id="act2-fb" class="feedback"></div>
+    </div>
+
+    <div style="text-align:right;margin-top:8px">
+      <button class="btn btn-primary" onclick="goSection(4)">Siguiente módulo →</button>
+    </div>
+  </section>
+
+  <!-- ========================================
+       SECCIÓN 4 – RESTA DE 2+ DÍGITOS
+  ========================================= -->
+  <section class="section" id="sec4">
+    <div class="hero-banner" style="background:linear-gradient(135deg,#7c2d12,#ea580c)">
+      <h2>🏗️ Módulo 3 – Resta de 2 y Más Dígitos</h2>
+      <p>Domina la técnica de restar números con dos o más cifras, tanto cuando <strong>no hay préstamo</strong> como cuando <strong>sí lo hay</strong>.</p>
+    </div>
+
+    <!-- VIDEO 3 -->
+    <div class="card">
+      <div class="card-title">🎥 Video Explicativo – Resta con préstamo</div>
+      <div class="video-wrap">
+        <video controls>
+          <source src="/vid/resta_prest.mp4" type="video/mp4">
+          <p style="color:white;text-align:center;padding:20px">
+            ⚠️ Tu navegador no soporta video HTML5. <a href="/vid/resta_prest.mp4" style="color:lightblue">Descarga el video aquí</a>.
+          </p>
+        </video>
+      </div>
+    </div>
+
+    <!-- Caso 1: Sin préstamo -->
+    <div class="card">
+      <div class="card-title" style="color:var(--green)">✅ Caso 1: Resta SIN préstamo</div>
+      <p style="font-size:14.5px;line-height:1.7;margin-bottom:14px">
+        Cuando cada cifra del <em>minuendo</em> es <strong>mayor o igual</strong> a la cifra correspondiente del sustraendo, restamos directamente columna por columna, de derecha a izquierda.
+      </p>
+      <div class="two-col">
+        <div>
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body"><h4>Escribir en columnas</h4><p>Alinear unidades bajo unidades, decenas bajo decenas</p></div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body"><h4>Restar unidades</h4><p>Empezar por la columna de la derecha: 8 − 5 = 3</p></div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body"><h4>Restar decenas</h4><p>Continuar con la siguiente columna: 7 − 4 = 3</p></div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body"><h4>Resultado</h4><p>La diferencia es 33</p></div>
+          </div>
+        </div>
+        <div style="text-align:center;display:flex;align-items:center;justify-content:center">
+          <div class="math-vert" style="font-size:38px;padding:20px 30px">
+            <div class="row"><span style="color:#2563eb">78</span></div>
+            <div class="row"><span class="op">−</span><span style="color:var(--red)">45</span></div>
+            <div class="hr"></div>
+            <div class="row res"><span>33</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Animación sin préstamo -->
+    <div class="card">
+      <div class="card-title">🎬 Animación Paso a Paso – Sin Préstamo</div>
+      <div id="anim-sin-prestamo">
+        <div style="text-align:center;padding:20px">
+          <div style="display:inline-flex;flex-direction:column;align-items:flex-end;gap:6px">
+            <div class="digit-row" id="row-min-sp">
+              <div class="dbox" id="sp-m2">7</div>
+              <div class="dbox" id="sp-m1">8</div>
+            </div>
+            <div class="digit-row">
+              <span style="font-size:28px;font-weight:800;color:var(--red);margin-right:4px">−</span>
+              <div class="dbox" id="sp-s2">4</div>
+              <div class="dbox" id="sp-s1">5</div>
+            </div>
+            <div style="width:100%;height:3px;background:var(--navy);border-radius:2px"></div>
+            <div class="digit-row" id="row-res-sp">
+              <div class="dbox" id="sp-r2" style="color:#aaa">?</div>
+              <div class="dbox" id="sp-r1" style="color:#aaa">?</div>
+            </div>
+          </div>
+        </div>
+        <div id="sp-explanation" class="info-box" style="text-align:center;min-height:42px">Presiona "Siguiente paso" para comenzar la animación.</div>
+        <div class="step-controls" style="justify-content:center">
+          <button class="btn btn-primary" onclick="stepSP()">▶ Siguiente Paso</button>
+          <button class="btn btn-outline" onclick="resetSP()">↺ Reiniciar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Caso 2: Con préstamo -->
+    <div class="card">
+      <div class="card-title" style="color:var(--accent)">🔄 Caso 2: Resta CON préstamo</div>
+      <p style="font-size:14.5px;line-height:1.7;margin-bottom:14px">
+        Cuando la cifra del minuendo es <strong>menor</strong> que la cifra del sustraendo en alguna columna, debemos <em>pedir prestado</em> (o <em>llevar</em>) 1 unidad de la columna siguiente.
+      </p>
+      <div class="two-col">
+        <div>
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body"><h4>Unidades: 3 < 7 → Pedir prestado</h4><p>Como 3 < 7, tomamos 1 decena de la columna izquierda. 3 se convierte en 13.</p></div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body"><h4>Restar unidades ajustadas</h4><p>13 − 7 = 6. Escribimos 6 en la columna de unidades.</p></div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body"><h4>Ajustar el minuendo</h4><p>La decena del 4 se reduce en 1: queda 3. Ahora 3 − 2 = 1.</p></div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body"><h4>Resultado</h4><p>La diferencia es 16</p></div>
+          </div>
+        </div>
+        <div style="text-align:center;display:flex;align-items:center;justify-content:center">
+          <div class="math-vert" style="font-size:38px;padding:20px 30px">
+            <div class="row"><span style="font-size:18px;color:var(--accent);margin-right:4px" title="1 unidad prestada">¹</span><span style="color:#2563eb">4</span><span style="color:#2563eb">3</span></div>
+            <div class="row"><span class="op">−</span><span style="color:var(--red)">2</span><span style="color:var(--red)">7</span></div>
+            <div class="hr"></div>
+            <div class="row res"><span>1</span><span>6</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="warn-box">
+        ⚠️ <strong>Regla del Préstamo:</strong> Cuando el dígito de arriba (minuendo parcial) es menor que el de abajo (sustraendo parcial), le "pedimos prestada" 1 unidad a la columna inmediatamente a la izquierda. Eso le agrega <strong>10</strong> al dígito actual y le resta <strong>1</strong> al dígito de la columna izquierda.
+      </div>
+    </div>
+
+    <!-- Animación con préstamo -->
+    <div class="card">
+      <div class="card-title">🎬 Animación Paso a Paso – Con Préstamo</div>
+      <div style="text-align:center;padding:16px">
+        <div style="display:inline-flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <div style="display:flex;gap:8px;margin-bottom:-12px">
+            <div id="cp-borrow" style="font-size:18px;color:var(--accent);font-weight:800;width:56px;text-align:center;opacity:0;transition:opacity .4s">¹</div>
+          </div>
+          <div class="digit-row">
+            <div class="dbox" id="cp-m2">4</div>
+            <div class="dbox" id="cp-m1">3</div>
+          </div>
+          <div class="digit-row">
+            <span style="font-size:28px;font-weight:800;color:var(--red);margin-right:4px">−</span>
+            <div class="dbox" id="cp-s2">2</div>
+            <div class="dbox" id="cp-s1">7</div>
+          </div>
+          <div style="width:128px;height:3px;background:var(--navy);border-radius:2px"></div>
+          <div class="digit-row">
+            <div class="dbox" id="cp-r2" style="color:#aaa">?</div>
+            <div class="dbox" id="cp-r1" style="color:#aaa">?</div>
+          </div>
+        </div>
+        <div id="cp-explanation" class="info-box" style="text-align:center;margin-top:12px;min-height:42px">Presiona "Siguiente paso" para comenzar la animación.</div>
+        <div class="step-controls" style="justify-content:center">
+          <button class="btn btn-accent" onclick="stepCP()">▶ Siguiente Paso</button>
+          <button class="btn btn-outline" onclick="resetCP()">↺ Reiniciar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Caso 3: Tres dígitos -->
+    <div class="card">
+      <div class="card-title" style="color:#7c3aed">🔢 Caso 3: Resta de Tres Dígitos con Préstamo</div>
+      <div class="two-col">
+        <div>
+          <p style="font-size:14px;line-height:1.7;margin-bottom:14px">
+            El mismo procedimiento se aplica para números de 3 o más cifras. Si en alguna columna el dígito de arriba es menor que el de abajo, pedimos prestado a la columna siguiente.
+          </p>
+          <div class="info-box">
+            <strong>Ejemplo:</strong> 532 − 278 = 254<br>
+            • Unidades: 2 &lt; 8 → pedimos préstamo → 12 − 8 = 4<br>
+            • Decenas:  2 (ajustado) &lt; 7 → pedimos préstamo → 12 − 7 = 5 (el 3 del min se convierte en 2)<br>
+            • Centenas: 4 (ajustado) − 2 = 2
+          </div>
+        </div>
+        <div style="text-align:center;display:flex;align-items:center;justify-content:center">
+          <div class="math-vert" style="font-size:32px;padding:18px 26px">
+            <div class="row">
+              <span style="font-size:16px;color:var(--accent)">¹ ¹</span>
+              <span style="color:#2563eb">5</span><span style="color:#2563eb">3</span><span style="color:#2563eb">2</span>
+            </div>
+            <div class="row"><span class="op">−</span><span style="color:var(--red)">2</span><span style="color:var(--red)">7</span><span style="color:var(--red)">8</span></div>
+            <div class="hr"></div>
+            <div class="row res"><span>2</span><span>5</span><span>4</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Más ejemplos ilustrativos -->
+    <div class="card">
+      <div class="card-title">📋 Galería de Ejemplos</div>
+      <div class="three-col">
+        <div style="text-align:center">
+          <p style="font-size:12px;color:var(--text-muted);margin-bottom:6px">Sin préstamo</p>
+          <div class="math-vert" style="font-size:26px;padding:12px 20px">
+            <div class="row"><span style="color:#2563eb">96</span></div>
+            <div class="row"><span class="op">−</span><span style="color:var(--red)">53</span></div>
+            <div class="hr"></div>
+            <div class="row res"><span>43</span></div>
+          </div>
+        </div>
+        <div style="text-align:center">
+          <p style="font-size:12px;color:var(--text-muted);margin-bottom:6px">Con préstamo</p>
+          <div class="math-vert" style="font-size:26px;padding:12px 20px">
+            <div class="row"><span style="color:#2563eb">71</span></div>
+            <div class="row"><span class="op">−</span><span style="color:var(--red)">38</span></div>
+            <div class="hr"></div>
+            <div class="row res"><span>33</span></div>
+          </div>
+        </div>
+        <div style="text-align:center">
+          <p style="font-size:12px;color:var(--text-muted);margin-bottom:6px">3 dígitos</p>
+          <div class="math-vert" style="font-size:26px;padding:12px 20px">
+            <div class="row"><span style="color:#2563eb">654</span></div>
+            <div class="row"><span class="op">−</span><span style="color:var(--red)">321</span></div>
+            <div class="hr"></div>
+            <div class="row res"><span>333</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actividad sección 4 -->
+    <div class="card">
+      <div class="card-title">✏️ Actividad 3 – Resuelve Paso a Paso</div>
+      <div id="act3-container"></div>
+      <div id="act3-fb" class="feedback"></div>
+    </div>
+
+    <div style="text-align:right;margin-top:8px">
+      <button class="btn btn-primary" onclick="goSection(5)">Ir a Práctica →</button>
+    </div>
+  </section>
+
+  <!-- ========================================
+       SECCIÓN 5 – PRÁCTICA INTERACTIVA
+  ========================================= -->
+  <section class="section" id="sec5">
+    <div class="hero-banner" style="background:linear-gradient(135deg,#78350f,#d97706)">
+      <h2>⚡ Práctica Interactiva</h2>
+      <p>10 ejercicios de resta con cronómetro de 15 segundos. Escribe tu respuesta o selecciona la opción correcta. ¡Suma puntos y supera tu récord!</p>
+    </div>
+
+    <!-- Panel de estadísticas -->
+    <div class="three-col" style="margin-bottom:22px">
+      <div class="stat-box">
+        <div class="stat-num" id="prac-score" style="color:var(--blue)">0</div>
+        <div class="stat-label">⭐ Puntuación</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="prac-q" style="color:var(--navy)">0/10</div>
+        <div class="stat-label">📊 Pregunta</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num timer-display" id="prac-timer" style="font-size:36px">15</div>
+        <div class="stat-label">⏱️ Segundos</div>
+      </div>
+    </div>
+
+    <div class="timer-bar-bg">
+      <div class="timer-bar-fill" id="prac-timer-bar" style="width:100%"></div>
+    </div>
+
+    <div class="prog-dots" id="prac-dots"></div>
+
+    <!-- Exercise panel -->
+    <div id="prac-panel" class="card" style="text-align:center">
+      <div id="prac-start-screen">
+        <div style="font-size:60px;margin-bottom:16px">⚡</div>
+        <h3 style="font-size:22px;font-weight:800;margin-bottom:8px;color:var(--navy)">¡Listo para practicar!</h3>
+        <p style="font-size:14.5px;color:var(--text-muted);margin-bottom:24px">10 ejercicios aleatorios • 15 segundos cada uno • Puntaje acumulado</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-primary btn-lg" onclick="startPractice('input')">✏️ Ingresar respuesta</button>
+          <button class="btn btn-accent btn-lg" onclick="startPractice('mc')">🔘 Opción múltiple</button>
+        </div>
+      </div>
+
+      <div id="prac-exercise" style="display:none">
+        <div class="exercise-display" id="prac-display"></div>
+        <div id="prac-input-wrap" style="margin:14px 0">
+          <input type="number" class="answer-input" id="prac-input" placeholder="?" autocomplete="off" oninput="clearPracFb()">
+          <button class="btn btn-primary" style="margin-left:10px" onclick="checkPrac()">✔ Verificar</button>
+        </div>
+        <div id="prac-mc-wrap" class="mc-opts" style="display:none;max-width:320px;margin:0 auto"></div>
+        <div id="prac-fb" class="feedback"></div>
+        <button class="btn btn-outline btn-sm" style="margin-top:10px" onclick="nextPrac()">Saltar →</button>
+      </div>
+
+      <div id="prac-end" style="display:none">
+        <div class="result-screen">
+          <div class="result-circle" id="prac-result-circle">
+            <div id="prac-final-score"></div>
+            <div class="sub">de 100 pts</div>
+          </div>
+          <h3 id="prac-result-msg" style="font-size:20px;font-weight:800;margin-bottom:8px"></h3>
+          <p id="prac-result-detail" style="font-size:14px;color:var(--text-muted);margin-bottom:20px"></p>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+            <button class="btn btn-primary" onclick="startPractice('input')">🔄 Nuevos Ejercicios (texto)</button>
+            <button class="btn btn-accent" onclick="startPractice('mc')">🔄 Nuevos Ejercicios (MC)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       SECCIÓN 6 – GENERADOR DE HOJAS
+  ========================================= -->
+  <section class="section" id="sec6">
+    <div class="hero-banner" style="background:linear-gradient(135deg,#1e3a5f,#1d4ed8)">
+      <h2>📄 Generador de Hojas de Ejercicios</h2>
+      <p>Configura y genera hojas de trabajo personalizadas de resta vertical. ¡Luego descárgalas en PDF!</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚙️ Configuración</div>
+      <div class="form-row">
+        <div class="form-grp">
+          <label>Cantidad de ejercicios</label>
+          <input type="number" id="gen-count" min="4" max="40" value="12">
+        </div>
+        <div class="form-grp">
+          <label>Dígitos del Minuendo</label>
+          <select id="gen-min-dig">
+            <option value="1">1 dígito (1-9)</option>
+            <option value="2" selected>2 dígitos (10-99)</option>
+            <option value="3">3 dígitos (100-999)</option>
+            <option value="4">4 dígitos (1000-9999)</option>
+          </select>
+        </div>
+        <div class="form-grp">
+          <label>Dígitos del Sustraendo</label>
+          <select id="gen-sus-dig">
+            <option value="1">1 dígito (1-9)</option>
+            <option value="2" selected>2 dígitos (10-99)</option>
+            <option value="3">3 dígitos (100-999)</option>
+          </select>
+        </div>
+        <div class="form-grp">
+          <label>Tipo de resta</label>
+          <select id="gen-type">
+            <option value="any">Mixta (con y sin préstamo)</option>
+            <option value="no-borrow">Solo sin préstamo</option>
+            <option value="borrow">Solo con préstamo</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="generateWorksheet()">🔄 Generar Hoja</button>
+        <button class="btn btn-success" onclick="downloadPDF()">⬇️ Descargar PDF</button>
+      </div>
+    </div>
+
+    <div id="ws-output" class="card" style="display:none">
+      <div class="card-title" id="ws-title">📋 Hoja de Ejercicios</div>
+      <div id="ws-grid" class="ws-grid"></div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       SECCIÓN 7 – EVALUACIÓN FINAL
+  ========================================= -->
+  <section class="section" id="sec7">
+    <div class="hero-banner" style="background:linear-gradient(135deg,#7f1d1d,#dc2626)">
+      <h2>📝 Evaluación Final</h2>
+      <p>10 preguntas de opción múltiple sobre todo lo aprendido. Calificación automática y retroalimentación inmediata.</p>
+    </div>
+
+    <div id="eval-start-screen" class="card" style="text-align:center;padding:40px">
+      <div style="font-size:64px;margin-bottom:16px">🏆</div>
+      <h3 style="font-size:22px;font-weight:800;margin-bottom:8px;color:var(--navy)">¿Listo para la Evaluación?</h3>
+      <p style="font-size:14.5px;color:var(--text-muted);margin-bottom:24px">
+        Esta evaluación tiene <strong>10 preguntas</strong> de opción múltiple (A/B/C/D).<br>
+        Recibirás retroalimentación inmediata después de cada respuesta.
+      </p>
+      <button class="btn btn-danger btn-lg" onclick="startEval()">🚀 Iniciar Evaluación</button>
+    </div>
+
+    <div id="eval-body" style="display:none"></div>
+
+    <div id="eval-result" style="display:none">
+      <div class="card">
+        <div class="result-screen">
+          <div class="result-circle" id="eval-circle">
+            <div id="eval-score-display"></div>
+            <div class="sub">/ 10</div>
+          </div>
+          <h2 id="eval-result-title" style="font-size:24px;font-weight:900;margin-bottom:8px"></h2>
+          <p id="eval-result-msg" style="font-size:15px;color:var(--text-muted);margin-bottom:24px;max-width:480px;margin-left:auto;margin-right:auto"></p>
+          <div id="eval-answers-review" style="text-align:left;max-width:600px;margin:0 auto 20px"></div>
+          <button class="btn btn-danger btn-lg" onclick="restartEval()">🔄 Reiniciar Evaluación</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ==========================================
+     FOOTER
+=========================================== -->
+<footer id="app-footer">
+  © 2026 MenteMatematicaI. Todos los derechos reservados VC.
+</footer>
+
+<!-- ==========================================
+     JAVASCRIPT
+=========================================== -->
+<script>
+// ============================================================
+//  NAVEGACIÓN DINÁMICA
+// ============================================================
+function goSection(n) {
+  document.querySelectorAll('.section').forEach((s,i) => {
+    s.classList.toggle('active', i === n);
+  });
+  document.querySelectorAll('.nav-item').forEach((el,i) => {
+    el.classList.toggle('active', i === n);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Inicializar canvases al activar sección
+  if (n === 1) setTimeout(drawIntroCanvas, 100);
+  if (n === 2) setTimeout(() => { drawConceptCanvas(); buildAct1(); }, 100);
+  if (n === 3) setTimeout(() => { drawElements(); buildAct2(); }, 100);
+  if (n === 4) setTimeout(() => { resetSP(); resetCP(); buildAct3(); }, 100);
+  if (n === 5) setTimeout(initPracticeDots, 100);
+  if (n === 7) { /* noop */ }
+}
+
+// ============================================================
+//  CANVAS – INTRO (sección 1)
+// ============================================================
+let introAnimFrame = null;
+function drawIntroCanvas() {
+  const cv = document.getElementById('cvIntro');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  ctx.fillStyle = '#f8fafc';
+  ctx.fillRect(0, 0, cv.width, cv.height);
+
+  // Decorative
+  ctx.fillStyle = '#eff6ff';
+  ctx.fillRect(20, 20, 340, 200);
+  ctx.strokeStyle = '#bfdbfe';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(20, 20, 340, 200);
+
+  ctx.fillStyle = '#1e293b';
+  ctx.font = 'bold 28px Courier New';
+  ctx.textAlign = 'center';
+  ctx.fillText('¿Qué es la resta?', 190, 64);
+
+  ctx.font = '22px Courier New';
+  ctx.fillStyle = '#2563eb';
+  ctx.fillText('48', 190, 108);
+  ctx.fillStyle = '#ef4444';
+  ctx.fillText('− 23', 190, 136);
+  ctx.fillStyle = '#1e293b';
+  ctx.fillRect(130, 144, 120, 2);
+  ctx.fillStyle = '#10b981';
+  ctx.fillText('25', 190, 174);
+
+  ctx.fillStyle = '#64748b';
+  ctx.font = '13px Segoe UI';
+  ctx.fillText('Haz clic en "Animar" para ver el proceso', 190, 210);
+}
+
+function animIntro() {
+  const cv = document.getElementById('cvIntro');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  let step = 0;
+  function frame() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.fillStyle = '#f8fafc';
+    ctx.fillRect(0, 0, cv.width, cv.height);
+
+    ctx.fillStyle = '#eff6ff';
+    ctx.fillRect(20, 20, 340, 200);
+
+    const msgs = [
+      'Escribir el minuendo (48) arriba',
+      'Escribir el sustraendo (23) abajo con el signo −',
+      'Trazar la línea horizontal',
+      'Restar cifra por cifra: 8−3=5, 4−2=2',
+      'Resultado: 48 − 23 = 25 ✓'
+    ];
+
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 18px Segoe UI';
+    ctx.textAlign = 'center';
+    ctx.fillText(msgs[Math.min(step, msgs.length - 1)], 190, 50);
+
+    if (step >= 0) { ctx.fillStyle = '#2563eb'; ctx.font = 'bold 36px Courier New'; ctx.fillText('48', 190, 110); }
+    if (step >= 1) { ctx.fillStyle = '#ef4444'; ctx.fillText('− 23', 190, 148); }
+    if (step >= 2) { ctx.fillStyle = '#1e293b'; ctx.fillRect(120, 158, 140, 3); }
+    if (step >= 3) { ctx.fillStyle = '#10b981'; ctx.fillText('25', 190, 192); }
+    if (step >= 4) {
+      ctx.fillStyle = 'rgba(16,185,129,0.15)';
+      ctx.fillRect(100, 168, 180, 32);
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(100, 168, 180, 32);
+    }
+
+    step++;
+    if (step < 6) setTimeout(frame, 700);
+  }
+  frame();
+}
+
+// ============================================================
+//  CANVAS – CONCEPTO (sección 2)
+// ============================================================
+let conceptPhase = 0;
+function drawConceptCanvas() {
+  const cv = document.getElementById('cvConcept');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  conceptPhase = 0;
+  drawConceptPhase(ctx, 9, 0);
+}
+
+function drawConceptPhase(ctx, total, removed) {
+  const cv = document.getElementById('cvConcept');
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  ctx.fillStyle = '#f8fafc';
+  ctx.fillRect(0, 0, cv.width, cv.height);
+
+  ctx.fillStyle = '#1e293b';
+  ctx.font = 'bold 16px Segoe UI';
+  ctx.textAlign = 'left';
+  ctx.fillText(`9 manzanas  −  ${removed} quitadas  =  ${9 - removed} quedan`, 20, 28);
+
+  // draw apples
+  for (let i = 0; i < 9; i++) {
+    const x = 30 + (i % 5) * 80;
+    const y = 55 + Math.floor(i / 5) * 80;
+    const gone = i < removed;
+    ctx.save();
+    if (gone) { ctx.globalAlpha = 0.18; }
+    // apple body
+    ctx.fillStyle = gone ? '#fca5a5' : '#ef4444';
+    ctx.beginPath();
+    ctx.arc(x + 28, y + 30, 24, 0, Math.PI * 2);
+    ctx.fill();
+    // leaf
+    ctx.fillStyle = gone ? '#bbf7d0' : '#22c55e';
+    ctx.beginPath();
+    ctx.ellipse(x + 34, y + 8, 10, 5, -Math.PI / 4, 0, Math.PI * 2);
+    ctx.fill();
+    // stem
+    ctx.strokeStyle = '#854d0e';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x + 28, y + 6); ctx.lineTo(x + 28, y + 14);
+    ctx.stroke();
+    if (gone) {
+      ctx.strokeStyle = '#dc2626';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(x + 8, y + 10); ctx.lineTo(x + 48, y + 50);
+      ctx.moveTo(x + 48, y + 10); ctx.lineTo(x + 8, y + 50);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  ctx.fillStyle = '#1e293b';
+  ctx.font = 'bold 22px Courier New';
+  ctx.textAlign = 'right';
+  ctx.fillText(`9 − ${removed} = ${9 - removed}`, 480, 185);
+}
+
+function animConcept() {
+  const cv = document.getElementById('cvConcept');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  conceptPhase = 0;
+  function step() {
+    if (conceptPhase > 9) return;
+    drawConceptPhase(ctx, 9, conceptPhase);
+    conceptPhase++;
+    if (conceptPhase <= 4) setTimeout(step, 700);
+  }
+  step();
+}
+
+function resetConcept() {
+  const cv = document.getElementById('cvConcept');
+  if (!cv) return;
+  drawConceptPhase(cv.getContext('2d'), 9, 0);
+}
+
+// ============================================================
+//  CANVAS – ELEMENTOS (sección 3)
+// ============================================================
+function drawElements() {
+  const cv = document.getElementById('cvElements');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  ctx.fillStyle = '#f8fafc';
+  ctx.fillRect(0, 0, cv.width, cv.height);
+
+  // Draw the vertical subtraction
+  const cx = 200, top = 60;
+  ctx.font = 'bold 60px Courier New';
+  ctx.textAlign = 'center';
+
+  ctx.fillStyle = '#2563eb';
+  ctx.fillText('57', cx, top + 55);
+
+  ctx.fillStyle = '#ef4444';
+  ctx.fillText('−24', cx, top + 115);
+
+  ctx.fillStyle = '#1e293b';
+  ctx.fillRect(cx - 60, top + 126, 120, 4);
+
+  ctx.fillStyle = '#10b981';
+  ctx.fillText('33', cx, top + 185);
+
+  // Labels
+  ctx.font = '14px Segoe UI';
+  ctx.fillStyle = '#64748b';
+  ctx.textAlign = 'left';
+  ctx.fillText('← Haz clic en un botón para resaltar un elemento', 20, 290);
+}
+
+function highlightElement(type) {
+  const cv = document.getElementById('cvElements');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  drawElements();
+
+  const cx = 200, top = 60;
+
+  if (type === 'm') {
+    ctx.fillStyle = 'rgba(37,99,235,0.2)';
+    ctx.beginPath(); ctx.roundRect(cx - 65, top + 14, 130, 52, 8); ctx.fill();
+    ctx.strokeStyle = '#2563eb'; ctx.lineWidth = 3; ctx.beginPath(); ctx.roundRect(cx - 65, top + 14, 130, 52, 8); ctx.stroke();
+    ctx.fillStyle = '#2563eb'; ctx.font = 'bold 16px Segoe UI'; ctx.textAlign = 'center';
+    ctx.fillText('MINUENDO = 57', cx, 270);
+    ctx.fillText('Es el número del que quitamos', cx, 290);
+  } else if (type === 's') {
+    ctx.fillStyle = 'rgba(239,68,68,0.2)';
+    ctx.beginPath(); ctx.roundRect(cx - 65, top + 74, 130, 52, 8); ctx.fill();
+    ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 3; ctx.beginPath(); ctx.roundRect(cx - 65, top + 74, 130, 52, 8); ctx.stroke();
+    ctx.fillStyle = '#ef4444'; ctx.font = 'bold 16px Segoe UI'; ctx.textAlign = 'center';
+    ctx.fillText('SUSTRAENDO = 24', cx, 270);
+    ctx.fillText('Es el número que restamos', cx, 290);
+  } else if (type === 'd') {
+    ctx.fillStyle = 'rgba(16,185,129,0.2)';
+    ctx.beginPath(); ctx.roundRect(cx - 65, top + 144, 130, 52, 8); ctx.fill();
+    ctx.strokeStyle = '#10b981'; ctx.lineWidth = 3; ctx.beginPath(); ctx.roundRect(cx - 65, top + 144, 130, 52, 8); ctx.stroke();
+    ctx.fillStyle = '#10b981'; ctx.font = 'bold 16px Segoe UI'; ctx.textAlign = 'center';
+    ctx.fillText('DIFERENCIA = 33', cx, 270);
+    ctx.fillText('Es el resultado de la resta', cx, 290);
+  }
+}
+
+// ============================================================
+//  ANIMACIÓN SIN PRÉSTAMO (sección 4)
+// ============================================================
+let spStep = 0;
+const spSteps = [
+  { hl: [], exp: 'Empezamos con 78 − 45. Trabajamos columna por columna, de derecha a izquierda.' },
+  { hl: ['sp-m1','sp-s1'], exp: 'Columna de unidades: 8 − 5. Como 8 ≥ 5, restamos directamente.' },
+  { hl: ['sp-m1','sp-s1','sp-r1'], exp: '8 − 5 = 3. Escribimos 3 en el resultado (unidades). ✅' },
+  { hl: ['sp-m2','sp-s2'], exp: 'Columna de decenas: 7 − 4. Como 7 ≥ 4, restamos directamente.' },
+  { hl: ['sp-m2','sp-s2','sp-r2'], exp: '7 − 4 = 3. Escribimos 3 en el resultado (decenas). ✅' },
+  { hl: ['sp-r1','sp-r2'], exp: '¡Listo! 78 − 45 = 33. Sin necesidad de préstamo. 🎉' },
+];
+
+function stepSP() {
+  if (spStep >= spSteps.length) { spStep = 0; }
+  const s = spSteps[spStep];
+  document.querySelectorAll('.dbox').forEach(d => {
+    d.classList.remove('hl','res','borrow');
+  });
+  s.hl.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add(id.startsWith('sp-r') ? 'res' : 'hl');
+  });
+  if (spStep === 2) {
+    const r = document.getElementById('sp-r1');
+    if (r) { r.textContent = '3'; r.style.color = '#059669'; }
+  }
+  if (spStep === 4) {
+    const r = document.getElementById('sp-r2');
+    if (r) { r.textContent = '3'; r.style.color = '#059669'; }
+  }
+  document.getElementById('sp-explanation').textContent = s.exp;
+  spStep++;
+}
+
+function resetSP() {
+  spStep = 0;
+  ['sp-m2','sp-m1','sp-s2','sp-s1'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('hl','res','borrow');
+  });
+  const r1 = document.getElementById('sp-r1'); if (r1) { r1.textContent='?'; r1.style.color='#aaa'; r1.classList.remove('res'); }
+  const r2 = document.getElementById('sp-r2'); if (r2) { r2.textContent='?'; r2.style.color='#aaa'; r2.classList.remove('res'); }
+  document.getElementById('sp-explanation').textContent = 'Presiona "Siguiente paso" para comenzar la animación.';
+}
+
+// ============================================================
+//  ANIMACIÓN CON PRÉSTAMO (sección 4)
+// ============================================================
+let cpStep = 0;
+const cpSteps = [
+  { exp: 'Empezamos con 43 − 27. Comparamos columna por columna, de derecha a izquierda.' },
+  { exp: 'Unidades: 3 − 7. ¡Problema! 3 < 7. Necesitamos pedir prestado a la columna de las decenas.' },
+  { exp: 'Pedimos 1 decena a la izquierda. El 4 se convierte en 3. El 3 se convierte en 13.', borrow: true },
+  { exp: '13 − 7 = 6. Escribimos 6 en las unidades del resultado.', r1: '6' },
+  { exp: 'Decenas: 3 (ajustado) − 2 = 1. Como 3 ≥ 2, restamos directamente.' },
+  { exp: '3 − 2 = 1. Escribimos 1 en las decenas del resultado.', r2: '1' },
+  { exp: '¡Listo! 43 − 27 = 16. Usamos el préstamo correctamente. 🎉' },
+];
+
+function stepCP() {
+  if (cpStep >= cpSteps.length) { cpStep = 0; }
+  const s = cpSteps[cpStep];
+  document.getElementById('cp-explanation').textContent = s.exp;
+
+  const bw = document.getElementById('cp-borrow');
+  const m2 = document.getElementById('cp-m2');
+
+  if (s.borrow) {
+    bw.style.opacity = '1';
+    m2.textContent = '3';
+    m2.classList.add('borrow');
+    document.getElementById('cp-m1').classList.add('hl');
+  }
+  if (s.r1) {
+    const r1 = document.getElementById('cp-r1');
+    r1.textContent = s.r1; r1.style.color = '#059669'; r1.classList.add('res');
+  }
+  if (s.r2) {
+    const r2 = document.getElementById('cp-r2');
+    r2.textContent = s.r2; r2.style.color = '#059669'; r2.classList.add('res');
+  }
+  cpStep++;
+}
+
+function resetCP() {
+  cpStep = 0;
+  document.getElementById('cp-borrow').style.opacity = '0';
+  const m2 = document.getElementById('cp-m2'); m2.textContent = '4'; m2.classList.remove('borrow','hl');
+  document.getElementById('cp-m1').classList.remove('hl','borrow');
+  const r1 = document.getElementById('cp-r1'); r1.textContent = '?'; r1.style.color = '#aaa'; r1.classList.remove('res');
+  const r2 = document.getElementById('cp-r2'); r2.textContent = '?'; r2.style.color = '#aaa'; r2.classList.remove('res');
+  document.getElementById('cp-explanation').textContent = 'Presiona "Siguiente paso" para comenzar la animación.';
+}
+
+// ============================================================
+//  ACTIVIDAD 1 – Restas básicas (sección 2)
+// ============================================================
+const act1Data = [
+  {a:9,b:4},{a:5,b:2},{a:9,b:5},{a:8,b:4},{a:8,b:5},{a:9,b:3},{a:6,b:4},{a:8,b:8}
+];
+
+function buildAct1() {
+  const c = document.getElementById('act1-container');
+  if (!c || c.dataset.built) return;
+  c.dataset.built = '1';
+  let html = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:14px">';
+  act1Data.forEach((q, i) => {
+    html += `
+      <div style="background:#f8fafc;border-radius:10px;padding:14px;text-align:center;border:2px solid #e2e8f0">
+        <div style="font-size:26px;font-weight:800;font-family:Courier New;margin-bottom:4px">
+          ${q.a}<br><span style="color:var(--red)">−${q.b}</span>
+        </div>
+        <div style="height:2px;background:var(--navy);margin:6px 0"></div>
+        <input type="number" class="answer-input" id="act1-${i}" style="width:70px;font-size:20px;padding:6px" placeholder="?" autocomplete="off">
+      </div>`;
+  });
+  html += '</div>';
+  c.innerHTML = html;
+}
+
+function checkAct1() {
+  let correct = 0;
+  act1Data.forEach((q, i) => {
+    const inp = document.getElementById(`act1-${i}`);
+    if (!inp) return;
+    const val = parseInt(inp.value);
+    const ans = q.a - q.b;
+    inp.classList.remove('correct','wrong');
+    if (val === ans) { inp.classList.add('correct'); correct++; }
+    else { inp.classList.add('wrong'); }
+  });
+  const fb = document.getElementById('act1-feedback');
+  fb.className = 'feedback show ' + (correct === act1Data.length ? 'correct' : 'wrong');
+  if (correct === act1Data.length)
+    fb.innerHTML = `✅ ¡Perfecto! Acertaste los ${act1Data.length} ejercicios. ¡Excelente trabajo!`;
+  else
+    fb.innerHTML = `❌ Tienes ${correct}/${act1Data.length} correctas. Las celdas en rojo tienen un error. ¡Inténtalo de nuevo!`;
+}
+
+function resetAct1() {
+  act1Data.forEach((_, i) => {
+    const inp = document.getElementById(`act1-${i}`);
+    if (inp) { inp.value = ''; inp.classList.remove('correct','wrong'); }
+  });
+  const fb = document.getElementById('act1-feedback');
+  fb.className = 'feedback';
+}
+
+// ============================================================
+//  ACTIVIDAD 2 – Identificar elementos (sección 3)
+// ============================================================
+const act2Questions = [
+  { expr:'36 − 14 = 22', minuendo:36, sustraendo:14, diferencia:22 },
+  { expr:'98 − 55 = 43', minuendo:98, sustraendo:55, diferencia:43 },
+  { expr:'74 − 31 = 43', minuendo:74, sustraendo:31, diferencia:43 },
+];
+
+function buildAct2() {
+  const c = document.getElementById('act2-container');
+  if (!c || c.dataset.built) return;
+  c.dataset.built = '1';
+  let html = '';
+  act2Questions.forEach((q, i) => {
+    html += `
+      <div style="background:#f8fafc;border-radius:12px;padding:18px;margin-bottom:14px;border:1px solid #e2e8f0">
+        <p style="font-weight:700;font-size:16px;margin-bottom:12px;font-family:Courier New">
+          ${q.expr}
+        </p>
+        <div style="display:flex;gap:14px;flex-wrap:wrap">
+          <div><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px;font-weight:600;text-transform:uppercase">Minuendo</label>
+            <input type="number" class="answer-input" id="act2-${i}-m" style="width:80px;font-size:18px;padding:7px" placeholder="?" autocomplete="off"></div>
+          <div><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px;font-weight:600;text-transform:uppercase">Sustraendo</label>
+            <input type="number" class="answer-input" id="act2-${i}-s" style="width:80px;font-size:18px;padding:7px" placeholder="?" autocomplete="off"></div>
+          <div><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px;font-weight:600;text-transform:uppercase">Diferencia</label>
+            <input type="number" class="answer-input" id="act2-${i}-d" style="width:80px;font-size:18px;padding:7px" placeholder="?" autocomplete="off"></div>
+          <div style="align-self:flex-end">
+            <button class="btn btn-primary btn-sm" onclick="checkAct2(${i})">✔ Verificar</button>
+          </div>
+        </div>
+        <div id="act2-fb-${i}" class="feedback"></div>
+      </div>`;
+  });
+  c.innerHTML = html;
+}
+
+function checkAct2(i) {
+  const q = act2Questions[i];
+  const m = parseInt(document.getElementById(`act2-${i}-m`).value);
+  const s = parseInt(document.getElementById(`act2-${i}-s`).value);
+  const d = parseInt(document.getElementById(`act2-${i}-d`).value);
+  const ok = m === q.minuendo && s === q.sustraendo && d === q.diferencia;
+  const fb = document.getElementById(`act2-fb-${i}`);
+  fb.className = 'feedback show ' + (ok ? 'correct' : 'wrong');
+  if (ok)
+    fb.innerHTML = `✅ ¡Correcto! Minuendo=${q.minuendo}, Sustraendo=${q.sustraendo}, Diferencia=${q.diferencia}`;
+  else
+    fb.innerHTML = `❌ Verifica: Minuendo=${q.minuendo}, Sustraendo=${q.sustraendo}, Diferencia=${q.diferencia}. ¡Inténtalo de nuevo!`;
+}
+
+// ============================================================
+//  ACTIVIDAD 3 – Resta de 2+ dígitos (sección 4)
+// ============================================================
+const act3Data = [
+  {a:78,b:45,label:'Sin préstamo'},{a:93,b:61,label:'Sin préstamo'},
+  {a:52,b:37,label:'Con préstamo'},{a:84,b:46,label:'Con préstamo'},
+  {a:365,b:142,label:'3 dígitos'},{a:701,b:358,label:'Con préstamo 3 dig'},
+];
+
+function buildAct3() {
+  const c = document.getElementById('act3-container');
+  if (!c || c.dataset.built) return;
+  c.dataset.built = '1';
+  let html = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px">';
+  act3Data.forEach((q, i) => {
+    html += `
+      <div style="background:#f8fafc;border-radius:12px;padding:16px;text-align:center;border:1px solid #e2e8f0">
+        <div style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;margin-bottom:8px">${q.label}</div>
+        <div style="font-family:Courier New;font-size:26px;font-weight:800;line-height:1.4">
+          <div style="color:#2563eb">${q.a}</div>
+          <div><span style="color:var(--red)">−</span><span style="color:var(--red)">${q.b}</span></div>
+          <div style="height:2px;background:var(--navy);margin:4px 0"></div>
+        </div>
+        <input type="number" class="answer-input" id="act3-${i}" style="width:90px;font-size:22px;padding:7px" placeholder="?" autocomplete="off">
+        <div id="act3-fb-${i}" style="margin-top:8px;font-size:13px;font-weight:600"></div>
+        <button class="btn btn-primary btn-sm" style="margin-top:10px;width:100%" onclick="checkAct3(${i})">✔</button>
+      </div>`;
+  });
+  html += '</div>';
+  c.innerHTML = html;
+}
+
+function checkAct3(i) {
+  const q = act3Data[i];
+  const inp = document.getElementById(`act3-${i}`);
+  const fb  = document.getElementById(`act3-fb-${i}`);
+  const val = parseInt(inp.value);
+  const ans = q.a - q.b;
+  inp.classList.remove('correct','wrong');
+  if (val === ans) {
+    inp.classList.add('correct');
+    fb.style.color = 'var(--green)';
+    fb.textContent = `✅ ¡Correcto! = ${ans}`;
+  } else {
+    inp.classList.add('wrong');
+    fb.style.color = 'var(--red)';
+    fb.textContent = `❌ La respuesta es ${ans}`;
+  }
+}
+
+// ============================================================
+//  PRÁCTICA INTERACTIVA (sección 5)
+// ============================================================
+let pracQuestions = [], pracIdx = 0, pracScore = 0;
+let pracTimer = null, pracTimeLeft = 15, pracMode = 'input';
+let pracAnswered = [], pracType = 'input';
+
+function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+function genPracQuestion() {
+  const diff = randInt(1,3); // difficulty
+  let a, b;
+  if (diff === 1) { a = randInt(5,20); b = randInt(1, a); }
+  else if (diff === 2) { a = randInt(20,99); b = randInt(10, a); }
+  else { a = randInt(100,500); b = randInt(10, a); }
+  return { a, b, ans: a - b };
+}
+
+function initPracticeDots() {
+  const c = document.getElementById('prac-dots');
+  if (!c) return;
+  c.innerHTML = '';
+  for (let i = 0; i < 10; i++) {
+    const d = document.createElement('div');
+    d.className = 'pdot';
+    d.textContent = i + 1;
+    d.id = `pdot-${i}`;
+    c.appendChild(d);
+  }
+}
+
+function startPractice(mode) {
+  pracType = mode;
+  pracQuestions = Array.from({length:10}, genPracQuestion);
+  pracIdx = 0; pracScore = 0; pracAnswered = [];
+  document.getElementById('prac-start-screen').style.display = 'none';
+  document.getElementById('prac-end').style.display = 'none';
+  document.getElementById('prac-exercise').style.display = 'block';
+  initPracticeDots();
+  showPracQ();
+}
+
+function showPracQ() {
+  if (pracIdx >= 10) { endPractice(); return; }
+  const q = pracQuestions[pracIdx];
+  document.getElementById('prac-q').textContent = `${pracIdx+1}/10`;
+  document.getElementById('pdot-' + pracIdx) && (document.getElementById('pdot-' + pracIdx).classList.add('cur'));
+
+  // Vertical display
+  const a = String(q.a), b = String(q.b);
+  const maxLen = Math.max(a.length, b.length);
+  const aP = a.padStart(maxLen,' '), bP = b.padStart(maxLen,' ');
+  document.getElementById('prac-display').innerHTML =
+    `<span style="display:block">${aP}</span>
+     <span style="display:block;color:var(--red)">−&nbsp;${bP}</span>
+     <hr style="border:2px solid var(--navy);margin:4px 0">`;
+
+  // Input or MC
+  const inpW = document.getElementById('prac-input-wrap');
+  const mcW  = document.getElementById('prac-mc-wrap');
+  const inp  = document.getElementById('prac-input');
+  if (pracType === 'input') {
+    inpW.style.display = 'flex'; mcW.style.display = 'none';
+    inp.value = ''; inp.className = 'answer-input'; inp.focus();
+  } else {
+    inpW.style.display = 'none'; mcW.style.display = 'block';
+    // generate 4 choices
+    const correct = q.ans;
+    const choices = new Set([correct]);
+    while (choices.size < 4) {
+      const wrong = correct + randInt(-15, 15);
+      if (wrong >= 0 && wrong !== correct) choices.add(wrong);
+    }
+    const arr = [...choices].sort(() => Math.random() - .5);
+    const letters = ['A','B','C','D'];
+    mcW.innerHTML = arr.map((v,i) =>
+      `<div class="mc-opt" id="mc-opt-${i}" onclick="selectMC(${i}, ${v}, ${correct})">
+        <div class="mc-letter">${letters[i]}</div><span>${v}</span>
+      </div>`
+    ).join('');
+  }
+
+  document.getElementById('prac-fb').className = 'feedback';
+  startPracTimer();
+}
+
+function startPracTimer() {
+  clearInterval(pracTimer);
+  pracTimeLeft = 15;
+  updateTimerUI();
+  pracTimer = setInterval(() => {
+    pracTimeLeft--;
+    updateTimerUI();
+    if (pracTimeLeft <= 0) {
+      clearInterval(pracTimer);
+      timeoutPrac();
+    }
+  }, 1000);
+}
+
+function updateTimerUI() {
+  document.getElementById('prac-timer').textContent = pracTimeLeft;
+  const pct = (pracTimeLeft / 15) * 100;
+  document.getElementById('prac-timer-bar').style.width = pct + '%';
+  document.getElementById('prac-timer-bar').style.background =
+    pracTimeLeft > 8 ? 'linear-gradient(90deg,var(--green),var(--blue))' :
+    pracTimeLeft > 4 ? 'linear-gradient(90deg,var(--accent),#ea580c)' :
+    'linear-gradient(90deg,var(--red),#dc2626)';
+}
+
+function timeoutPrac() {
+  const q = pracQuestions[pracIdx];
+  pracAnswered.push({ correct: false, q, userAns: null });
+  markPracDot(pracIdx, false);
+  showPracFeedback(false, q.ans, true);
+  setTimeout(nextPrac, 1800);
+}
+
+function checkPrac() {
+  if (pracType !== 'input') return;
+  clearInterval(pracTimer);
+  const q = pracQuestions[pracIdx];
+  const val = parseInt(document.getElementById('prac-input').value);
+  const ok = val === q.ans;
+  if (ok) pracScore += 10;
+  pracAnswered.push({ correct: ok, q, userAns: val });
+  markPracDot(pracIdx, ok);
+  document.getElementById('prac-input').classList.add(ok ? 'correct' : 'wrong');
+  showPracFeedback(ok, q.ans, false);
+  document.getElementById('prac-score').textContent = pracScore;
+  setTimeout(nextPrac, 1500);
+}
+
+function selectMC(idx, val, correct) {
+  clearInterval(pracTimer);
+  const ok = val === correct;
+  const opts = document.querySelectorAll('.mc-opt');
+  opts.forEach(o => o.style.pointerEvents = 'none');
+  document.getElementById(`mc-opt-${idx}`).classList.add(ok ? 'ok' : 'bad');
+  // show correct
+  opts.forEach((o, i) => {
+    if (parseInt(o.querySelector('span').textContent) === correct) o.classList.add('ok');
+  });
+  const q = pracQuestions[pracIdx];
+  if (ok) pracScore += 10;
+  pracAnswered.push({ correct: ok, q, userAns: val });
+  markPracDot(pracIdx, ok);
+  showPracFeedback(ok, correct, false);
+  document.getElementById('prac-score').textContent = pracScore;
+  setTimeout(nextPrac, 1500);
+}
+
+function showPracFeedback(ok, ans, timeout) {
+  const fb = document.getElementById('prac-fb');
+  fb.className = 'feedback show ' + (ok ? 'correct' : 'wrong');
+  if (timeout) fb.innerHTML = `⏱️ ¡Tiempo! La respuesta correcta era <strong>${ans}</strong>`;
+  else if (ok) fb.innerHTML = `✅ ¡Correcto! +10 puntos 🎉`;
+  else fb.innerHTML = `❌ La respuesta correcta era <strong>${ans}</strong>. ¡Sigue practicando!`;
+}
+
+function markPracDot(i, ok) {
+  const d = document.getElementById(`pdot-${i}`);
+  if (d) { d.classList.remove('cur'); d.classList.add(ok ? 'ok' : 'bad'); }
+}
+
+function clearPracFb() {
+  document.getElementById('prac-fb').className = 'feedback';
+  document.getElementById('prac-input').className = 'answer-input';
+}
+
+function nextPrac() {
+  pracIdx++;
+  if (pracIdx >= 10) endPractice();
+  else showPracQ();
+}
+
+function endPractice() {
+  clearInterval(pracTimer);
+  document.getElementById('prac-exercise').style.display = 'none';
+  document.getElementById('prac-end').style.display = 'block';
+  document.getElementById('prac-score').textContent = pracScore;
+
+  const circle = document.getElementById('prac-result-circle');
+  document.getElementById('prac-final-score').textContent = pracScore;
+  let msg, detail;
+  if (pracScore >= 90) {
+    circle.style.background = 'linear-gradient(135deg,var(--green),#059669)';
+    circle.style.color = 'white';
+    msg = '🏆 ¡Excelente dominio!';
+    detail = `Acertaste ${pracScore/10}/10 ejercicios. ¡Eres un campeón de la resta!`;
+  } else if (pracScore >= 60) {
+    circle.style.background = 'linear-gradient(135deg,var(--blue),var(--navy))';
+    circle.style.color = 'white';
+    msg = '👍 ¡Buen trabajo!';
+    detail = `Acertaste ${pracScore/10}/10 ejercicios. Sigue practicando para mejorar.`;
+  } else {
+    circle.style.background = 'linear-gradient(135deg,var(--accent),#d97706)';
+    circle.style.color = 'white';
+    msg = '💪 ¡Sigue practicando!';
+    detail = `Acertaste ${pracScore/10}/10 ejercicios. Revisa los módulos y vuelve a intentarlo.`;
+  }
+  document.getElementById('prac-result-msg').textContent = msg;
+  document.getElementById('prac-result-detail').textContent = detail;
+}
+
+// ============================================================
+//  GENERADOR DE HOJAS (sección 6)
+// ============================================================
+let wsData = [];
+
+function genNum(digits) {
+  const min = Math.pow(10, digits - 1);
+  const max = Math.pow(10, digits) - 1;
+  return randInt(min, max);
+}
+
+function generateWorksheet() {
+  const count   = Math.min(40, Math.max(4, parseInt(document.getElementById('gen-count').value) || 12));
+  const minDig  = parseInt(document.getElementById('gen-min-dig').value);
+  const susDig  = parseInt(document.getElementById('gen-sus-dig').value);
+  const type    = document.getElementById('gen-type').value;
+
+  wsData = [];
+  let attempts = 0;
+  while (wsData.length < count && attempts < 500) {
+    attempts++;
+    let a = genNum(minDig);
+    let b = genNum(Math.min(susDig, minDig));
+    if (b > a) { const t = a; a = b; b = t; }
+    if (a === b) { b = Math.max(1, b - randInt(1,5)); }
+
+    // Filter by borrow type
+    const hasBorrow = requiresBorrow(a, b);
+    if (type === 'no-borrow' && hasBorrow) continue;
+    if (type === 'borrow'    && !hasBorrow) continue;
+
+    wsData.push({ a, b, ans: a - b });
+  }
+
+  const grid = document.getElementById('ws-grid');
+  const out  = document.getElementById('ws-output');
+  document.getElementById('ws-title').textContent = `📋 Hoja de Ejercicios – ${wsData.length} Restas Verticales`;
+  out.style.display = 'block';
+
+  grid.innerHTML = wsData.map((q, i) => `
+    <div class="ws-item">
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;font-weight:600">#${i+1}</div>
+      <div class="ws-num">
+        <div style="color:#2563eb">${q.a}</div>
+        <div style="color:var(--red)">−&nbsp;${q.b}</div>
+        <div class="ws-line"></div>
+      </div>
+      <div class="ws-blank">____________</div>
+    </div>`).join('');
+}
+
+function requiresBorrow(a, b) {
+  const as = String(a).split('').reverse();
+  const bs = String(b).split('').reverse();
+  for (let i = 0; i < bs.length; i++) {
+    if (parseInt(bs[i]) > parseInt(as[i] || 0)) return true;
+  }
+  return false;
+}
+
+function downloadPDF() {
+  if (!wsData.length) { generateWorksheet(); }
+  const count = wsData.length;
+  const minDig = document.getElementById('gen-min-dig').value;
+  const susDig = document.getElementById('gen-sus-dig').value;
+
+  const exercises = wsData.map((q, i) => `
+    <div class="ex">
+      <div class="ex-num">${i + 1}</div>
+      <div class="vert">
+        <div class="top">${q.a}</div>
+        <div class="bot">− ${q.b}</div>
+        <div class="hr"></div>
+        <div class="blank">__________</div>
+      </div>
+    </div>`).join('');
+
+  const html = `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Hoja de Ejercicios – Resta Vertical</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; margin: 20px 30px; color: #1e293b; }
+  h1   { font-size: 22px; text-align: center; margin-bottom: 4px; }
+  .sub { text-align: center; font-size: 13px; color: #64748b; margin-bottom: 18px; }
+  .info { display: flex; gap: 30px; font-size: 12px; margin-bottom: 20px; padding: 10px; background: #f8fafc; border-radius: 8px; }
+  .info span { font-weight: 600; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .ex  { padding: 14px; border: 1px solid #e2e8f0; border-radius: 8px; }
+  .ex-num { font-size: 11px; color: #94a3b8; margin-bottom: 6px; font-weight: 600; }
+  .vert { font-family: 'Courier New', monospace; font-size: 22px; font-weight: 800; text-align: right; }
+  .top  { color: #1d4ed8; }
+  .bot  { color: #dc2626; }
+  .hr   { height: 2px; background: #1e293b; margin: 4px 0; }
+  .blank { font-size: 14px; color: #94a3b8; }
+  footer { text-align: center; font-size: 12px; color: #94a3b8; margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 12px; }
+  @media print { body { margin: 10mm 12mm; } }
+</style>
+</head>
+<body>
+<h1>🧮 Hoja de Ejercicios – Resta Vertical</h1>
+<div class="sub">Mente Matemática | Plataforma de Aprendizaje</div>
+<div class="info">
+  <div>Ejercicios: <span>${count}</span></div>
+  <div>Dígitos Minuendo: <span>${minDig}</span></div>
+  <div>Dígitos Sustraendo: <span>${susDig}</span></div>
+  <div>Nombre: <span>_____________________</span></div>
+  <div>Fecha: <span>_______________</span></div>
+</div>
+<div class="grid">${exercises}</div>
+<footer>© 2026 MenteMatematicaI. Todos los derechos reservados VC.</footer>
+<script>window.onload = function(){ window.print(); }<\/script>
+</body></html>`;
+
+  const blob = new Blob([html], { type: 'text/html' });
+  const url  = URL.createObjectURL(blob);
+  const win  = window.open(url, '_blank');
+  if (!win) alert('Habilita las ventanas emergentes para descargar el PDF.');
+}
+
+// ============================================================
+//  EVALUACIÓN FINAL (sección 7)
+// ============================================================
+const evalQuestions = [
+  {
+    q: '¿Qué símbolo representa la resta?',
+    opts: ['+ (más)', '− (menos)', '× (por)', '÷ (entre)'],
+    ans: 1,
+    exp: 'El símbolo − (menos) representa la resta o sustracción.'
+  },
+  {
+    q: 'En la resta vertical 85 − 32 = 53, ¿cuál es el MINUENDO?',
+    opts: ['32', '53', '85', '17'],
+    ans: 2,
+    exp: 'El minuendo es el número del que se resta (85), el que va arriba en la forma vertical.'
+  },
+  {
+    q: 'En la resta 74 − 41 = 33, ¿cuál es el SUSTRAENDO?',
+    opts: ['74', '33', '41', '107'],
+    ans: 2,
+    exp: 'El sustraendo es el número que se quita (41), el que va debajo con el signo −.'
+  },
+  {
+    q: '¿Cómo se llama el resultado de una resta?',
+    opts: ['Producto', 'Suma', 'Diferencia', 'Cociente'],
+    ans: 2,
+    exp: 'El resultado de una resta se llama DIFERENCIA.'
+  },
+  {
+    q: '¿Cuánto es 97 − 54?',
+    opts: ['33', '43', '53', '151'],
+    ans: 1,
+    exp: '97 − 54 = 43. Unidades: 7−4=3. Decenas: 9−5=4. Resultado: 43.'
+  },
+  {
+    q: 'Al restar 62 − 37, ¿en qué columna necesitamos pedir PRÉSTAMO?',
+    opts: ['En la columna de decenas', 'En la columna de unidades', 'No se necesita préstamo', 'En ambas columnas'],
+    ans: 1,
+    exp: 'En la columna de unidades: 2 < 7, entonces pedimos prestado 1 decena. El 2 se convierte en 12, y el 6 en 5.'
+  },
+  {
+    q: '¿Cuánto es 83 − 46?',
+    opts: ['47', '37', '43', '57'],
+    ans: 1,
+    exp: '83 − 46 = 37. Unidades: 3<6 → préstamo: 13−6=7. Decenas: 7−4=3.'
+  },
+  {
+    q: 'En la forma vertical, ¿dónde se escribe el número de mayor valor?',
+    opts: ['Abajo', 'Arriba', 'A la derecha', 'Da igual'],
+    ans: 1,
+    exp: 'El minuendo (el número mayor del que restamos) siempre se escribe ARRIBA en la resta vertical.'
+  },
+  {
+    q: '¿Cuánto es 400 − 165?',
+    opts: ['235', '245', '225', '335'],
+    ans: 0,
+    exp: '400 − 165 = 235. Requiere varios préstamos al restar de un número con ceros.'
+  },
+  {
+    q: '¿Cuál de las siguientes NO es parte de la resta?',
+    opts: ['Minuendo', 'Sustraendo', 'Diferencia', 'Multiplicando'],
+    ans: 3,
+    exp: '"Multiplicando" pertenece a la multiplicación, no a la resta. Los elementos de la resta son: minuendo, sustraendo y diferencia.'
+  },
+];
+
+let evalIdx = 0, evalCorrect = 0, evalAnswered = [];
+
+function startEval() {
+  evalIdx = 0; evalCorrect = 0; evalAnswered = [];
+  document.getElementById('eval-start-screen').style.display = 'none';
+  document.getElementById('eval-result').style.display = 'none';
+  renderEvalQ();
+  document.getElementById('eval-body').style.display = 'block';
+}
+
+function renderEvalQ() {
+  const q = evalQuestions[evalIdx];
+  const letters = ['A','B','C','D'];
+  const html = `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+        <span style="font-size:13px;color:var(--text-muted);font-weight:600">Pregunta ${evalIdx+1} de ${evalQuestions.length}</span>
+        <span class="score-pill">⭐ ${evalCorrect}/${evalIdx} correctas</span>
+      </div>
+      <div style="background:#e2e8f0;border-radius:100px;height:8px;overflow:hidden;margin-bottom:20px">
+        <div style="height:100%;width:${(evalIdx/evalQuestions.length)*100}%;background:linear-gradient(90deg,var(--blue),var(--navy));border-radius:100px;transition:width .5s"></div>
+      </div>
+      <h4 style="font-size:17px;font-weight:700;margin-bottom:18px">
+        <span class="q-num">${evalIdx+1}</span>${q.q}
+      </h4>
+      <div class="mc-opts">
+        ${q.opts.map((o,i) => `
+          <div class="mc-opt" id="eq-opt-${i}" onclick="answerEval(${i})">
+            <div class="mc-letter">${letters[i]}</div><span>${o}</span>
+          </div>`).join('')}
+      </div>
+      <div id="eval-q-fb" class="feedback"></div>
+    </div>`;
+  document.getElementById('eval-body').innerHTML = html;
+}
+
+function answerEval(chosen) {
+  const q = evalQuestions[evalIdx];
+  const ok = chosen === q.ans;
+  if (ok) evalCorrect++;
+  evalAnswered.push({ q, chosen, correct: ok });
+
+  document.querySelectorAll('.mc-opt').forEach((o,i) => {
+    o.style.pointerEvents = 'none';
+    if (i === q.ans) o.classList.add('ok');
+    else if (i === chosen && !ok) o.classList.add('bad');
+  });
+
+  const fb = document.getElementById('eval-q-fb');
+  fb.className = 'feedback show ' + (ok ? 'correct' : 'wrong');
+  fb.innerHTML = (ok ? '✅ ¡Correcto! ' : '❌ Incorrecto. ') + q.exp;
+
+  setTimeout(() => {
+    evalIdx++;
+    if (evalIdx < evalQuestions.length) renderEvalQ();
+    else showEvalResult();
+  }, 2200);
+}
+
+function showEvalResult() {
+  document.getElementById('eval-body').style.display = 'none';
+  document.getElementById('eval-result').style.display = 'block';
+  const pct = Math.round((evalCorrect / evalQuestions.length) * 100);
+  const circle = document.getElementById('eval-circle');
+  document.getElementById('eval-score-display').textContent = evalCorrect;
+  circle.style.color = 'white';
+
+  let title, msg;
+  if (evalCorrect >= 9) {
+    circle.style.background = 'linear-gradient(135deg,var(--green),#059669)';
+    title = '🏆 ¡Excelente! Dominas la Resta Vertical';
+    msg = `Obtuviste ${evalCorrect}/10 respuestas correctas (${pct}%). ¡Tienes un conocimiento sobresaliente!`;
+  } else if (evalCorrect >= 7) {
+    circle.style.background = 'linear-gradient(135deg,var(--blue),var(--navy))';
+    title = '👍 ¡Muy bien! Buen nivel';
+    msg = `Obtuviste ${evalCorrect}/10 respuestas correctas (${pct}%). Sigue repasando para alcanzar la perfección.`;
+  } else if (evalCorrect >= 5) {
+    circle.style.background = 'linear-gradient(135deg,var(--accent),#d97706)';
+    title = '📚 ¡Buen intento! Hay que repasar';
+    msg = `Obtuviste ${evalCorrect}/10 respuestas correctas (${pct}%). Te recomendamos repasar los módulos.`;
+  } else {
+    circle.style.background = 'linear-gradient(135deg,var(--red),#dc2626)';
+    title = '💪 ¡Necesitas más práctica!';
+    msg = `Obtuviste ${evalCorrect}/10 respuestas correctas (${pct}%). Repasa los módulos 1, 2 y 3 antes de volver.`;
+  }
+  document.getElementById('eval-result-title').textContent = title;
+  document.getElementById('eval-result-msg').textContent = msg;
+
+  // Review
+  const letters = ['A','B','C','D'];
+  document.getElementById('eval-answers-review').innerHTML = evalAnswered.map((a,i) => `
+    <div style="margin-bottom:12px;padding:12px;border-radius:10px;background:${a.correct?'#f0fdf4':'#fef2f2'};border:1px solid ${a.correct?'#86efac':'#fca5a5'}">
+      <p style="font-size:13.5px;font-weight:700;margin-bottom:4px">
+        ${a.correct?'✅':'❌'} <strong>Pregunta ${i+1}:</strong> ${a.q.q}
+      </p>
+      <p style="font-size:12.5px;color:#64748b">
+        Tu respuesta: <strong>${letters[a.chosen]}) ${a.q.opts[a.chosen]}</strong>
+        ${!a.correct ? ` | Correcta: <strong style="color:#15803d">${letters[a.q.ans]}) ${a.q.opts[a.q.ans]}</strong>` : ''}
+      </p>
+      <p style="font-size:12px;color:#475569;margin-top:4px">${a.q.exp}</p>
+    </div>`).join('');
+}
+
+function restartEval() {
+  document.getElementById('eval-result').style.display = 'none';
+  document.getElementById('eval-start-screen').style.display = 'block';
+}
+
+// ============================================================
+//  INIT – Cargar la primera sección
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  goSection(0);
+  // Iniciar canvas de intro después del DOM
+  setTimeout(drawIntroCanvas, 200);
+});
+
+// Keyboard shortcut: Enter en práctica
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const active = document.querySelector('.section.active');
+    if (active && active.id === 'sec5') checkPrac();
+  }
+});
+
+// polyfill roundRect si no existe
+if (!CanvasRenderingContext2D.prototype.roundRect) {
+  CanvasRenderingContext2D.prototype.roundRect = function(x,y,w,h,r){
+    this.beginPath();
+    this.moveTo(x+r, y);
+    this.lineTo(x+w-r, y);
+    this.quadraticCurveTo(x+w, y, x+w, y+r);
+    this.lineTo(x+w, y+h-r);
+    this.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+    this.lineTo(x+r, y+h);
+    this.quadraticCurveTo(x, y+h, x, y+h-r);
+    this.lineTo(x, y+r);
+    this.quadraticCurveTo(x, y, x+r, y);
+    this.closePath();
+  };
+}
+
+// stat-box helper
+document.querySelectorAll && document.querySelectorAll('.stat-box .stat-num').forEach(el => {
+  el.style.fontFamily = 'Courier New, monospace';
+});
+</script>
+
+</body>
+</html>
